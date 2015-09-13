@@ -52,7 +52,7 @@
     <Compile Include="Exceptions\CsvTypeConversionException.cs" />
     <Compile Include="Mapping\ICsvPropertyMapping.cs" />
     <Compile Include="TypeConverter\ITypeConverterProvider.cs" />
-    <Compile Include="ReflectionUtils.cs" />
+    <Compile Include="Reflection\ReflectionUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TypeConverter\TypeConverterProvider.cs" />
     <Compile Include="TypeConverter\BaseConverter.cs" />

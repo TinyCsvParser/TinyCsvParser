@@ -3,6 +3,7 @@
 
 using System;
 using System.Linq.Expressions;
+using TinyCsvParser.Reflection;
 using TinyCsvParser.TypeConverter;
 
 namespace TinyCsvParser.Mapping

@@ -5,7 +5,7 @@ using System;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace TinyCsvParser
+namespace TinyCsvParser.Reflection
 {
     public static class ReflectionUtils
     {
