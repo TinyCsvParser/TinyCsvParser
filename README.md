@@ -55,33 +55,34 @@ private class CsvPersonMapping : CsvMapping<Person>
 And then we can use the mapping to parse the CSV data with a ``CsvParser``.
 
 ```csharp
-using TinyCsvParser;
-using TinyCsvParser.Mapping;
-
 namespace TinyCsvParser.Test
 {
     [TestFixture]
     public class TinyCsvParserTest
     {
-        CsvParserOptions csvParserOptions = new CsvParserOptions(true,  new[] { ';' });
-        CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new []{Environment.NewLine});
-        CsvPersonMapping csvMapper = new CsvPersonMapping();
-        CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
+        [Test]
+        public void TinyCsvTest()
+        {
+            CsvParserOptions csvParserOptions = new CsvParserOptions(true, new[] { ';' });
+            CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
+            CsvPersonMapping csvMapper = new CsvPersonMapping();
+            CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
 
-        var stringBuilder = new StringBuilder()
-            .AppendLine("FirstName;LastName;BirthDate")
-            .AppendLine("Philipp;Wagner;1986/05/12")
-            .AppendLine("Max;Mustermann;2014/01/01");
+            var stringBuilder = new StringBuilder()
+                .AppendLine("FirstName;LastName;BirthDate")
+                .AppendLine("Philipp;Wagner;1986/05/12")
+                .AppendLine("Max;Mustermann;2014/01/01");
 
-        var result = csvParser
-            .ReadFromString(csvReaderOptions, stringBuilder.ToString())
-            .ToList();
+            var result = csvParser
+                .ReadFromString(csvReaderOptions, stringBuilder.ToString())
+                .ToList();
 
-        Assert.AreEqual(2, result.Count);
+            Assert.AreEqual(2, result.Count);
 
-        Assert.IsTrue(result.All(x => x.IsValid));
-        
-        // ... more asserts.
+            Assert.IsTrue(result.All(x => x.IsValid));
+
+            // Asserts ...
+        }
     }
 }
 ```

@@ -35,6 +35,30 @@ namespace TinyCsvParser.Test
         }
 
         [Test]
+        public void TinyCsvTest()
+        {
+            CsvParserOptions csvParserOptions = new CsvParserOptions(true, new[] { ';' });
+            CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
+            CsvPersonMapping csvMapper = new CsvPersonMapping();
+            CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
+
+            var stringBuilder = new StringBuilder()
+                .AppendLine("FirstName;LastName;BirthDate")
+                .AppendLine("Philipp;Wagner;1986/05/12")
+                .AppendLine("Max;Mustermann;2014/01/01");
+
+            var result = csvParser
+                .ReadFromString(csvReaderOptions, stringBuilder.ToString())
+                .ToList();
+
+            Assert.AreEqual(2, result.Count);
+
+            Assert.IsTrue(result.All(x => x.IsValid));
+
+            // Asserts ...
+        }
+
+        [Test]
         public void SkipHeaderTest()
         {
             CsvParserOptions csvParserOptions = new CsvParserOptions(true,  new[] { ';' });
