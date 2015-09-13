@@ -1,6 +1,6 @@
 # TinyCsvParser #
 
-[TinyCsvParser]: https://github.com/bytefish/csharp/tree/master/TinyCsvParser
+[TinyCsvParser]: https://github.com/bytefish/TinyCsvParser
 [MIT License]: https://opensource.org/licenses/MIT
 
 A lot of us have to import CSV data into their systems. What sounds simple often turns into a huge mess. 
@@ -15,7 +15,7 @@ Here is [TinyCsvParser], which is my attempt to build a clean, easy to use and h
 
 I have released it under terms of the [MIT License]:
 
-* [https://github.com/bytefish/csharp/tree/master/TinyCsvParser](https://github.com/bytefish/csharp/tree/master/TinyCsvParser)
+* [https://github.com/bytefish/TinyCsvParser](https://github.com/bytefish/TinyCsvParser)
 
 ## Basic Usage ##
 
