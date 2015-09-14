@@ -1,0 +1,1 @@
+nuget pack TinyCsvParser-0.1.nuspec -symbols -NonInteractive -OutputDirectory ./nupkg

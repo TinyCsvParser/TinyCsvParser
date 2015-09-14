@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>TinyCsvParser</id>
+        <version>0.1</version>
+        <title>TinyCsvParser</title>
+        <authors>Philipp Wagner</authors>
+        <owners>Philipp Wagner</owners>
+        <language>en-US</language>
+        <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
+        <projectUrl>https://github.com/bytefish/TinyCsvParser</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>A clean, easy to use and high-performing library for CSV parsing.</description>
+        <copyright>Copyright © 2015 Philipp Wagner</copyright>
+        <tags>csv parser</tags>
+    </metadata>
+    <files>
+        <file src="..\TinyCsvParser\bin\Release\TinyCsvParser.dll" target="lib\net45" />
+        <file src="..\TinyCsvParser\bin\Release\TinyCsvParser.pdb" target="lib\net45" />
+    </files>
+</package>
