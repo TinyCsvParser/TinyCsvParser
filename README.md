@@ -17,7 +17,7 @@ I have released it under terms of the [MIT License]:
 
 * [https://github.com/bytefish/TinyCsvParser](https://github.com/bytefish/TinyCsvParser)
 
-You can also use the [nuget](https://www.nuget.org) package. To install TinyCsvParser, run the following 
+You can also use the [NuGet](https://www.nuget.org) package. To install TinyCsvParser, run the following 
 command in the [Package Manager Console](http://docs.nuget.org/consume/package-manager-console).
 
 ```
