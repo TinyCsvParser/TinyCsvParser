@@ -31,6 +31,7 @@ namespace TinyCsvParser
                 .Skip(options.SkipHeader ? 1 : 0)
                 .AsParallel()
                 .AsOrdered()
+                .WithDegreeOfParallelism(options.DegreeOfParallelism)
                 .Where(line => !string.IsNullOrWhiteSpace(line))
                 .Select(line => line.Trim().Split(options.FieldsSeparator))
                 .Select(fields => mapping.Map(fields));

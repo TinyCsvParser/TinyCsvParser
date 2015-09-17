@@ -6,6 +6,7 @@ using System.Text;
 using TinyCsvParser;
 using TinyCsvParser.Mapping;
 using TinyCsvParser.TypeConverter;
+using System.Diagnostics;
 
 namespace TinyCsvParser.Test
 {
@@ -206,6 +207,49 @@ namespace TinyCsvParser.Test
             Assert.AreEqual(1986, result[0].Result.BirthDate.Year);
             Assert.AreEqual(5, result[0].Result.BirthDate.Month);
             Assert.AreEqual(12, result[0].Result.BirthDate.Day);
+        }
+
+        [Test]
+        public void DegreeOfParallelismTest()
+        {
+            int csvDataLines = 1000000;
+            int[] degreeOfParallelismList = new[] { 1, 2, 4 };
+            
+            StringBuilder stringBuilder = new StringBuilder();
+            for (int i = 0; i < csvDataLines; i++)
+            {
+                stringBuilder.AppendLine("Philipp;Wagner;1986/05/12");
+            }
+            var csvData = stringBuilder.ToString();
+
+            foreach (var degreeOfParallelism in degreeOfParallelismList)
+            {
+                CsvParserOptions csvParserOptions = new CsvParserOptions(true, new[] { ';' }, degreeOfParallelism);
+                CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
+                CsvPersonMapping csvMapper = new CsvPersonMapping();
+                CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
+
+                MeasureElapsedTime( () => csvParser.ReadFromString(csvReaderOptions, csvData).ToList());
+            }
+        }
+
+        private void MeasureElapsedTime(Action action)
+        {
+            Stopwatch stopWatch = new Stopwatch();
+            stopWatch.Start();
+
+            action();
+
+            stopWatch.Stop();
+            // Get the elapsed time as a TimeSpan value.
+            TimeSpan ts = stopWatch.Elapsed;
+
+            // Format and display the TimeSpan value.
+            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+                ts.Hours, ts.Minutes, ts.Seconds,
+                ts.Milliseconds / 10);
+            Console.WriteLine("RunTime " + elapsedTime);
+
         }
     }
 }
