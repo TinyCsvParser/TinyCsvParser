@@ -57,5 +57,13 @@ namespace TinyCsvParser.Reflection
                 Expression.Call(instance, propertyInfo.GetSetMethod(), parameter),
                 new ParameterExpression[] { instance, parameter }).Compile();
         }
+
+        public static Func<TEntity> CreateDefaultConstructor<TEntity>()
+        {
+            var body = Expression.New(typeof(TEntity));
+            var lambda = Expression.Lambda<Func<TEntity>>(body);
+
+            return lambda.Compile();
+        }
     }
 }

@@ -6,15 +6,28 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using TinyCsvParser.TypeConverter;
+using TinyCsvParser.Reflection;
 
 namespace TinyCsvParser.Mapping
 {
     public abstract class CsvMapping<TEntity>
         where TEntity : class, new()
     {
-        private IDictionary<int, ICsvPropertyMapping<TEntity>> csvPropertyMappings = new Dictionary<int, ICsvPropertyMapping<TEntity>>();
+        private class IndexToPropertyMapping
+        {
+            public int ColumnIndex { get; set; }
 
+            public ICsvPropertyMapping<TEntity> PropertyMapping { get; set; }
+
+            public override string ToString()
+            {
+                return string.Format("IndexToPropertyMapping (ColumnIndex = {0}, PropertyMapping = {1}", ColumnIndex, PropertyMapping);
+            }
+        }
+
+        private readonly Func<TEntity> invokeConstructor;
         private readonly ITypeConverterProvider typeConverterProvider;
+        private readonly List<IndexToPropertyMapping> csvPropertyMappings;
 
         protected CsvMapping()
             : this(new TypeConverterProvider())
@@ -24,16 +37,28 @@ namespace TinyCsvParser.Mapping
         protected CsvMapping(ITypeConverterProvider typeConverterProvider)
         {
             this.typeConverterProvider = typeConverterProvider;
+            this.invokeConstructor = ReflectionUtils.CreateDefaultConstructor<TEntity>();
+            this.csvPropertyMappings = new List<IndexToPropertyMapping>();
         }
 
-        protected void MapProperty<TProperty>(int columnIndex, Expression<Func<TEntity, TProperty>> property)
+        protected CsvPropertyMapping<TEntity, TProperty> MapProperty<TProperty>(int columnIndex, Expression<Func<TEntity, TProperty>> property)
         {
-            if (csvPropertyMappings.ContainsKey(columnIndex))
+            if (csvPropertyMappings.Any(x => x.ColumnIndex == columnIndex))
             {
                 throw new InvalidOperationException(string.Format("Duplicate mapping for column index {0}"));
             }
-            
-            csvPropertyMappings[columnIndex] = new CsvPropertyMapping<TEntity, TProperty>(property, typeConverterProvider);
+
+            var propertyMapping = new CsvPropertyMapping<TEntity, TProperty>(property, typeConverterProvider);
+
+            var indexToPropertyMapping = new IndexToPropertyMapping
+            {
+                ColumnIndex = columnIndex,
+                PropertyMapping = propertyMapping
+            };
+
+            csvPropertyMappings.Add(indexToPropertyMapping);
+
+            return propertyMapping;
         }
 
         public CsvMappingResult<TEntity> Map(string[] values)
@@ -61,22 +86,22 @@ namespace TinyCsvParser.Mapping
 
         private TEntity InternalMap(string[] values)
         {
-            TEntity entity = (TEntity)Activator.CreateInstance(typeof(TEntity));
+            TEntity entity = invokeConstructor();
 
-            foreach (var kv in csvPropertyMappings)
+            for(int pos = 0; pos < csvPropertyMappings.Count; pos++) 
             {
-                int columnIndex = kv.Key;
-                
+                var indexToPropertyMapping = csvPropertyMappings[pos];
+
+                var columnIndex = indexToPropertyMapping.ColumnIndex;
+
                 if (columnIndex >= values.Length)
                 {
                     throw new ArgumentOutOfRangeException(string.Format("No column with index {0} exists", columnIndex));
                 }
 
-                ICsvPropertyMapping<TEntity> csvPropertyMapping = kv.Value;
-
                 var value = values[columnIndex];
 
-                csvPropertyMapping.MapValue(entity, value);
+                indexToPropertyMapping.PropertyMapping.MapValue(entity, value);
             }
 
             return entity;
@@ -84,11 +109,9 @@ namespace TinyCsvParser.Mapping
         
         public override string ToString()
         {
-            var csvPropertyMappingsString =  string.Join(", ", csvPropertyMappings.Select(x => string.Format("(Index = {0}, Mapping = {1})", x.Key, x.Value)));
+            var csvPropertyMappingsString =  string.Join(", ", csvPropertyMappings.Select(x => x.ToString()));
 
-            return string.Format("CsvMapping (TypeConverterProvider = {0}, Mappings = {1})", 
-                typeConverterProvider,
-                csvPropertyMappingsString);
+            return string.Format("CsvMapping (TypeConverterProvider = {0}, Mappings = {1})", typeConverterProvider, csvPropertyMappingsString);
         }
     }
 }
