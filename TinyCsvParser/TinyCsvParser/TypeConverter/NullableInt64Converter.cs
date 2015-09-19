@@ -26,9 +26,18 @@ namespace TinyCsvParser.TypeConverter
             int64Converter = new Int64Converter(formatProvider, numberStyles);
         }
 
-        protected override Int64? InternalConvert(string value)
+        protected override bool InternalConvert(string value, out Int64? result)
         {
-            return int64Converter.Convert(value);
+            result = default(Int64?);
+            
+            Int64 innerConverterResult;
+            if (int64Converter.TryConvert(value, out innerConverterResult))
+            {
+                result = innerConverterResult;
+
+                return true;
+            }
+            return false;
         }
     }
 }

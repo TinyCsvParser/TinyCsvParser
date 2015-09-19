@@ -12,17 +12,20 @@ namespace TinyCsvParser
         public readonly bool SkipHeader;
 
         public readonly int DegreeOfParallelism;
-        
+
+        public readonly bool KeepOrder;
+
         public CsvParserOptions(bool skipHeader, char[] fieldsSeparator)
-            : this(skipHeader, fieldsSeparator, Environment.ProcessorCount)
+            : this(skipHeader, fieldsSeparator, Environment.ProcessorCount, true)
         {
         }
 
-        public CsvParserOptions(bool skipHeader, char[] fieldsSeparator, int degreeOfParallelism)
+        public CsvParserOptions(bool skipHeader, char[] fieldsSeparator, int degreeOfParallelism, bool keepOrder)
         {
             SkipHeader = skipHeader;
             FieldsSeparator = fieldsSeparator;
             DegreeOfParallelism = degreeOfParallelism;
+            KeepOrder = keepOrder;
         }
 
         public override string ToString()

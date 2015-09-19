@@ -34,13 +34,13 @@ namespace TinyCsvParser.TypeConverter
             this.dateTimeStyles = dateTimeStyles;
         }
 
-        protected override DateTime InternalConvert(string value)
+        protected override bool InternalConvert(string value, out DateTime result)
         {
             if (string.IsNullOrWhiteSpace(dateTimeFormat))
             {
-                return DateTime.Parse(value);
+                return DateTime.TryParse(value, out result);
             }
-            return DateTime.ParseExact(value, this.dateTimeFormat, this.formatProvider, this.dateTimeStyles);
+            return DateTime.TryParseExact(value, this.dateTimeFormat, this.formatProvider, this.dateTimeStyles, out result);
         }
     }
 }

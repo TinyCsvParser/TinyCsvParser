@@ -35,13 +35,13 @@ namespace TinyCsvParser.TypeConverter
             this.timeSpanStyles = timeSpanStyles;
         }
 
-        protected override TimeSpan InternalConvert(string value)
+        protected override bool InternalConvert(string value, out TimeSpan result)
         {
             if (string.IsNullOrWhiteSpace(format))
             {
-                return TimeSpan.Parse(value, formatProvider);
+                return TimeSpan.TryParse(value, formatProvider, out result);
             }
-            return TimeSpan.ParseExact(value, format, formatProvider, timeSpanStyles);
+            return TimeSpan.TryParseExact(value, format, formatProvider, timeSpanStyles, out result);
         }
     }
 }

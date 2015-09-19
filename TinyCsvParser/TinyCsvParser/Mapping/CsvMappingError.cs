@@ -7,11 +7,13 @@ namespace TinyCsvParser.Mapping
 {
     public class CsvMappingError
     {
-        public Exception Exception { get; set; }
+        public int ColumnIndex { get; set; }
+
+        public string Value { get; set; }
 
         public override string ToString()
         {
-            return string.Format("CsvMappingError (Exception = {0})", Exception);
+            return string.Format("CsvMappingError (ColumnIndex = {0}, Value = {1})", ColumnIndex, Value);
         }
     }
 }

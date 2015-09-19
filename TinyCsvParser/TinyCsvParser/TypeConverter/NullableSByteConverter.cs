@@ -26,9 +26,18 @@ namespace TinyCsvParser.TypeConverter
             sbyteConverter = new SByteConverter(formatProvider, numberStyles);
         }
 
-        protected override SByte? InternalConvert(string value)
+        protected override bool InternalConvert(string value, out SByte? result)
         {
-            return sbyteConverter.Convert(value);
+            result = default(SByte?);
+
+            SByte innerConverterResult;
+            if (sbyteConverter.TryConvert(value, out innerConverterResult))
+            {
+                result = innerConverterResult;
+
+                return true;
+            }
+            return false;
         }
     }
 }

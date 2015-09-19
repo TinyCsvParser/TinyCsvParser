@@ -27,9 +27,9 @@ namespace TinyCsvParser.TypeConverter
             this.numberStyles = numberStyles;
         }
 
-        protected override UInt32 InternalConvert(string value)
+        protected override bool InternalConvert(string value, out UInt32 result)
         {
-            return UInt32.Parse(value, numberStyles, formatProvider);
+            return UInt32.TryParse(value, numberStyles, formatProvider, out result);
         }
     }
 }

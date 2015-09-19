@@ -8,23 +8,18 @@ namespace TinyCsvParser.TypeConverter
 {
     public abstract class NullableConverter<TTargetType> : BaseConverter<TTargetType>
     {
-        public override TTargetType Convert(string value)
+        public override bool TryConvert(string value, out TTargetType result)
         {
             if (value == null)
             {
-                return default(TTargetType);
+                result = default(TTargetType);
+
+                return true;
             }
 
-            try
-            {
-                return InternalConvert(value);
-            }
-            catch (Exception e)
-            {
-                throw new CsvTypeConversionException(string.Format("Unable to parse value {0}", value), e);
-            }
+            return InternalConvert(value, out result);
         }
 
-        protected abstract TTargetType InternalConvert(string value);
+        protected abstract bool InternalConvert(string value, out TTargetType result);
     }
 }

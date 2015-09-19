@@ -7,6 +7,7 @@ using TinyCsvParser.Reflection;
 namespace TinyCsvParser.TypeConverter
 {
     public class EnumConverter<TTargetType> : NonNullableConverter<TTargetType>
+        where TTargetType : struct
     {
         private readonly Type enumType;
         private readonly bool ignoreCase;
@@ -26,9 +27,9 @@ namespace TinyCsvParser.TypeConverter
             this.ignoreCase = ignoreCase;
         }
 
-        protected override TTargetType InternalConvert(string value)
+        protected override bool InternalConvert(string value, out TTargetType result)
         {
-            return (TTargetType) Enum.Parse(enumType, value, ignoreCase);
+            return Enum.TryParse<TTargetType>(value, ignoreCase, out result);
         }
     }
 }

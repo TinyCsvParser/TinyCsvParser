@@ -8,9 +8,11 @@ namespace TinyCsvParser.TypeConverter
 {
     public class StringConverter : BaseConverter<string>
     {
-        public override string Convert(string value)
+        public override bool TryConvert(string value, out string result)
         {
-            return value;
+            result = value;
+
+            return true;
         }
     }
 }

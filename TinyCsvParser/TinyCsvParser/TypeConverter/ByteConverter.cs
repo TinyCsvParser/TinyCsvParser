@@ -28,9 +28,9 @@ namespace TinyCsvParser.TypeConverter
         }
 
 
-        protected override Byte InternalConvert(string value)
+        protected override bool InternalConvert(string value, out Byte result)
         {
-            return Byte.Parse(value, numberStyles, formatProvider);
+            return Byte.TryParse(value, numberStyles, formatProvider, out result);
         }
     }
 }

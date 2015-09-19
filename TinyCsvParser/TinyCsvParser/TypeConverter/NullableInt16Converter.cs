@@ -26,9 +26,19 @@ namespace TinyCsvParser.TypeConverter
             int16Converter = new Int16Converter(formatProvider, numberStyles);
         }
 
-        protected override Int16? InternalConvert(string value)
+        protected override bool InternalConvert(string value, out Int16? result)
         {
-            return int16Converter.Convert(value);
+            result = default(Int16?);
+            
+            Int16 innerConverterResult;
+            if (int16Converter.TryConvert(value, out innerConverterResult))
+            {
+                result = innerConverterResult;
+
+                return true;
+            }
+
+            return false;
         }
     }
 }

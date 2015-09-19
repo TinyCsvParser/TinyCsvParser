@@ -26,9 +26,17 @@ namespace TinyCsvParser.TypeConverter
             byteConverter = new ByteConverter(formatProvider, numberStyles);
         }
 
-        protected override byte? InternalConvert(string value)
+        protected override bool InternalConvert(string value, out byte? result)
         {
-            return byteConverter.Convert(value);
+            result = 0;
+
+            byte innerConverterResult;
+            if (byteConverter.TryConvert(value, out innerConverterResult))
+            {
+                result = innerConverterResult;
+                return true;
+            }
+            return false;
         }
     }
 }

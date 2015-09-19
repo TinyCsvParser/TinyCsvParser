@@ -27,9 +27,9 @@ namespace TinyCsvParser.TypeConverter
             this.numberStyles = numberStyles;
         }
 
-        protected override Decimal InternalConvert(string value)
+        protected override bool InternalConvert(string value, out Decimal result)
         {
-            return Decimal.Parse(value, numberStyles, formatProvider);
+            return Decimal.TryParse(value, numberStyles, formatProvider, out result);
         }
     }
 }

@@ -8,6 +8,7 @@ using TinyCsvParser.Mapping;
 using TinyCsvParser.TypeConverter;
 using System.Diagnostics;
 using System.IO;
+using System.Collections.Concurrent;
 
 namespace TinyCsvParser.Test
 {
@@ -63,8 +64,8 @@ namespace TinyCsvParser.Test
         [Test]
         public void SkipHeaderTest()
         {
-            CsvParserOptions csvParserOptions = new CsvParserOptions(true,  new[] { ';' });
-            CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new []{Environment.NewLine});
+            CsvParserOptions csvParserOptions = new CsvParserOptions(true, new[] { ';' });
+            CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
             CsvPersonMapping csvMapper = new CsvPersonMapping();
             CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
 
@@ -118,7 +119,7 @@ namespace TinyCsvParser.Test
         [Test]
         public void TrimLineTest()
         {
-            CsvParserOptions csvParserOptions = new CsvParserOptions(true, new[] { ';' });
+            CsvParserOptions csvParserOptions = new CsvParserOptions(true, new[] { ';' }, 1, true);
             CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
             CsvPersonMapping csvMapper = new CsvPersonMapping();
             CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
@@ -154,9 +155,9 @@ namespace TinyCsvParser.Test
         public void WeirdDateTimeTest()
         {
             // Instantiate the TypeConverterProvider and override the DateTimeConverter:
-            ITypeConverterProvider csvTypeConverterProvider = 
+            ITypeConverterProvider csvTypeConverterProvider =
                 new TypeConverterProvider().Add(new DateTimeConverter("yyyy###MM###dd"));
-            
+
             // Make sure you pass the custom provider into the mapping!
             CsvPersonMapping csvMapper = new CsvPersonMapping(csvTypeConverterProvider);
 
@@ -184,7 +185,7 @@ namespace TinyCsvParser.Test
         [Test]
         public void ParallelLinqTest()
         {
-            CsvParserOptions csvParserOptions = new CsvParserOptions(true, new[] { ';' });
+            CsvParserOptions csvParserOptions = new CsvParserOptions(true, new[] { ';' }, 3, true);
             CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
             CsvPersonMapping csvMapper = new CsvPersonMapping();
             CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
@@ -210,12 +211,12 @@ namespace TinyCsvParser.Test
             Assert.AreEqual(12, result[0].Result.BirthDate.Day);
         }
 
-        [Test]
+        [Test, Explicit("Performance Test creating a string with 1000000 lines")]
         public void DegreeOfParallelismTest()
         {
             int csvDataLines = 1000000;
             int[] degreeOfParallelismList = new[] { 1, 2, 4 };
-            
+
             StringBuilder stringBuilder = new StringBuilder();
             for (int i = 0; i < csvDataLines; i++)
             {
@@ -225,16 +226,16 @@ namespace TinyCsvParser.Test
 
             foreach (var degreeOfParallelism in degreeOfParallelismList)
             {
-                CsvParserOptions csvParserOptions = new CsvParserOptions(true, new[] { ';' }, degreeOfParallelism);
+                CsvParserOptions csvParserOptions = new CsvParserOptions(true, new[] { ';' }, degreeOfParallelism, true);
                 CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
                 CsvPersonMapping csvMapper = new CsvPersonMapping();
                 CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
 
-                MeasureElapsedTime( () => csvParser.ReadFromString(csvReaderOptions, csvData).ToList());
+                MeasureElapsedTime(string.Format("DegreeOfParallelismTest (DegreeOfParallelism = {0})", degreeOfParallelism), () => csvParser.ReadFromString(csvReaderOptions, csvData).ToList());
             }
         }
 
-        private void MeasureElapsedTime(Action action)
+        private void MeasureElapsedTime(string description, Action action)
         {
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
@@ -251,7 +252,7 @@ namespace TinyCsvParser.Test
                 ts.Hours, ts.Minutes, ts.Seconds,
                 ts.Milliseconds / 10);
 
-            Console.WriteLine("RunTime " + elapsedTime);
+            Console.WriteLine("[{0}] Elapsed Time = {1}", description, elapsedTime);
         }
 
         public class LocalWeatherData
@@ -263,22 +264,23 @@ namespace TinyCsvParser.Test
 
         public class LocalWeatherDataMapper : CsvMapping<LocalWeatherData>
         {
-            public LocalWeatherDataMapper(ITypeConverterProvider provider)
-                : base(provider)
+            public LocalWeatherDataMapper()
             {
                 MapProperty(0, x => x.WBAN);
-                MapProperty(1, x => x.Date);
+                MapProperty(1, x => x.Date).WithCustomConverter(new DateTimeConverter("yyyyMMdd"));
                 MapProperty(4, x => x.SkyCondition);
             }
         }
 
-        [Test, Explicit("Performance Test for Sequential Read")]
+        [Test, Explicit("Performance Test for a Sequential Read")]
         public void SeqReadTest()
         {
-            MeasureElapsedTime(() => {
-                var a = File.ReadLines(@"C:\Users\philipp\Downloads\csv\201509hourly.txt", Encoding.ASCII)
+            MeasureElapsedTime(string.Format("Sequential Read"), () =>
+            {
+                var a = File.ReadLines(@"C:\Users\philipp\Downloads\csv\201503hourly.txt", Encoding.ASCII)
+                    .AsParallel()
                     .Where(line => !string.IsNullOrWhiteSpace(line))
-                    .Select(line => line.Trim().Split(new []{';'})).ToList();
+                    .Select(line => line.Trim().Split(new[] { ';' })).ToList();
             });
         }
 
@@ -286,27 +288,26 @@ namespace TinyCsvParser.Test
         [Test, Explicit("Performance test with a large dataset with Parallel Options")]
         public void LocalWeatherReadTest()
         {
+            bool[] keepOrder = new bool[] { true, false };
             int[] degreeOfParallelismList = new[] { 4, 3, 2, 1 };
 
-            foreach (var degreeOfParallelism in degreeOfParallelismList)
+            foreach (var order in keepOrder)
             {
-                ITypeConverterProvider csvTypeConverterProvider = new TypeConverterProvider()
-                    .Add(new DateTimeConverter("yyyyMMdd"));
-
-                // Make sure you pass the custom provider into the mapping!
-                CsvParserOptions csvParserOptions = new CsvParserOptions(true, new[] { ',' }, degreeOfParallelism);
-                CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
-                LocalWeatherDataMapper csvMapper = new LocalWeatherDataMapper(csvTypeConverterProvider);
-                CsvParser<LocalWeatherData> csvParser = new CsvParser<LocalWeatherData>(csvParserOptions, csvMapper);
-
-                MeasureElapsedTime(() =>
+                foreach (var degreeOfParallelism in degreeOfParallelismList)
                 {
-                    csvParser
-                        .ReadFromFile(@"C:\Users\philipp\Downloads\csv\201509hourly.txt", Encoding.ASCII)
-                        .Where(x => x.IsValid)
-                        .Where(x => x.Result.SkyCondition == "CLR")
-                        .ToList();
-                });
+                    CsvParserOptions csvParserOptions = new CsvParserOptions(true, new[] { ',' }, degreeOfParallelism, order);
+                    CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
+                    LocalWeatherDataMapper csvMapper = new LocalWeatherDataMapper();
+                    CsvParser<LocalWeatherData> csvParser = new CsvParser<LocalWeatherData>(csvParserOptions, csvMapper);
+
+                    MeasureElapsedTime(string.Format("LocalWeather (DegreeOfParallelism = {0}, KeepOrder = {1})", degreeOfParallelism, order),
+                        () =>
+                        {
+                            var a = csvParser
+                                .ReadFromFile(@"C:\Users\philipp\Downloads\csv\201503hourly.txt", Encoding.ASCII)
+                                .ToList();
+                        });
+                }
             }
         }
     }

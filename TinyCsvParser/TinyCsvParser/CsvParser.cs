@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using TinyCsvParser.Mapping;
@@ -27,15 +28,23 @@ namespace TinyCsvParser
                 throw new ArgumentNullException("csvData");
             }
 
-            return csvData
+            var query = csvData
                 .Skip(options.SkipHeader ? 1 : 0)
-                .AsParallel()
-                .AsOrdered()
+                .AsParallel();
+
+            if (options.KeepOrder)
+            {
+                query = query.AsOrdered();
+            }
+
+            return query
                 .WithDegreeOfParallelism(options.DegreeOfParallelism)
                 .Where(line => !string.IsNullOrWhiteSpace(line))
                 .Select(line => line.Trim().Split(options.FieldsSeparator))
                 .Select(fields => mapping.Map(fields));
         }
+
+
 
         public override string ToString()
         {

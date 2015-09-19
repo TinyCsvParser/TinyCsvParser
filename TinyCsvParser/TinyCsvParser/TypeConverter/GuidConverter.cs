@@ -19,13 +19,13 @@ namespace TinyCsvParser.TypeConverter
             this.format = format;
         }
 
-        protected override Guid InternalConvert(string value)
+        protected override bool InternalConvert(string value, out Guid result)
         {
             if (string.IsNullOrWhiteSpace(format))
             {
-                return Guid.Parse(value);
+                return Guid.TryParse(value, out result);
             }
-            return Guid.ParseExact(value, format);
+            return Guid.TryParseExact(value, format, out result);
         }
     }
 }

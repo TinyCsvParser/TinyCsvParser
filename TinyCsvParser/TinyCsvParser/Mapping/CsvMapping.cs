@@ -63,32 +63,9 @@ namespace TinyCsvParser.Mapping
 
         public CsvMappingResult<TEntity> Map(string[] values)
         {
-            try
-            {
-                var entity = InternalMap(values);
-
-                return new CsvMappingResult<TEntity>()
-                {
-                    Result = entity
-                };
-            }
-            catch (Exception e)
-            {
-                return new CsvMappingResult<TEntity>()
-                {
-                    Error = new CsvMappingError()
-                    {
-                        Exception = e
-                    }
-                };
-            }
-        }
-
-        private TEntity InternalMap(string[] values)
-        {
             TEntity entity = invokeConstructor();
 
-            for(int pos = 0; pos < csvPropertyMappings.Count; pos++) 
+            for (int pos = 0; pos < csvPropertyMappings.Count; pos++)
             {
                 var indexToPropertyMapping = csvPropertyMappings[pos];
 
@@ -101,11 +78,25 @@ namespace TinyCsvParser.Mapping
 
                 var value = values[columnIndex];
 
-                indexToPropertyMapping.PropertyMapping.MapValue(entity, value);
+                if (!indexToPropertyMapping.PropertyMapping.TryMapValue(entity, value))
+                {
+                    return new CsvMappingResult<TEntity>()
+                    {
+                        Error = new CsvMappingError
+                        {
+                            ColumnIndex = columnIndex,
+                            Value = value
+                        }
+                    };
+                }
             }
 
-            return entity;
+            return new CsvMappingResult<TEntity>()
+            {
+                Result = entity
+            };
         }
+
         
         public override string ToString()
         {
