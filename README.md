@@ -3,26 +3,29 @@
 [TinyCsvParser]: https://github.com/bytefish/TinyCsvParser
 [MIT License]: https://opensource.org/licenses/MIT
 
-A lot of us have to import CSV data into their systems. What sounds simple often turns into a huge mess. 
-
-There is no schema for CSV data. Suddenly a client changes some columns, or the format of numbers change, or the 
-format of dates change or your requirements change. If you don't come up with a strategy for coping with uncertanity 
-your code is going to suffer.
-
-I have been there. I have written all this unmaintainable code myself.
-
-Here is [TinyCsvParser], which is my attempt to build a clean, easy to use and high-performing library for CSV parsing in C#.
+[TinyCsvParser] is an easy to use and high-performing library for CSV parsing in C#.
 
 I have released it under terms of the [MIT License]:
 
 * [https://github.com/bytefish/TinyCsvParser](https://github.com/bytefish/TinyCsvParser)
 
-You can also use the [NuGet](https://www.nuget.org) package. To install TinyCsvParser, run the following 
-command in the [Package Manager Console](http://docs.nuget.org/consume/package-manager-console).
+## Installing TinyCsvParser ##
+
+You can use [NuGet](https://www.nuget.org) to install [TinyCsvParser]. Run the following command 
+in the [Package Manager Console](http://docs.nuget.org/consume/package-manager-console).
 
 ```
 PM> Install-Package TinyCsvParser
 ```
+
+## Blog Posts ##
+
+There are several blog posts on using [TinyCsvParser]:
+
+* [TinyCsvParser - Parsing CSV Data with C#](http://bytefish.de/blog/tinycsvparser/)
+* [Using TinyCsvParser and FluentValidation](http://bytefish.de/blog/fluent_validation/)
+* [Benchmarking TinyCsvParser](http://bytefish.de/blog/tinycsvparser_benchmark/)
+* [PostgreSQL and TinyCsvParser](http://bytefish.de/blog/tinycsvparser_postgresql/)
 
 ## Basic Usage ##
 
@@ -94,108 +97,122 @@ namespace TinyCsvParser.Test
 }
 ```
    
-And that's it! The ``CsvParserOptions`` in this example are set to skip the header, use ``\n`` as line separator and ``;`` as column delimiter.
+And that's it! The options in this example are set to skip the header, use ``Environment.NewLine`` as line separator 
+and ``;`` as column delimiter.
 
-## Advanced Usage ##
+## Advanced Usage (File Reading, Parallel Processing) ## 
 
-### Custom TypeConverters ###
+### Dataset ###
 
-Now imagine your client suddenly changes a persons birthdate into a weird format and writes dates like this ``2004###01###25``. We can't parse such 
-a date format with the default converters, but in [TinyCsvParser] we can easily define a ``DateTimeConverter`` with a custom date time format.
+In this example we are parsing a real life dataset. It's the local weather data in March 2015 gathered by 
+all weather stations in the USA. You can obtain the data  ``QCLCD201503.zip`` from:
+ 
+* [http://www.ncdc.noaa.gov/orders/qclcd](http://www.ncdc.noaa.gov/orders/qclcd)
 
-First of all extend the ``CsvPersonMapping`` to take a ``ITypeConverterProvider``.
+The File size is ``557 MB`` and it has ``4,496,262`` lines.
 
-```csharp
-private class CsvPersonMapping : CsvMapping<Person>
-{
-    public CsvPersonMapping()
-        : this(new TypeConverterProvider())
-    {
-    }
-    public CsvPersonMapping(ITypeConverterProvider typeConverterProvider)
-        : base(typeConverterProvider)
-    {
-        MapProperty(0, x => x.FirstName);
-        MapProperty(1, x => x.LastName);
-        MapProperty(2, x => x.BirthDate);
-    }
-}
+### Benchmark Results ###
+
+Without further explanation, here are the Benchmark results for parsing the dataset.
+
+```
+[TinyCsvParser (DegreeOfParallelism = 4, KeepOrder = True)] Elapsed Time = 00:00:10.48
+[CsvHelper] Elapsed Time = 00:00:32.60
+[FileHelpers] Crash
 ```
 
-And then let's write a Unit Test and override the default ``DateTime`` converter with a custom ``DateTimeConverter``, which takes the custom format string.
+You can see, that [TinyCsvParser] is able to parse the file in ``10.5`` seconds only. Even if you don't 
+process the data in parallel (``DegreeOfParallelism = 1``) it is still faster, than CsvHelper. The 
+FileHelpers implementation crashed with an OutOfMemory Exception.
+
+Here are the full benchmark results of [TinyCsvParser]. You can see, that increasing the number of threads 
+helps when processing the data. Keeping the order doesn't have impact on the processing time, but it may 
+lead to a much higher memory consumption. This may be a subject for a future article.
+
+```
+[TinyCsvParser (DegreeOfParallelism = 4, KeepOrder = True)] Elapsed Time = 00:00:10.48
+[TinyCsvParser (DegreeOfParallelism = 3, KeepOrder = True)] Elapsed Time = 00:00:10.65
+[TinyCsvParser (DegreeOfParallelism = 2, KeepOrder = True)] Elapsed Time = 00:00:12.26
+[TinyCsvParser (DegreeOfParallelism = 1, KeepOrder = True)] Elapsed Time = 00:00:17.04
+[TinyCsvParser (DegreeOfParallelism = 4, KeepOrder = False)] Elapsed Time = 00:00:10.50
+[TinyCsvParser (DegreeOfParallelism = 3, KeepOrder = False)] Elapsed Time = 00:00:10.31
+[TinyCsvParser (DegreeOfParallelism = 2, KeepOrder = False)] Elapsed Time = 00:00:11.71
+[TinyCsvParser (DegreeOfParallelism = 1, KeepOrder = False)] Elapsed Time = 00:00:16.70
+```
+
+### Benchmark Code ###
+
+The elapsed time of the import can be easily measured by using the ``System.Diagnostics.Stopwatch``.
 
 ```csharp
-[Test]
-public void WeirdDateTimeTest()
+private void MeasureElapsedTime(string description, Action action)
 {
-    // Instantiate the TypeConverterProvider and override the DateTimeConverter:
-    ITypeConverterProvider csvTypeConverterProvider = 
-        new TypeConverterProvider().Add(new DateTimeConverter("yyyy###MM###dd"));
+    // Get the elapsed time as a TimeSpan value.
+    TimeSpan ts = MeasureElapsedTime(action);
+
+    // Format and display the TimeSpan value.
+    string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+        ts.Hours, ts.Minutes, ts.Seconds,
+        ts.Milliseconds / 10);
+
+    Console.WriteLine("[{0}] Elapsed Time = {1}", description, elapsedTime);
+}
+
+private TimeSpan MeasureElapsedTime(Action action)
+{
+    Stopwatch stopWatch = new Stopwatch();
     
-    // Make sure you pass the custom provider into the mapping!
-    CsvPersonMapping csvMapper = new CsvPersonMapping(csvTypeConverterProvider);
+    stopWatch.Start();
+    action();
+    stopWatch.Stop();
 
-    // And this is business as usual!
-    CsvParserOptions csvParserOptions = new CsvParserOptions(true, new[] { ';' });
-    CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
-    CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
-
-    var stringBuilder = new StringBuilder()
-        .AppendLine("FirstName;LastName;BirthDate")
-        .AppendLine("Philipp;Wagner;1986###05###12");
-
-    var result = csvParser
-        .ReadFromString(csvReaderOptions, stringBuilder.ToString())
-        .ToList();
-
-    Assert.AreEqual("Philipp", result[0].Result.FirstName);
-    Assert.AreEqual("Wagner", result[0].Result.LastName);
-
-    Assert.AreEqual(1986, result[0].Result.BirthDate.Year);
-    Assert.AreEqual(5, result[0].Result.BirthDate.Month);
-    Assert.AreEqual(12, result[0].Result.BirthDate.Day);
+    return stopWatch.Elapsed;
 }
 ```
 
-And that's it!
-
-### Getting functional with PLINQ ###
-
-[ParallelQuery]: https://msdn.microsoft.com/en-us/library/system.linq.parallelquery(v=vs.100).aspx
-
-The parser returns a [ParallelQuery], which can be used to perform additional processing on the data. I think LINQ is one of the most amazing things in C#! I was 
-able to parallelize the whole parsing without dealing with locks or threads at all. It's 2015! Know the language you work in and you can make your code better and 
-your life easier.
-
-In the example we are going to parse the data and search for all records with the first name ``Philipp``. See how we don't need to write an if statement at all?
+### TinyCsvParser Code ###
 
 ```csharp
-[Test]
-public void ParallelLinqTest()
+public class LocalWeatherData
 {
-    CsvParserOptions csvParserOptions = new CsvParserOptions(true, new[] { ';' });
-    CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
-    CsvPersonMapping csvMapper = new CsvPersonMapping();
-    CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
+    public string WBAN { get; set; }
+    public DateTime Date { get; set; }
+    public string SkyCondition { get; set; }
+}
 
-    var stringBuilder = new StringBuilder()
-        .AppendLine("FirstName;LastName;BirthDate")
-        .AppendLine("Philipp;Wagner;1986/05/12")
-        .AppendLine("Max;Mustermann;2014/01/01");
+public class LocalWeatherDataMapper : CsvMapping<LocalWeatherData>
+{
+    public LocalWeatherDataMapper()
+    {
+        MapProperty(0, x => x.WBAN);
+        MapProperty(1, x => x.Date).WithCustomConverter(new DateTimeConverter("yyyyMMdd"));
+        MapProperty(4, x => x.SkyCondition);
+    }
+}
 
-    var result = csvParser
-        .ReadFromString(csvReaderOptions, stringBuilder.ToString())
-        .Where(x => x.IsValid)
-        .Where(x => x.Result.FirstName == "Philipp")
-        .ToList();
+[Test]
+public void TinyCsvParserBenchmark()
+{
+    bool[] keepOrder = new bool[] { true, false };
+    int[] degreeOfParallelismList = new[] { 4, 3, 2, 1 };
 
-    Assert.AreEqual(1, result.Count);
+    foreach (var order in keepOrder)
+    {
+        foreach (var degreeOfParallelism in degreeOfParallelismList)
+        {
+            CsvParserOptions csvParserOptions = new CsvParserOptions(true, new[] { ',' }, degreeOfParallelism, order);
+            CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
+            LocalWeatherDataMapper csvMapper = new LocalWeatherDataMapper();
+            CsvParser<LocalWeatherData> csvParser = new CsvParser<LocalWeatherData>(csvParserOptions, csvMapper);
 
-    Assert.AreEqual("Philipp", result[0].Result.FirstName);
-    Assert.AreEqual("Wagner", result[0].Result.LastName);
-
-    Assert.AreEqual(1986, result[0].Result.BirthDate.Year);
-    Assert.AreEqual(5, result[0].Result.BirthDate.Month);
-    Assert.AreEqual(12, result[0].Result.BirthDate.Day);
+            MeasureElapsedTime(string.Format("TinyCsvParser (DegreeOfParallelism = {0}, KeepOrder = {1})", degreeOfParallelism, order),
+                () =>
+                {
+                    var a = csvParser
+                        .ReadFromFile(@"C:\Users\philipp\Downloads\csv\201503hourly.txt", Encoding.ASCII)
+                        .ToList();
+                });
+        }
+    }
 }
 ```
