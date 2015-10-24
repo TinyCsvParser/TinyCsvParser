@@ -100,7 +100,7 @@ namespace TinyCsvParser.Test
 And that's it! The options in this example are set to skip the header, use ``Environment.NewLine`` as line separator 
 and ``;`` as column delimiter.
 
-## Advanced Usage (File Reading, Parallel Processing) ## 
+## Advanced Usage (File Reading, Parallel Processing) ##
 
 ### Dataset ###
 
