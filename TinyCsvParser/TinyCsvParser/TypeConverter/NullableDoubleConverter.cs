@@ -6,39 +6,11 @@ using System.Globalization;
 
 namespace TinyCsvParser.TypeConverter
 {
-    public class NullableDoubleConverter : NullableConverter<Double?>
+    public class NullableDoubleConverter : NullableNumericConverter<Double>
     {
-        private readonly DoubleConverter doubleConverter;
-        private readonly NumberStyles numberStyles;
-
         public NullableDoubleConverter()
-            : this(CultureInfo.InvariantCulture)
+            : base(new DoubleConverter(CultureInfo.InvariantCulture, NumberStyles.None))
         {
-        }
-
-        public NullableDoubleConverter(IFormatProvider formatProvider)
-            : this(formatProvider, NumberStyles.None)
-        {
-        }
-
-        public NullableDoubleConverter(IFormatProvider formatProvider, NumberStyles numberStyles)
-        {
-            doubleConverter = new DoubleConverter(formatProvider, numberStyles);
-        }
-
-        protected override bool InternalConvert(string value, out Double? result)
-        {
-            result = default(Double?);
-            
-            Double innerConverterResult;
-            if (doubleConverter.TryConvert(value, out innerConverterResult))
-            {
-                result = innerConverterResult;
-
-                return true;
-            }
-
-            return false;
         }
     }
 }

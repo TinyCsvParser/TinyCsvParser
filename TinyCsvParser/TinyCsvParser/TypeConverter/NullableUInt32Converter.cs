@@ -6,32 +6,11 @@ using System.Globalization;
 
 namespace TinyCsvParser.TypeConverter
 {
-    public class NullableUInt32Converter : NullableConverter<UInt32?>
+    public class NullableUInt32Converter : NullableNumericConverter<UInt32>
     {
-        private readonly UInt32Converter uint32Converter;
-
         public NullableUInt32Converter()
-            : this(CultureInfo.InvariantCulture)
+            : base(new UInt32Converter(CultureInfo.InvariantCulture, NumberStyles.None))
         {
-        }
-
-        public NullableUInt32Converter(IFormatProvider formatProvider)
-        {
-            uint32Converter = new UInt32Converter(formatProvider);
-        }
-
-        protected override bool InternalConvert(string value, out UInt32? result)
-        {
-            result = default(UInt32?);
-
-            UInt32 innerConverterResult;
-            if (uint32Converter.TryConvert(value, out innerConverterResult))
-            {
-                result = innerConverterResult;
-
-                return true;
-            }
-            return false;
         }
     }
 }
