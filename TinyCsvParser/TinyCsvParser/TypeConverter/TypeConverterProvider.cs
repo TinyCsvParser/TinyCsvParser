@@ -18,21 +18,25 @@ namespace TinyCsvParser.TypeConverter
             Add(new ByteConverter());
             Add(new DateTimeConverter());
             Add(new DecimalConverter());
+            Add(new DoubleConverter());
             Add(new GuidConverter());
             Add(new Int16Converter());
             Add(new Int32Converter());
             Add(new Int64Converter());
             Add(new NullableByteConverter());
+            Add(new NullableDecimalConverter());
+            Add(new NullableDoubleConverter());
             Add(new NullableInt16Converter());
             Add(new NullableInt32Converter());
             Add(new NullableInt64Converter());
             Add(new NullableSByteConverter());
+            Add(new NullableSingleConverter());
             Add(new NullableUInt16Converter());
             Add(new NullableUInt32Converter());
-            Add(new NullableInt64Converter());
+            Add(new NullableUInt64Converter());
             Add(new SByteConverter());
-            Add(new StringConverter());
             Add(new SingleConverter());
+            Add(new StringConverter());
             Add(new TimeSpanConverter());
             Add(new UInt16Converter());
             Add(new UInt32Converter());
@@ -41,6 +45,11 @@ namespace TinyCsvParser.TypeConverter
 
         public ITypeConverterProvider Add<TTargetType>(ITypeConverter<TTargetType> typeConverter)
         {
+            if (typeConverters.ContainsKey(typeConverter.TargetType))
+            {
+                throw new CsvTypeConverterAlreadyRegisteredException(string.Format("Duplicate TypeConverter registration for Type {0}", typeConverter.TargetType));
+            }
+
             typeConverters[typeConverter.TargetType] = typeConverter;
 
             return this;
@@ -53,7 +62,7 @@ namespace TinyCsvParser.TypeConverter
             ITypeConverter typeConverter = null;
             if (!typeConverters.TryGetValue(targetType, out typeConverter))
             {
-                throw new CsvTypeConverterNotRegisteredException(targetType);
+                throw new CsvTypeConverterNotRegisteredException(string.Format("No TypeConverter registered for Type {0}", targetType));
             }
 
             return typeConverter as ITypeConverter<TTargetType>;

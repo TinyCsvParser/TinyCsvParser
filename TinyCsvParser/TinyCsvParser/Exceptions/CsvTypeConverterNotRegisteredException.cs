@@ -2,34 +2,31 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
+using System.Runtime.Serialization;
 
 namespace TinyCsvParser.Exceptions
 {
+    [Serializable]
     public class CsvTypeConverterNotRegisteredException : Exception
     {
-        private readonly Type targetType;
-
-        public CsvTypeConverterNotRegisteredException(Type targetType)
+        public CsvTypeConverterNotRegisteredException()
             : base()
         {
-            this.targetType = targetType;
         }
 
-        public CsvTypeConverterNotRegisteredException(Type targetType, string message)
+        public CsvTypeConverterNotRegisteredException(string message)
             : base(message)
         {
-            this.targetType = targetType;
         }
 
-        public CsvTypeConverterNotRegisteredException(Type targetType, string message, Exception inner)
+        public CsvTypeConverterNotRegisteredException(string message, Exception inner)
             : base(message, inner)
         {
-            this.targetType = targetType;
         }
 
-        public override string ToString()
+        protected CsvTypeConverterNotRegisteredException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
-            return string.Format("CsvTypeConverterNotRegisteredException (TargetType = {0})", targetType);
         }
     }
 }

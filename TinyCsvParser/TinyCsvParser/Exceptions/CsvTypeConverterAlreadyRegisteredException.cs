@@ -7,24 +7,24 @@ using System.Runtime.Serialization;
 namespace TinyCsvParser.Exceptions
 {
     [Serializable]
-    public class CsvTypeConversionException : Exception
+    public class CsvTypeConverterAlreadyRegisteredException : Exception
     {
-        public CsvTypeConversionException()
+        public CsvTypeConverterAlreadyRegisteredException()
             : base()
         {
         }
 
-        public CsvTypeConversionException(string message)
+        public CsvTypeConverterAlreadyRegisteredException(string message)
             : base(message)
         {
         }
 
-        public CsvTypeConversionException(string message, Exception inner)
+        public CsvTypeConverterAlreadyRegisteredException(string message, Exception inner)
             : base(message, inner)
         {
         }
 
-        protected CsvTypeConversionException(SerializationInfo info, StreamingContext context)
+        protected CsvTypeConverterAlreadyRegisteredException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }
