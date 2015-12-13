@@ -17,7 +17,7 @@ namespace TinyCsvParser.TypeConverter
         }
 
         public Int64Converter(IFormatProvider formatProvider)
-            : this(formatProvider, NumberStyles.None)
+            : this(formatProvider, NumberStyles.Integer)
         {
         }
 

@@ -9,7 +9,7 @@ namespace TinyCsvParser.TypeConverter
     public class NullableInt64Converter : NullableNumericConverter<Int64>
     {
         public NullableInt64Converter()
-            : base(new Int64Converter(CultureInfo.InvariantCulture, NumberStyles.None))
+            : base(new Int64Converter())
         {
         }
     }

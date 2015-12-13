@@ -17,7 +17,7 @@ namespace TinyCsvParser.TypeConverter
         }
 
         public DoubleConverter(IFormatProvider formatProvider)
-            : this(formatProvider, NumberStyles.None)
+            : this(formatProvider, NumberStyles.Float | NumberStyles.AllowThousands)
         {
         }
 

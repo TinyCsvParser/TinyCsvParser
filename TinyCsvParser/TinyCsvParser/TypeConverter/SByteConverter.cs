@@ -17,7 +17,7 @@ namespace TinyCsvParser.TypeConverter
         }
 
         public SByteConverter(IFormatProvider formatProvider)
-            : this(formatProvider, NumberStyles.None)
+            : this(formatProvider, NumberStyles.Integer)
         {
         }
 

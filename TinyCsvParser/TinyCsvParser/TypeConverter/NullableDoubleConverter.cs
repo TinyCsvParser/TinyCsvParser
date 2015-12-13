@@ -9,7 +9,7 @@ namespace TinyCsvParser.TypeConverter
     public class NullableDoubleConverter : NullableNumericConverter<Double>
     {
         public NullableDoubleConverter()
-            : base(new DoubleConverter(CultureInfo.InvariantCulture, NumberStyles.None))
+            : base(new DoubleConverter())
         {
         }
     }

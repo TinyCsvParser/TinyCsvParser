@@ -9,7 +9,7 @@ namespace TinyCsvParser.TypeConverter
     public class NullableDecimalConverter : NullableNumericConverter<Decimal>
     {
         public NullableDecimalConverter()
-            : base(new DecimalConverter(CultureInfo.InvariantCulture, NumberStyles.None))
+            : base(new DecimalConverter())
         {
         }
 

@@ -9,7 +9,7 @@ namespace TinyCsvParser.TypeConverter
     public class NullableByteConverter : NullableNumericConverter<byte>
     {
         public NullableByteConverter()
-            : base(new ByteConverter(CultureInfo.InvariantCulture, NumberStyles.None))
+            : base(new ByteConverter())
         {
         }
     }

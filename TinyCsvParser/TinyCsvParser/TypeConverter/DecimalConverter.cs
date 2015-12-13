@@ -17,7 +17,7 @@ namespace TinyCsvParser.TypeConverter
         }
 
         public DecimalConverter(IFormatProvider formatProvider)
-            : this(formatProvider, NumberStyles.None)
+            : this(formatProvider, NumberStyles.Number)
         {
         }
 

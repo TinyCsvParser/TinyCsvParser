@@ -82,6 +82,42 @@ namespace TinyCsvParser.Test
             // Asserts ...
         }
 
+        public class NegativeValueEntity
+        {
+            public int Value { get; set; }
+        }
+
+        private class NegativeValueEntityMapping : CsvMapping<NegativeValueEntity>
+        {
+            public NegativeValueEntityMapping()
+            {
+                MapProperty(0, x => x.Value);
+            }
+        }
+
+        [Test]
+        public void NegativeValueTest()
+        {
+            CsvParserOptions csvParserOptions = new CsvParserOptions(true, new[] { ';' });
+            CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
+            NegativeValueEntityMapping csvMapper = new NegativeValueEntityMapping();
+            CsvParser<NegativeValueEntity> csvParser = new CsvParser<NegativeValueEntity>(csvParserOptions, csvMapper);
+
+            var stringBuilder = new StringBuilder()
+                .AppendLine("Value")
+                .AppendLine("-1");
+
+            var result = csvParser
+                .ReadFromString(csvReaderOptions, stringBuilder.ToString())
+                .ToList();
+
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(-1, result.First().Result.Value);
+            Assert.IsTrue(result.All(x => x.IsValid));
+
+            // Asserts ...
+        }
+
         [Test]
         public void SkipHeaderTest()
         {

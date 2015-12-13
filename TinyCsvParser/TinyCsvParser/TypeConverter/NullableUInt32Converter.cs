@@ -9,7 +9,7 @@ namespace TinyCsvParser.TypeConverter
     public class NullableUInt32Converter : NullableNumericConverter<UInt32>
     {
         public NullableUInt32Converter()
-            : base(new UInt32Converter(CultureInfo.InvariantCulture, NumberStyles.None))
+            : base(new UInt32Converter())
         {
         }
     }
