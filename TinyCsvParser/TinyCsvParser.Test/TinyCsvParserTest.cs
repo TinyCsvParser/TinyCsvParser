@@ -84,7 +84,7 @@ namespace TinyCsvParser.Test
 
         public class NegativeValueEntity
         {
-            public Double Value { get; set; }
+            public int Value { get; set; }
         }
 
         private class NegativeValueEntityMapping : CsvMapping<NegativeValueEntity>
