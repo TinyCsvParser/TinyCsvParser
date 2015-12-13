@@ -84,7 +84,7 @@ namespace TinyCsvParser.Test
 
         public class NegativeValueEntity
         {
-            public int Value { get; set; }
+            public Double Value { get; set; }
         }
 
         private class NegativeValueEntityMapping : CsvMapping<NegativeValueEntity>
@@ -112,8 +112,10 @@ namespace TinyCsvParser.Test
                 .ToList();
 
             Assert.AreEqual(1, result.Count);
-            Assert.AreEqual(-1, result.First().Result.Value);
+            
             Assert.IsTrue(result.All(x => x.IsValid));
+
+            Assert.AreEqual(-1, result.First().Result.Value);
 
             // Asserts ...
         }
