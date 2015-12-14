@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>TinyCsvParser</id>
-        <version>0.6</version>
+        <version>0.7</version>
         <title>TinyCsvParser</title>
         <authors>Philipp Wagner</authors>
         <owners>Philipp Wagner</owners>
