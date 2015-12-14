@@ -60,6 +60,7 @@
     <Compile Include="TypeConverter\NullableDoubleConverter.cs" />
     <Compile Include="TypeConverter\NullableSingleConverter.cs" />
     <Compile Include="TypeConverter\NullableDecimalConverter.cs" />
+    <Compile Include="TypeConverter\NullableTimeSpanConverter.cs" />
     <Compile Include="TypeConverter\TypeConverterProvider.cs" />
     <Compile Include="TypeConverter\BaseConverter.cs" />
     <Compile Include="TypeConverter\NullableByteConverter.cs" />

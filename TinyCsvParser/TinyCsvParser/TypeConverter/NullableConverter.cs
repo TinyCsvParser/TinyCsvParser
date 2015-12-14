@@ -10,7 +10,7 @@ namespace TinyCsvParser.TypeConverter
     {
         public override bool TryConvert(string value, out TTargetType result)
         {
-            if (value == null)
+            if (string.IsNullOrWhiteSpace(value))
             {
                 result = default(TTargetType);
 

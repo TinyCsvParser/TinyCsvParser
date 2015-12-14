@@ -42,8 +42,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TinyCsvParserTest.cs" />
+    <Compile Include="Benchmarks\DegreeOfParallelismTest.cs" />
+    <Compile Include="Benchmarks\LocalWeatherDataBenchmark.cs" />
+    <Compile Include="Benchmarks\MeasurementUtils.cs" />
+    <Compile Include="CsvParser\CustomTypeConverterTest.cs" />
+    <Compile Include="CsvParser\CsvParserTest.cs" />
+    <Compile Include="Integration\BasicExampleTest.cs" />
+    <Compile Include="Integration\ParallelProcessingTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TypeConverter\BaseConverterTest.cs" />
+    <Compile Include="TypeConverter\EnumConverterTest.cs" />
+    <Compile Include="TypeConverter\NullableInt32ConverterTest.cs" />
+    <Compile Include="TypeConverter\Int32ConverterTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
