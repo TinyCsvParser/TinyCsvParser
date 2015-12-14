@@ -31,6 +31,4 @@ namespace TinyCsvParser.Test.TypeConverter
             get { return new[] { "a", string.Empty, "  ", null }; }
         }
     }
-
-
 }
