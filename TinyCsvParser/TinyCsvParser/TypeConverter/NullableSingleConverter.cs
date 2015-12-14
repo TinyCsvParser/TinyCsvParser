@@ -6,7 +6,7 @@ using System.Globalization;
 
 namespace TinyCsvParser.TypeConverter
 {
-    public class NullableSingleConverter : NullableNumericConverter<Single>
+    public class NullableSingleConverter : NullableInnerConverter<Single>
     {
         public NullableSingleConverter()
             : base(new SingleConverter())

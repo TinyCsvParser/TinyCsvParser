@@ -6,7 +6,7 @@ using System.Globalization;
 
 namespace TinyCsvParser.TypeConverter
 {
-    public class NullableTimeSpanConverter : NullableNumericConverter<TimeSpan>
+    public class NullableTimeSpanConverter : NullableInnerConverter<TimeSpan>
     {
         public NullableTimeSpanConverter()
             : base(new TimeSpanConverter())

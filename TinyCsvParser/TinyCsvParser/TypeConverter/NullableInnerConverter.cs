@@ -7,21 +7,21 @@ using TinyCsvParser.Exceptions;
 
 namespace TinyCsvParser.TypeConverter
 {
-    public abstract class NullableNumericConverter<TNumericType> : NullableConverter<TNumericType?>
-        where TNumericType : struct
+    public abstract class NullableInnerConverter<TTargetType> : NullableConverter<TTargetType?>
+        where TTargetType : struct
     {
-        private readonly NonNullableConverter<TNumericType> internalConverter;
+        private readonly NonNullableConverter<TTargetType> internalConverter;
 
-        public NullableNumericConverter(NonNullableConverter<TNumericType> internalConverter)
+        public NullableInnerConverter(NonNullableConverter<TTargetType> internalConverter)
         {
             this.internalConverter = internalConverter;
         }
 
-        protected override bool InternalConvert(string value, out TNumericType? result)
+        protected override bool InternalConvert(string value, out TTargetType? result)
         {
-            result = default(TNumericType?);
+            result = default(TTargetType?);
 
-            TNumericType innerConverterResult;
+            TTargetType innerConverterResult;
 
             if (internalConverter.TryConvert(value, out innerConverterResult))
             {

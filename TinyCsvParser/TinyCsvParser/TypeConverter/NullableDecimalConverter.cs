@@ -6,7 +6,7 @@ using System.Globalization;
 
 namespace TinyCsvParser.TypeConverter
 {
-    public class NullableDecimalConverter : NullableNumericConverter<Decimal>
+    public class NullableDecimalConverter : NullableInnerConverter<Decimal>
     {
         public NullableDecimalConverter()
             : base(new DecimalConverter())
