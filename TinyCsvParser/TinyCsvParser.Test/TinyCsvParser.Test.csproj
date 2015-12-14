@@ -49,6 +49,7 @@
     <Compile Include="CsvParser\CsvParserTest.cs" />
     <Compile Include="Integration\BasicExampleTest.cs" />
     <Compile Include="Integration\ParallelProcessingTest.cs" />
+    <Compile Include="Issues\Issue2_NegativeValueTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TypeConverter\BaseConverterTest.cs" />
     <Compile Include="TypeConverter\BoolConverterTest - Copy.cs" />
