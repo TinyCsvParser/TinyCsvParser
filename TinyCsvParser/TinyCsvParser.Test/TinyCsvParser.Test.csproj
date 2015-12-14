@@ -51,6 +51,7 @@
     <Compile Include="Integration\ParallelProcessingTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TypeConverter\BaseConverterTest.cs" />
+    <Compile Include="TypeConverter\BoolConverterTest - Copy.cs" />
     <Compile Include="TypeConverter\EnumConverterTest.cs" />
     <Compile Include="TypeConverter\BoolConverterTest.cs" />
     <Compile Include="TypeConverter\NullableBoolConverterTest.cs" />
