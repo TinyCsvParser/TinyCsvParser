@@ -15,6 +15,7 @@ namespace TinyCsvParser.TypeConverter
         {
             typeConverters = new Dictionary<Type, ITypeConverter>();
 
+            Add(new BoolConverter());
             Add(new ByteConverter());
             Add(new DateTimeConverter());
             Add(new DecimalConverter());
@@ -23,14 +24,17 @@ namespace TinyCsvParser.TypeConverter
             Add(new Int16Converter());
             Add(new Int32Converter());
             Add(new Int64Converter());
+            Add(new NullableBoolConverter());
             Add(new NullableByteConverter());
             Add(new NullableDecimalConverter());
             Add(new NullableDoubleConverter());
+            Add(new NullableGuidConverter());
             Add(new NullableInt16Converter());
             Add(new NullableInt32Converter());
             Add(new NullableInt64Converter());
             Add(new NullableSByteConverter());
             Add(new NullableSingleConverter());
+            Add(new NullableTimeSpanConverter());
             Add(new NullableUInt16Converter());
             Add(new NullableUInt32Converter());
             Add(new NullableUInt64Converter());
