@@ -30,4 +30,29 @@ namespace TinyCsvParser.Test.TypeConverter
             get { return new[] { "a", string.Empty, "  ", null }; }
         }
     }
+
+    [TestFixture]
+    public class BoolConverterNonDefaultTest : BaseConverterTest<bool>
+    {
+        protected override ITypeConverter<bool> Converter
+        {
+            get { return new BoolConverter("ThisIsTrue", "ThisIsFalse", StringComparison.InvariantCulture); }
+        }
+
+        protected override Tuple<string, bool>[] SuccessTestData
+        {
+            get
+            {
+                return new[] {
+                    MakeTuple("ThisIsTrue", true),
+                    MakeTuple("ThisIsFalse", false),
+                };
+            }
+        }
+
+        protected override string[] FailTestData
+        {
+            get { return new[] { "a", string.Empty, "  ", null, "thisistrue", "thisisfalse" }; }
+        }
+    }
 }
