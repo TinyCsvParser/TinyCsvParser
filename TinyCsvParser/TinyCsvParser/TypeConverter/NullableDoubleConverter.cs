@@ -12,5 +12,15 @@ namespace TinyCsvParser.TypeConverter
             : base(new DoubleConverter())
         {
         }
+        
+        public NullableDoubleConverter(IFormatProvider formatProvider)
+            : base(new DoubleConverter(formatProvider))
+        {
+        }
+
+        public NullableDoubleConverter(IFormatProvider formatProvider, NumberStyles numberStyles)
+            : base(new DoubleConverter(formatProvider, numberStyles))
+        {
+        }
     }
 }

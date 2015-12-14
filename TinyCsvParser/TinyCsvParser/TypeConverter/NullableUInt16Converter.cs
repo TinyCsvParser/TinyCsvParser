@@ -12,5 +12,15 @@ namespace TinyCsvParser.TypeConverter
             : base(new UInt16Converter())
         {
         }
+
+        public NullableUInt16Converter(IFormatProvider formatProvider)
+            : base(new UInt16Converter(formatProvider))
+        {
+        }
+
+        public NullableUInt16Converter(IFormatProvider formatProvider, NumberStyles numberStyles)
+            : base(new UInt16Converter(formatProvider, numberStyles))
+        {
+        }
     }
 }

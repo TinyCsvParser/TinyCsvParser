@@ -13,5 +13,14 @@ namespace TinyCsvParser.TypeConverter
         {
         }
 
+        public NullableDecimalConverter(IFormatProvider formatProvider)
+            : base(new DecimalConverter(formatProvider))
+        {
+        }
+
+        public NullableDecimalConverter(IFormatProvider formatProvider, NumberStyles numberStyles)
+            : base(new DecimalConverter(formatProvider, numberStyles))
+        {
+        }
     }
 }

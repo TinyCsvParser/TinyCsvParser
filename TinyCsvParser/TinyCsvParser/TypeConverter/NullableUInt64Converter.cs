@@ -13,5 +13,15 @@ namespace TinyCsvParser.TypeConverter
 
         {
         }
+
+        public NullableUInt64Converter(IFormatProvider formatProvider)
+            : base(new UInt64Converter(formatProvider))
+        {
+        }
+
+        public NullableUInt64Converter(IFormatProvider formatProvider, NumberStyles numberStyles)
+            : base(new UInt64Converter(formatProvider, numberStyles))
+        {
+        }
     }
 }
