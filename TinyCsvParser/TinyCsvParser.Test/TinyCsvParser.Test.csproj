@@ -53,6 +53,7 @@
     <Compile Include="TypeConverter\BaseConverterTest.cs" />
     <Compile Include="TypeConverter\EnumConverterTest.cs" />
     <Compile Include="TypeConverter\BoolConverterTest.cs" />
+    <Compile Include="TypeConverter\NullableBoolConverterTest.cs" />
     <Compile Include="TypeConverter\NullableInt32ConverterTest.cs" />
     <Compile Include="TypeConverter\Int32ConverterTest.cs" />
   </ItemGroup>
