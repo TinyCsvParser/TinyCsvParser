@@ -22,7 +22,7 @@ I have added a Wiki to the project, which is located at:
 
 ## Basic Usage ##
 
-Imagine we have list of Persons in a CSV file with their first name, last name and birthdate.
+Imagine we have list of Persons in a CSV file ``persons.csv`` with their first name, last name and birthdate.
 
 ```
 Philipp;Wagner;1986/05/12
@@ -67,17 +67,11 @@ namespace TinyCsvParser.Test
         public void TinyCsvTest()
         {
             CsvParserOptions csvParserOptions = new CsvParserOptions(true, new[] { ';' });
-            CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
             CsvPersonMapping csvMapper = new CsvPersonMapping();
             CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
 
-            var stringBuilder = new StringBuilder()
-                .AppendLine("FirstName;LastName;BirthDate")
-                .AppendLine("Philipp;Wagner;1986/05/12")
-                .AppendLine("Max;Mustermann;2014/01/01");
-
             var result = csvParser
-                .ReadFromString(csvReaderOptions, stringBuilder.ToString())
+                .ReadFromFile(@"persons.csv", Encoding.ASCII)
                 .ToList();
 
             Assert.AreEqual(2, result.Count);
@@ -89,9 +83,6 @@ namespace TinyCsvParser.Test
     }
 }
 ```
-   
-And that's it! The options in this example are set to skip the header, use ``Environment.NewLine`` as line separator 
-and ``;`` as column delimiter.
 
 ## Advanced Usage (File Reading, Parallel Processing) ##
 
