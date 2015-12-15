@@ -20,9 +20,6 @@ I have added a Wiki to the project, which is located at:
 
 * [https://github.com/bytefish/TinyCsvParser/wiki](https://github.com/bytefish/TinyCsvParser/wiki)
 
-The documentation has examples for parsing data from files, parsing data from strings, parsing values with 
-a custom format and parsing enums.
-
 ## Basic Usage ##
 
 Imagine we have list of Persons in a CSV file with their first name, last name and birthdate.
