@@ -1,4 +1,4 @@
-# TinyCsvParser [![NuGet Version](http://img.shields.io/nuget/v/Nancy.svg?style=flat)](https://www.nuget.org/packages/TinyCsvParser/) [![NuGet Downloads](http://img.shields.io/nuget/dt/Nancy.svg?style=flat)](https://www.nuget.org/packages/TinyCsvParser/) #
+# TinyCsvParser [![NuGet Version](http://img.shields.io/nuget/v/TinyCsvParser.svg?style=flat)](https://www.nuget.org/packages/TinyCsvParser/) [![NuGet Downloads](http://img.shields.io/nuget/dt/TinyCsvParser.svg?style=flat)](https://www.nuget.org/packages/TinyCsvParser/) #
 
 [TinyCsvParser]: https://github.com/bytefish/TinyCsvParser
 [MIT License]: https://opensource.org/licenses/MIT
