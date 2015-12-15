@@ -30,8 +30,8 @@ namespace TinyCsvParser
 
         public override string ToString()
         {
-            return string.Format("CsvParserOptions (FieldsSeparator = ({0}), SkipHeader = {1})",
-                string.Join(", ", FieldsSeparator), SkipHeader);
+            return string.Format("CsvParserOptions (FieldsSeparator = ({0}), SkipHeader = {1}, DegreeOfParallelism = {2}, KeepOrder = {3})",
+                string.Join(", ", FieldsSeparator), SkipHeader, DegreeOfParallelism, KeepOrder);
         }
     }
 }
