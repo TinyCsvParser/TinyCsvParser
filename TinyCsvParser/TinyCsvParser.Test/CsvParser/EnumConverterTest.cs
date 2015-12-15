@@ -20,6 +20,8 @@ namespace TinyCsvParser.Test.CsvParser
         private class Vehicle
         {
             public VehicleTypeEnum VehicleType { get; set; }
+
+            public string Name { get; set; }
         }
 
         private class CsvVehicleMapping : CsvMapping<Vehicle>
@@ -27,27 +29,32 @@ namespace TinyCsvParser.Test.CsvParser
             public CsvVehicleMapping()
             {
                 MapProperty(0, x => x.VehicleType, new EnumConverter<VehicleTypeEnum>(true));
+                MapProperty(1, x => x.Name);
             }
         }
 
         [Test]
         public void CustomEnumConverterTest()
         {
-            CsvParserOptions csvParserOptions = new CsvParserOptions(false, new[] { ';' });
+            CsvParserOptions csvParserOptions = new CsvParserOptions(true, new[] { ';' });
             CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
             CsvVehicleMapping csvMapper = new CsvVehicleMapping();
             CsvParser<Vehicle> csvParser = new CsvParser<Vehicle>(csvParserOptions, csvMapper);
 
             var stringBuilder = new StringBuilder()
-                .AppendLine("Car")
-                .AppendLine("Bike");
+                .AppendLine("VehicleType;Name")
+                .AppendLine("Car;Suzuki Swift")
+                .AppendLine("Bike;A Bike");
 
             var result = csvParser
                 .ReadFromString(csvReaderOptions, stringBuilder.ToString())
                 .ToList();
 
             Assert.AreEqual(VehicleTypeEnum.Car, result[0].Result.VehicleType);
+            Assert.AreEqual("Suzuki Swift", result[0].Result.Name);
+
             Assert.AreEqual(VehicleTypeEnum.Bike, result[1].Result.VehicleType);
+            Assert.AreEqual("A Bike", result[1].Result.Name);
         }
     }
 }

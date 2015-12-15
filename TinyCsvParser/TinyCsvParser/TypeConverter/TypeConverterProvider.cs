@@ -47,7 +47,7 @@ namespace TinyCsvParser.TypeConverter
             Add(new UInt64Converter());
         }
 
-        public ITypeConverterProvider Add<TTargetType>(ITypeConverter<TTargetType> typeConverter)
+        public TypeConverterProvider Add<TTargetType>(ITypeConverter<TTargetType> typeConverter)
         {
             if (typeConverters.ContainsKey(typeConverter.TargetType))
             {
@@ -59,7 +59,7 @@ namespace TinyCsvParser.TypeConverter
             return this;
         }
 
-        public ITypeConverterProvider Override<TTargetType>(ITypeConverter<TTargetType> typeConverter)
+        public TypeConverterProvider Override<TTargetType>(ITypeConverter<TTargetType> typeConverter)
         {
             typeConverters[typeConverter.TargetType] = typeConverter;
 
