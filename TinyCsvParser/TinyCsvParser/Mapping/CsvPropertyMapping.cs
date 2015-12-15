@@ -14,9 +14,9 @@ namespace TinyCsvParser.Mapping
         private ITypeConverter<TProperty> propertyConverter;
         private Action<TEntity, TProperty> propertySetter;
 
-        public CsvPropertyMapping(Expression<Func<TEntity, TProperty>> property, ITypeConverterProvider typeConverterProvider) 
+        public CsvPropertyMapping(Expression<Func<TEntity, TProperty>> property, ITypeConverter<TProperty> typeConverter) 
         {
-            propertyConverter = typeConverterProvider.Resolve<TProperty>();
+            propertyConverter = typeConverter;
             propertySetter = ReflectionUtils.CreateSetter<TEntity, TProperty>(property);
         }
 

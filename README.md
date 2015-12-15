@@ -1,13 +1,101 @@
-# TinyCsvParser [![NuGet Version](http://img.shields.io/nuget/v/TinyCsvParser.svg?style=flat)](https://www.nuget.org/packages/TinyCsvParser/) [![NuGet Downloads](http://img.shields.io/nuget/dt/TinyCsvParser.svg?style=flat)](https://www.nuget.org/packages/TinyCsvParser/) #
+# Meet TinyCsvParser [![NuGet Version](http://img.shields.io/nuget/v/Nancy.svg?style=flat)](https://www.nuget.org/packages/TinyCsvParser/) [![NuGet Downloads](http://img.shields.io/nuget/dt/Nancy.svg?style=flat)](https://www.nuget.org/packages/TinyCsvParser/) #
 
 [TinyCsvParser]: https://github.com/bytefish/TinyCsvParser
 [MIT License]: https://opensource.org/licenses/MIT
 
-[TinyCsvParser] is an easy to use and high-performing library for CSV parsing in C#.
+This guide is intended as an introductory overview of [TinyCsvParser] and explains how to make use of 
+the most important features. For detailed reference documentation of the functions and classes contained 
+in the library, see the [TinyCsvParser wiki].
 
-I have released it under terms of the [MIT License]:
+## Introduction ##
 
-* [https://github.com/bytefish/TinyCsvParser](https://github.com/bytefish/TinyCsvParser)
+[TinyCsvParser] is an easy to use, easy to extend and high-performance library for CSV parsing in .NET. 
+
+### What is TinyCsvParser ###
+
+
+
+## Documentation ##
+
+The library comes with an extensive documentation, which is available at:
+
+* []()
+
+If you need access to the source code of the wiki, you can clone it with:
+
+```
+git clone https://github.com/bytefish/TinyCsvParser.wiki.git
+```
+
+## Example ##
+
+Imagine you have a CSV file with Persons:
+
+```
+Philipp;Wagner;1986/05/12
+Max;Musterman;2014/01/02
+```
+
+The corresponding domain model in the application might look like this.
+
+```csharp
+private class Person
+{
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public DateTime BirthDate { get; set; }
+}
+```
+
+When using [TinyCsvParser] you have to define the mapping between the columns in the CSV data and the property in you domain model.
+
+```csharp
+private class CsvPersonMapping : CsvMapping<Person>
+{
+    public CsvPersonMapping()
+        : base()
+    {
+        MapProperty(0, x => x.FirstName);
+        MapProperty(1, x => x.LastName);
+        MapProperty(2, x => x.BirthDate);
+    }
+}
+```
+
+And then we can use the mapping to parse the CSV data with a ``CsvParser``.
+
+```csharp
+namespace TinyCsvParser.Test
+{
+    [TestFixture]
+    public class TinyCsvParserTest
+    {
+        [Test]
+        public void TinyCsvTest()
+        {
+            CsvParserOptions csvParserOptions = new CsvParserOptions(true, new[] { ';' });
+            CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
+            CsvPersonMapping csvMapper = new CsvPersonMapping();
+            CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
+
+            var stringBuilder = new StringBuilder()
+                .AppendLine("FirstName;LastName;BirthDate")
+                .AppendLine("Philipp;Wagner;1986/05/12")
+                .AppendLine("Max;Mustermann;2014/01/01");
+
+            var result = csvParser
+                .ReadFromString(csvReaderOptions, stringBuilder.ToString())
+                .ToList();
+
+            Assert.AreEqual(2, result.Count);
+
+            Assert.IsTrue(result.All(x => x.IsValid));
+
+            // Asserts ...
+        }
+    }
+}
+```
 
 ## Installing TinyCsvParser ##
 
@@ -17,6 +105,22 @@ in the [Package Manager Console](http://docs.nuget.org/consume/package-manager-c
 ```
 PM> Install-Package TinyCsvParser
 ```
+
+
+## Help out ##
+
+* Documentation (code and features)
+* Bug reports
+* Bug fixes
+* Feature requests and implementations
+* Test
+* Code quality
+* Samples
+
+## License ##
+
+TinyCsvParser is released under terms of the [MIT License]. Please see the LICENSE file in the root 
+folder of this repository for more information.
 
 ## Blog Posts ##
 

@@ -48,8 +48,29 @@ namespace TinyCsvParser.Mapping
                 throw new InvalidOperationException(string.Format("Duplicate mapping for column index {0}"));
             }
 
-            var propertyMapping = new CsvPropertyMapping<TEntity, TProperty>(property, typeConverterProvider);
+            var propertyMapping = new CsvPropertyMapping<TEntity, TProperty>(property, typeConverterProvider.Resolve<TProperty>());
 
+            AddPropertyMapping(columnIndex, propertyMapping);
+
+            return propertyMapping;
+        }
+
+        protected CsvPropertyMapping<TEntity, TProperty> MapProperty<TProperty>(int columnIndex, Expression<Func<TEntity, TProperty>> property, ITypeConverter<TProperty> typeConverter)
+        {
+            if (csvPropertyMappings.Any(x => x.ColumnIndex == columnIndex))
+            {
+                throw new InvalidOperationException(string.Format("Duplicate mapping for column index {0}"));
+            }
+
+            var propertyMapping = new CsvPropertyMapping<TEntity, TProperty>(property, typeConverter);
+
+           AddPropertyMapping(columnIndex, propertyMapping);
+
+            return propertyMapping;
+        }
+
+        private void AddPropertyMapping<TProperty>(int columnIndex, CsvPropertyMapping<TEntity, TProperty> propertyMapping)
+        {
             var indexToPropertyMapping = new IndexToPropertyMapping
             {
                 ColumnIndex = columnIndex,
@@ -57,8 +78,6 @@ namespace TinyCsvParser.Mapping
             };
 
             csvPropertyMappings.Add(indexToPropertyMapping);
-
-            return propertyMapping;
         }
 
         public CsvMappingResult<TEntity> Map(string[] values)

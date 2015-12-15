@@ -45,6 +45,7 @@
     <Compile Include="Benchmarks\DegreeOfParallelismTest.cs" />
     <Compile Include="Benchmarks\LocalWeatherDataBenchmark.cs" />
     <Compile Include="Benchmarks\MeasurementUtils.cs" />
+    <Compile Include="CsvParser\EnumConverterTest.cs" />
     <Compile Include="CsvParser\CustomTypeConverterTest.cs" />
     <Compile Include="CsvParser\CsvParserTest.cs" />
     <Compile Include="Integration\BasicExampleTest.cs" />
