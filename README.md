@@ -3,11 +3,7 @@
 [TinyCsvParser]: https://github.com/bytefish/TinyCsvParser
 [MIT License]: https://opensource.org/licenses/MIT
 
-[TinyCsvParser] is an easy to use and high-performing library for CSV parsing in C#.
-
-I have released it under terms of the [MIT License]:
-
-* [https://github.com/bytefish/TinyCsvParser](https://github.com/bytefish/TinyCsvParser)
+[TinyCsvParser] is an easy to use and high-performance library for CSV parsing with .NET.
 
 ## Installing TinyCsvParser ##
 
@@ -26,15 +22,6 @@ I have added a Wiki to the project, which is located at:
 
 The documentation has examples for parsing data from files, parsing data from strings, parsing values with 
 a custom format and parsing enums.
-
-## Blog Posts ##
-
-There are several blog posts on using [TinyCsvParser]:
-
-* [TinyCsvParser - Parsing CSV Data with C#](http://bytefish.de/blog/tinycsvparser/)
-* [Using TinyCsvParser and FluentValidation](http://bytefish.de/blog/fluent_validation/)
-* [Benchmarking TinyCsvParser](http://bytefish.de/blog/tinycsvparser_benchmark/)
-* [PostgreSQL and TinyCsvParser](http://bytefish.de/blog/tinycsvparser_postgresql/)
 
 ## Basic Usage ##
 
@@ -225,3 +212,18 @@ public void TinyCsvParserBenchmark()
     }
 }
 ```
+
+## Blog Posts ##
+
+There are several blog posts on using [TinyCsvParser]:
+
+* [TinyCsvParser - Parsing CSV Data with C#](http://bytefish.de/blog/tinycsvparser/)
+* [Using TinyCsvParser and FluentValidation](http://bytefish.de/blog/fluent_validation/)
+* [Benchmarking TinyCsvParser](http://bytefish.de/blog/tinycsvparser_benchmark/)
+* [PostgreSQL and TinyCsvParser](http://bytefish.de/blog/tinycsvparser_postgresql/)
+
+## License ##
+
+I have released it under terms of the [MIT License]:
+
+* [https://github.com/bytefish/TinyCsvParser](https://github.com/bytefish/TinyCsvParser)
