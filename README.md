@@ -18,6 +18,12 @@ in the [Package Manager Console](http://docs.nuget.org/consume/package-manager-c
 PM> Install-Package TinyCsvParser
 ```
 
+## Documentation ##
+
+I have added a Wiki to the project, which is located at:
+
+* [https://github.com/bytefish/TinyCsvParser/wiki](https://github.com/bytefish/TinyCsvParser/wiki)
+
 ## Blog Posts ##
 
 There are several blog posts on using [TinyCsvParser]:

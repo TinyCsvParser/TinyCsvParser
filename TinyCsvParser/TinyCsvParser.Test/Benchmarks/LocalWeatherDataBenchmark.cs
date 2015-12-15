@@ -56,7 +56,6 @@ namespace TinyCsvParser.Test.Benchmarks
                 foreach (var degreeOfParallelism in degreeOfParallelismList)
                 {
                     CsvParserOptions csvParserOptions = new CsvParserOptions(true, new[] { ',' }, degreeOfParallelism, order);
-                    CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
                     LocalWeatherDataMapper csvMapper = new LocalWeatherDataMapper();
                     CsvParser<LocalWeatherData> csvParser = new CsvParser<LocalWeatherData>(csvParserOptions, csvMapper);
 
