@@ -65,5 +65,12 @@ namespace TinyCsvParser.Reflection
 
             return lambda.Compile();
         }
+
+        public static string GetPropertyNameFromExpression<TEntity, TProperty>(Expression<Func<TEntity, TProperty>> expression)
+        {
+            var member = GetMemberExpression(expression).Member;
+
+            return member.Name;
+        }
     }
 }

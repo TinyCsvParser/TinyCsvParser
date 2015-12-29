@@ -10,8 +10,8 @@ namespace TinyCsvParser.TypeConverter
         private readonly string format;
 
         public GuidConverter()
+            : this(string.Empty)
         {
-            this.format = string.Empty;
         }
 
         public GuidConverter(string format)

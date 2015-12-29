@@ -44,11 +44,18 @@ namespace TinyCsvParser.Test.TypeConverter
         }
 
         [Test]
-        public void ResolveTypeRegistrationTest()
+        public void ResolveTypeConverter_Registered_Test()
         {
             var typeRegistration = provider.Resolve<Int16>();
             
             Assert.AreEqual(typeof(Int16Converter), typeRegistration.GetType());
         }
+
+        [Test]
+        public void ResolveTypeConverter_NotRegistered_Test()
+        {
+            Assert.Throws<CsvTypeConverterNotRegisteredException>(() => provider.Resolve<SomeEnum>());
+        }
+
     }
 }

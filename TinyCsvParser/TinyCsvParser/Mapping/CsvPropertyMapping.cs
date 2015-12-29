@@ -11,12 +11,14 @@ namespace TinyCsvParser.Mapping
     public class CsvPropertyMapping<TEntity, TProperty> : ICsvPropertyMapping<TEntity>
         where TEntity : class, new()
     {
+        private string propertyName;
         private ITypeConverter<TProperty> propertyConverter;
         private Action<TEntity, TProperty> propertySetter;
 
         public CsvPropertyMapping(Expression<Func<TEntity, TProperty>> property, ITypeConverter<TProperty> typeConverter) 
         {
             propertyConverter = typeConverter;
+            propertyName = ReflectionUtils.GetPropertyNameFromExpression(property);
             propertySetter = ReflectionUtils.CreateSetter<TEntity, TProperty>(property);
         }
 
@@ -37,6 +39,11 @@ namespace TinyCsvParser.Mapping
         public void WithCustomConverter(ITypeConverter<TProperty> typeConverter)
         {
             propertyConverter = typeConverter;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("CsvPropertyMapping (PropertyName = {0}, Converter = {1})", propertyName, propertyConverter);
         }
     }
 }

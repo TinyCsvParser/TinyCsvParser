@@ -29,6 +29,34 @@ namespace TinyCsvParser.Test.CsvParser
         }
 
         [Test]
+        public void NullInputTest()
+        {
+            CsvParserOptions csvParserOptions = new CsvParserOptions(true, new[] { ';' });
+            CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
+            CsvPersonMapping csvMapper = new CsvPersonMapping();
+            CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
+
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                var result = csvParser.Parse(null);
+            });
+        }
+
+        [Test]
+        public void ToStringTest()
+        {
+            CsvParserOptions csvParserOptions = new CsvParserOptions(true, new[] { ';' });
+            CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
+            CsvPersonMapping csvMapper = new CsvPersonMapping();
+            CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
+
+            // Make sure the ToString() doesn't throw... 
+            Assert.DoesNotThrow(() => csvParser.ToString());
+
+            // TODO Check ToString Output
+        }
+
+        [Test]
         public void SkipHeaderTest()
         {
             CsvParserOptions csvParserOptions = new CsvParserOptions(true, new[] { ';' });
