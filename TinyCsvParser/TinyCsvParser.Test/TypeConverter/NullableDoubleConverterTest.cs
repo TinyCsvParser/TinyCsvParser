@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System;
+using System.Globalization;
 using TinyCsvParser.TypeConverter;
 
 namespace TinyCsvParser.Test.TypeConverter
@@ -45,6 +46,24 @@ namespace TinyCsvParser.Test.TypeConverter
         protected override string[] FailTestData
         {
             get { return new[] { "a", }; }
+        }
+    }
+
+    [TestFixture]
+    public class NullableDoubleConverterWithFormatProviderTest : NullableDoubleConverterTest
+    {
+        protected override ITypeConverter<Double?> Converter
+        {
+            get { return new NullableDoubleConverter(CultureInfo.InvariantCulture); }
+        }
+    }
+
+    [TestFixture]
+    public class NullableDoubleConverterWithFormatProviderAndNumberStyleTest : NullableDoubleConverterTest
+    {
+        protected override ITypeConverter<Double?> Converter
+        {
+            get { return new NullableDoubleConverter(CultureInfo.InvariantCulture, NumberStyles.Float | NumberStyles.AllowThousands); }
         }
     }
 }

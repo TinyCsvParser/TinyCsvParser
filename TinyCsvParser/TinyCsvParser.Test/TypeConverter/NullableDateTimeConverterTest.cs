@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System;
+using System.Globalization;
 using TinyCsvParser.TypeConverter;
 
 namespace TinyCsvParser.Test.TypeConverter
@@ -31,4 +32,32 @@ namespace TinyCsvParser.Test.TypeConverter
             get { return new[] { "a", "10000/01/01", "1753/01/32", "0/0/0" }; }
         }
     }
+
+    [TestFixture]
+    public class NullableDateTimeConverterWithFormatTest : NullableDateTimeConverterTest
+    {
+        protected override ITypeConverter<DateTime?> Converter
+        {
+            get { return new NullableDateTimeConverter(string.Empty); }
+        }
+    }
+
+    [TestFixture]
+    public class NullableDateTimeConverterWithFormatAndCultureInfoTest : NullableDateTimeConverterTest
+    {
+        protected override ITypeConverter<DateTime?> Converter
+        {
+            get { return new NullableDateTimeConverter(string.Empty, CultureInfo.InvariantCulture); }
+        }
+    }
+
+    [TestFixture]
+    public class NullableDateTimeConverterWithFormatAndCultureInfoAndDateTimeStylesTest : NullableDateTimeConverterTest
+    {
+        protected override ITypeConverter<DateTime?> Converter
+        {
+            get { return new NullableDateTimeConverter(string.Empty, CultureInfo.InvariantCulture, DateTimeStyles.None); }
+        }
+    }
+
 }

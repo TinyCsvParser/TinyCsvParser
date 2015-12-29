@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System;
+using System.Globalization;
 using TinyCsvParser.TypeConverter;
 
 namespace TinyCsvParser.Test.TypeConverter
@@ -47,4 +48,23 @@ namespace TinyCsvParser.Test.TypeConverter
             get { return new[] { "a", Double.MinValue.ToString(), Double.MaxValue.ToString() }; }
         }
     }
+
+    [TestFixture]
+    public class NullableSingleConverterWithFormatProviderTest : NullableSingleConverterTest
+    {
+        protected override ITypeConverter<Single?> Converter
+        {
+            get { return new NullableSingleConverter(CultureInfo.InvariantCulture); }
+        }
+    }
+
+    [TestFixture]
+    public class NullableSingleConverterWithFormatProviderAndNumberStyleTest : NullableSingleConverterTest
+    {
+        protected override ITypeConverter<Single?> Converter
+        {
+            get { return new NullableSingleConverter(CultureInfo.InvariantCulture, NumberStyles.Float | NumberStyles.AllowThousands); }
+        }
+    }
+
 }
