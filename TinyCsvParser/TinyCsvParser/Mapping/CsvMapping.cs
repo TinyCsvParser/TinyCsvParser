@@ -43,23 +43,14 @@ namespace TinyCsvParser.Mapping
 
         protected CsvPropertyMapping<TEntity, TProperty> MapProperty<TProperty>(int columnIndex, Expression<Func<TEntity, TProperty>> property)
         {
-            if (csvPropertyMappings.Any(x => x.ColumnIndex == columnIndex))
-            {
-                throw new InvalidOperationException(string.Format("Duplicate mapping for column index {0}", columnIndex));
-            }
-
-            var propertyMapping = new CsvPropertyMapping<TEntity, TProperty>(property, typeConverterProvider.Resolve<TProperty>());
-
-            AddPropertyMapping(columnIndex, propertyMapping);
-
-            return propertyMapping;
+            return MapProperty(columnIndex, property, typeConverterProvider.Resolve<TProperty>());
         }
 
         protected CsvPropertyMapping<TEntity, TProperty> MapProperty<TProperty>(int columnIndex, Expression<Func<TEntity, TProperty>> property, ITypeConverter<TProperty> typeConverter)
         {
             if (csvPropertyMappings.Any(x => x.ColumnIndex == columnIndex))
             {
-                throw new InvalidOperationException(string.Format("Duplicate mapping for column index {0}"));
+                throw new InvalidOperationException(string.Format("Duplicate mapping for column index {0}", columnIndex));
             }
 
             var propertyMapping = new CsvPropertyMapping<TEntity, TProperty>(property, typeConverter);
