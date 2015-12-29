@@ -55,6 +55,7 @@
     <Compile Include="TypeConverter\BaseConverterTest.cs" />
     <Compile Include="TypeConverter\DecimalConverterTest.cs" />
     <Compile Include="TypeConverter\ByteConverterTest.cs" />
+    <Compile Include="TypeConverter\DateTimeConverterTest.cs" />
     <Compile Include="TypeConverter\SByteConverterTest.cs" />
     <Compile Include="TypeConverter\NullableDoubleConverterTest.cs" />
     <Compile Include="TypeConverter\GuidConverterTest.cs" />
