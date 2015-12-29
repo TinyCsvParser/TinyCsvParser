@@ -83,7 +83,14 @@ namespace TinyCsvParser.Mapping
 
                 if (columnIndex >= values.Length)
                 {
-                    throw new ArgumentOutOfRangeException(string.Format("No column with index {0} exists", columnIndex));
+                    return new CsvMappingResult<TEntity>()
+                    {
+                        Error = new CsvMappingError()
+                        {
+                            ColumnIndex = columnIndex,
+                            Value = string.Format("Column {0} Out Of Range", columnIndex)
+                        }
+                    };
                 }
 
                 var value = values[columnIndex];
