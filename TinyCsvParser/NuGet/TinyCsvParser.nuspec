@@ -10,8 +10,8 @@
         <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
         <projectUrl>https://github.com/bytefish/TinyCsvParser</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>A clean, easy to use and high-performing library for CSV parsing.</description>
-		<summary>A clean, easy to use and high-performing library for CSV parsing.</summary>
+        <description>An easy to use and high-performance library for CSV parsing.</description>
+		<summary>An easy to use and high-performance library for CSV parsing.</summary>
         <copyright>Copyright © 2015 Philipp Wagner</copyright>
         <tags>csv parser</tags>
     </metadata>
