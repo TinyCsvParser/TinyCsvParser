@@ -53,6 +53,9 @@
     <Compile Include="Issues\Issue2_NegativeValueTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TypeConverter\BaseConverterTest.cs" />
+    <Compile Include="TypeConverter\DecimalConverterTest.cs" />
+    <Compile Include="TypeConverter\ByteConverterTest.cs" />
+    <Compile Include="TypeConverter\SByteConverterTest.cs" />
     <Compile Include="TypeConverter\NullableDoubleConverterTest.cs" />
     <Compile Include="TypeConverter\GuidConverterTest.cs" />
     <Compile Include="TypeConverter\EnumConverterTest.cs" />
@@ -62,8 +65,10 @@
     <Compile Include="TypeConverter\NullableSingleConverterTest.cs" />
     <Compile Include="TypeConverter\SingleConverterTest.cs" />
     <Compile Include="TypeConverter\NullableUInt16ConverterTest.cs" />
+    <Compile Include="TypeConverter\UInt32ConverterTest.cs" />
     <Compile Include="TypeConverter\UInt16ConverterTest.cs" />
     <Compile Include="TypeConverter\NullableUInt64ConverterTest.cs" />
+    <Compile Include="TypeConverter\TimeSpanConverterTest.cs" />
     <Compile Include="TypeConverter\UInt64ConverterTest.cs" />
     <Compile Include="TypeConverter\Int64ConverterTest.cs" />
     <Compile Include="TypeConverter\NullableBoolConverterTest.cs" />
