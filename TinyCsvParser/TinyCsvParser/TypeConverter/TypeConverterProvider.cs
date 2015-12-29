@@ -26,6 +26,7 @@ namespace TinyCsvParser.TypeConverter
             Add(new Int64Converter());
             Add(new NullableBoolConverter());
             Add(new NullableByteConverter());
+            Add(new NullableDateTimeConverter());
             Add(new NullableDecimalConverter());
             Add(new NullableDoubleConverter());
             Add(new NullableGuidConverter());
