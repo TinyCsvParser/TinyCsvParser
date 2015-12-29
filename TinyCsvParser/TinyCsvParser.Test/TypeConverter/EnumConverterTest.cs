@@ -58,4 +58,18 @@ namespace TinyCsvParser.Test.TypeConverter
             get { return new[] { "B", " ", string.Empty, null }; }
         }
     }
+
+    [TestFixture]
+    public class EnumConverterGeneralTest
+    {
+        private struct NoEnum 
+        {
+        }
+
+        [Test]
+        public void CouldNotInstantiateNonEnumTest()
+        {
+            Assert.Throws<ArgumentException>(() => new EnumConverter<NoEnum>());
+        }
+    }
 }
