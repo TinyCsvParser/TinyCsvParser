@@ -21,7 +21,11 @@ namespace TinyCsvParser.TypeConverter
         public NullableTimeSpanConverter(string format, IFormatProvider formatProvider)
             : base(new TimeSpanConverter(format, formatProvider, TimeSpanStyles.None))
         {
+        }
 
+        public NullableTimeSpanConverter(string format, IFormatProvider formatProvider, TimeSpanStyles timeSpanStyles)
+            : base(new TimeSpanConverter(format, formatProvider, timeSpanStyles))
+        {
         }
     }
 }

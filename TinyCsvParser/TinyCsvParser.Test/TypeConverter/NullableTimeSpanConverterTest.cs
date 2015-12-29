@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System;
+using System.Globalization;
 using TinyCsvParser.TypeConverter;
 
 namespace TinyCsvParser.Test.TypeConverter
@@ -32,4 +33,32 @@ namespace TinyCsvParser.Test.TypeConverter
             get { return new[] { "a" }; }
         }
     }
+
+    [TestFixture]
+    public class NullableTimeSpanConverterWithFormatProviderTest : NullableTimeSpanConverterTest
+    {
+        protected override ITypeConverter<TimeSpan?> Converter
+        {
+            get { return new NullableTimeSpanConverter(string.Empty); }
+        }
+    }
+
+    [TestFixture]
+    public class NullableTimeSpanConverterWithFormatAndFormatProviderTest : NullableTimeSpanConverterTest
+    {
+        protected override ITypeConverter<TimeSpan?> Converter
+        {
+            get { return new NullableTimeSpanConverter(string.Empty, CultureInfo.InvariantCulture); }
+        }
+    }
+
+    [TestFixture]
+    public class NullableTimeSpanConverterWithFormatAndFormatProviderAndTimeSpanStyleTest : NullableTimeSpanConverterTest
+    {
+        protected override ITypeConverter<TimeSpan?> Converter
+        {
+            get { return new NullableTimeSpanConverter(string.Empty, CultureInfo.InvariantCulture, TimeSpanStyles.None); }
+        }
+    }
+
 }

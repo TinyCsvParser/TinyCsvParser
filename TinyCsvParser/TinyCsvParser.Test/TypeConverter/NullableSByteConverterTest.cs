@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System;
+using System.Globalization;
 using TinyCsvParser.TypeConverter;
 
 namespace TinyCsvParser.Test.TypeConverter
@@ -32,6 +33,24 @@ namespace TinyCsvParser.Test.TypeConverter
         protected override string[] FailTestData
         {
             get { return new[] { "a", "-129", "128" }; }
+        }
+    }
+
+    [TestFixture]
+    public class NullableSByteConverterWithFormatProviderTest : NullableSByteConverterTest
+    {
+        protected override ITypeConverter<SByte?> Converter
+        {
+            get { return new NullableSByteConverter(CultureInfo.InvariantCulture); }
+        }
+    }
+
+    [TestFixture]
+    public class NullableSByteConverterWithFormatProviderAndNumberStylesTest : NullableSByteConverterTest
+    {
+        protected override ITypeConverter<SByte?> Converter
+        {
+            get { return new NullableSByteConverter(CultureInfo.InvariantCulture, NumberStyles.Integer); }
         }
     }
 }

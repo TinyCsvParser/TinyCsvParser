@@ -30,4 +30,14 @@ namespace TinyCsvParser.Test.TypeConverter
             get { return new[] { "a" }; }
         }
     }
+
+    [TestFixture]
+    public class NullableBoolConverterWithFormatConstructorTest : NullableBoolConverterTest
+    {
+        protected override ITypeConverter<bool?> Converter
+        {
+            get { return new NullableBoolConverter("true", "false", StringComparison.InvariantCulture); }
+        }
+        
+    }
 }

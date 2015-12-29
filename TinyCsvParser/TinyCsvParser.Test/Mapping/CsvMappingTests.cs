@@ -70,6 +70,8 @@ namespace TinyCsvParser.Test.Issues
 
             Assert.AreEqual(string.Empty, result.Error.Value);
             Assert.AreEqual(0, result.Error.ColumnIndex);
+
+            Assert.DoesNotThrow(() => result.ToString());
         }
 
         [Test]
@@ -81,6 +83,8 @@ namespace TinyCsvParser.Test.Issues
 
             Assert.IsTrue(result.IsValid);
             Assert.AreEqual(1, result.Result.PropertyInt);
+
+            Assert.DoesNotThrow(() => result.ToString());
         }
     }
 }
