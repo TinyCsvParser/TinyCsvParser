@@ -51,6 +51,7 @@
     <Compile Include="Integration\BasicExampleTest.cs" />
     <Compile Include="Integration\ParallelProcessingTest.cs" />
     <Compile Include="Issues\Issue2_NegativeValueTest.cs" />
+    <Compile Include="Mapping\Issue2_NegativeValueTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TypeConverter\TypeConverterProviderTests.cs" />
     <Compile Include="TypeConverter\BaseConverterTest.cs" />
