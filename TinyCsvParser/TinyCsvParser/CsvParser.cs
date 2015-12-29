@@ -44,8 +44,6 @@ namespace TinyCsvParser
                 .Select(fields => mapping.Map(fields));
         }
 
-
-
         public override string ToString()
         {
             return string.Format("CsvParser (Options = {0}, Mapping = {1})", options, mapping);
