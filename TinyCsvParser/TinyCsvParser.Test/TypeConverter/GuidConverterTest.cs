@@ -1,4 +1,7 @@
-﻿using NUnit.Framework;
+﻿// Copyright (c) Philipp Wagner. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
+using NUnit.Framework;
 using System;
 using TinyCsvParser.TypeConverter;
 
@@ -18,7 +21,6 @@ namespace TinyCsvParser.Test.TypeConverter
             {
                 return new[] {
                     MakeTuple("02001000-0010-0000-0000-003200000000", Guid.Parse("02001000-0010-0000-0000-003200000000")),
-
                 };
             }
         }
