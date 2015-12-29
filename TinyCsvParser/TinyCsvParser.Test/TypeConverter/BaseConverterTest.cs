@@ -23,8 +23,14 @@ namespace TinyCsvParser.Test.TypeConverter
                 var canParse = Converter.TryConvert(item.Item1, out result);
 
                 Assert.IsTrue(canParse);
-                Assert.AreEqual(item.Item2, result);
+
+                AssertAreEqual(item.Item2, result);
             }
+        }
+
+        public virtual void AssertAreEqual(TTargetType expected, TTargetType actual)
+        {
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
