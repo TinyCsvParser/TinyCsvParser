@@ -64,6 +64,5 @@ namespace TinyCsvParser.Test.Tokenizer
             Assert.AreEqual(1, result[1].Result.BirthDate.Month);
             Assert.AreEqual(1, result[1].Result.BirthDate.Day);
         }
-
     }
 }
