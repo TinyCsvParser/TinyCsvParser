@@ -9,19 +9,27 @@ namespace TinyCsvParser.Tokenizer.RegularExpressions
 {
     public class QuotedStringTokenizer : RegularExpressionTokenizer
     {
-        private readonly Regex regexp;
-
-        public QuotedStringTokenizer(char columnDelimiter)
-            : base()
-        {
-            var regularExpressionString = string.Format("((?<=\")[^\"]*(?=\"({0}|$)+)|(?<={0}|^)[^{0}\"]*(?={0}|$))", columnDelimiter);
-
-            this.regexp = new Regex(regularExpressionString, RegexOptions.Compiled);
-        }
+        private Regex regexp;
 
         public override Regex Regexp
         {
             get { return regexp; }
+        }
+
+        public QuotedStringTokenizer(char columnDelimiter)
+            : base()
+        {
+            BuildCompiledRegexp(columnDelimiter);
+        }
+
+        private void BuildCompiledRegexp(char columnDelimiter)
+        {
+            regexp = new Regex(GetPreparedRegexp(columnDelimiter), RegexOptions.Compiled);
+        }
+
+        private string GetPreparedRegexp(char columnDelimiter)
+        {
+            return string.Format("((?<=\")[^\"]*(?=\"({0}|$)+)|(?<={0}|^)[^{0}\"]*(?={0}|$))", columnDelimiter);
         }
 
         public override string ToString()
