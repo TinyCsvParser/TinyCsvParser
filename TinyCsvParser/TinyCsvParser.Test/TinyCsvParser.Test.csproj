@@ -55,6 +55,7 @@
     <Compile Include="Issues\Issue2_NegativeValueTest.cs" />
     <Compile Include="Mapping\CsvMappingTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tokenizer\SplitStringTokenizerTests.cs" />
     <Compile Include="TypeConverter\NullableDecimalConverterTest.cs" />
     <Compile Include="TypeConverter\NullableGuidConverterTest.cs" />
     <Compile Include="TypeConverter\TypeConverterProviderTests.cs" />

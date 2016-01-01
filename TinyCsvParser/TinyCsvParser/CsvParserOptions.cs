@@ -2,12 +2,13 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
+using TinyCsvParser.Tokenizer;
 
 namespace TinyCsvParser
 {
     public class CsvParserOptions
     {
-        public readonly char[] FieldsSeparator;
+        public readonly ITokenizer Tokenizer;
         
         public readonly bool SkipHeader;
 
@@ -16,22 +17,33 @@ namespace TinyCsvParser
         public readonly bool KeepOrder;
 
         public CsvParserOptions(bool skipHeader, char[] fieldsSeparator)
-            : this(skipHeader, fieldsSeparator, Environment.ProcessorCount, true)
+            : this(skipHeader, new StringSplitTokenizer(fieldsSeparator, true))
         {
+
         }
 
         public CsvParserOptions(bool skipHeader, char[] fieldsSeparator, int degreeOfParallelism, bool keepOrder)
+            : this(skipHeader, new StringSplitTokenizer(fieldsSeparator, true), degreeOfParallelism, keepOrder)
+        {
+        }
+
+        public CsvParserOptions(bool skipHeader, ITokenizer tokenizer)
+            : this(skipHeader, tokenizer, Environment.ProcessorCount, true)
+        {
+        }
+
+        public CsvParserOptions(bool skipHeader, ITokenizer tokenizer, int degreeOfParallelism, bool keepOrder)
         {
             SkipHeader = skipHeader;
-            FieldsSeparator = fieldsSeparator;
+            Tokenizer = tokenizer;
             DegreeOfParallelism = degreeOfParallelism;
             KeepOrder = keepOrder;
         }
 
         public override string ToString()
         {
-            return string.Format("CsvParserOptions (FieldsSeparator = ({0}), SkipHeader = {1}, DegreeOfParallelism = {2}, KeepOrder = {3})",
-                string.Join(", ", FieldsSeparator), SkipHeader, DegreeOfParallelism, KeepOrder);
+            return string.Format("CsvParserOptions (Tokenizer = {0}, SkipHeader = {1}, DegreeOfParallelism = {2}, KeepOrder = {3})",
+                Tokenizer, SkipHeader, DegreeOfParallelism, KeepOrder);
         }
     }
 }

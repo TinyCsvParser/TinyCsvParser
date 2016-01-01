@@ -40,7 +40,7 @@ namespace TinyCsvParser
             return query
                 .WithDegreeOfParallelism(options.DegreeOfParallelism)
                 .Where(line => !string.IsNullOrWhiteSpace(line))
-                .Select(line => line.Trim().Split(options.FieldsSeparator))
+                .Select(line => options.Tokenizer.Tokenize(line))
                 .Select(fields => mapping.Map(fields));
         }
 

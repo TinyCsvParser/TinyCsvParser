@@ -8,49 +8,12 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using TinyCsvParser.Mapping;
+using TinyCsvParser.Tokenizer.RegularExpressions;
 
 namespace TinyCsvParser.Test.Issues
 {
-    public static class CustomCsvParserExtensions
-    {
-        public static ParallelQuery<CsvMappingResult<TEntity>> CustomReadFromFile<TEntity>(this CsvParser<TEntity> csvParser, string fileName, System.Text.Encoding encoding)
-            where TEntity : class, new()
-        {
-            if (fileName == null)
-            {
-                throw new ArgumentNullException("fileName");
-            }
-
-            var lines = File.ReadLines(fileName, encoding)
-                .Select(x => PreprocessString(x)); // do the preprocessing!
-
-            return csvParser.Parse(lines);
-        }
-
-        public static ParallelQuery<CsvMappingResult<TEntity>> CustomReadFromString<TEntity>(this CsvParser<TEntity> csvParser, CsvReaderOptions csvReaderOptions, string csvData)
-            where TEntity : class, new()
-        {
-            var lines = csvData
-                .Split(csvReaderOptions.NewLine, StringSplitOptions.None)
-                .Select(x => PreprocessString(x));
-
-            return csvParser.Parse(lines);
-        }
-
-        private static Regex csvSplitRegexp = new Regex("((?<=\")[^\"]*(?=\"(,|$)+)|(?<=,|^)[^,\"]*(?=,|$))");
-
-        private static string PreprocessString(string input)
-        {
-            var inputSplit = csvSplitRegexp
-                .Matches(input).Cast<Match>()
-                .Select(x => x.Value);
-
-            return string.Join(";", inputSplit);
-        }
-    }
-
     [TestFixture, Description("https://github.com/bytefish/TinyCsvParser/issues/4")]
-    public class Issue4_PreprocessingTest
+    public class Issue4_QuotedStringProcessingTest
     {
         public class SampleEntity
         {
@@ -75,9 +38,9 @@ namespace TinyCsvParser.Test.Issues
         }
 
         [Test]
-        public void NegativeValueParsingTest()
+        public void QuotedStringParsingTest()
         {
-            CsvParserOptions csvParserOptions = new CsvParserOptions(true, new[] { ';' });
+            CsvParserOptions csvParserOptions = new CsvParserOptions(true, new QuotedStringTokenizer(','));
             CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
             SampleEntityMapping csvMapper = new SampleEntityMapping();
             CsvParser<SampleEntity> csvParser = new CsvParser<SampleEntity>(csvParserOptions, csvMapper);
@@ -87,7 +50,7 @@ namespace TinyCsvParser.Test.Issues
                 .AppendLine("1,\"2,3,4\",\"5,6,7\",8");
 
             var result = csvParser
-                .CustomReadFromString(csvReaderOptions, stringBuilder.ToString())
+                .ReadFromString(csvReaderOptions, stringBuilder.ToString())
                 .ToList();
 
             Assert.AreEqual(1, result.Count);
