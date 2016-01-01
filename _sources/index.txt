@@ -1,3 +1,5 @@
+.. include:: includes/roles.rst
+
 TinyCsvParser
 =============
 
@@ -43,6 +45,7 @@ Documentation index
 .. toctree::
     :maxdepth: 1
 	
+    sections/quickstart
     sections/benchmark
     
 Indices and tables

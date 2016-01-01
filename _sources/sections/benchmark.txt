@@ -41,7 +41,7 @@ Benchmark Code
 Measuring the Execution Time
 """"""""""""""""""""""""""""
 
-The elapsed time of the import can be easily measured by using the `System.Diagnostics.Stopwatch`.
+The elapsed time of the import can be easily measured by using the :csharp:`System.Diagnostics.Stopwatch`.
 
 .. code-block:: csharp
 
