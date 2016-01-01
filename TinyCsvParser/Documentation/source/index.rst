@@ -12,17 +12,24 @@ It makes your life easier and brings you some joy, when working with CSV files.
 Key Features
 ~~~~~~~~~~~~
 
+* Easy to use and a very clean API
+* Fast (parsing `4,496,262` lines in less than `10.5` seconds on a `7200 RPM` drive, see benchmarks)
+* Highly Flexible
+    * Parsing almost every format is possible
+    * Converting custom data types is easy
+* Batteries-included
+     * All .NET data types are automatically converted
+     * Parsing `enums` is a very easy task
 
 Install
 ~~~~~~~
 
-You can also use the [NuGet](https://www.nuget.org) package. To install [TinyCsvParser], run the following 
-command in the [Package Manager Console](http://docs.nuget.org/consume/package-manager-console).
+You can also use the `NuGet <https://www.nuget.org>`_ package. To install `TinyCsvParser`_, run the following 
+command in the `Package Manager Console <http://docs.nuget.org/consume/package-manager-console>`_.
 
+::
+    
     PM> Install-Package TinyCsvParser
-
-Support
-~~~~~~~
 
 Documentation index
 ~~~~~~~~~~~~~~~~~~~
