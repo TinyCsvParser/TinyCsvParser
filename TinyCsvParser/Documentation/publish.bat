@@ -2,11 +2,13 @@
 
 cd %~dp0
 
+set GIT_EXECUTABLE="C:\PROGRAM FILES (X86)\Git\cmd\git.exe"
+
 :: Switch to GitHub Pages branch:
-git checkout gh-pages
+%GIT_EXECUTABLE% checkout gh-pages
 :: Merge the changes from the master branch:
-git merge -X theirs -X subtree=TinyCsvParser/Documentation/build/html master
+%GIT_EXECUTABLE% merge -X theirs -X subtree=TinyCsvParser/Documentation/build/html master
 :: And publish online:
-git push origin gh-pages
+%GIT_EXECUTABLE% push origin gh-pages
 
 pause
