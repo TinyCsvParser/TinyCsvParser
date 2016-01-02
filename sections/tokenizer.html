@@ -163,13 +163,22 @@ to be split differently. And this is exactely where a <code class="code docutils
 <div class="section" id="stringsplittokenizer">
 <h3>StringSplitTokenizer<a class="headerlink" href="#stringsplittokenizer" title="Permalink to this headline">¶</a></h3>
 <p>The <code class="code csharp docutils literal"><span class="name"><span class="pre">StringSplitTokenizer</span></span></code> splits a line at a given column delimiter.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Philipp</span><span class="p">,</span><span class="n">Wagner</span><span class="p">,</span><span class="mi">1986</span><span class="o">/</span><span class="mo">05</span><span class="o">/</span><span class="mi">12</span>
+</pre></div>
+</div>
+<p>Is tokenized into the following values:</p>
+<ul class="simple">
+<li><code class="code docutils literal"><span class="pre">Philipp</span></code></li>
+<li><code class="code docutils literal"><span class="pre">Wagner</span></code></li>
+<li><code class="code docutils literal"><span class="pre">1986/05/12</span></code></li>
+</ul>
 </div>
 <div class="section" id="regularexpressiontokenizer">
 <h3>RegularExpressionTokenizer<a class="headerlink" href="#regularexpressiontokenizer" title="Permalink to this headline">¶</a></h3>
-<p>The <code class="code csharp docutils literal"><span class="name"><span class="pre">RegularExpressionTokenizer</span></span></code> is an abstract base class, that uses a Regular Expression
-to match a given line. If you need to match a line with a Regular Expression, you have to implement
+<p>The <code class="code csharp docutils literal"><span class="name"><span class="pre">RegularExpressionTokenizer</span></span></code> is an <strong>abstract base class</strong>, that uses a regular expression
+to match a given line. If you need to match a line with a regular expression, you have to implement
 this base class.</p>
-<p>The <code class="code csharp docutils literal"><span class="name"><span class="pre">QuotedStringTokenizer</span></span></code> is a good example to implement a <code class="code csharp docutils literal"><span class="name"><span class="pre">RegularExpressionTokenizer</span></span></code>.</p>
+<p>The <code class="code csharp docutils literal"><span class="name"><span class="pre">QuotedStringTokenizer</span></span></code> is a good example to start with.</p>
 </div>
 <div class="section" id="quotedstringtokenizer">
 <h3>QuotedStringTokenizer<a class="headerlink" href="#quotedstringtokenizer" title="Permalink to this headline">¶</a></h3>
@@ -188,17 +197,17 @@ like:</p>
 </div>
 <div class="section" id="example">
 <h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
-<p>Now imagine a CSV file contains a list of persons with the following data:</p>
-<dl class="docutils">
-<dt>::</dt>
-<dd>FirstNameLastName;BirthDate
-&#8220;Philipp,Wagner&#8221;,1986/05/12
-&#8220;&#8221;Max,Mustermann&#8221;,2014/01/01</dd>
-</dl>
-<p>The first name and the last name are using the same character as the column delimiter. So the file can&#8217;t
-be tokenized by only splitting at the column delimiter. This is where the <code class="code docutils literal"><span class="pre">QuotedStringTokenizer</span></code> is
-needed!</p>
-<p>The Tokenizer is set in the <code class="code docutils literal"><span class="pre">CsvParserOptions</span></code>.</p>
+<p>Imagine a CSV file contains a list of persons with the following data:</p>
+<div class="highlight-python"><div class="highlight"><pre>FirstNameLastName;BirthDate
+&quot;Philipp,Wagner&quot;,1986/05/12
+&quot;&quot;Max,Mustermann&quot;,2014/01/01
+</pre></div>
+</div>
+<p>The first name and the last name are using a comma, which is the same character as the column delimiter.
+So the file can&#8217;t be tokenized by only splitting at the column delimiter with the default
+<code class="code docutils literal"><span class="pre">StringSplitTokenizer</span></code>.</p>
+<p>This is where the <code class="code docutils literal"><span class="pre">QuotedStringTokenizer</span></code> is needed!</p>
+<p>The <code class="code docutils literal"><span class="pre">Tokenizer</span></code> is set in the <code class="code docutils literal"><span class="pre">CsvParserOptions</span></code>.</p>
 <div class="highlight-csharp"><div class="highlight"><pre><span class="k">using</span> <span class="nn">NUnit.Framework</span><span class="p">;</span>
 <span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
 <span class="k">using</span> <span class="nn">System.Linq</span><span class="p">;</span>
