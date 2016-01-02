@@ -1,3 +1,5 @@
+@ECHO OFF
+
 cd %~dp0
 
 :: Switch to GitHub Pages branch:
