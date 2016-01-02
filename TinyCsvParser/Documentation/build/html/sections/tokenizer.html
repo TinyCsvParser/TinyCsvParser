@@ -189,81 +189,83 @@ like:</p>
 <div class="section" id="example">
 <h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
 <p>Now imagine a CSV file contains a list of persons with the following data:</p>
-<p><code class="docutils literal"><span class="pre">`</span>
-<span class="pre">FirstNameLastName;BirthDate</span>
-<span class="pre">&quot;Philipp,Wagner&quot;,1986/05/12</span>
-<span class="pre">&quot;&quot;Max,Mustermann&quot;,2014/01/01</span>
-<span class="pre">`</span></code></p>
-<p>The first name and the last name are using the same character as the column delimiter. So the file can&#8217;t
-be tokenized by only splitting at the column delimiter. This is where the <code class="docutils literal"><span class="pre">QuotedStringTokenizer</span></code> is
-needed!</p>
-<p>The Tokenizer is set in the <code class="docutils literal"><span class="pre">CsvParserOptions</span></code>.</p>
-<p><a href="#id2"><span class="problematic" id="id3">``</span></a><a href="#id4"><span class="problematic" id="id5">`</span></a>csharp
-using NUnit.Framework;
-using System;
-using System.Linq;
-using System.Text;
-using TinyCsvParser.Mapping;
-using TinyCsvParser.Tokenizer.RegularExpressions;</p>
-<p>namespace TinyCsvParser.Test.Tokenizer
-{</p>
-<blockquote>
-<div><p>[TestFixture]
-public class TokenizerExampleTest
-{</p>
-<blockquote>
-<div><p>private class Person
-{</p>
-<blockquote>
-<div>public string FirstNameWithLastName { get; set; }
-public DateTime BirthDate { get; set; }</div></blockquote>
-<p>}</p>
-<p>private class CsvPersonMapping : CsvMapping&lt;Person&gt;
-{</p>
-<blockquote>
-<div><p>public CsvPersonMapping()
-{</p>
-<blockquote>
-<div>MapProperty(0, x =&gt; x.FirstNameWithLastName);
-MapProperty(1, x =&gt; x.BirthDate);</div></blockquote>
-<p>}</p>
-</div></blockquote>
-<p>}</p>
-<p>[Test]
-public void QuotedStringTokenizerExampleTest()
-{</p>
-<blockquote>
-<div><p>CsvParserOptions csvParserOptions = new CsvParserOptions(true, new QuotedStringTokenizer(&#8216;,&#8217;));
-CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
-CsvPersonMapping csvMapper = new CsvPersonMapping();
-CsvParser&lt;Person&gt; csvParser = new CsvParser&lt;Person&gt;(csvParserOptions, csvMapper);</p>
 <dl class="docutils">
-<dt>var stringBuilder = new StringBuilder()</dt>
-<dd>.AppendLine(&#8220;FirstNameLastName;BirthDate&#8221;)
-.AppendLine(&#8220;&#8221;Philipp,Wagner&#8221;,1986/05/12&#8221;)
-.AppendLine(&#8220;&#8221;Max,Mustermann&#8221;,2014/01/01&#8221;);</dd>
-<dt>var result = csvParser</dt>
-<dd>.ReadFromString(csvReaderOptions, stringBuilder.ToString())
-.ToList();</dd>
+<dt>::</dt>
+<dd>FirstNameLastName;BirthDate
+&#8220;Philipp,Wagner&#8221;,1986/05/12
+&#8220;&#8221;Max,Mustermann&#8221;,2014/01/01</dd>
 </dl>
-<p>// Make sure we got 2 results:
-Assert.AreEqual(2, result.Count);</p>
-<p>// And all of them have been parsed correctly:
-Assert.IsTrue(result.All(x =&gt; x.IsValid));</p>
-<p>// Now check the values:
-Assert.AreEqual(&#8220;Philipp,Wagner&#8221;, result[0].Result.FirstNameWithLastName);</p>
-<p>Assert.AreEqual(1986, result[0].Result.BirthDate.Year);
-Assert.AreEqual(5, result[0].Result.BirthDate.Month);
-Assert.AreEqual(12, result[0].Result.BirthDate.Day);</p>
-<p>Assert.AreEqual(&#8220;Max,Mustermann&#8221;, result[1].Result.FirstNameWithLastName);</p>
-<p>Assert.AreEqual(2014, result[1].Result.BirthDate.Year);
-Assert.AreEqual(1, result[1].Result.BirthDate.Month);
-Assert.AreEqual(1, result[1].Result.BirthDate.Day);</p>
-</div></blockquote>
-<p>}</p>
-</div></blockquote>
-<p>}</p>
-</div></blockquote>
+<p>The first name and the last name are using the same character as the column delimiter. So the file can&#8217;t
+be tokenized by only splitting at the column delimiter. This is where the <code class="code docutils literal"><span class="pre">QuotedStringTokenizer</span></code> is
+needed!</p>
+<p>The Tokenizer is set in the <code class="code docutils literal"><span class="pre">CsvParserOptions</span></code>.</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span class="k">using</span> <span class="nn">NUnit.Framework</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Linq</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Text</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">TinyCsvParser.Mapping</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">TinyCsvParser.Tokenizer.RegularExpressions</span><span class="p">;</span>
+
+<span class="k">namespace</span> <span class="nn">TinyCsvParser.Test.Tokenizer</span>
+<span class="p">{</span>
+<span class="na">    [TestFixture]</span>
+    <span class="k">public</span> <span class="k">class</span> <span class="nc">TokenizerExampleTest</span>
+    <span class="p">{</span>
+        <span class="k">private</span> <span class="k">class</span> <span class="nc">Person</span>
+        <span class="p">{</span>
+            <span class="k">public</span> <span class="kt">string</span> <span class="n">FirstNameWithLastName</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+            <span class="k">public</span> <span class="n">DateTime</span> <span class="n">BirthDate</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">private</span> <span class="k">class</span> <span class="nc">CsvPersonMapping</span> <span class="p">:</span> <span class="n">CsvMapping</span><span class="p">&lt;</span><span class="n">Person</span><span class="p">&gt;</span>
+        <span class="p">{</span>
+            <span class="k">public</span> <span class="nf">CsvPersonMapping</span><span class="p">()</span>
+            <span class="p">{</span>
+                <span class="n">MapProperty</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">FirstNameWithLastName</span><span class="p">);</span>
+                <span class="n">MapProperty</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">BirthDate</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+<span class="na">        [Test]</span>
+        <span class="k">public</span> <span class="k">void</span> <span class="nf">QuotedStringTokenizerExampleTest</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="n">CsvParserOptions</span> <span class="n">csvParserOptions</span> <span class="p">=</span> <span class="k">new</span> <span class="n">CsvParserOptions</span><span class="p">(</span><span class="k">true</span><span class="p">,</span> <span class="k">new</span> <span class="n">QuotedStringTokenizer</span><span class="p">(</span><span class="sc">&#39;,&#39;</span><span class="p">));</span>
+            <span class="n">CsvReaderOptions</span> <span class="n">csvReaderOptions</span> <span class="p">=</span> <span class="k">new</span> <span class="n">CsvReaderOptions</span><span class="p">(</span><span class="k">new</span><span class="p">[]</span> <span class="p">{</span> <span class="n">Environment</span><span class="p">.</span><span class="n">NewLine</span> <span class="p">});</span>
+            <span class="n">CsvPersonMapping</span> <span class="n">csvMapper</span> <span class="p">=</span> <span class="k">new</span> <span class="n">CsvPersonMapping</span><span class="p">();</span>
+            <span class="n">CsvParser</span><span class="p">&lt;</span><span class="n">Person</span><span class="p">&gt;</span> <span class="n">csvParser</span> <span class="p">=</span> <span class="k">new</span> <span class="n">CsvParser</span><span class="p">&lt;</span><span class="n">Person</span><span class="p">&gt;(</span><span class="n">csvParserOptions</span><span class="p">,</span> <span class="n">csvMapper</span><span class="p">);</span>
+
+            <span class="kt">var</span> <span class="n">stringBuilder</span> <span class="p">=</span> <span class="k">new</span> <span class="n">StringBuilder</span><span class="p">()</span>
+                <span class="p">.</span><span class="n">AppendLine</span><span class="p">(</span><span class="s">&quot;FirstNameLastName;BirthDate&quot;</span><span class="p">)</span>
+                <span class="p">.</span><span class="n">AppendLine</span><span class="p">(</span><span class="s">&quot;\&quot;Philipp,Wagner\&quot;,1986/05/12&quot;</span><span class="p">)</span>
+                <span class="p">.</span><span class="n">AppendLine</span><span class="p">(</span><span class="s">&quot;\&quot;Max,Mustermann\&quot;,2014/01/01&quot;</span><span class="p">);</span>
+
+            <span class="kt">var</span> <span class="n">result</span> <span class="p">=</span> <span class="n">csvParser</span>
+                <span class="p">.</span><span class="n">ReadFromString</span><span class="p">(</span><span class="n">csvReaderOptions</span><span class="p">,</span> <span class="n">stringBuilder</span><span class="p">.</span><span class="n">ToString</span><span class="p">())</span>
+                <span class="p">.</span><span class="n">ToList</span><span class="p">();</span>
+
+            <span class="c1">// Make sure we got 2 results:</span>
+            <span class="n">Assert</span><span class="p">.</span><span class="n">AreEqual</span><span class="p">(</span><span class="m">2</span><span class="p">,</span> <span class="n">result</span><span class="p">.</span><span class="n">Count</span><span class="p">);</span>
+
+            <span class="c1">// And all of them have been parsed correctly:</span>
+            <span class="n">Assert</span><span class="p">.</span><span class="n">IsTrue</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">All</span><span class="p">(</span><span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">IsValid</span><span class="p">));</span>
+
+            <span class="c1">// Now check the values:</span>
+            <span class="n">Assert</span><span class="p">.</span><span class="n">AreEqual</span><span class="p">(</span><span class="s">&quot;Philipp,Wagner&quot;</span><span class="p">,</span> <span class="n">result</span><span class="p">[</span><span class="m">0</span><span class="p">].</span><span class="n">Result</span><span class="p">.</span><span class="n">FirstNameWithLastName</span><span class="p">);</span>
+
+            <span class="n">Assert</span><span class="p">.</span><span class="n">AreEqual</span><span class="p">(</span><span class="m">1986</span><span class="p">,</span> <span class="n">result</span><span class="p">[</span><span class="m">0</span><span class="p">].</span><span class="n">Result</span><span class="p">.</span><span class="n">BirthDate</span><span class="p">.</span><span class="n">Year</span><span class="p">);</span>
+            <span class="n">Assert</span><span class="p">.</span><span class="n">AreEqual</span><span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="n">result</span><span class="p">[</span><span class="m">0</span><span class="p">].</span><span class="n">Result</span><span class="p">.</span><span class="n">BirthDate</span><span class="p">.</span><span class="n">Month</span><span class="p">);</span>
+            <span class="n">Assert</span><span class="p">.</span><span class="n">AreEqual</span><span class="p">(</span><span class="m">12</span><span class="p">,</span> <span class="n">result</span><span class="p">[</span><span class="m">0</span><span class="p">].</span><span class="n">Result</span><span class="p">.</span><span class="n">BirthDate</span><span class="p">.</span><span class="n">Day</span><span class="p">);</span>
+
+            <span class="n">Assert</span><span class="p">.</span><span class="n">AreEqual</span><span class="p">(</span><span class="s">&quot;Max,Mustermann&quot;</span><span class="p">,</span> <span class="n">result</span><span class="p">[</span><span class="m">1</span><span class="p">].</span><span class="n">Result</span><span class="p">.</span><span class="n">FirstNameWithLastName</span><span class="p">);</span>
+
+            <span class="n">Assert</span><span class="p">.</span><span class="n">AreEqual</span><span class="p">(</span><span class="m">2014</span><span class="p">,</span> <span class="n">result</span><span class="p">[</span><span class="m">1</span><span class="p">].</span><span class="n">Result</span><span class="p">.</span><span class="n">BirthDate</span><span class="p">.</span><span class="n">Year</span><span class="p">);</span>
+            <span class="n">Assert</span><span class="p">.</span><span class="n">AreEqual</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="n">result</span><span class="p">[</span><span class="m">1</span><span class="p">].</span><span class="n">Result</span><span class="p">.</span><span class="n">BirthDate</span><span class="p">.</span><span class="n">Month</span><span class="p">);</span>
+            <span class="n">Assert</span><span class="p">.</span><span class="n">AreEqual</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="n">result</span><span class="p">[</span><span class="m">1</span><span class="p">].</span><span class="n">Result</span><span class="p">.</span><span class="n">BirthDate</span><span class="p">.</span><span class="n">Day</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </div>
 </div>
 
