@@ -3,14 +3,14 @@
 Motivation
 ==========
 
-`TinyCsvParser`_ is a library for parsing CSV data. It will help you to provide an easy and consistent 
-way for reading CSV data in your application. It is highly extendable to provide maximum flexibility, 
-while maintaining a very high performance (see `Benchmark<benchmark>`). I hope it makes your life easier 
-and brings you some joy, when working with CSV files.
+`TinyCsvParser`_ provides a consistent way for reading CSV data in your application. It is easy 
+to use, highly extendable to provide maximum flexibility, while maintaining a very high performance 
+(see :ref:`Benchmark<benchmark>`). I hope it makes your life easier and brings you some joy, when 
+working with CSV files.
 
-Why a CSV Parser? 
+Why a CSV Parser?
 
-I have often been tearing my hair out at work, when trying to grok CSV parsing code. 
+I have often been tearing my hair out at work, when trying to grok custom hand-rolled CSV parsing code. 
 
 CSV parsing can lead to code monsters in real life, that will eat your precious lifetime and pose 
 a threat to your application. After all, you are importing data into your system. Your data must 

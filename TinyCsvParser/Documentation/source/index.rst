@@ -47,6 +47,7 @@ Documentation index
 	
     sections/motivation
     sections/quickstart
+    sections/tokenizer
     sections/examples
     sections/benchmark
     
