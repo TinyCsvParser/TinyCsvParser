@@ -62,85 +62,84 @@ Example
 
 Now imagine a CSV file contains a list of persons with the following data:
 
-```
-FirstNameLastName;BirthDate
-"Philipp,Wagner",1986/05/12
-""Max,Mustermann",2014/01/01
-```
+::
+    FirstNameLastName;BirthDate
+    "Philipp,Wagner",1986/05/12
+    ""Max,Mustermann",2014/01/01
 
 The first name and the last name are using the same character as the column delimiter. So the file can't 
-be tokenized by only splitting at the column delimiter. This is where the ``QuotedStringTokenizer`` is 
+be tokenized by only splitting at the column delimiter. This is where the :code:`QuotedStringTokenizer` is 
 needed! 
 
-The Tokenizer is set in the ``CsvParserOptions``.
+The Tokenizer is set in the :code:`CsvParserOptions`.
 
-```csharp
-using NUnit.Framework;
-using System;
-using System.Linq;
-using System.Text;
-using TinyCsvParser.Mapping;
-using TinyCsvParser.Tokenizer.RegularExpressions;
+.. code-block:: csharp
 
-namespace TinyCsvParser.Test.Tokenizer
-{
-    [TestFixture]
-    public class TokenizerExampleTest
+    using NUnit.Framework;
+    using System;
+    using System.Linq;
+    using System.Text;
+    using TinyCsvParser.Mapping;
+    using TinyCsvParser.Tokenizer.RegularExpressions;
+    
+    namespace TinyCsvParser.Test.Tokenizer
     {
-        private class Person
+        [TestFixture]
+        public class TokenizerExampleTest
         {
-            public string FirstNameWithLastName { get; set; }
-            public DateTime BirthDate { get; set; }
-        }
-
-        private class CsvPersonMapping : CsvMapping<Person>
-        {
-            public CsvPersonMapping()
+            private class Person
             {
-                MapProperty(0, x => x.FirstNameWithLastName);
-                MapProperty(1, x => x.BirthDate);
+                public string FirstNameWithLastName { get; set; }
+                public DateTime BirthDate { get; set; }
+            }
+    
+            private class CsvPersonMapping : CsvMapping<Person>
+            {
+                public CsvPersonMapping()
+                {
+                    MapProperty(0, x => x.FirstNameWithLastName);
+                    MapProperty(1, x => x.BirthDate);
+                }
+            }
+    
+            [Test]
+            public void QuotedStringTokenizerExampleTest()
+            {
+                CsvParserOptions csvParserOptions = new CsvParserOptions(true, new QuotedStringTokenizer(','));
+                CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
+                CsvPersonMapping csvMapper = new CsvPersonMapping();
+                CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
+    
+                var stringBuilder = new StringBuilder()
+                    .AppendLine("FirstNameLastName;BirthDate")
+                    .AppendLine("\"Philipp,Wagner\",1986/05/12")
+                    .AppendLine("\"Max,Mustermann\",2014/01/01");
+    
+                var result = csvParser
+                    .ReadFromString(csvReaderOptions, stringBuilder.ToString())
+                    .ToList();
+    
+                // Make sure we got 2 results:
+                Assert.AreEqual(2, result.Count);
+    
+                // And all of them have been parsed correctly:
+                Assert.IsTrue(result.All(x => x.IsValid));
+    
+                // Now check the values:
+                Assert.AreEqual("Philipp,Wagner", result[0].Result.FirstNameWithLastName);
+    
+                Assert.AreEqual(1986, result[0].Result.BirthDate.Year);
+                Assert.AreEqual(5, result[0].Result.BirthDate.Month);
+                Assert.AreEqual(12, result[0].Result.BirthDate.Day);
+    
+                Assert.AreEqual("Max,Mustermann", result[1].Result.FirstNameWithLastName);
+    
+                Assert.AreEqual(2014, result[1].Result.BirthDate.Year);
+                Assert.AreEqual(1, result[1].Result.BirthDate.Month);
+                Assert.AreEqual(1, result[1].Result.BirthDate.Day);
             }
         }
-
-        [Test]
-        public void QuotedStringTokenizerExampleTest()
-        {
-            CsvParserOptions csvParserOptions = new CsvParserOptions(true, new QuotedStringTokenizer(','));
-            CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
-            CsvPersonMapping csvMapper = new CsvPersonMapping();
-            CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
-
-            var stringBuilder = new StringBuilder()
-                .AppendLine("FirstNameLastName;BirthDate")
-                .AppendLine("\"Philipp,Wagner\",1986/05/12")
-                .AppendLine("\"Max,Mustermann\",2014/01/01");
-
-            var result = csvParser
-                .ReadFromString(csvReaderOptions, stringBuilder.ToString())
-                .ToList();
-
-            // Make sure we got 2 results:
-            Assert.AreEqual(2, result.Count);
-
-            // And all of them have been parsed correctly:
-            Assert.IsTrue(result.All(x => x.IsValid));
-
-            // Now check the values:
-            Assert.AreEqual("Philipp,Wagner", result[0].Result.FirstNameWithLastName);
-
-            Assert.AreEqual(1986, result[0].Result.BirthDate.Year);
-            Assert.AreEqual(5, result[0].Result.BirthDate.Month);
-            Assert.AreEqual(12, result[0].Result.BirthDate.Day);
-
-            Assert.AreEqual("Max,Mustermann", result[1].Result.FirstNameWithLastName);
-
-            Assert.AreEqual(2014, result[1].Result.BirthDate.Year);
-            Assert.AreEqual(1, result[1].Result.BirthDate.Month);
-            Assert.AreEqual(1, result[1].Result.BirthDate.Day);
-        }
     }
-}
-```
 
 .. _TinyCsvParser: https://github.com/bytefish/TinyCsvParser
 .. _NUnit: http://www.nunit.org
