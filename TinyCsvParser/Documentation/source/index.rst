@@ -46,6 +46,7 @@ Documentation index
     :maxdepth: 1
 	
     sections/quickstart
+    sections/examples
     sections/benchmark
     
 Indices and tables
