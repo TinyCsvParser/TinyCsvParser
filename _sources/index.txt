@@ -45,6 +45,7 @@ Documentation index
 .. toctree::
     :maxdepth: 1
 	
+    sections/motivation
     sections/quickstart
     sections/examples
     sections/benchmark
