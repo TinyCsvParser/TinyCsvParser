@@ -32,14 +32,24 @@ StringSplitTokenizer
 
 The :csharp:`StringSplitTokenizer` splits a line at a given column delimiter.
 
+::
+
+    Philipp,Wagner,1986/05/12
+    
+Is tokenized into the following values:
+
+* :code:`Philipp`
+* :code:`Wagner`
+* :code:`1986/05/12`
+
 RegularExpressionTokenizer
 """"""""""""""""""""""""""
 
-The :csharp:`RegularExpressionTokenizer` is an abstract base class, that uses a Regular Expression 
-to match a given line. If you need to match a line with a Regular Expression, you have to implement 
+The :csharp:`RegularExpressionTokenizer` is an **abstract base class**, that uses a regular expression 
+to match a given line. If you need to match a line with a regular expression, you have to implement 
 this base class.
 
-The :csharp:`QuotedStringTokenizer` is a good example to implement a :csharp:`RegularExpressionTokenizer`.
+The :csharp:`QuotedStringTokenizer` is a good example to start with.
 
 QuotedStringTokenizer
 """""""""""""""""""""
@@ -60,18 +70,21 @@ Is tokenized into the following values:
 Example 
 ~~~~~~~
 
-Now imagine a CSV file contains a list of persons with the following data:
+Imagine a CSV file contains a list of persons with the following data:
 
 ::
+
     FirstNameLastName;BirthDate
     "Philipp,Wagner",1986/05/12
     ""Max,Mustermann",2014/01/01
 
-The first name and the last name are using the same character as the column delimiter. So the file can't 
-be tokenized by only splitting at the column delimiter. This is where the :code:`QuotedStringTokenizer` is 
-needed! 
+The first name and the last name are using a comma, which is the same character as the column delimiter. 
+So the file can't be tokenized by only splitting at the column delimiter with the default 
+:code:`StringSplitTokenizer`. 
 
-The Tokenizer is set in the :code:`CsvParserOptions`.
+This is where the :code:`QuotedStringTokenizer` is needed! 
+
+The :code:`Tokenizer` is set in the :code:`CsvParserOptions`.
 
 .. code-block:: csharp
 
