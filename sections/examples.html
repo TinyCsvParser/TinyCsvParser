@@ -140,15 +140,17 @@
 <span id="id1"></span><h1>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="parsing-custom-formats">
 <h2>Parsing Custom Formats<a class="headerlink" href="#parsing-custom-formats" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference external" href="https://github.com/bytefish/TinyCsvParser">TinyCsvParser</a> makes assumptions about the format, which default to the .NET default formats. This is
-often sufficient for simple CSV files, but sometimes CSV data comes with values in special formats. When
-the default converter is unable to parse the format, you need to customize the converter.</p>
-<p>It sounds more complex, than it actually is. All existing converters support customizing the the format
-used for parsing the value. The formatting string is the same as used for parsing string values in .NET.</p>
+<p><a class="reference external" href="https://github.com/bytefish/TinyCsvParser">TinyCsvParser</a> makes assumptions about the format of the data, which defaults to the .NET default
+formats. This is often sufficient for simple CSV files, but sometimes CSV data comes with values in
+special formats. When the default converter is unable to parse the format, you need to customize the
+converter.</p>
+<p>It sounds more complex, than it actually turns out to be. All existing converters support customizing
+the the format used for parsing the value. The formatting string is the same as used for parsing string
+values in .NET.</p>
 <div class="section" id="reading-a-custom-date-format">
 <h3>Reading a Custom Date Format<a class="headerlink" href="#reading-a-custom-date-format" title="Permalink to this headline">¶</a></h3>
 <p>Imagine a client sends data with a weird format for dates and writes dates like this <code class="code docutils literal"><span class="pre">2004###01###25</span></code>.
-These values cannot be parsed with the default date format, but in <a class="reference external" href="https://github.com/bytefish/TinyCsvParser">TinyCsvParser</a> a`:csharp:<cite>DateTimeConverter</cite>
+These values cannot be parsed with the default date format, but in <a class="reference external" href="https://github.com/bytefish/TinyCsvParser">TinyCsvParser</a> a <code class="code csharp docutils literal"><span class="name"><span class="pre">DateTimeConverter</span></span></code>
 with the custom date time format can be used for the mapping.</p>
 <p>To use the custom converter, you are simply using the <code class="code csharp docutils literal"><span class="name"><span class="pre">WithCustomConverter</span></span></code> method to define a custom
 converter for the property mapping.</p>

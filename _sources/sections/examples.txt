@@ -6,19 +6,20 @@ Examples
 Parsing Custom Formats
 ~~~~~~~~~~~~~~~~~~~~~~
 
-`TinyCsvParser`_ makes assumptions about the format, which default to the .NET default formats. This is 
-often sufficient for simple CSV files, but sometimes CSV data comes with values in special formats. When 
-the default converter is unable to parse the format, you need to customize the converter.
+`TinyCsvParser`_ makes assumptions about the format of the data, which defaults to the .NET default 
+formats. This is often sufficient for simple CSV files, but sometimes CSV data comes with values in 
+special formats. When the default converter is unable to parse the format, you need to customize the 
+converter.
 
-It sounds more complex, than it actually is. All existing converters support customizing the the format 
-used for parsing the value. The formatting string is the same as used for parsing string values in .NET.
+It sounds more complex, than it actually turns out to be. All existing converters support customizing 
+the the format used for parsing the value. The formatting string is the same as used for parsing string 
+values in .NET.
 
 Reading a Custom Date Format
 """"""""""""""""""""""""""""
 
-
 Imagine a client sends data with a weird format for dates and writes dates like this :code:`2004###01###25`. 
-These values cannot be parsed with the default date format, but in `TinyCsvParser`_ a`:csharp:`DateTimeConverter` 
+These values cannot be parsed with the default date format, but in `TinyCsvParser`_ a :csharp:`DateTimeConverter` 
 with the custom date time format can be used for the mapping.
 
 To use the custom converter, you are simply using the :csharp:`WithCustomConverter` method to define a custom 
