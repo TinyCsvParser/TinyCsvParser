@@ -12,13 +12,14 @@ data.
 
 Imagine a situation, where a column delimiter is also present in the column data like this:
 
-```
-FirstNameLastName;BirthDate
-"Philipp,Wagner",1986/05/12
-""Max,Mustermann",2014/01/01
-```
+::
 
-A simple ``string.Split`` with a comma as column delimiter will lead to wrong data, so the line needs 
+    FirstNameLastName;BirthDate
+    "Philipp,Wagner",1986/05/12
+    ""Max,Mustermann",2014/01/01
+
+
+A simple :csharp:`string.Split` with a comma as column delimiter will lead to wrong data, so the line needs 
 to be split differently. And this is exactely where a :code:`Tokenizer` fits in.
 
 Available Tokenizers
@@ -29,7 +30,7 @@ The library comes with the following Tokenizers.
 StringSplitTokenizer
 """"""""""""""""""""
 
-The :csharp:`StringSplitTokenizer` 
+The :csharp:`StringSplitTokenizer` splits a line at a given column delimiter.
 
 RegularExpressionTokenizer
 """"""""""""""""""""""""""
