@@ -26,8 +26,8 @@ Key Features
   
 * Batteries-included
 
-  * All .NET data types are automatically converted
-  * Parsing ``enums`` is a very easy task (see :ref:`Tutorials<_tutorials_parsing_enums>`)
+  * All .NET CLR types are automatically converted (see :ref:`Type Converter <userguide_type_converter>`)
+  * Parsing ``enums`` is a very easy task (see :ref:`Tutorials <tutorials_parsing_enums>`)
   
 * Extensively Unit Tested
 * Extensively Documented

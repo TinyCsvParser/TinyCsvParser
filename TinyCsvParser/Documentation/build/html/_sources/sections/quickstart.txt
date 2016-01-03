@@ -3,6 +3,9 @@
 Quickstart
 ==========
 
+This section is only a quick tour of the most common use of TinyCsvParser. For more detailed information on custom formats and more 
+advanced use-cases, please consult the full :ref:`User Guide <userguide>`.
+
 Quick Installation
 ~~~~~~~~~~~~~~~~~~
 

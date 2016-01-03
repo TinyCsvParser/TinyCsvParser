@@ -3,7 +3,13 @@
 [TinyCsvParser]: https://github.com/bytefish/TinyCsvParser
 [MIT License]: https://opensource.org/licenses/MIT
 
-[TinyCsvParser] is an easy to use and high-performance library for CSV parsing with .NET.
+ is an easy to use and high-performance library for CSV parsing with .NET.
+
+[TinyCsvParser] is a library to parse CSV data in an easy and *fun way*, while offering very high performance and a very clean API. 
+It is probably the **fastest .NET CSV Parser around** (see [Benchmark](http://bytefish.github.io/TinyCsvParser/sections/benchmark.html)) 
+and it is highly configurable to provide maximum flexibility.
+
+To get started quickly, follow the [Quickstart](http://bytefish.github.io/TinyCsvParser/sections/quickstart.html).
 
 ## Installing TinyCsvParser ##
 
@@ -16,15 +22,19 @@ PM> Install-Package TinyCsvParser
 
 ## Documentation ##
 
-[TinyCsvParser] comes with a extensive documentation, which is located at:
+[TinyCsvParser] comes with an official and extensive documentation, which is located at:
 
 * [http://bytefish.github.io/TinyCsvParser/](http://bytefish.github.io/TinyCsvParser/)
 
 ## Basic Usage ##
 
+This is only an example for the most common use of TinyCsvParser. For more detailed information on custom formats and more advanced use-cases, 
+please consult the full [User Guide](http://bytefish.github.io/TinyCsvParser/sections/userguide.html) of the official documentation.
+
 Imagine we have list of Persons in a CSV file ``persons.csv`` with their first name, last name and birthdate.
 
 ```
+FirstName;LastName;BirthDate
 Philipp;Wagner;1986/05/12
 Max;Musterman;2014/01/02
 ```
@@ -95,15 +105,6 @@ namespace TinyCsvParser.Test
     }
 }
 ```
-
-## Additional Resources ##
-
-### Articles ###
-
-* [TinyCsvParser - Parsing CSV Data with C#](http://bytefish.de/blog/tinycsvparser/)
-* [Using TinyCsvParser and FluentValidation](http://bytefish.de/blog/fluent_validation/)
-* [Benchmarking TinyCsvParser](http://bytefish.de/blog/tinycsvparser_benchmark/)
-* [PostgreSQL and TinyCsvParser](http://bytefish.de/blog/tinycsvparser_postgresql/)
 
 ## License ##
 

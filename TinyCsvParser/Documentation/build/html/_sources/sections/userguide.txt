@@ -8,6 +8,7 @@ User Guide
     
     userguide/install
     userguide/concepts
+    userguide/typeconverter
     userguide/tokenizer
     userguide/info
 
