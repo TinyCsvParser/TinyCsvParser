@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Examples &mdash; TinyCsvParser 1.1 documentation</title>
+  <title>Parsing Custom Formats &mdash; TinyCsvParser 1.1 documentation</title>
   
 
   
@@ -24,18 +24,19 @@
 
   
   
-    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   
 
   
 
   
-    <link rel="top" title="TinyCsvParser 1.1 documentation" href="../index.html"/>
-        <link rel="next" title="Benchmark" href="benchmark.html"/>
-        <link rel="prev" title="Tokenizer" href="tokenizer.html"/> 
+    <link rel="top" title="TinyCsvParser 1.1 documentation" href="../../index.html"/>
+        <link rel="up" title="Tutorials" href="../tutorials.html"/>
+        <link rel="next" title="Parsing Enums" href="parsing_enums.html"/>
+        <link rel="prev" title="Tutorials" href="../tutorials.html"/> 
 
   
-  <script src="../_static/js/modernizr.min.js"></script>
+  <script src="../../_static/js/modernizr.min.js"></script>
 
 </head>
 
@@ -50,7 +51,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> TinyCsvParser
+            <a href="../../index.html" class="icon icon-home"> TinyCsvParser
           
 
           
@@ -67,7 +68,7 @@
 
           
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
@@ -82,18 +83,19 @@
             
             
                 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="motivation.html">Motivation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tokenizer.html">Tokenizer</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#parsing-custom-formats">Parsing Custom Formats</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#reading-a-custom-date-format">Reading a Custom Date Format</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#reading-a-custom-boolean">Reading a Custom Boolean</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../motivation.html">Motivation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../userguide.html">User Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../tutorials.html">Tutorials</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="">Parsing Custom Formats</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#reading-a-date-with-a-custom-format">Reading a Date with a custom Format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reading-a-boolean-wit-a-custom-format">Reading a Boolean wit a custom Format</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="parsing_enums.html">Parsing Enums</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="benchmark.html">Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../benchmark.html">Benchmark</a></li>
 </ul>
 
             
@@ -107,7 +109,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../index.html">TinyCsvParser</a>
+        <a href="../../index.html">TinyCsvParser</a>
       </nav>
 
 
@@ -122,13 +124,15 @@
 
 <div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
-    <li><a href="../index.html">Docs</a> &raquo;</li>
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
       
-    <li>Examples</li>
+          <li><a href="../tutorials.html">Tutorials</a> &raquo;</li>
+      
+    <li>Parsing Custom Formats</li>
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="../_sources/sections/examples.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/sections/tutorials/custom_formats.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -138,10 +142,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="examples">
-<span id="id1"></span><h1>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="parsing-custom-formats">
-<h2>Parsing Custom Formats<a class="headerlink" href="#parsing-custom-formats" title="Permalink to this headline">¶</a></h2>
+  <div class="section" id="parsing-custom-formats">
+<span id="tutorials-custom-formats"></span><h1>Parsing Custom Formats<a class="headerlink" href="#parsing-custom-formats" title="Permalink to this headline">¶</a></h1>
 <p><a class="reference external" href="https://github.com/bytefish/TinyCsvParser">TinyCsvParser</a> makes assumptions about the format of the data, which defaults to the .NET default
 formats. This is often sufficient for simple CSV files, but sometimes CSV data comes with values in
 special formats. When the default converter is unable to parse the format, you need to customize the
@@ -149,8 +151,8 @@ converter.</p>
 <p>It sounds more complex, than it actually turns out to be. All existing converters support customizing
 the the format used for parsing the value. The formatting string is the same as used for parsing string
 values in .NET.</p>
-<div class="section" id="reading-a-custom-date-format">
-<h3>Reading a Custom Date Format<a class="headerlink" href="#reading-a-custom-date-format" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="reading-a-date-with-a-custom-format">
+<h2>Reading a Date with a custom Format<a class="headerlink" href="#reading-a-date-with-a-custom-format" title="Permalink to this headline">¶</a></h2>
 <p>Imagine a client sends data with a weird format for dates and writes dates like this <code class="code docutils literal"><span class="pre">2004###01###25</span></code>.
 These values cannot be parsed with the default date format, but in <a class="reference external" href="https://github.com/bytefish/TinyCsvParser">TinyCsvParser</a> a <code class="code csharp docutils literal"><span class="name"><span class="pre">DateTimeConverter</span></span></code>
 with the custom date time format can be used for the mapping.</p>
@@ -169,8 +171,8 @@ converter for the property mapping.</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="reading-a-custom-boolean">
-<h3>Reading a Custom Boolean<a class="headerlink" href="#reading-a-custom-boolean" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="reading-a-boolean-wit-a-custom-format">
+<h2>Reading a Boolean wit a custom Format<a class="headerlink" href="#reading-a-boolean-wit-a-custom-format" title="Permalink to this headline">¶</a></h2>
 <p>Imagine you want to map between the CSV value and a boolean. The library makes the assumption, that the
 string value for true is <code class="code docutils literal"><span class="pre">&quot;true&quot;</span></code> and for false is <code class="code docutils literal"><span class="pre">&quot;false&quot;</span></code>. But now imagine your CSV data
 uses the text <code class="code docutils literal"><span class="pre">&quot;ThisIsTrue&quot;</span></code> for the boolean value <code class="code docutils literal"><span class="pre">true</span></code>, and <code class="code docutils literal"><span class="pre">&quot;ThisIsFalse&quot;</span></code> for
@@ -197,7 +199,6 @@ the boolean value <code class="code docutils literal"><span class="pre">false</s
 </div>
 </div>
 </div>
-</div>
 
 
            </div>
@@ -206,10 +207,10 @@ the boolean value <code class="code docutils literal"><span class="pre">false</s
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="benchmark.html" class="btn btn-neutral float-right" title="Benchmark" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="parsing_enums.html" class="btn btn-neutral float-right" title="Parsing Enums" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="tokenizer.html" class="btn btn-neutral" title="Tokenizer" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../tutorials.html" class="btn btn-neutral" title="Tutorials" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -239,22 +240,22 @@ the boolean value <code class="code docutils literal"><span class="pre">false</s
 
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
+            URL_ROOT:'../../',
             VERSION:'1.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
         };
     </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
 
   
 
   
   
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
   
 
   

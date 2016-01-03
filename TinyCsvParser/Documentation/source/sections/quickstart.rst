@@ -20,7 +20,7 @@ TinyCsvParser is a library, that is very configurable to parse all kinds of CSV 
 only a quick tour of the most common TinyCsvParser use-case. For more detailed information please consult 
 the full User Guide.
 
-The :ref:`Examples <examples>` are also a good place to find more advanced use-cases.
+The :ref:`Tutorials<tutorials>` are also a good place to find more advanced use-cases.
 
 Imagine we have list of persons in a CSV file :code:`persons.csv` with their first name, last name 
 and birthdate. The columns are separated by :code:`;` as column delimiter, which each line will be 

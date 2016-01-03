@@ -31,7 +31,7 @@
 
   
     <link rel="top" title="TinyCsvParser 1.1 documentation" href="../index.html"/>
-        <link rel="next" title="Tokenizer" href="tokenizer.html"/>
+        <link rel="next" title="User Guide" href="userguide.html"/>
         <link rel="prev" title="Motivation" href="motivation.html"/> 
 
   
@@ -84,11 +84,15 @@
                 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="motivation.html">Motivation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">Quickstart</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#reading-from-a-string">Reading From a String</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#quick-installation">Quick Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getting-started">Getting Started</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#reading-from-a-string">Reading From a String</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="tokenizer.html">Tokenizer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="userguide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="benchmark.html">Benchmark</a></li>
 </ul>
 
@@ -136,12 +140,28 @@
             
   <div class="section" id="quickstart">
 <span id="id1"></span><h1>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h1>
-<p>Imagine we have list of persons in a CSV file <code class="code docutils literal"><span class="pre">persons.csv</span></code> with their first name, last name and birthdate.</p>
+<div class="section" id="quick-installation">
+<h2>Quick Installation<a class="headerlink" href="#quick-installation" title="Permalink to this headline">¶</a></h2>
+<p>You can use the <a class="reference external" href="https://www.nuget.org">NuGet</a> package to install <a class="reference external" href="https://github.com/bytefish/TinyCsvParser">TinyCsvParser</a>. Run the following
+command in the <a class="reference external" href="http://docs.nuget.org/consume/package-manager-console">Package Manager Console</a>.</p>
+<div class="highlight-python"><div class="highlight"><pre>PM&gt; Install-Package TinyCsvParser
+</pre></div>
+</div>
+</div>
+<div class="section" id="getting-started">
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<p>TinyCsvParser is a library, that is very configurable to parse all kinds of CSV data, so this section is
+only a quick tour of the most common TinyCsvParser use-case. For more detailed information please consult
+the full User Guide.</p>
+<p>The <a class="reference internal" href="tutorials.html#tutorials"><span>Tutorials</span></a> are also a good place to find more advanced use-cases.</p>
+<p>Imagine we have list of persons in a CSV file <code class="code docutils literal"><span class="pre">persons.csv</span></code> with their first name, last name
+and birthdate. The columns are separated by <code class="code docutils literal"><span class="pre">;</span></code> as column delimiter, which each line will be
+split at.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">Philipp</span><span class="p">;</span><span class="n">Wagner</span><span class="p">;</span><span class="mi">1986</span><span class="o">/</span><span class="mo">05</span><span class="o">/</span><span class="mi">12</span>
 <span class="n">Max</span><span class="p">;</span><span class="n">Musterman</span><span class="p">;</span><span class="mi">2014</span><span class="o">/</span><span class="mo">01</span><span class="o">/</span><span class="mo">02</span>
 </pre></div>
 </div>
-<p>The corresponding domain model in our system might look like this.</p>
+<p>The corresponding domain model in our C# code might look like this.</p>
 <div class="highlight-csharp"><div class="highlight"><pre><span class="k">private</span> <span class="k">class</span> <span class="nc">Person</span>
 <span class="p">{</span>
     <span class="k">public</span> <span class="kt">string</span> <span class="n">FirstName</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
@@ -150,8 +170,9 @@
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>When using <a class="reference external" href="https://github.com/bytefish/TinyCsvParser">TinyCsvParser</a> you have to define the mapping between the columns in the CSV data
-and the property in you domain model.</p>
+<p>When using <a class="reference external" href="https://github.com/bytefish/TinyCsvParser">TinyCsvParser</a> you have to define the mapping between the columns in the CSV data and
+the property in you domain model, which is done by implementing the class <code class="code docutils literal"><span class="pre">CsvMapping&lt;TEntity&gt;</span></code>,
+where <code class="code docutils literal"><span class="pre">TEntity</span></code> is the class <cite>Person</cite>.</p>
 <div class="highlight-csharp"><div class="highlight"><pre><span class="k">private</span> <span class="k">class</span> <span class="nc">CsvPersonMapping</span> <span class="p">:</span> <span class="n">CsvMapping</span><span class="p">&lt;</span><span class="n">Person</span><span class="p">&gt;</span>
 <span class="p">{</span>
     <span class="k">public</span> <span class="nf">CsvPersonMapping</span><span class="p">()</span>
@@ -164,7 +185,11 @@ and the property in you domain model.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>And then we can use the mapping to parse the CSV data with a <code class="docutils literal"><span class="pre">CsvParser</span></code>.</p>
+<p>The method <cite>MapProperty</cite> is used to map between the column number in the CSV file and the property in the
+domain model.</p>
+<p>Then we can use the mapping to parse the CSV data with a <code class="docutils literal"><span class="pre">CsvParser</span></code>. In the <cite>CsvParserOptions</cite> we are
+defining to not skipt the header and use a <cite>;</cite> as column delimiter. I have assumed, that the file is encoded
+as <cite>ASCII</cite>.</p>
 <div class="highlight-csharp"><div class="highlight"><pre><span class="k">namespace</span> <span class="nn">TinyCsvParser.Test</span>
 <span class="p">{</span>
 <span class="na">    [TestFixture]</span>
@@ -173,7 +198,7 @@ and the property in you domain model.</p>
 <span class="na">        [Test]</span>
         <span class="k">public</span> <span class="k">void</span> <span class="nf">TinyCsvTest</span><span class="p">()</span>
         <span class="p">{</span>
-            <span class="n">CsvParserOptions</span> <span class="n">csvParserOptions</span> <span class="p">=</span> <span class="k">new</span> <span class="n">CsvParserOptions</span><span class="p">(</span><span class="k">true</span><span class="p">,</span> <span class="k">new</span><span class="p">[]</span> <span class="p">{</span> <span class="sc">&#39;;&#39;</span> <span class="p">});</span>
+            <span class="n">CsvParserOptions</span> <span class="n">csvParserOptions</span> <span class="p">=</span> <span class="k">new</span> <span class="n">CsvParserOptions</span><span class="p">(</span><span class="k">false</span><span class="p">,</span> <span class="k">new</span><span class="p">[]</span> <span class="p">{</span> <span class="sc">&#39;;&#39;</span> <span class="p">});</span>
             <span class="n">CsvPersonMapping</span> <span class="n">csvMapper</span> <span class="p">=</span> <span class="k">new</span> <span class="n">CsvPersonMapping</span><span class="p">();</span>
             <span class="n">CsvParser</span><span class="p">&lt;</span><span class="n">Person</span><span class="p">&gt;</span> <span class="n">csvParser</span> <span class="p">=</span> <span class="k">new</span> <span class="n">CsvParser</span><span class="p">&lt;</span><span class="n">Person</span><span class="p">&gt;(</span><span class="n">csvParserOptions</span><span class="p">,</span> <span class="n">csvMapper</span><span class="p">);</span>
 
@@ -204,7 +229,7 @@ and the property in you domain model.</p>
 </pre></div>
 </div>
 <div class="section" id="reading-from-a-string">
-<h2>Reading From a String<a class="headerlink" href="#reading-from-a-string" title="Permalink to this headline">¶</a></h2>
+<h3>Reading From a String<a class="headerlink" href="#reading-from-a-string" title="Permalink to this headline">¶</a></h3>
 <p>Reading from a string is possible with the <code class="code csharp docutils literal"><span class="name"><span class="pre">CsvParser</span></span><span class="punctuation"><span class="pre">.</span></span><span class="name"><span class="pre">ReadFromString</span></span></code> method.</p>
 <div class="highlight-csharp"><div class="highlight"><pre><span class="k">namespace</span> <span class="nn">TinyCsvParser.Test</span>
 <span class="p">{</span>
@@ -240,6 +265,7 @@ and the property in you domain model.</p>
 </div>
 </div>
 </div>
+</div>
 
 
            </div>
@@ -248,7 +274,7 @@ and the property in you domain model.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="tokenizer.html" class="btn btn-neutral float-right" title="Tokenizer" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="userguide.html" class="btn btn-neutral float-right" title="User Guide" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="motivation.html" class="btn btn-neutral" title="Motivation" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>

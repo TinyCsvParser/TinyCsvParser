@@ -1,10 +1,7 @@
-.. _examples:
-
-Examples
-========
+.. _tutorials_custom_formats:
 
 Parsing Custom Formats
-~~~~~~~~~~~~~~~~~~~~~~
+======================
 
 `TinyCsvParser`_ makes assumptions about the format of the data, which defaults to the .NET default 
 formats. This is often sufficient for simple CSV files, but sometimes CSV data comes with values in 
@@ -15,8 +12,8 @@ It sounds more complex, than it actually turns out to be. All existing converter
 the the format used for parsing the value. The formatting string is the same as used for parsing string 
 values in .NET.
 
-Reading a Custom Date Format
-""""""""""""""""""""""""""""
+Reading a Date with a custom Format
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Imagine a client sends data with a weird format for dates and writes dates like this :code:`2004###01###25`. 
 These values cannot be parsed with the default date format, but in `TinyCsvParser`_ a :csharp:`DateTimeConverter` 
@@ -38,8 +35,8 @@ converter for the property mapping.
 		}
 	}
 
-Reading a Custom Boolean
-""""""""""""""""""""""""
+Reading a Boolean wit a custom Format
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Imagine you want to map between the CSV value and a boolean. The library makes the assumption, that the 
 string value for true is :code:`"true"` and for false is :code:`"false"`. But now imagine your CSV data 
@@ -71,5 +68,3 @@ This converter can be used in a Property Mapping like this:
     }
 
 .. _TinyCsvParser: https://github.com/bytefish/TinyCsvParser
-.. _NUnit: http://www.nunit.org
-.. MIT License: https://opensource.org/licenses/MIT

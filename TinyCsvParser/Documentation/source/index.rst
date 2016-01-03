@@ -27,7 +27,7 @@ Key Features
 * Batteries-included
 
   * All .NET data types are automatically converted
-  * Parsing ``enums`` is a very easy task
+  * Parsing ``enums`` is a very easy task (see :ref:`Tutorials<_tutorials_parsing_enums>`)
   
 * Extensively Unit Tested
 * Extensively Documented
@@ -40,8 +40,8 @@ Contents
 	
     sections/motivation
     sections/quickstart
-    sections/tokenizer
-    sections/examples
+    sections/userguide
+    sections/tutorials
     sections/benchmark
     
 Indices and tables
