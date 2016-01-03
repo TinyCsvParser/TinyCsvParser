@@ -3,8 +3,6 @@
 [TinyCsvParser]: https://github.com/bytefish/TinyCsvParser
 [MIT License]: https://opensource.org/licenses/MIT
 
- is an easy to use and high-performance library for CSV parsing with .NET.
-
 [TinyCsvParser] is a library to parse CSV data in an easy and *fun way*, while offering very high performance and a very clean API. 
 It is probably the **fastest .NET CSV Parser around** (see [Benchmark](http://bytefish.github.io/TinyCsvParser/sections/benchmark.html)) 
 and it is highly configurable to provide maximum flexibility.
