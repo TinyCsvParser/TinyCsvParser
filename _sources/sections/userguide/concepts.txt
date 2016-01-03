@@ -1,0 +1,114 @@
+.. _userguide_concepts:
+
+Key Concepts
+============
+
+CsvParser
+~~~~~~~~~
+
+A :code:`CsvParser` instance is used to parse given CSV data into strongly-typed objects. The :code:`CsvParser` 
+needs a :code:`CsvMapping` and :code:`CsvParserOptions` to be constructed, both are explained below and 
+you may have seen them in the :ref:`Quickstart<quickstart>` example already.
+
+The :code:`CsvParser` exposes two methods to read from a CSV file or a string:
+
+* :code:`ParallelQuery<CsvMappingResult<TEntity>> CsvParser.ReadFromFile<TEntity>(string fileName, Encoding encoding)`
+* :code:`ParallelQuery<CsvMappingResult<TEntity>> CsvParser.ReadFromString<TEntity>(CsvReaderOptions csvReaderOptions, string csvData)`
+
+A :code:`CsvMappingResult` is the result of parsing a CSV line. It contains the populated objects of type :code:`TEntity`. 
+
+The :code:`CsvParser` doesn't throw any exceptions during parsing, because the input data is processed in parallel and the 
+:code:`CsvParser` can't stop parsing, just because a single line has an error. So the :code:`CsvMappingResult` can also 
+contain an error, if parsing a line was not successful.
+
+If the :code:`CsvMappingResult` is valid, which can be checked with :code:`CsvMappingResult<TEntity>.IsValid`, then the property 
+:code:`CsvMappingResult<TEntity>.Result` contains the populated object. And if there was an error during parsing a CSV line, then 
+the property `CsvMappingResult<TEntity>.Error` is populated with the error and problematic value.
+
+The data is processed in parallel, that is why a :code:`ParallelQuery` is returned. You have full control over the degree of parallelism 
+by defining the threads in the :code:`CsvParserOptions`. Please note: Reading the file from disk is of course done sequentially, and the 
+following processing pipeline is parallelized. 
+
+There is a huge MSDN documentation on working at: `Parallel LINQ (MSDN) <https://msdn.microsoft.com/en-us/library/dd460688(v=vs.110).aspx>`_, 
+if you want to get a better understanding of working with PLINQ.
+
+CsvMapping
+~~~~~~~~~~
+
+:code:`CsvMapping` is an abstract class, that is used to describe the mapping between your CSV data 
+and your target strongly-typed class. For parsing the CSV file with a :code:`CsvParser` you have to implement 
+the :code:`CsvMapping`, and define which column index matches to a property using :code:`MapProperty` method.
+
+You have seen an example for a :code:`CsvMapping` in the :ref:`Quickstart<quickstart>` document.
+
+.. code-block:: csharp
+
+    private class CsvPersonMapping : CsvMapping<Person>
+    {
+        public CsvPersonMapping()
+            : base()
+        {
+            MapProperty(0, x => x.FirstName);
+            MapProperty(1, x => x.LastName);
+            MapProperty(2, x => x.BirthDate);
+        }
+    }
+
+CsvParserOption
+~~~~~~~~~~~~~~~
+
+In order to parse a CSV file, you need to define the column delimiter to use and define to skip the header 
+or not. These options are passed into a :code:`CsvParser` by using the :code:`CsvParserOptions`. The most 
+basic constructor for a :code:`CsvParserOption` is:
+
+.. code-block:: csharp
+
+    CsvParserOptions(bool skipHeader, char[] fieldsSeparator)
+ 
+There are more advanced options, which can be passed with:
+
+.. code-block:: csharp
+
+    CsvParserOptions(bool skipHeader, ITokenizer tokenizer, int degreeOfParallelism, bool keepOrder)
+
+The Parameters are:
+  
+* skipHeader
+    * Signals to skip the header row (true) or not (false).
+* tokenizer
+    * The Tokenizer to use for splitting a line in the CSV data into the column values. The default is a :code:`StringSplitTokenizer` (see :ref:`User Guide on Tokenizer <userguide_tokenizer>` for additional information).
+* degreeOfParallelism
+    * The number of threads used to do the mapping and further processing. The default is :code:`Environment.ProcessorCount` (`See MSDN for additional information <https://msdn.microsoft.com/en-us/library/system.environment.processorcount(v=vs.110).aspx>`_).
+* keepOrder
+    * When the input is processed in parallel, the results can be unordered. The :code:`keepOrder` flag signals wether to keep the original order (:code:`true`) or return the unordered results (:code:`false`). The default is :code:`true`.
+
+CsvReaderOptions
+~~~~~~~~~~~~~~~~
+
+When reading CSV data from a string with :code:`CsvParser.ReadFromString`, you have to define the 
+NewLine character used for splitting the input into lines. This class is not neccessary when reading 
+from a file with :code:`CsvParser.ReadFromFile`.
+
+The :code:`CsvReaderOptions` constructor signature is:
+
+.. code-block:: csharp
+
+    public CsvReaderOptions(string[] newLine)
+    
+The parameter is:
+
+* newLine
+    * Defines the character used for splitting the input data into lines.
+    
+CsvMappingResult
+~~~~~~~~~~~~~~~~
+
+The :code:`CsvMappingResult` is result of the parsing, and contains the populated objects. Why doesn't 
+a :code:`CsvParser` return the entities? Because the input data is processed in parallel and the 
+:code:`CsvParser` can't stop parsing, just because a single line has an error.
+
+You can check, if a :code:`CsvMappingResult` is valid by checking the property :code:`CsvMappingResult<TEntity>.IsValid`. 
+If the :code:`CsvMappingResult` is valid, then it contains the populated entity in the property. If the parsing was 
+not possible due to an error, then the property :code:`CsvMappingResult<TEntity>.Error` is filled.
+
+You have seen this in the :ref:`Quickstart<quickstart>` example already.

@@ -1,4 +1,4 @@
-.. _tokenizer:
+.. _userguide_tokenizer:
 
 Tokenizer
 =========
