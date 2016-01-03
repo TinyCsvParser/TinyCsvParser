@@ -5,13 +5,14 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using TinyCsvParser.Mapping;
 
 namespace TinyCsvParser
 {
     public static class CsvParserExtensions
     {
-        public static ParallelQuery<CsvMappingResult<TEntity>> ReadFromFile<TEntity>(this CsvParser<TEntity> csvParser, string fileName, System.Text.Encoding encoding)
+        public static ParallelQuery<CsvMappingResult<TEntity>> ReadFromFile<TEntity>(this CsvParser<TEntity> csvParser, string fileName, Encoding encoding)
             where TEntity : class, new()
         {
             if (fileName == null)
