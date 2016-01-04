@@ -65,12 +65,12 @@ You have seen an example for :code:`CsvParserOptions` in the :ref:`Quickstart<qu
 Working with the Results
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-The return value of the :code:`CsvParser.ReadFromFile` and :code:`CsvParser.ReadFromString` methods is a :code:`ParallelQuery<CsvMappingResult<TEntity>>`.
+The return value of the :code:`CsvParser.ReadFromFile` and :code:`CsvParser.ReadFromString` methods is a :code:`ParallelQuery<CsvMappingResult<TEntity>>`. 
 
-The CSV data is processed in parallel using Parallel LINQ. The :code:`ParallelQuery` is a special :code:`IEnumerable` from the Parallel LINQ namespace, that 
-behaves almost like a normal :code:`IEnumerable` with a few exceptions. In order to evaluate the results, you can either iterate through the :code:`ParallelQuery`, 
-which should be the preferred way of working with the data. Or if you are uncomfortable with enumerables, then you can turn the data into a list by calling 
-the method :code:`ToList()` on it.
+A `ParallelQuery`? A :code:`ParallelQuery` is a special :code:`IEnumerable` from the Parallel LINQ namespace, that behaves almost like a normal 
+:code:`IEnumerable` (with a few exceptions). In order to evaluate the results, you can iterate through the :code:`ParallelQuery`, which is the preferred 
+way of working with the results. If you are uncomfortable with enumerables, you can also turn the data into a simple list by calling the method 
+:code:`ToList()` on it.
 
 .. note:: 
 
@@ -79,8 +79,7 @@ the method :code:`ToList()` on it.
     on working with Parallel LINQ at MSDN: `Parallel LINQ (PLINQ) <https://msdn.microsoft.com/en-us/library/dd460688(v=vs.110).aspx>`_.
 
 The :code:`CsvMappingResult` holds the parse results. You can access the result through the property :code:`CsvMappingResult<TEntity>.Result`, but the property 
-is only populated, when the parsing was successful. You can check if the CSV data was parsed successfully by evaluating the property 
-:code:`CsvMappingResult<TEntity>.IsValid`.
+is only populated, when the parsing was successful. You can check if the CSV data was parsed successfully by evaluating the property :code:`CsvMappingResult<TEntity>.IsValid`.
 
 .. attention::
 
@@ -89,6 +88,3 @@ is only populated, when the parsing was successful. You can check if the CSV dat
     contain an error, if parsing a line was not successful.
 
 If a CSV line could not be parsed, the property :code:`CsvMappingResult<TEntity>.Error` is populated and contains the problematic column and error message.
-
-
-    

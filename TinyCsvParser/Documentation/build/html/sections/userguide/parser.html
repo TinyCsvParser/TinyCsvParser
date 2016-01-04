@@ -205,10 +205,10 @@ of parallelism.</p>
 <div class="section" id="working-with-the-results">
 <h2>Working with the Results<a class="headerlink" href="#working-with-the-results" title="Permalink to this headline">¶</a></h2>
 <p>The return value of the <code class="code docutils literal"><span class="pre">CsvParser.ReadFromFile</span></code> and <code class="code docutils literal"><span class="pre">CsvParser.ReadFromString</span></code> methods is a <code class="code docutils literal"><span class="pre">ParallelQuery&lt;CsvMappingResult&lt;TEntity&gt;&gt;</span></code>.</p>
-<p>The CSV data is processed in parallel using Parallel LINQ. The <code class="code docutils literal"><span class="pre">ParallelQuery</span></code> is a special <code class="code docutils literal"><span class="pre">IEnumerable</span></code> from the Parallel LINQ namespace, that
-behaves almost like a normal <code class="code docutils literal"><span class="pre">IEnumerable</span></code> with a few exceptions. In order to evaluate the results, you can either iterate through the <code class="code docutils literal"><span class="pre">ParallelQuery</span></code>,
-which should be the preferred way of working with the data. Or if you are uncomfortable with enumerables, then you can turn the data into a list by calling
-the method <code class="code docutils literal"><span class="pre">ToList()</span></code> on it.</p>
+<p>A <cite>ParallelQuery</cite>? A <code class="code docutils literal"><span class="pre">ParallelQuery</span></code> is a special <code class="code docutils literal"><span class="pre">IEnumerable</span></code> from the Parallel LINQ namespace, that behaves almost like a normal
+<code class="code docutils literal"><span class="pre">IEnumerable</span></code> (with a few exceptions). In order to evaluate the results, you can iterate through the <code class="code docutils literal"><span class="pre">ParallelQuery</span></code>, which is the preferred
+way of working with the results. If you are uncomfortable with enumerables, you can also turn the data into a simple list by calling the method
+<code class="code docutils literal"><span class="pre">ToList()</span></code> on it.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">The library uses Parallel LINQ (PLINQ) to support a high degree of parallelism. Building a parallel processing pipeline
@@ -216,8 +216,7 @@ with PLINQ may not be intuitive, so reading the most important PLINQ concepts is
 on working with Parallel LINQ at MSDN: <a class="reference external" href="https://msdn.microsoft.com/en-us/library/dd460688(v=vs.110).aspx">Parallel LINQ (PLINQ)</a>.</p>
 </div>
 <p>The <code class="code docutils literal"><span class="pre">CsvMappingResult</span></code> holds the parse results. You can access the result through the property <code class="code docutils literal"><span class="pre">CsvMappingResult&lt;TEntity&gt;.Result</span></code>, but the property
-is only populated, when the parsing was successful. You can check if the CSV data was parsed successfully by evaluating the property
-<code class="code docutils literal"><span class="pre">CsvMappingResult&lt;TEntity&gt;.IsValid</span></code>.</p>
+is only populated, when the parsing was successful. You can check if the CSV data was parsed successfully by evaluating the property <code class="code docutils literal"><span class="pre">CsvMappingResult&lt;TEntity&gt;.IsValid</span></code>.</p>
 <div class="admonition attention">
 <p class="first admonition-title">Attention</p>
 <p class="last">The <code class="code docutils literal"><span class="pre">CsvParser</span></code> doesn&#8217;t throw any exceptions during parsing, because the input data is processed in parallel and the
