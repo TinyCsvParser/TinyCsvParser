@@ -1,0 +1,254 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Contributing &mdash; TinyCsvParser 1.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="TinyCsvParser 1.1 documentation" href="../index.html"/>
+        <link rel="prev" title="Benchmark" href="benchmark.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> TinyCsvParser
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="motivation.html">Motivation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="userguide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="benchmark.html">Benchmark</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#help-out">Help Out</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#building-the-documentation">Building the Documentation</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">TinyCsvParser</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+    <li>Contributing</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/sections/contributing.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="contributing">
+<span id="id1"></span><h1>Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="help-out">
+<h2>Help Out<a class="headerlink" href="#help-out" title="Permalink to this headline">¶</a></h2>
+<p>TinyCsvParser is an open source project and there are many ways to contribute to it.</p>
+<p>Some things you could help out with are:</p>
+<ul class="simple">
+<li>Documentation (both code and features)</li>
+<li>Bug reports</li>
+<li>Bug fixes</li>
+<li>Feature requests</li>
+<li>Feature implementations</li>
+<li>Test coverage</li>
+<li>Code quality</li>
+<li>Sample applications</li>
+</ul>
+</div>
+<div class="section" id="building-the-documentation">
+<h2>Building the Documentation<a class="headerlink" href="#building-the-documentation" title="Permalink to this headline">¶</a></h2>
+<p>Once you have cloned the repository to your local machine, the following instructions will walk you through installing the tools necessary to build the documentation.</p>
+<ol class="arabic simple">
+<li><a href="#id2"><span class="problematic" id="id3">:code:`Download python &lt;https://www.python.org/downloads/&gt;`_</span></a> version 2.7.10 or higher.</li>
+</ol>
+<p>2. If you are installing on Windows, ensure both the Python install directory and the Python scripts directory have been added to your <code class="code docutils literal"><span class="pre">PATH</span></code> environment variable.
+For example, if you install Python into the <code class="code docutils literal"><span class="pre">c:\python34</span> <span class="pre">directory</span></code>, you would add <code class="code docutils literal"><span class="pre">c:\python34;c:\python34\scripts</span></code> to your <code class="code docutils literal"><span class="pre">PATH</span></code> environment variable.</p>
+<ol class="arabic simple" start="3">
+<li>Install Sphinx by opening a command prompt and running the following Python command. (Note that this operation might take a few minutes to complete.)</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>pip install sphinx
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li>By default, when you install Sphinx, it will install the ReadTheDocs custom theme automatically. If you need to update the installed version of this theme, you should run:</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>pip install -U sphinx_rtd_theme
+</pre></div>
+</div>
+<ol class="arabic simple" start="5">
+<li>Navigate to one of the projects Documentation located at <code class="code docutils literal"><span class="pre">TinyCsvParser/Documentation/</span></code>.</li>
+<li>Run <code class="code docutils literal"><span class="pre">make</span></code> (<code class="code docutils literal"><span class="pre">make.bat</span></code> on Windows, Makefile on Mac/Linux) from command line:</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>make html
+</pre></div>
+</div>
+<ol class="arabic simple" start="7">
+<li>Once make completes, the generated docs will be in the .../Documentation/build/html directory. Simply open the <code class="code docutils literal"><span class="pre">index.html</span></code> file in your browser to see the built documentation.</li>
+</ol>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="benchmark.html" class="btn btn-neutral" title="Benchmark" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Philipp Wagner.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'1.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -7,7 +7,7 @@ Motivation
 ~~~~~~~~~~
 
 There is no possible standard how CSV files are described. There is no schema, so every file you get 
-may look completely different. This rules out a single strategy to tokenize a given line in your CSV 
+may look completely different. This rules out one single strategy to tokenize a given line in your CSV 
 data. 
 
 Imagine a situation, where a column delimiter is also present in the column data like this:
@@ -19,13 +19,13 @@ Imagine a situation, where a column delimiter is also present in the column data
     ""Max,Mustermann",2014/01/01
 
 
-A simple :csharp:`string.Split` with a comma as column delimiter will lead to wrong data, so the line needs 
-to be split differently. And this is exactely where a :code:`Tokenizer` fits in.
+A simple :csharp:`string.Split` with a comma as column delimiter will lead to wrong data, so the line 
+needs to be split differently. And this is exactely where a :code:`Tokenizer` fits in.
+
+So a :code:`Tokenizer` is used to split a given line of your CSV data into the column data.
 
 Available Tokenizers
 ~~~~~~~~~~~~~~~~~~~~
-
-The library comes with the following Tokenizers.
 
 StringSplitTokenizer
 """"""""""""""""""""
@@ -46,7 +46,7 @@ RegularExpressionTokenizer
 """"""""""""""""""""""""""
 
 The :csharp:`RegularExpressionTokenizer` is an **abstract base class**, that uses a regular expression 
-to match a given line. If you need to match a line with a regular expression, you have to implement 
+to match a given line. So if you need to match a line with a regular expression, you have to implement 
 this base class.
 
 The :csharp:`QuotedStringTokenizer` is a good example to start with.

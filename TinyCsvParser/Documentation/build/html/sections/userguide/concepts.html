@@ -88,7 +88,10 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../userguide.html">User Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="">Key Concepts</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#csvparser">CsvParser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#csvparser">CsvParser</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#what-is-a-csvparser">What is a CsvParser?</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#csvmapping">CsvMapping</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#csvparseroption">CsvParserOption</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#csvreaderoptions">CsvReaderOptions</a></li>
@@ -102,6 +105,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../benchmark.html">Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
 </ul>
 
             
@@ -152,9 +156,15 @@
 <span id="userguide-concepts"></span><h1>Key Concepts<a class="headerlink" href="#key-concepts" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="csvparser">
 <h2>CsvParser<a class="headerlink" href="#csvparser" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="what-is-a-csvparser">
+<h3>What is a CsvParser?<a class="headerlink" href="#what-is-a-csvparser" title="Permalink to this headline">¶</a></h3>
 <p>A <code class="code docutils literal"><span class="pre">CsvParser</span></code> instance is used to parse given CSV data into strongly-typed objects. The <code class="code docutils literal"><span class="pre">CsvParser</span></code>
 needs a <code class="code docutils literal"><span class="pre">CsvMapping</span></code> and <code class="code docutils literal"><span class="pre">CsvParserOptions</span></code> to be constructed, both are explained below and
 you may have seen them in the <a class="reference internal" href="../quickstart.html#quickstart"><span>Quickstart</span></a> example already.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">ASP.NET 5 RC1 is now available! Please see the <code class="xref doc docutils literal"><span class="pre">Getting</span> <span class="pre">Started</span></code> instructions for installing the latest version.</p>
+</div>
 <p>The <code class="code docutils literal"><span class="pre">CsvParser</span></code> exposes two methods to read from a CSV file or a string:</p>
 <ul class="simple">
 <li><code class="code docutils literal"><span class="pre">ParallelQuery&lt;CsvMappingResult&lt;TEntity&gt;&gt;</span> <span class="pre">CsvParser.ReadFromFile&lt;TEntity&gt;(string</span> <span class="pre">fileName,</span> <span class="pre">Encoding</span> <span class="pre">encoding)</span></code></li>
@@ -172,6 +182,7 @@ by defining the threads in the <code class="code docutils literal"><span class="
 following processing pipeline is parallelized.</p>
 <p>There is a huge MSDN documentation on working at: <a class="reference external" href="https://msdn.microsoft.com/en-us/library/dd460688(v=vs.110).aspx">Parallel LINQ (MSDN)</a>,
 if you want to get a better understanding of working with PLINQ.</p>
+</div>
 </div>
 <div class="section" id="csvmapping">
 <h2>CsvMapping<a class="headerlink" href="#csvmapping" title="Permalink to this headline">¶</a></h2>

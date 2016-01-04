@@ -6,9 +6,17 @@ Key Concepts
 CsvParser
 ~~~~~~~~~
 
+What is a CsvParser?
+""""""""""""""""""""
+
 A :code:`CsvParser` instance is used to parse given CSV data into strongly-typed objects. The :code:`CsvParser` 
 needs a :code:`CsvMapping` and :code:`CsvParserOptions` to be constructed, both are explained below and 
 you may have seen them in the :ref:`Quickstart<quickstart>` example already.
+
+
+.. note:: 
+
+    ASP.NET 5 RC1 is now available! Please see the :doc:`Getting Started <getting-started/index>` instructions for installing the latest version.
 
 The :code:`CsvParser` exposes two methods to read from a CSV file or a string:
 

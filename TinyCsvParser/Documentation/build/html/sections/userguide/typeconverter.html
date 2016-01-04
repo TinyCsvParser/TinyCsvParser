@@ -103,6 +103,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../benchmark.html">Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
 </ul>
 
             
@@ -153,11 +154,12 @@
 <span id="userguide-type-converter"></span><h1>Type Converter<a class="headerlink" href="#type-converter" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
-<p>A <code class="code docutils literal"><span class="pre">TypeConverter</span></code> is used to convert the text value in your CSV file into a .NET type.</p>
-<p>All available <code class="code docutils literal"><span class="pre">TypeConverter</span></code> in the library are initialized with sane default formats to parse data,
-which default to the same formats .NET uses to parse string data. If you need to parse custom formats,
-which do not match the default format, you have to specify a custom format to the converter when defining
-the <code class="code docutils literal"><span class="pre">CsvMapping</span></code>.</p>
+<p>A <code class="code docutils literal"><span class="pre">TypeConverter</span></code> is used to convert the text value in a column of your CSV data into a .NET type.</p>
+<p>All available <code class="code docutils literal"><span class="pre">TypeConverter</span></code> in the library are initialized with sane default formats to parse data. These
+formats default to the same formats .NET uses to parse string data. So MSDN is a great source of information to get
+informations about formatting strings.</p>
+<p>If you need to parse custom formats, which do not match the default format, you have to specify a custom format for
+the converter when defining the <code class="code docutils literal"><span class="pre">CsvMapping</span></code>, which is shown in the example on this page.</p>
 </div>
 <div class="section" id="available-type-converters">
 <h2>Available Type Converters<a class="headerlink" href="#available-type-converters" title="Permalink to this headline">¶</a></h2>

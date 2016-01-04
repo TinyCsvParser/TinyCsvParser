@@ -105,6 +105,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../benchmark.html">Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
 </ul>
 
             
@@ -156,7 +157,7 @@
 <div class="section" id="motivation">
 <h2>Motivation<a class="headerlink" href="#motivation" title="Permalink to this headline">¶</a></h2>
 <p>There is no possible standard how CSV files are described. There is no schema, so every file you get
-may look completely different. This rules out a single strategy to tokenize a given line in your CSV
+may look completely different. This rules out one single strategy to tokenize a given line in your CSV
 data.</p>
 <p>Imagine a situation, where a column delimiter is also present in the column data like this:</p>
 <div class="highlight-python"><div class="highlight"><pre>FirstNameLastName;BirthDate
@@ -164,12 +165,12 @@ data.</p>
 &quot;&quot;Max,Mustermann&quot;,2014/01/01
 </pre></div>
 </div>
-<p>A simple <code class="code csharp docutils literal"><span class="keyword type"><span class="pre">string</span></span><span class="punctuation"><span class="pre">.</span></span><span class="name"><span class="pre">Split</span></span></code> with a comma as column delimiter will lead to wrong data, so the line needs
-to be split differently. And this is exactely where a <code class="code docutils literal"><span class="pre">Tokenizer</span></code> fits in.</p>
+<p>A simple <code class="code csharp docutils literal"><span class="keyword type"><span class="pre">string</span></span><span class="punctuation"><span class="pre">.</span></span><span class="name"><span class="pre">Split</span></span></code> with a comma as column delimiter will lead to wrong data, so the line
+needs to be split differently. And this is exactely where a <code class="code docutils literal"><span class="pre">Tokenizer</span></code> fits in.</p>
+<p>So a <code class="code docutils literal"><span class="pre">Tokenizer</span></code> is used to split a given line of your CSV data into the column data.</p>
 </div>
 <div class="section" id="available-tokenizers">
 <h2>Available Tokenizers<a class="headerlink" href="#available-tokenizers" title="Permalink to this headline">¶</a></h2>
-<p>The library comes with the following Tokenizers.</p>
 <div class="section" id="stringsplittokenizer">
 <h3>StringSplitTokenizer<a class="headerlink" href="#stringsplittokenizer" title="Permalink to this headline">¶</a></h3>
 <p>The <code class="code csharp docutils literal"><span class="name"><span class="pre">StringSplitTokenizer</span></span></code> splits a line at a given column delimiter.</p>
@@ -186,7 +187,7 @@ to be split differently. And this is exactely where a <code class="code docutils
 <div class="section" id="regularexpressiontokenizer">
 <h3>RegularExpressionTokenizer<a class="headerlink" href="#regularexpressiontokenizer" title="Permalink to this headline">¶</a></h3>
 <p>The <code class="code csharp docutils literal"><span class="name"><span class="pre">RegularExpressionTokenizer</span></span></code> is an <strong>abstract base class</strong>, that uses a regular expression
-to match a given line. If you need to match a line with a regular expression, you have to implement
+to match a given line. So if you need to match a line with a regular expression, you have to implement
 this base class.</p>
 <p>The <code class="code csharp docutils literal"><span class="name"><span class="pre">QuotedStringTokenizer</span></span></code> is a good example to start with.</p>
 </div>

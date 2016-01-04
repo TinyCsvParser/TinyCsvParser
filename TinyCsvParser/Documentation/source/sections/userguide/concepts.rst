@@ -6,14 +6,15 @@ Key Concepts
 CsvParser
 ~~~~~~~~~
 
-A :code:`CsvParser` instance is used to parse given CSV data into strongly-typed objects. The :code:`CsvParser` 
-needs a :code:`CsvMapping` and :code:`CsvParserOptions` to be constructed, both are explained below and 
-you may have seen them in the :ref:`Quickstart<quickstart>` example already.
+A :code:`CsvParser` is the core of the framework. It is used to parse given CSV data into strongly-typed objects.
 
-The :code:`CsvParser` exposes two methods to read from a CSV file or a string:
+.. note:: 
 
-* :code:`ParallelQuery<CsvMappingResult<TEntity>> CsvParser.ReadFromFile<TEntity>(string fileName, Encoding encoding)`
-* :code:`ParallelQuery<CsvMappingResult<TEntity>> CsvParser.ReadFromString<TEntity>(CsvReaderOptions csvReaderOptions, string csvData)`
+    The framework uses PLINQ to support a high degree of parallelism. Working with PLINQ to build a parallel processing 
+    pipeline may not be intuitive, so reading the most important PLINQ concepts is suggested. There is a great documentation 
+    on working with Parallel LINQ at MSDN: `Parallel LINQ (PLINQ) <https://msdn.microsoft.com/en-us/library/dd460688(v=vs.110).aspx>`_.
+
+The :code:`CsvParser` exposes the methods :code:`ReadFromFile` and :code:`ReadFromString` to read CSV data from a given file or string. 
 
 A :code:`CsvMappingResult` is the result of parsing a CSV line. It contains the populated objects of type :code:`TEntity`. 
 
@@ -35,9 +36,8 @@ if you want to get a better understanding of working with PLINQ.
 CsvMapping
 ~~~~~~~~~~
 
-:code:`CsvMapping` is an abstract class, that is used to describe the mapping between your CSV data 
-and your target strongly-typed class. For parsing the CSV file with a :code:`CsvParser` you have to implement 
-the :code:`CsvMapping`, and define which column index matches to a property using :code:`MapProperty` method.
+The :code:`CsvMapping` defines the mapping between the CSV column index and the properties of a .NET object. It is an abstract base class, 
+that needs to be implemented and it exposes the :code:`MapProperty` method to define the mapping.
 
 You have seen an example for a :code:`CsvMapping` in the :ref:`Quickstart<quickstart>` document.
 
@@ -54,6 +54,8 @@ You have seen an example for a :code:`CsvMapping` in the :ref:`Quickstart<quicks
         }
     }
 
+
+    
 CsvParserOption
 ~~~~~~~~~~~~~~~
 
