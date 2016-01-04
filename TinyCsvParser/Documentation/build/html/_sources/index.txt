@@ -27,6 +27,7 @@ Topics
     sections/quickstart
     sections/overview
     sections/userguide
+    sections/faq
     sections/tutorials
     sections/benchmark
     sections/contributing
