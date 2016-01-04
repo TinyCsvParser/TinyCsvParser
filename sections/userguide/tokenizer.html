@@ -32,7 +32,7 @@
   
     <link rel="top" title="TinyCsvParser 1.1 documentation" href="../../index.html"/>
         <link rel="up" title="User Guide" href="../userguide.html"/>
-        <link rel="next" title="Learning More" href="info.html"/>
+        <link rel="next" title="☕ Parallel Processing" href="parallel.html"/>
         <link rel="prev" title="Type Converter" href="typeconverter.html"/> 
 
   
@@ -83,11 +83,12 @@
             
             
                 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../motivation.html">Motivation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Conceptual Overview</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../userguide.html">User Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="install.html">Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="concepts.html">Key Concepts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parser.html">Parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concepts.html">Concepts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="typeconverter.html">Type Converter</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="">Tokenizer</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#motivation">Motivation</a></li>
@@ -100,11 +101,13 @@
 <li class="toctree-l3"><a class="reference internal" href="#example">Example</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="parallel.html">☕ Parallel Processing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="info.html">Learning More</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../benchmark.html">Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
 </ul>
 
             
@@ -156,7 +159,7 @@
 <div class="section" id="motivation">
 <h2>Motivation<a class="headerlink" href="#motivation" title="Permalink to this headline">¶</a></h2>
 <p>There is no possible standard how CSV files are described. There is no schema, so every file you get
-may look completely different. This rules out a single strategy to tokenize a given line in your CSV
+may look completely different. This rules out one single strategy to tokenize a given line in your CSV
 data.</p>
 <p>Imagine a situation, where a column delimiter is also present in the column data like this:</p>
 <div class="highlight-python"><div class="highlight"><pre>FirstNameLastName;BirthDate
@@ -164,12 +167,12 @@ data.</p>
 &quot;&quot;Max,Mustermann&quot;,2014/01/01
 </pre></div>
 </div>
-<p>A simple <code class="code csharp docutils literal"><span class="keyword type"><span class="pre">string</span></span><span class="punctuation"><span class="pre">.</span></span><span class="name"><span class="pre">Split</span></span></code> with a comma as column delimiter will lead to wrong data, so the line needs
-to be split differently. And this is exactely where a <code class="code docutils literal"><span class="pre">Tokenizer</span></code> fits in.</p>
+<p>A simple <code class="code csharp docutils literal"><span class="keyword type"><span class="pre">string</span></span><span class="punctuation"><span class="pre">.</span></span><span class="name"><span class="pre">Split</span></span></code> with a comma as column delimiter will lead to wrong data, so the line
+needs to be split differently. And this is exactely where a <code class="code docutils literal"><span class="pre">Tokenizer</span></code> fits in.</p>
+<p>So a <code class="code docutils literal"><span class="pre">Tokenizer</span></code> is used to split a given line of your CSV data into the column data.</p>
 </div>
 <div class="section" id="available-tokenizers">
 <h2>Available Tokenizers<a class="headerlink" href="#available-tokenizers" title="Permalink to this headline">¶</a></h2>
-<p>The library comes with the following Tokenizers.</p>
 <div class="section" id="stringsplittokenizer">
 <h3>StringSplitTokenizer<a class="headerlink" href="#stringsplittokenizer" title="Permalink to this headline">¶</a></h3>
 <p>The <code class="code csharp docutils literal"><span class="name"><span class="pre">StringSplitTokenizer</span></span></code> splits a line at a given column delimiter.</p>
@@ -186,7 +189,7 @@ to be split differently. And this is exactely where a <code class="code docutils
 <div class="section" id="regularexpressiontokenizer">
 <h3>RegularExpressionTokenizer<a class="headerlink" href="#regularexpressiontokenizer" title="Permalink to this headline">¶</a></h3>
 <p>The <code class="code csharp docutils literal"><span class="name"><span class="pre">RegularExpressionTokenizer</span></span></code> is an <strong>abstract base class</strong>, that uses a regular expression
-to match a given line. If you need to match a line with a regular expression, you have to implement
+to match a given line. So if you need to match a line with a regular expression, you have to implement
 this base class.</p>
 <p>The <code class="code csharp docutils literal"><span class="name"><span class="pre">QuotedStringTokenizer</span></span></code> is a good example to start with.</p>
 </div>
@@ -295,7 +298,7 @@ So the file can&#8217;t be tokenized by only splitting at the column delimiter w
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="info.html" class="btn btn-neutral float-right" title="Learning More" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="parallel.html" class="btn btn-neutral float-right" title="☕ Parallel Processing" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="typeconverter.html" class="btn btn-neutral" title="Type Converter" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>User Guide &mdash; TinyCsvParser 1.1 documentation</title>
+  <title>Contributing &mdash; TinyCsvParser 1.1 documentation</title>
   
 
   
@@ -31,8 +31,7 @@
 
   
     <link rel="top" title="TinyCsvParser 1.1 documentation" href="../index.html"/>
-        <link rel="next" title="Installation" href="userguide/install.html"/>
-        <link rel="prev" title="Introduction to TinyCsvParser" href="overview/introduction.html"/> 
+        <link rel="prev" title="Benchmark" href="benchmark.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -84,19 +83,14 @@
                 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Conceptual Overview</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">User Guide</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="userguide/install.html">Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="userguide/parser.html">Parser</a></li>
-<li class="toctree-l2"><a class="reference internal" href="userguide/concepts.html">Concepts</a></li>
-<li class="toctree-l2"><a class="reference internal" href="userguide/typeconverter.html">Type Converter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="userguide/tokenizer.html">Tokenizer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="userguide/parallel.html">☕ Parallel Processing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="userguide/info.html">Learning More</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="userguide.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="benchmark.html">Benchmark</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#help-out">Help Out</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#building-the-documentation">Building the Documentation</a></li>
+</ul>
+</li>
 </ul>
 
             
@@ -127,11 +121,11 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../index.html">Docs</a> &raquo;</li>
       
-    <li>User Guide</li>
+    <li>Contributing</li>
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="../_sources/sections/userguide.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/sections/contributing.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -141,26 +135,54 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="user-guide">
-<span id="userguide"></span><h1>User Guide<a class="headerlink" href="#user-guide" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
+  <div class="section" id="contributing">
+<span id="id1"></span><h1>Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="help-out">
+<h2>Help Out<a class="headerlink" href="#help-out" title="Permalink to this headline">¶</a></h2>
+<p>TinyCsvParser is an open source project and there are many ways to contribute to it.</p>
+<p>Some things you could help out with are:</p>
+<ul class="simple">
+<li>Documentation (both code and features)</li>
+<li>Bug reports</li>
+<li>Bug fixes</li>
+<li>Feature requests</li>
+<li>Feature implementations</li>
+<li>Test coverage</li>
+<li>Code quality</li>
+<li>Sample applications</li>
+</ul>
 </div>
-<p>This user guide is intended to guide you through the most common tasks, that you want to
-accomplish using TinyCsvParser. The guide covers the following topics:</p>
-<dl class="docutils">
-<dt><a class="reference internal" href="userguide/install.html#userguide-install"><span>Installation</span></a></dt>
-<dd>Explains how to install TinyCsvParser or build it from source.</dd>
-<dt><a class="reference internal" href="userguide/parser.html#userguide-parser"><span>Parser</span></a></dt>
-<dd>Explains the concepts behind TinyCsvParser.</dd>
-<dt><a class="reference internal" href="userguide/concepts.html#userguide-concepts"><span>Concepts</span></a></dt>
-<dd>Define and explain the most important concepts of the library.</dd>
-<dt><a class="reference internal" href="userguide/tokenizer.html#userguide-tokenizer"><span>Tokenizer</span></a></dt>
-<dd>Explains how to use the built-in Tokenizers for custom line handling.</dd>
-<dt><a class="reference internal" href="userguide/parallel.html#userguide-parallel"><span>☕ Parallel Processing</span></a></dt>
-<dd>Explains how to build Parallel Processing pipelines.</dd>
-<dt><a class="reference internal" href="userguide/info.html#userguide-info"><span>Learning More</span></a></dt>
-<dd>See where to go next for additional information and examples.</dd>
-</dl>
+<div class="section" id="building-the-documentation">
+<h2>Building the Documentation<a class="headerlink" href="#building-the-documentation" title="Permalink to this headline">¶</a></h2>
+<p>Once you have cloned the repository to your local machine, the following instructions will walk you through installing the tools necessary to build the documentation.</p>
+<ol class="arabic simple">
+<li><a class="reference external" href="https://www.python.org/downloads/">Download python</a> version 2.7.10 or higher.</li>
+</ol>
+<p>2. If you are installing on Windows, ensure both the Python install directory and the Python scripts directory have been added to your <code class="code docutils literal"><span class="pre">PATH</span></code> environment variable.
+For example, if you install Python into the <code class="code docutils literal"><span class="pre">c:\python34</span> <span class="pre">directory</span></code>, you would add <code class="code docutils literal"><span class="pre">c:\python34;c:\python34\scripts</span></code> to your <code class="code docutils literal"><span class="pre">PATH</span></code> environment variable.</p>
+<ol class="arabic simple" start="3">
+<li>Install Sphinx by opening a command prompt and running the following Python command. (Note that this operation might take a few minutes to complete.)</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>pip install sphinx
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li>By default, when you install Sphinx, it will install the ReadTheDocs custom theme automatically. If you need to update the installed version of this theme, you should run:</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>pip install -U sphinx_rtd_theme
+</pre></div>
+</div>
+<ol class="arabic simple" start="5">
+<li>Navigate to one of the projects Documentation located at <code class="code docutils literal"><span class="pre">TinyCsvParser/Documentation/</span></code>.</li>
+<li>Run <code class="code docutils literal"><span class="pre">make</span></code> (<code class="code docutils literal"><span class="pre">make.bat</span></code> on Windows, Makefile on Mac/Linux) from command line:</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>make html
+</pre></div>
+</div>
+<ol class="arabic simple" start="7">
+<li>Once make completes, the generated docs will be in the .../Documentation/build/html directory. Simply open the <code class="code docutils literal"><span class="pre">index.html</span></code> file in your browser to see the built documentation.</li>
+</ol>
+</div>
 </div>
 
 
@@ -170,10 +192,8 @@ accomplish using TinyCsvParser. The guide covers the following topics:</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="userguide/install.html" class="btn btn-neutral float-right" title="Installation" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
-      
-        <a href="overview/introduction.html" class="btn btn-neutral" title="Introduction to TinyCsvParser" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="benchmark.html" class="btn btn-neutral" title="Benchmark" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

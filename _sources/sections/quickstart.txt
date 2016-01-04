@@ -3,8 +3,10 @@
 Quickstart
 ==========
 
-This section is only a quick tour of the most common use of TinyCsvParser. For more detailed information on custom formats and more 
-advanced use-cases, please consult the full :ref:`User Guide <userguide>`.
+This section is only a quick tour of the most common use of TinyCsvParser. For more detailed 
+information, please consult the full :ref:`User Guide <userguide>`.
+
+The :ref:`Tutorials<tutorials>` are also a good place to find more advanced use-cases.
 
 Quick Installation
 ~~~~~~~~~~~~~~~~~~
@@ -19,11 +21,6 @@ command in the `Package Manager Console <http://docs.nuget.org/consume/package-m
 
 Getting Started
 ~~~~~~~~~~~~~~~
-TinyCsvParser is a library, that is very configurable to parse all kinds of CSV data, so this section is 
-only a quick tour of the most common TinyCsvParser use-case. For more detailed information please consult 
-the full User Guide.
-
-The :ref:`Tutorials<tutorials>` are also a good place to find more advanced use-cases.
 
 Imagine we have list of persons in a CSV file :code:`persons.csv` with their first name, last name 
 and birthdate. The columns are separated by :code:`;` as column delimiter, which each line will be 
@@ -38,7 +35,7 @@ The corresponding domain model in our C# code might look like this.
 
 .. code-block:: csharp
 
-    private class Person
+    public class Person
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -47,11 +44,11 @@ The corresponding domain model in our C# code might look like this.
 
 When using `TinyCsvParser`_ you have to define the mapping between the columns in the CSV data and 
 the property in you domain model, which is done by implementing the class :code:`CsvMapping<TEntity>`, 
-where :code:`TEntity` is the class `Person`.
+where :code:`TEntity` is the class :code:`Person`.
 
 .. code-block:: csharp
 
-    private class CsvPersonMapping : CsvMapping<Person>
+    public class CsvPersonMapping : CsvMapping<Person>
     {
         public CsvPersonMapping()
             : base()
@@ -62,12 +59,12 @@ where :code:`TEntity` is the class `Person`.
         }
     }
 
-The method `MapProperty` is used to map between the column number in the CSV file and the property in the 
+The method :code:`MapProperty` is used to map between the column number in the CSV file and the property in the 
 domain model. 
 
 Then we can use the mapping to parse the CSV data with a ``CsvParser``. In the `CsvParserOptions` we are 
-defining to not skipt the header and use a `;` as column delimiter. I have assumed, that the file is encoded 
-as `ASCII`.
+defining to not skip the header and use a :code:`;` as column delimiter. I have assumed, that the file is encoded 
+as :code:`ASCII`.
 
 .. code-block:: csharp
 

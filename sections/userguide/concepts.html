@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Key Concepts &mdash; TinyCsvParser 1.1 documentation</title>
+  <title>Concepts &mdash; TinyCsvParser 1.1 documentation</title>
   
 
   
@@ -33,7 +33,7 @@
     <link rel="top" title="TinyCsvParser 1.1 documentation" href="../../index.html"/>
         <link rel="up" title="User Guide" href="../userguide.html"/>
         <link rel="next" title="Type Converter" href="typeconverter.html"/>
-        <link rel="prev" title="Installation" href="install.html"/> 
+        <link rel="prev" title="Parser" href="parser.html"/> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -83,12 +83,12 @@
             
             
                 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../motivation.html">Motivation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Conceptual Overview</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../userguide.html">User Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="install.html">Installation</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="">Key Concepts</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#csvparser">CsvParser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parser.html">Parser</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">Concepts</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#csvmapping">CsvMapping</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#csvparseroption">CsvParserOption</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#csvreaderoptions">CsvReaderOptions</a></li>
@@ -97,11 +97,13 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="typeconverter.html">Type Converter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tokenizer.html">Tokenizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parallel.html">☕ Parallel Processing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="info.html">Learning More</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../benchmark.html">Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
 </ul>
 
             
@@ -134,7 +136,7 @@
       
           <li><a href="../userguide.html">User Guide</a> &raquo;</li>
       
-    <li>Key Concepts</li>
+    <li>Concepts</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -148,36 +150,12 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="key-concepts">
-<span id="userguide-concepts"></span><h1>Key Concepts<a class="headerlink" href="#key-concepts" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="csvparser">
-<h2>CsvParser<a class="headerlink" href="#csvparser" title="Permalink to this headline">¶</a></h2>
-<p>A <code class="code docutils literal"><span class="pre">CsvParser</span></code> instance is used to parse given CSV data into strongly-typed objects. The <code class="code docutils literal"><span class="pre">CsvParser</span></code>
-needs a <code class="code docutils literal"><span class="pre">CsvMapping</span></code> and <code class="code docutils literal"><span class="pre">CsvParserOptions</span></code> to be constructed, both are explained below and
-you may have seen them in the <a class="reference internal" href="../quickstart.html#quickstart"><span>Quickstart</span></a> example already.</p>
-<p>The <code class="code docutils literal"><span class="pre">CsvParser</span></code> exposes two methods to read from a CSV file or a string:</p>
-<ul class="simple">
-<li><code class="code docutils literal"><span class="pre">ParallelQuery&lt;CsvMappingResult&lt;TEntity&gt;&gt;</span> <span class="pre">CsvParser.ReadFromFile&lt;TEntity&gt;(string</span> <span class="pre">fileName,</span> <span class="pre">Encoding</span> <span class="pre">encoding)</span></code></li>
-<li><code class="code docutils literal"><span class="pre">ParallelQuery&lt;CsvMappingResult&lt;TEntity&gt;&gt;</span> <span class="pre">CsvParser.ReadFromString&lt;TEntity&gt;(CsvReaderOptions</span> <span class="pre">csvReaderOptions,</span> <span class="pre">string</span> <span class="pre">csvData)</span></code></li>
-</ul>
-<p>A <code class="code docutils literal"><span class="pre">CsvMappingResult</span></code> is the result of parsing a CSV line. It contains the populated objects of type <code class="code docutils literal"><span class="pre">TEntity</span></code>.</p>
-<p>The <code class="code docutils literal"><span class="pre">CsvParser</span></code> doesn&#8217;t throw any exceptions during parsing, because the input data is processed in parallel and the
-<code class="code docutils literal"><span class="pre">CsvParser</span></code> can&#8217;t stop parsing, just because a single line has an error. So the <code class="code docutils literal"><span class="pre">CsvMappingResult</span></code> can also
-contain an error, if parsing a line was not successful.</p>
-<p>If the <code class="code docutils literal"><span class="pre">CsvMappingResult</span></code> is valid, which can be checked with <code class="code docutils literal"><span class="pre">CsvMappingResult&lt;TEntity&gt;.IsValid</span></code>, then the property
-<code class="code docutils literal"><span class="pre">CsvMappingResult&lt;TEntity&gt;.Result</span></code> contains the populated object. And if there was an error during parsing a CSV line, then
-the property <cite>CsvMappingResult&lt;TEntity&gt;.Error</cite> is populated with the error and problematic value.</p>
-<p>The data is processed in parallel, that is why a <code class="code docutils literal"><span class="pre">ParallelQuery</span></code> is returned. You have full control over the degree of parallelism
-by defining the threads in the <code class="code docutils literal"><span class="pre">CsvParserOptions</span></code>. Please note: Reading the file from disk is of course done sequentially, and the
-following processing pipeline is parallelized.</p>
-<p>There is a huge MSDN documentation on working at: <a class="reference external" href="https://msdn.microsoft.com/en-us/library/dd460688(v=vs.110).aspx">Parallel LINQ (MSDN)</a>,
-if you want to get a better understanding of working with PLINQ.</p>
-</div>
+  <div class="section" id="concepts">
+<span id="userguide-concepts"></span><h1>Concepts<a class="headerlink" href="#concepts" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="csvmapping">
 <h2>CsvMapping<a class="headerlink" href="#csvmapping" title="Permalink to this headline">¶</a></h2>
-<p><code class="code docutils literal"><span class="pre">CsvMapping</span></code> is an abstract class, that is used to describe the mapping between your CSV data
-and your target strongly-typed class. For parsing the CSV file with a <code class="code docutils literal"><span class="pre">CsvParser</span></code> you have to implement
-the <code class="code docutils literal"><span class="pre">CsvMapping</span></code>, and define which column index matches to a property using <code class="code docutils literal"><span class="pre">MapProperty</span></code> method.</p>
+<p>The <code class="code docutils literal"><span class="pre">CsvMapping</span></code> defines the mapping between the CSV column index and the properties of a .NET object. It is an abstract base class,
+that needs to be implemented and it exposes the <code class="code docutils literal"><span class="pre">MapProperty</span></code> method to define the mapping.</p>
 <p>You have seen an example for a <code class="code docutils literal"><span class="pre">CsvMapping</span></code> in the <a class="reference internal" href="../quickstart.html#quickstart"><span>Quickstart</span></a> document.</p>
 <div class="highlight-csharp"><div class="highlight"><pre><span class="k">private</span> <span class="k">class</span> <span class="nc">CsvPersonMapping</span> <span class="p">:</span> <span class="n">CsvMapping</span><span class="p">&lt;</span><span class="n">Person</span><span class="p">&gt;</span>
 <span class="p">{</span>
@@ -283,7 +261,7 @@ not possible due to an error, then the property <code class="code docutils liter
         <a href="typeconverter.html" class="btn btn-neutral float-right" title="Type Converter" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="install.html" class="btn btn-neutral" title="Installation" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="parser.html" class="btn btn-neutral" title="Parser" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
