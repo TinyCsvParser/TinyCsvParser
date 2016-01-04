@@ -19,6 +19,19 @@ Some things you could help out with are:
 * Code quality
 * Sample applications
 
+Open Source
+~~~~~~~~~~~
+
+The TinyCsvParser project is hosted on GitHub at:
+
+* `https://github.com/bytefish/TinyCsvParser <https://github.com/bytefish/TinyCsvParser>`_
+
+Want to get your hands on the sources? Then clone the repository using the following git command:
+
+::
+
+    git clone https://github.com/bytefish/TinyCsvParser
+
 Building the Documentation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 

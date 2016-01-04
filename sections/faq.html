@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>User Guide &mdash; TinyCsvParser 1.1 documentation</title>
+  <title>FAQ &mdash; TinyCsvParser 1.1 documentation</title>
   
 
   
@@ -31,8 +31,8 @@
 
   
     <link rel="top" title="TinyCsvParser 1.1 documentation" href="../index.html"/>
-        <link rel="next" title="Installation" href="userguide/install.html"/>
-        <link rel="prev" title="Introduction to TinyCsvParser" href="overview/introduction.html"/> 
+        <link rel="next" title="Tutorials" href="tutorials.html"/>
+        <link rel="prev" title="Learning More" href="userguide/info.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -84,17 +84,8 @@
                 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Conceptual Overview</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">User Guide</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="userguide/install.html">Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="userguide/parser.html">Parser</a></li>
-<li class="toctree-l2"><a class="reference internal" href="userguide/concepts.html">Concepts</a></li>
-<li class="toctree-l2"><a class="reference internal" href="userguide/typeconverter.html">Type Converter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="userguide/tokenizer.html">Tokenizer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="userguide/parallel.html">☕ Parallel Processing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="userguide/info.html">Learning More</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="userguide.html">User Guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="benchmark.html">Benchmark</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
@@ -128,11 +119,11 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../index.html">Docs</a> &raquo;</li>
       
-    <li>User Guide</li>
+    <li>FAQ</li>
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="../_sources/sections/userguide.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/sections/faq.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -142,26 +133,39 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="user-guide">
-<span id="userguide"></span><h1>User Guide<a class="headerlink" href="#user-guide" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-</div>
-<p>This user guide is intended to guide you through the most common tasks, that you want to
-accomplish using TinyCsvParser. The guide covers the following topics:</p>
-<dl class="docutils">
-<dt><a class="reference internal" href="userguide/install.html#userguide-install"><span>Installation</span></a></dt>
-<dd>Explains how to install TinyCsvParser or build it from source.</dd>
-<dt><a class="reference internal" href="userguide/parser.html#userguide-parser"><span>Parser</span></a></dt>
-<dd>Explains the concepts behind TinyCsvParser.</dd>
-<dt><a class="reference internal" href="userguide/concepts.html#userguide-concepts"><span>Concepts</span></a></dt>
-<dd>Define and explain the most important concepts of the library.</dd>
-<dt><a class="reference internal" href="userguide/tokenizer.html#userguide-tokenizer"><span>Tokenizer</span></a></dt>
-<dd>Explains how to use the built-in Tokenizers for custom line handling.</dd>
-<dt><a class="reference internal" href="userguide/parallel.html#userguide-parallel"><span>☕ Parallel Processing</span></a></dt>
-<dd>Explains how to build Parallel Processing pipelines.</dd>
-<dt><a class="reference internal" href="userguide/info.html#userguide-info"><span>Learning More</span></a></dt>
-<dd>See where to go next for additional information and examples.</dd>
+  <div class="section" id="faq">
+<span id="id1"></span><h1>FAQ<a class="headerlink" href="#faq" title="Permalink to this headline">¶</a></h1>
+<p>This is a list of Frequently Asked Questions (FAQ) about TinyCsvParser.</p>
+<ul>
+<li><dl class="first docutils">
+<dt>Why is my CSV data split into wrong columns?</dt>
+<dd><ul class="first last">
+<li><p class="first">By default the CSV data is split at the column delimiter given in the <code class="code docutils literal"><span class="pre">CsvParserOptions</span></code>. If the column delimiter is also present in the column data,
+then a simple split will lead to wrong column data.</p>
+<p>In this situation you need to use a custom <a class="reference internal" href="userguide/tokenizer.html#userguide-tokenizer"><span>Tokenizer</span></a>, please see the section on <a class="reference internal" href="userguide/tokenizer.html#userguide-tokenizer"><span>Tokenizers</span></a> for a detailed introduction.</p>
+</li>
+</ul>
+</dd>
 </dl>
+</li>
+<li><dl class="first docutils">
+<dt>How can I parse CSV data coming in a custom format?</dt>
+<dd><ul class="first last simple">
+<li>All built-in converters support format strings and other advanced formatting options. Please see the detailed guide on <a class="reference internal" href="userguide/typeconverter.html#userguide-type-converter"><span>Type Converter</span></a>
+and have a look at the tutorial on <a class="reference internal" href="tutorials/custom_formats.html#tutorials-custom-formats"><span>Parsing Custom Formats</span></a>.</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Can I contribute to the project?</dt>
+<dd><ul class="first last simple">
+<li><strong>Yes!</strong> You can help out with code, documentation, bug reports, bug fixes, ... Please see the section on <a class="reference internal" href="contributing.html#contributing"><span>Contributing</span></a>.</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
 </div>
 
 
@@ -171,10 +175,10 @@ accomplish using TinyCsvParser. The guide covers the following topics:</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="userguide/install.html" class="btn btn-neutral float-right" title="Installation" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="tutorials.html" class="btn btn-neutral float-right" title="Tutorials" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="overview/introduction.html" class="btn btn-neutral" title="Introduction to TinyCsvParser" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="userguide/info.html" class="btn btn-neutral" title="Learning More" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
