@@ -35,7 +35,7 @@ The corresponding domain model in our C# code might look like this.
 
 .. code-block:: csharp
 
-    private class Person
+    public class Person
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -48,7 +48,7 @@ where :code:`TEntity` is the class :code:`Person`.
 
 .. code-block:: csharp
 
-    private class CsvPersonMapping : CsvMapping<Person>
+    public class CsvPersonMapping : CsvMapping<Person>
     {
         public CsvPersonMapping()
             : base()

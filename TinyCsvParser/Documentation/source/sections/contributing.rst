@@ -24,7 +24,7 @@ Building the Documentation
 
 Once you have cloned the repository to your local machine, the following instructions will walk you through installing the tools necessary to build the documentation.
 
-1. :code:`Download python <https://www.python.org/downloads/>`_ version 2.7.10 or higher.
+1. `Download python <https://www.python.org/downloads/>`_ version 2.7.10 or higher.
 
 2. If you are installing on Windows, ensure both the Python install directory and the Python scripts directory have been added to your :code:`PATH` environment variable. 
 For example, if you install Python into the :code:`c:\python34 directory`, you would add :code:`c:\python34;c:\python34\scripts` to your :code:`PATH` environment variable.

@@ -1,37 +1,7 @@
 .. _userguide_concepts:
 
-Key Concepts
-============
-
-CsvParser
-~~~~~~~~~
-
-A :code:`CsvParser` is the core of the framework. It is used to parse given CSV data into strongly-typed objects.
-
-.. note:: 
-
-    The framework uses PLINQ to support a high degree of parallelism. Working with PLINQ to build a parallel processing 
-    pipeline may not be intuitive, so reading the most important PLINQ concepts is suggested. There is a great documentation 
-    on working with Parallel LINQ at MSDN: `Parallel LINQ (PLINQ) <https://msdn.microsoft.com/en-us/library/dd460688(v=vs.110).aspx>`_.
-
-The :code:`CsvParser` exposes the methods :code:`ReadFromFile` and :code:`ReadFromString` to read CSV data from a given file or string. 
-
-A :code:`CsvMappingResult` is the result of parsing a CSV line. It contains the populated objects of type :code:`TEntity`. 
-
-The :code:`CsvParser` doesn't throw any exceptions during parsing, because the input data is processed in parallel and the 
-:code:`CsvParser` can't stop parsing, just because a single line has an error. So the :code:`CsvMappingResult` can also 
-contain an error, if parsing a line was not successful.
-
-If the :code:`CsvMappingResult` is valid, which can be checked with :code:`CsvMappingResult<TEntity>.IsValid`, then the property 
-:code:`CsvMappingResult<TEntity>.Result` contains the populated object. And if there was an error during parsing a CSV line, then 
-the property `CsvMappingResult<TEntity>.Error` is populated with the error and problematic value.
-
-The data is processed in parallel, that is why a :code:`ParallelQuery` is returned. You have full control over the degree of parallelism 
-by defining the threads in the :code:`CsvParserOptions`. Please note: Reading the file from disk is of course done sequentially, and the 
-following processing pipeline is parallelized. 
-
-There is a huge MSDN documentation on working at: `Parallel LINQ (MSDN) <https://msdn.microsoft.com/en-us/library/dd460688(v=vs.110).aspx>`_, 
-if you want to get a better understanding of working with PLINQ.
+Concepts
+========
 
 CsvMapping
 ~~~~~~~~~~
