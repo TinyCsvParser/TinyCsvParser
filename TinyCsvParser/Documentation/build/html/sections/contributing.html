@@ -168,32 +168,31 @@
 <div class="section" id="building-the-documentation">
 <h2>Building the Documentation<a class="headerlink" href="#building-the-documentation" title="Permalink to this headline">¶</a></h2>
 <p>Once you have cloned the repository to your local machine, the following instructions will walk you through installing the tools necessary to build the documentation.</p>
-<ol class="arabic simple">
-<li><a class="reference external" href="https://www.python.org/downloads/">Download python</a> version 2.7.10 or higher.</li>
-</ol>
-<p>2. If you are installing on Windows, ensure both the Python install directory and the Python scripts directory have been added to your <code class="code docutils literal"><span class="pre">PATH</span></code> environment variable.
+<ol class="arabic">
+<li><p class="first"><a class="reference external" href="https://www.python.org/downloads/">Download python</a> version 2.7.10 or higher.</p>
+</li>
+<li><p class="first">If you are installing on Windows, ensure both the Python install directory and the Python scripts directory have been added to your <code class="code docutils literal"><span class="pre">PATH</span></code> environment variable.
 For example, if you install Python into the <code class="code docutils literal"><span class="pre">c:\python34</span> <span class="pre">directory</span></code>, you would add <code class="code docutils literal"><span class="pre">c:\python34;c:\python34\scripts</span></code> to your <code class="code docutils literal"><span class="pre">PATH</span></code> environment variable.</p>
-<ol class="arabic simple" start="3">
-<li>Install Sphinx by opening a command prompt and running the following Python command. (Note that this operation might take a few minutes to complete.)</li>
-</ol>
+</li>
+<li><p class="first">Install Sphinx by opening a command prompt and running the following Python command. (Note that this operation might take a few minutes to complete.)</p>
 <div class="highlight-python"><div class="highlight"><pre>pip install sphinx
 </pre></div>
 </div>
-<ol class="arabic simple" start="4">
-<li>By default, when you install Sphinx, it will install the ReadTheDocs custom theme automatically. If you need to update the installed version of this theme, you should run:</li>
-</ol>
+</li>
+<li><p class="first">By default, when you install Sphinx, it will install the ReadTheDocs custom theme automatically. If you need to update the installed version of this theme, you should run:</p>
 <div class="highlight-python"><div class="highlight"><pre>pip install -U sphinx_rtd_theme
 </pre></div>
 </div>
-<ol class="arabic simple" start="5">
-<li>Navigate to one of the projects Documentation located at <code class="code docutils literal"><span class="pre">TinyCsvParser/Documentation/</span></code>.</li>
-<li>Run <code class="code docutils literal"><span class="pre">make</span></code> (<code class="code docutils literal"><span class="pre">make.bat</span></code> on Windows, Makefile on Mac/Linux) from command line:</li>
-</ol>
+</li>
+<li><p class="first">Navigate to one of the projects Documentation located at <code class="code docutils literal"><span class="pre">TinyCsvParser/Documentation/</span></code>.</p>
+</li>
+<li><p class="first">Run <code class="code docutils literal"><span class="pre">make</span></code> (<code class="code docutils literal"><span class="pre">make.bat</span></code> on Windows, Makefile on Mac/Linux) from command line:</p>
 <div class="highlight-python"><div class="highlight"><pre>make html
 </pre></div>
 </div>
-<ol class="arabic simple" start="7">
-<li>Once make completes, the generated docs will be in the .../Documentation/build/html directory. Simply open the <code class="code docutils literal"><span class="pre">index.html</span></code> file in your browser to see the built documentation.</li>
+</li>
+<li><p class="first">Once make completes, the generated docs will be in the <code class="code docutils literal"><span class="pre">.../Documentation/build/html</span></code> directory. Simply open the <code class="code docutils literal"><span class="pre">index.html</span></code> file in your browser to see the built documentation.</p>
+</li>
 </ol>
 </div>
 </div>

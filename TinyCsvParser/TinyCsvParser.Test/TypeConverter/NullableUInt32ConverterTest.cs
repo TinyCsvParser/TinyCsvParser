@@ -25,9 +25,9 @@ namespace TinyCsvParser.Test.TypeConverter
                     MakeTuple(UInt32.MaxValue.ToString(), UInt32.MaxValue),
                     MakeTuple("0", 0),
                     MakeTuple("1000", 1000),
-                    MakeTuple(" ", default(UInt16?)),
-                    MakeTuple(null, default(UInt16?)),
-                    MakeTuple(string.Empty, default(UInt16?))
+                    MakeTuple(" ", default(UInt32?)),
+                    MakeTuple(null, default(UInt32?)),
+                    MakeTuple(string.Empty, default(UInt32?))
                 };
             }
         }
