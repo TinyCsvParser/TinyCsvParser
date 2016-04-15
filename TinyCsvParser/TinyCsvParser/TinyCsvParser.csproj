@@ -51,9 +51,11 @@
     <Compile Include="Mapping\CsvPropertyMapping.cs" />
     <Compile Include="Exceptions\CsvTypeConverterNotRegisteredException.cs" />
     <Compile Include="Mapping\ICsvPropertyMapping.cs" />
+    <Compile Include="Tokenizer\Decorators\PostProcessingTokenizerDecorator.cs" />
     <Compile Include="Tokenizer\ITokenizer.cs" />
     <Compile Include="Tokenizer\RegularExpressions\QuotedStringTokenizer.cs" />
     <Compile Include="Tokenizer\RegularExpressions\RegularExpressionTokenizer.cs" />
+    <Compile Include="Tokenizer\FixedLengthTokenizer.cs" />
     <Compile Include="Tokenizer\StringSplitTokenizer.cs" />
     <Compile Include="TypeConverter\DoubleConverter.cs" />
     <Compile Include="TypeConverter\BoolConverter.cs" />
@@ -96,9 +98,6 @@
     <Compile Include="TypeConverter\Int64Converter.cs" />
     <Compile Include="TypeConverter\DateTimeConverter.cs" />
     <Compile Include="TypeConverter\ITypeConverter.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
