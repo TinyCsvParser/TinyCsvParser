@@ -51,7 +51,7 @@
     <Compile Include="Mapping\CsvPropertyMapping.cs" />
     <Compile Include="Exceptions\CsvTypeConverterNotRegisteredException.cs" />
     <Compile Include="Mapping\ICsvPropertyMapping.cs" />
-    <Compile Include="Tokenizer\Decorators\PostProcessingTokenizerDecorator.cs" />
+    <Compile Include="Tokenizer\Decorators\TokenizerProcessingDecorator.cs" />
     <Compile Include="Tokenizer\ITokenizer.cs" />
     <Compile Include="Tokenizer\RegularExpressions\QuotedStringTokenizer.cs" />
     <Compile Include="Tokenizer\RegularExpressions\RegularExpressionTokenizer.cs" />
