@@ -154,6 +154,55 @@ The :code:`Tokenizer` is set in the :code:`CsvParserOptions`.
         }
     }
 
+FixedLengthTokenizer
+""""""""""""""""""""
+
+Sometimes you need to parse a CSV file, that is defined by fixed width columns. The :code:`FixedLengthTokenizer` addresses this problem and makes 
+it possible to define columns by their start and end position in a given file. The :code:`FixedLengthTokenizer` takes a list of 
+:code:`FixedLengthTokenizer.ColumnDefinition`, which define the columns of the file.
+
+Example 
+~~~~~~~
+
+In the following example the textual input is split into two columns. The first column is between index 0 and 10, and the second column is between the 
+index 10 and 20. You can see, that these values build the list of :code:`ColumnDefinition`, which are passed into the :code:`FixedLengthTokenizer`.
+
+.. code-block:: csharp
+
+	// Copyright (c) Philipp Wagner. All rights reserved.
+	// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
+	using NUnit.Framework;
+	using System.Text;
+	using TinyCsvParser.Tokenizer;
+
+	namespace TinyCsvParser.Test.Tokenizer
+	{
+		[TestFixture]
+		public class FixedLengthTokenizerTests
+		{
+			[Test]
+			public void Tokenize_Line_Test()
+			{
+				var columns = new[] {
+					new FixedLengthTokenizer.ColumnDefinition(0, 10),
+					new FixedLengthTokenizer.ColumnDefinition(10, 20),
+				};
+
+				var tokenizer = new FixedLengthTokenizer(columns);
+				
+				var input = new StringBuilder()
+					.AppendLine("Philipp   Wagner    ")
+					.ToString();
+
+				var result = tokenizer.Tokenize(input);
+
+				Assert.AreEqual("Philipp   ", result[0]);
+				Assert.AreEqual("Wagner    ", result[1]);
+			}
+		 }
+	}
+
 .. _TinyCsvParser: https://github.com/bytefish/TinyCsvParser
 .. _NUnit: http://www.nunit.org
 .. MIT License: https://opensource.org/licenses/MIT
