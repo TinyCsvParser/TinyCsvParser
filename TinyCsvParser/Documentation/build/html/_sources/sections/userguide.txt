@@ -11,6 +11,7 @@ User Guide
     userguide/concepts
     userguide/typeconverter
     userguide/tokenizer
+	userguide/postprocessing
     userguide/parallel
     userguide/info
 
@@ -29,6 +30,9 @@ accomplish using TinyCsvParser. The guide covers the following topics:
 :ref:`userguide_tokenizer`
 	Explains how to use the built-in Tokenizers for custom line handling.
 
+:ref:`userguide_pre_and_postprocessing`
+	Explains how to preprocess and postprocess data for parsing.
+	
 :ref:`userguide_parallel`
 	Explains how to build Parallel Processing pipelines.
     

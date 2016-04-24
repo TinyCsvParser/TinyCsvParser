@@ -35,7 +35,7 @@ Topics
 Getting involved
 ~~~~~~~~~~~~~~~~
 
-Want to get involved? Learn :ref:`how to contribute <contributing>` and visit the `GitHub repository <https://github.com/bytefish/TinyCsvParser>`_!
+Want to get involved? Learn :ref:`how to contribute <contributing>` and visit the `GitHub repository <https://github.com/bytefish/TinyCsvParser>`_.
     
 Indices and tables
 """"""""""""""""""
