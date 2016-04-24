@@ -68,7 +68,7 @@ Is tokenized into the following values:
 * :code:`1986/05/12`
 
 Example 
-~~~~~~~
+^^^^^^^
 
 Imagine a CSV file contains a list of persons with the following data:
 
@@ -154,6 +154,7 @@ The :code:`Tokenizer` is set in the :code:`CsvParserOptions`.
         }
     }
 
+
 FixedLengthTokenizer
 """"""""""""""""""""
 
@@ -162,7 +163,7 @@ it possible to define columns by their start and end position in a given file. T
 :code:`FixedLengthTokenizer.ColumnDefinition`, which define the columns of the file.
 
 Example 
-~~~~~~~
+^^^^^^^
 
 In the following example the textual input is split into two columns. The first column is between index 0 and 10, and the second column is between the 
 index 10 and 20. You can see, that these values build the list of :code:`ColumnDefinition`, which are passed into the :code:`FixedLengthTokenizer`.
