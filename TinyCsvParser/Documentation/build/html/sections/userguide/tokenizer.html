@@ -32,7 +32,7 @@
   
     <link rel="top" title="TinyCsvParser 1.2 documentation" href="../../index.html"/>
         <link rel="up" title="User Guide" href="../userguide.html"/>
-        <link rel="next" title="☕ Parallel Processing" href="parallel.html"/>
+        <link rel="next" title="Preprocessing and Postprocessing" href="postprocessing.html"/>
         <link rel="prev" title="Type Converter" href="typeconverter.html"/> 
 
   
@@ -96,15 +96,12 @@
 <li class="toctree-l4"><a class="reference internal" href="#stringsplittokenizer">StringSplitTokenizer</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#regularexpressiontokenizer">RegularExpressionTokenizer</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#quotedstringtokenizer">QuotedStringTokenizer</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#example">Example</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#fixedlengthtokenizer">FixedLengthTokenizer</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#id1">Example</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="postprocessing.html">Preprocessing and Postprocessing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="parallel.html">☕ Parallel Processing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="info.html">Learning More</a></li>
 </ul>
@@ -211,10 +208,8 @@ like:</p>
 <li><code class="code docutils literal"><span class="pre">Philipp,Wagner</span></code></li>
 <li><code class="code docutils literal"><span class="pre">1986/05/12</span></code></li>
 </ul>
-</div>
-</div>
 <div class="section" id="example">
-<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<h4>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h4>
 <p>Imagine a CSV file contains a list of persons with the following data:</p>
 <div class="highlight-python"><div class="highlight"><pre>FirstNameLastName;BirthDate
 &quot;Philipp,Wagner&quot;,1986/05/12
@@ -293,15 +288,15 @@ So the file can&#8217;t be tokenized by only splitting at the column delimiter w
 <span class="p">}</span>
 </pre></div>
 </div>
+</div>
+</div>
 <div class="section" id="fixedlengthtokenizer">
 <h3>FixedLengthTokenizer<a class="headerlink" href="#fixedlengthtokenizer" title="Permalink to this headline">¶</a></h3>
 <p>Sometimes you need to parse a CSV file, that is defined by fixed width columns. The <code class="code docutils literal"><span class="pre">FixedLengthTokenizer</span></code> addresses this problem and makes
 it possible to define columns by their start and end position in a given file. The <code class="code docutils literal"><span class="pre">FixedLengthTokenizer</span></code> takes a list of
 <code class="code docutils literal"><span class="pre">FixedLengthTokenizer.ColumnDefinition</span></code>, which define the columns of the file.</p>
-</div>
-</div>
 <div class="section" id="id1">
-<h2>Example<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<h4>Example<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
 <p>In the following example the textual input is split into two columns. The first column is between index 0 and 10, and the second column is between the
 index 10 and 20. You can see, that these values build the list of <code class="code docutils literal"><span class="pre">ColumnDefinition</span></code>, which are passed into the <code class="code docutils literal"><span class="pre">FixedLengthTokenizer</span></code>.</p>
 <div class="highlight-csharp"><div class="highlight"><pre><span class="c1">// Copyright (c) Philipp Wagner. All rights reserved.</span>
@@ -341,6 +336,8 @@ index 10 and 20. You can see, that these values build the list of <code class="c
 </div>
 </div>
 </div>
+</div>
+</div>
 
 
            </div>
@@ -349,7 +346,7 @@ index 10 and 20. You can see, that these values build the list of <code class="c
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="parallel.html" class="btn btn-neutral float-right" title="☕ Parallel Processing" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="postprocessing.html" class="btn btn-neutral float-right" title="Preprocessing and Postprocessing" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="typeconverter.html" class="btn btn-neutral" title="Type Converter" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
