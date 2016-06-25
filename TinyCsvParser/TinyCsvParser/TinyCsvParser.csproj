@@ -56,6 +56,8 @@
     <Compile Include="Tokenizer\RegularExpressions\QuotedStringTokenizer.cs" />
     <Compile Include="Tokenizer\RegularExpressions\RegularExpressionTokenizer.cs" />
     <Compile Include="Tokenizer\FixedLengthTokenizer.cs" />
+    <Compile Include="Tokenizer\Rfc4180\Token.cs" />
+    <Compile Include="Tokenizer\Rfc4180\TokenTypeEnum.cs" />
     <Compile Include="Tokenizer\StringSplitTokenizer.cs" />
     <Compile Include="TypeConverter\DoubleConverter.cs" />
     <Compile Include="TypeConverter\BoolConverter.cs" />
