@@ -9,6 +9,7 @@ namespace TinyCsvParser.Test.Tokenizer
     [TestFixture]
     public class Rfc4180TokenizerTest
     {
+        [Test]
         public void Rfc4180_QuotedString_Test()
         {
             var tokenizer = new Rfc4180Tokenizer();
@@ -20,6 +21,10 @@ namespace TinyCsvParser.Test.Tokenizer
             var tokens = tokenizer.Tokenize(line);
 
             // And make sure the Quotes are retained:
+            Assert.IsNotNull(tokens);
+
+            Assert.AreEqual(3, tokens.Length);
+
             Assert.AreEqual("Michael, Chester", tokens[0]);
             Assert.AreEqual("24", tokens[1]);
             Assert.AreEqual("Also goes by \"\"Mike\"\", among friends that is", tokens[2]);
