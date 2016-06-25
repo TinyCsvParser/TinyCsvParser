@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// Copyright (c) Philipp Wagner. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
+using System;
 
 namespace TinyCsvParser.Tokenizer.Rfc4180
 {
@@ -21,6 +20,11 @@ namespace TinyCsvParser.Tokenizer.Rfc4180
         {
             Type = type;
             Content = content;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("Token (Type = {0}, Content = {1})", Type, Content);
         }
     }
 }
