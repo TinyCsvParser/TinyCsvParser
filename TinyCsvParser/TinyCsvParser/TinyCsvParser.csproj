@@ -56,6 +56,9 @@
     <Compile Include="Tokenizer\RegularExpressions\QuotedStringTokenizer.cs" />
     <Compile Include="Tokenizer\RegularExpressions\RegularExpressionTokenizer.cs" />
     <Compile Include="Tokenizer\FixedLengthTokenizer.cs" />
+    <Compile Include="Tokenizer\Rfc4180\Constants.cs" />
+    <Compile Include="Tokenizer\Rfc4180\Options.cs" />
+    <Compile Include="Tokenizer\Rfc4180\Reader.cs" />
     <Compile Include="Tokenizer\Rfc4180\Rfc4180Tokenizer.cs" />
     <Compile Include="Tokenizer\Rfc4180\Token.cs" />
     <Compile Include="Tokenizer\Rfc4180\TokenTypeEnum.cs" />

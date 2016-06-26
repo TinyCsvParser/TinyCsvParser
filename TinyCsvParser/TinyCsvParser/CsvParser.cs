@@ -32,14 +32,23 @@ namespace TinyCsvParser
                 .Skip(options.SkipHeader ? 1 : 0)
                 .AsParallel();
 
+            // If you want to get the same order as in the CSV file, this option needs to be set:
             if (options.KeepOrder)
             {
                 query = query.AsOrdered();
             }
 
-            return query
+            query = query
                 .WithDegreeOfParallelism(options.DegreeOfParallelism)
-                .Where(line => !string.IsNullOrWhiteSpace(line))
+                .Where(line => !string.IsNullOrWhiteSpace(line));
+
+            // Ignore Lines, that start with a comment character:
+            if(!string.IsNullOrWhiteSpace(options.CommentCharacter)) 
+            {
+                query = query.Where(line => !line.StartsWith(options.CommentCharacter));
+            }
+                
+            return query
                 .Select(line => options.Tokenizer.Tokenize(line))
                 .Select(fields => mapping.Map(fields));
         }

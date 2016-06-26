@@ -6,6 +6,7 @@ using System;
 using System.Linq;
 using System.Text;
 using TinyCsvParser.Mapping;
+using TinyCsvParser.Tokenizer;
 
 namespace TinyCsvParser.Test.CsvParser
 {
@@ -211,6 +212,34 @@ namespace TinyCsvParser.Test.CsvParser
             Assert.AreEqual(1986, result[0].Result.BirthDate.Year);
             Assert.AreEqual(5, result[0].Result.BirthDate.Month);
             Assert.AreEqual(12, result[0].Result.BirthDate.Day);
+        }
+
+        [Test]
+        public void CommentLineTest()
+        {
+            CsvParserOptions csvParserOptions = new CsvParserOptions(true, "#", new StringSplitTokenizer(new [] {';'}, false));
+            CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
+            CsvPersonMapping csvMapper = new CsvPersonMapping();
+            CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
+
+            var stringBuilder = new StringBuilder()
+                .AppendLine("FirstName;LastName;BirthDate")
+                .AppendLine("#Philipp;Wagner;1986/05/12")
+                .AppendLine("Max;Mustermann;2014/01/01");
+
+            var result = csvParser
+                .ReadFromString(csvReaderOptions, stringBuilder.ToString())
+                .Where(x => x.IsValid)
+                .ToList();
+
+            Assert.AreEqual(1, result.Count);
+
+            Assert.AreEqual("Max", result[0].Result.FirstName);
+            Assert.AreEqual("Mustermann", result[0].Result.LastName);
+
+            Assert.AreEqual(2014, result[0].Result.BirthDate.Year);
+            Assert.AreEqual(1, result[0].Result.BirthDate.Month);
+            Assert.AreEqual(1, result[0].Result.BirthDate.Day);
         }
     }
 }

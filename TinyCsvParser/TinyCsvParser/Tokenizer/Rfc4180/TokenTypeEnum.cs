@@ -7,6 +7,7 @@ namespace TinyCsvParser.Tokenizer.Rfc4180
     {
         Invalid,
         Token,
-        Comment
+        Comment,
+        EndOfRecord
     }
 }

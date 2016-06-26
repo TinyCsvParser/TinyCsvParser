@@ -2,24 +2,20 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
+using System.Text;
 
 namespace TinyCsvParser.Tokenizer.Rfc4180
 {
     public class Token
     {
-        public readonly TokenTypeEnum Type;
+        public TokenTypeEnum Type;
 
-        public readonly string Content;
+        public StringBuilder Content;
 
-        public Token(TokenTypeEnum type)
-            : this(type, string.Empty)
+        public Token()
         {
-        }
-
-        public Token(TokenTypeEnum type, String content)
-        {
-            Type = type;
-            Content = content;
+            Type = TokenTypeEnum.Invalid;
+            Content = new StringBuilder();
         }
 
         public override string ToString()

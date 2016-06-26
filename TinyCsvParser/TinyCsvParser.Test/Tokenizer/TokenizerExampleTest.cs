@@ -31,7 +31,7 @@ namespace TinyCsvParser.Test.Tokenizer
         [Test]
         public void QuotedStringTokenizerExampleTest()
         {
-            CsvParserOptions csvParserOptions = new CsvParserOptions(true, new QuotedStringTokenizer(','));
+            CsvParserOptions csvParserOptions = new CsvParserOptions(true, string.Empty, new QuotedStringTokenizer(','));
             CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
             CsvPersonMapping csvMapper = new CsvPersonMapping();
             CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
