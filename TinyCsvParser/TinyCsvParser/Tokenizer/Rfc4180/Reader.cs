@@ -1,33 +1,38 @@
-﻿// Adapted from: https://github.com/apache/commons-csv/blob/trunk/src/main/java/org/apache/commons/csv/Lexer.java
-//
-// This needs to be turned into a more generic state machine for simpler verification of the Lexer. It is 
-// not finished yet and may not be RFC 4180-compliant already.
-//
-// The Original License:
-/*
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+﻿// Copyright (c) Philipp Wagner. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace TinyCsvParser.Tokenizer.RFC4180
 {
     public class Reader
     {
+        public enum TokenType
+        {
+            Token,
+            EndOfRecord
+        }
+
+        public class Token
+        {
+            public readonly TokenType Type;
+
+            public readonly string Content;
+
+            public Token(TokenType type)
+                : this(type, string.Empty)
+            {
+            }
+
+            public Token(TokenType type, string content)
+            {
+                Type = type;
+                Content = content;
+            }
+        }
+
         private Options options;
 
         public Reader(Options options)
@@ -37,159 +42,138 @@ namespace TinyCsvParser.Tokenizer.RFC4180
 
         public IList<Token> ReadTokens(StringReader reader)
         {
-            var result = new List<Token>();
-
+            var tokens = new List<Token>();
             while (true)
             {
-                // Get the Next Token from the Stream:
                 Token token = NextToken(reader);
-
-                // Add to the Result list:
-                result.Add(token);
-
-                // Break on End of Stream:
-                if (token.Type != TokenTypeEnum.Token)
+                if (token.Type == TokenType.EndOfRecord)
                 {
                     break;
                 }
+                tokens.Add(token);
             }
-
-            return result;
+            return tokens;
         }
-        
+
         private Token NextToken(StringReader reader)
         {
-            Token token = new Token();
+            Skip(reader);
 
-            int c = reader.Read();
-            if (IsQuoteChar(c))
+            string result = string.Empty;
+
+            int c = reader.Peek();
+            if (c == options.DelimiterCharacter)
             {
-                ParseEncapsulatedToken(reader, token);
+                reader.Read();
+
+                return new Token(TokenType.EndOfRecord);
             }
             else
             {
-                ParseSimpleToken(reader, token, c);
-            }
-            return token;
-        }
+                if (IsQuoteCharacter(c))
+                {
+                    result = ReadQuoted(reader);
 
-        private void ParseSimpleToken(StringReader reader, Token token, int ch)
-        {
-            while (true)
-            {
-                if (ch == -1)
-                {
-                    token.Type = TokenTypeEnum.EndOfRecord;
-                    break;
-                }
-                else if (IsDelimiter(ch))
-                {
-                    token.Type = TokenTypeEnum.Token;
-                    break;
-                }
-                else if (IsEscape(ch))
-                {
-                    token.Content.Append((char)ReadEscaped(reader));
-                }
-                else
-                {
-                    token.Content.Append((char)ch);
-                }
-                ch = reader.Read();
-            }
-        }
+                    Skip(reader);
 
-        private Token ParseEncapsulatedToken(StringReader reader, Token token)
-        {
-            int c;
-            while (true)
-            {
-                c = reader.Read();
-                // Stop Processing, if we encounter the end of the Stream:
-                if (c == -1)
+                    if (IsDelimiter(reader.Peek()))
+                    {
+                        reader.Read();
+                    }
+
+                    return new Token(TokenType.Token, result);
+                }
+
+                if (IsCarriageReturn(c))
                 {
-                    token.Type = TokenTypeEnum.EndOfRecord;
-                    return token;
+                    if (reader.Peek() == '\n')
+                    {
+                        reader.Read();
+                    }
+                }
+
+                if (IsLineFeed(c))
+                {
+                    reader.Read();
+                    return new Token(TokenType.EndOfRecord);
                 } 
-                else if (IsEscape(c))
+                
+                if (IsEndOfStream(c)) 
                 {
-                    int escaped = ReadEscaped(reader);
-                    if(escaped == -1) {
-                        token.Type = TokenTypeEnum.EndOfRecord;
-                        return token;
-                    }
-                    token.Content.Append((char) escaped);
-                }
-                else if (IsQuoteChar(c))
-                {
-                    // If the next character is also a quote, add it to the result:
-                    if (IsQuoteChar(reader.Peek()))
-                    {
-                        c = reader.Read();
-                        token.Content.Append((char)c);
-                    }
-                    else
-                    {
-                        while (true)
-                        {
-                            c = reader.Read();
-
-                            // Stop processing, if we hit the end of the line:
-                            if (c == -1)
-                            {
-                                token.Type = TokenTypeEnum.EndOfRecord;
-                                return token;
-                            }
-
-                            // Stop processing this token, if we encounter the delimiter:
-                            else if (IsDelimiter(c))
-                            {
-                                token.Type = TokenTypeEnum.Token;
-                                return token;
-                            }
-                        }
-                    }
-                }
+                    return new Token(TokenType.EndOfRecord);
+                } 
                 else
                 {
-                    token.Content.Append((char)c);
+                    result = reader.ReadTo(options.DelimiterCharacter);
+                    if(IsDelimiter(reader.Peek())) 
+                    {
+                        reader.Read();
+                    }
+                    return new Token(TokenType.Token, result);
                 }
             }
         }
 
-        private int ReadEscaped(StringReader reader)
+        private string ReadQuoted(StringReader reader)
         {
-            int ch = reader.Read();
-            switch (ch)
+            reader.Read();
+
+            string result = reader.ReadTo(options.QuoteCharacter);
+
+            reader.Read();
+
+            if (reader.Peek() != options.QuoteCharacter)
             {
-                case 't':
-                    return Constants.TAB;
-                case 'b':
-                    return Constants.BACKSPACE;
-                case 'n':
-                    return Constants.LF;
-                case 'r':
-                    return Constants.CR;
-                case 'f':
-                    return Constants.FF;
-                default:
-                    return ch;
+                return result;
+            }
+         
+            StringBuilder buffer = new StringBuilder(result);
+            do
+            {
+                buffer.Append((char)reader.Read());
+                buffer.Append(reader.ReadTo(options.QuoteCharacter));
+
+                reader.Read();
+            } while (reader.Peek() == options.QuoteCharacter);
+
+            return buffer.ToString();
+        }
+
+        private void Skip(StringReader reader)
+        {
+            while (IsWhiteSpace(reader.Peek()))
+            {
+                reader.Read();
             }
         }
 
-        private bool IsEscape(int c)
-        {
-            return c == options.EscapeCharacter;
+        private bool IsQuoteCharacter(int c) {
+            return c == options.QuoteCharacter;
         }
 
-        private bool IsQuoteChar(int c)
+        private bool IsCarriageReturn(int c)
         {
-            return c == options.QuoteCharacter;
+            return c == '\r';
+        }
+
+        private bool IsLineFeed(int c)
+        {
+            return c == '\n';
+        }
+
+        private bool IsEndOfStream(int c)
+        {
+            return c == -1;
         }
 
         private bool IsDelimiter(int c)
         {
             return c == options.DelimiterCharacter;
+        }
+
+        private bool IsWhiteSpace(int c)
+        {
+            return c == ' ' || c == '\t';
         }
     }
 }

@@ -60,6 +60,7 @@
     <Compile Include="Tokenizer\RFC4180\Options.cs" />
     <Compile Include="Tokenizer\RFC4180\Reader.cs" />
     <Compile Include="Tokenizer\RFC4180\Rfc4180Tokenizer.cs" />
+    <Compile Include="Tokenizer\RFC4180\StringReaderExtensions.cs" />
     <Compile Include="Tokenizer\RFC4180\Token.cs" />
     <Compile Include="Tokenizer\RFC4180\TokenTypeEnum.cs" />
     <Compile Include="Tokenizer\StringSplitTokenizer.cs" />

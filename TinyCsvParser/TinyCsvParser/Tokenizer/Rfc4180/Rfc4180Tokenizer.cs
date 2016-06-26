@@ -19,9 +19,8 @@ namespace TinyCsvParser.Tokenizer.RFC4180
         {
             using (var stringReader = new StringReader(input))
             {
-                return reader
-                    .ReadTokens(stringReader)
-                    .Select(x => x.Content.ToString())
+                return reader.ReadTokens(stringReader)
+                    .Select(token => token.Content)
                     .ToArray();
             }
         }
