@@ -1,15 +1,16 @@
-﻿using System;
+﻿// Copyright (c) Philipp Wagner. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
 using System.Linq;
-using System.Collections.Generic;
 using System.IO;
 
-namespace TinyCsvParser.Tokenizer.Rfc4180
+namespace TinyCsvParser.Tokenizer.RFC4180
 {
-    public class Rfc4180Tokenizer : ITokenizer 
+    public class RFC4180Tokenizer : ITokenizer 
     {
         private Reader reader;
 
-        public Rfc4180Tokenizer(Options options)
+        public RFC4180Tokenizer(Options options)
         {
             this.reader = new Reader(options);
         }

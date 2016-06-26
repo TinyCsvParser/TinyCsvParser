@@ -4,7 +4,7 @@
 using System;
 using System.Text;
 
-namespace TinyCsvParser.Tokenizer.Rfc4180
+namespace TinyCsvParser.Tokenizer.RFC4180
 {
     public class Token
     {
@@ -14,7 +14,6 @@ namespace TinyCsvParser.Tokenizer.Rfc4180
 
         public Token()
         {
-            Type = TokenTypeEnum.Invalid;
             Content = new StringBuilder();
         }
 

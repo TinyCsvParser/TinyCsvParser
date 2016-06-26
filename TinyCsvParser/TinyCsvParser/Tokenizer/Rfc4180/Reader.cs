@@ -24,7 +24,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace TinyCsvParser.Tokenizer.Rfc4180
+namespace TinyCsvParser.Tokenizer.RFC4180
 {
     public class Reader
     {

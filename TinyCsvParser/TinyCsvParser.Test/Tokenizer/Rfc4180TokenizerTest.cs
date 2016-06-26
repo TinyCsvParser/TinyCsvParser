@@ -2,7 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using NUnit.Framework;
-using TinyCsvParser.Tokenizer.Rfc4180;
+using TinyCsvParser.Tokenizer.RFC4180;
 
 namespace TinyCsvParser.Test.Tokenizer
 {
@@ -16,7 +16,7 @@ namespace TinyCsvParser.Test.Tokenizer
             var options = new Options('"', '\\', ',');
 
             // Initialize the Rfc4180 Tokenizer:
-            var tokenizer = new Rfc4180Tokenizer(options);
+            var tokenizer = new RFC4180Tokenizer(options);
 
             // Initialize a String with Double Quoted Data:
             var line = "\"Michael, Chester\",24,\"Also goes by \"\"Mike\"\", among friends that is\"";
