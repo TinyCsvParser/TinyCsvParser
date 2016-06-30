@@ -59,6 +59,7 @@
     <Compile Include="Tokenizer\Decorators\TokenizerProcessingDecoratorTests.cs" />
     <Compile Include="Tokenizer\QuotedStringTokenizerTests.cs" />
     <Compile Include="Tokenizer\FixedLengthTokenizerTests.cs" />
+    <Compile Include="Tokenizer\Rfc4180TokenizerTest.cs" />
     <Compile Include="Tokenizer\SplitStringTokenizerTests.cs" />
     <Compile Include="Tokenizer\TokenizerExampleTest.cs" />
     <Compile Include="TypeConverter\NullableDecimalConverterTest.cs" />

@@ -70,7 +70,7 @@ namespace TinyCsvParser.Tokenizer
 
         public override string ToString()
         {
-            var columnDefinitionsString = string.Join(", ", Columns.Select(x => x.ToString().ToArray()));
+            var columnDefinitionsString = string.Join(", ", Columns.Select(x => x.ToString()));
 
             return string.Format("FixedLengthTokenizer (Columns = [{0}])", columnDefinitionsString);
         }
