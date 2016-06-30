@@ -66,7 +66,7 @@ namespace TinyCsvParser.Tokenizer.RFC4180
             {
                 reader.Read();
 
-                return new Token(TokenType.EndOfRecord);
+                return new Token(TokenType.Token);
             }
             else
             {
