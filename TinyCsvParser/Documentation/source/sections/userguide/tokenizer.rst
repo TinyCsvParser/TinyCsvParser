@@ -140,6 +140,7 @@ The following example shows how to use the :code:`RFC4180Tokenizer` for the give
 			}
 		}
 	}
+	
 RegularExpressionTokenizer
 """"""""""""""""""""""""""
 
