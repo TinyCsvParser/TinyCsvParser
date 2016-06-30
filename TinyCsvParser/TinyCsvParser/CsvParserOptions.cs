@@ -19,12 +19,17 @@ namespace TinyCsvParser
         public readonly bool KeepOrder;
 
         public CsvParserOptions(bool skipHeader, char[] fieldsSeparator)
-            : this(skipHeader, string.Empty, new StringSplitTokenizer(fieldsSeparator, true))
+            : this(skipHeader, new StringSplitTokenizer(fieldsSeparator, true))
         {
         }
 
         public CsvParserOptions(bool skipHeader, char[] fieldsSeparator, int degreeOfParallelism, bool keepOrder)
             : this(skipHeader, string.Empty, new StringSplitTokenizer(fieldsSeparator, true), degreeOfParallelism, keepOrder)
+        {
+        }
+
+        public CsvParserOptions(bool skipHeader, ITokenizer tokenizer)
+            : this(skipHeader, string.Empty, tokenizer)
         {
         }
 
