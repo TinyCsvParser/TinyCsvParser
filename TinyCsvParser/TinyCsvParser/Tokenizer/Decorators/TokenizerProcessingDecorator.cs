@@ -67,5 +67,10 @@ namespace TinyCsvParser.Tokenizer.Decorators
                 .Select(token => postprocessor.Processor(token))
                 .ToArray();
         }
+
+        public override string ToString()
+        {
+            return string.Format("TokenizerProcessingDecorator (Preprocessor = {0}, Postprocessor = {1})", preprocessor, postprocessor);
+        }
     }
 }

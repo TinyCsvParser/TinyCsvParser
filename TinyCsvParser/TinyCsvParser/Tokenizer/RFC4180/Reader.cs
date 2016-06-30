@@ -175,5 +175,10 @@ namespace TinyCsvParser.Tokenizer.RFC4180
         {
             return c == ' ' || c == '\t';
         }
+
+        public override string ToString()
+        {
+            return string.Format("Reader (Options = {0})", options);
+        }
     }
 }
