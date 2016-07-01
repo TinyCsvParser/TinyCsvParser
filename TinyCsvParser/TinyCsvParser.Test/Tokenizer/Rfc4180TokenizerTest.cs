@@ -98,7 +98,7 @@ namespace TinyCsvParser.Test.Tokenizer
         }
 
         [Test]
-        public void Rfc4180_Issue3_Empty_Columns_Test()
+        public void Rfc4180_Issue3_Empty_Column_Test()
         {
             // Use a " as Quote Character, a \\ as Escape Character and a , as Delimiter.
             var options = new Options('"', '\\', ',');
@@ -119,6 +119,102 @@ namespace TinyCsvParser.Test.Tokenizer
             Assert.AreEqual("Robert, Willliamson", tokens[0]);
             Assert.AreEqual("", tokens[1]);
             Assert.AreEqual("All-around nice guy who always says hi", tokens[2]);
+        }
+
+        [Test]
+        public void Rfc4180_Issue3_Empty_First_Column_Test()
+        {
+            // Use a " as Quote Character, a \\ as Escape Character and a , as Delimiter.
+            var options = new Options('"', '\\', ',');
+
+            // Initialize the Rfc4180 Tokenizer:
+            var tokenizer = new RFC4180Tokenizer(options);
+
+            // Initialize a String with Double Quoted Data:
+            var line = " , 24 ,\"Great Guy\"";
+            // Split the Line into its Tokens:
+            var tokens = tokenizer.Tokenize(line);
+
+            // And make sure the Quotes are retained:
+            Assert.IsNotNull(tokens);
+
+            Assert.AreEqual(3, tokens.Length);
+
+            Assert.AreEqual("", tokens[0]);
+            Assert.AreEqual("24", tokens[1]);
+            Assert.AreEqual("Great Guy", tokens[2]);
+        }
+
+        [Test]
+        public void Rfc4180_Issue3_Empty_Last_Columns_Test()
+        {
+            // Use a " as Quote Character, a \\ as Escape Character and a , as Delimiter.
+            var options = new Options('"', '\\', ',');
+
+            // Initialize the Rfc4180 Tokenizer:
+            var tokenizer = new RFC4180Tokenizer(options);
+
+            // Initialize a String with Double Quoted Data:
+            var line = "\"Robert, Willliamson\",27,";
+            // Split the Line into its Tokens:
+            var tokens = tokenizer.Tokenize(line);
+
+            // And make sure the Quotes are retained:
+            Assert.IsNotNull(tokens);
+
+            Assert.AreEqual(3, tokens.Length);
+
+            Assert.AreEqual("Robert, Willliamson", tokens[0]);
+            Assert.AreEqual("27", tokens[1]);
+            Assert.AreEqual("", tokens[2]);
+        }
+
+        [Test]
+        public void All_Empty_Last_Columns_Test()
+        {
+            // Use a " as Quote Character, a \\ as Escape Character and a , as Delimiter.
+            var options = new Options('"', '\\', ',');
+
+            // Initialize the Rfc4180 Tokenizer:
+            var tokenizer = new RFC4180Tokenizer(options);
+
+            // Initialize a String with Double Quoted Data:
+            var line = ",,";
+            // Split the Line into its Tokens:
+            var tokens = tokenizer.Tokenize(line);
+
+            // And make sure the Quotes are retained:
+            Assert.IsNotNull(tokens);
+
+            Assert.AreEqual(3, tokens.Length);
+
+            Assert.AreEqual("", tokens[0]);
+            Assert.AreEqual("", tokens[1]);
+            Assert.AreEqual("", tokens[2]);
+        }
+
+        [Test]
+        public void All_Empty_Last_Column_Not_Empty_Test()
+        {
+            // Use a " as Quote Character, a \\ as Escape Character and a , as Delimiter.
+            var options = new Options('"', '\\', ',');
+
+            // Initialize the Rfc4180 Tokenizer:
+            var tokenizer = new RFC4180Tokenizer(options);
+
+            // Initialize a String with Double Quoted Data:
+            var line = ",,a";
+            // Split the Line into its Tokens:
+            var tokens = tokenizer.Tokenize(line);
+
+            // And make sure the Quotes are retained:
+            Assert.IsNotNull(tokens);
+
+            Assert.AreEqual(3, tokens.Length);
+
+            Assert.AreEqual("", tokens[0]);
+            Assert.AreEqual("", tokens[1]);
+            Assert.AreEqual("a", tokens[2]);
         }
     }
 }
