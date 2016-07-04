@@ -64,6 +64,7 @@ namespace TinyCsvParser.Tokenizer.RFC4180
             string result = string.Empty;
 
             int c = reader.Peek();
+            
             if (c == options.DelimiterCharacter)
             {
                 reader.Read();
