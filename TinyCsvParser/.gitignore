@@ -3,3 +3,7 @@ obj
 .vs
 *.suo
 packages
+
+#DNX
+project.lock.json
+artifacts/

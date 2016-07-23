@@ -13,7 +13,7 @@ namespace TinyCsvParser.TypeConverter
         private readonly StringComparison stringComparism;
 
         public BoolConverter()
-            : this("true", "false", StringComparison.InvariantCultureIgnoreCase) { }
+            : this("true", "false", StringComparison.OrdinalIgnoreCase) { }
 
         public BoolConverter(string trueValue, string falseValue, StringComparison stringComparism)
         {

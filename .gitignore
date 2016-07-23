@@ -1,1 +1,2 @@
 *.coverage
+TinyCsvParser/TinyCsvParser.Test/project.lock.json

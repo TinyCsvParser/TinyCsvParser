@@ -1,0 +1,29 @@
+{
+  "version": "1.4.0-ci-*",
+  "packOptions": {
+    "owners": [
+      "Philipp Wagner"
+    ],
+    "authors": [
+      "Philipp Wagner"
+    ],
+    "description": "Easy to use, easy to extend and high-performance library for CSV parsing with .NET.",
+    "licenseUrl": "https://opensource.org/licenses/MIT",
+    "repository": {
+      "type": "git",
+      "url": "git://github.com/bytefish/TinyCsvParser"
+    }
+  },
+
+  "dependencies": {
+    "NETStandard.Library": "1.6.0",
+    "System.Linq.Parallel": "4.0.1"
+  },
+
+  "frameworks": {
+    "net451": {},
+    "netstandard1.6": {
+      "imports": "dnxcore50"
+    }
+  }
+}
