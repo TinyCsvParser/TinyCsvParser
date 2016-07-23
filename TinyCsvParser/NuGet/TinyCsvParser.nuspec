@@ -12,11 +12,13 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>An easy to use and high-performance library for CSV parsing.</description>
 		<summary>An easy to use and high-performance library for CSV parsing.</summary>
-        <copyright>Copyright © 2015 Philipp Wagner</copyright>
+        <copyright>Copyright © 2016 Philipp Wagner</copyright>
         <tags>csv parser</tags>
     </metadata>
     <files>
         <file src="..\TinyCsvParser\bin\Release\net45\TinyCsvParser.dll" target="lib\net45" />
         <file src="..\TinyCsvParser\bin\Release\net45\TinyCsvParser.pdb" target="lib\net45" />
+		<file src="..\TinyCsvParser\bin\Release\netstandard1.6\TinyCsvParser.dll" target="lib\net45" />
+        <file src="..\TinyCsvParser\bin\Release\netstandard1.6\TinyCsvParser.pdb" target="lib\net45" />
     </files>
 </package>
