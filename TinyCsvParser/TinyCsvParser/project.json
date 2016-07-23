@@ -17,11 +17,10 @@
 
   "dependencies": {
     "NETStandard.Library": "1.6.0",
-    "System.Linq.Parallel": "4.0.1"
+    "System.Linq.Parallel": "4.0.0"
   },
 
   "frameworks": {
-    "net451": {},
     "netstandard1.6": {
       "imports": "dnxcore50"
     }

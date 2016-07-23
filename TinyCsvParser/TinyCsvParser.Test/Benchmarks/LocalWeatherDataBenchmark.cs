@@ -12,7 +12,7 @@ using TinyCsvParser.TypeConverter;
 namespace TinyCsvParser.Test.Benchmarks
 {
 
-    [TestFixture, Explicit("LocalWeatherData, File has around 500 MB")]
+    [TestFixture, Ignore("LocalWeatherData, File has around 500 MB")]
     public class LocalWeatherDataBenchmark
     {
         public class LocalWeatherData
@@ -32,7 +32,7 @@ namespace TinyCsvParser.Test.Benchmarks
             }
         }
 
-        [Test, Explicit("Performance Test for a Sequential Read")]
+        [Test, Ignore("Performance Test for a Sequential Read")]
         public void SeqReadTest()
         {
             MeasurementUtils.MeasureElapsedTime(string.Format("Sequential Read"), () =>

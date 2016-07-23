@@ -10,7 +10,6 @@
     }
   },
   "frameworks": {
-    "net451": {},
     "netcoreapp1.0": {
       "imports": [
         "netcoreapp1.0",

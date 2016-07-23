@@ -18,5 +18,7 @@
     <files>
         <file src="..\TinyCsvParser\bin\Release\TinyCsvParser.dll" target="lib\net45" />
         <file src="..\TinyCsvParser\bin\Release\TinyCsvParser.pdb" target="lib\net45" />
+		<file src="..\TinyCsvParser\bin\Release\TinyCsvParser.dll" target="lib\net45" />
+        <file src="..\TinyCsvParser\bin\Release\TinyCsvParser.pdb" target="lib\net45" />
     </files>
 </package>
