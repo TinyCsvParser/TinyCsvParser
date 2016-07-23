@@ -9,6 +9,8 @@ and it is highly configurable to provide maximum flexibility.
 
 To get started quickly, follow the [Quickstart](http://bytefish.github.io/TinyCsvParser/sections/quickstart.html).
 
+[TinyCsvParser] supports .NET Core as of Version 1.4.0.
+
 ## Installing TinyCsvParser ##
 
 You can use [NuGet](https://www.nuget.org) to install [TinyCsvParser]. Run the following command 
