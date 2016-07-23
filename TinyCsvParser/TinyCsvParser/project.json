@@ -1,10 +1,11 @@
 {
   "version": "1.4.0",
   "title": "TinyCsvParser",
+  "description": "An easy to use and high-performance library for CSV parsing.",
+  "copyright": "Copyright 2016 Philipp Wagner",
   "authors": [
     "Philipp Wagner"
   ],
-  "copyright": "Copyright © 2016 Philipp Wagner",
 
   "packOptions": {
     "owners": [
@@ -13,7 +14,6 @@
     "authors": [
       "Philipp Wagner"
     ],
-    "description": "An easy to use and high-performance library for CSV parsing.",
     "tags": [ "csv", "csv parser" ],
     "requireLicenseAcceptance": false,
     "projectUrl": "https://github.com/bytefish/TinyCsvParser",
@@ -25,14 +25,14 @@
     }
   },
 
-  "dependencies": {
-    "NETStandard.Library": "1.6.0",
-    "System.Linq.Parallel": "4.0.0"
-  },
 
   "frameworks": {
     "net45": {},
     "netstandard1.6": {
+      "dependencies": {
+        "NETStandard.Library": "1.6.0",
+        "System.Linq.Parallel": "4.0.0"
+      },
       "imports": "dnxcore50"
     }
   },
