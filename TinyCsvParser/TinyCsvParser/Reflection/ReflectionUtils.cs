@@ -43,7 +43,11 @@ namespace TinyCsvParser.Reflection
 
         public static bool IsEnum(Type type)
         {
+#if NETSTANDARD1_6
+            return typeof(Enum).GetTypeInfo().IsAssignableFrom(type);
+#else 
             return typeof(Enum).IsAssignableFrom(type);
+#endif
         }
 
         public static Action<TEntity, TProperty> CreateSetter<TEntity, TProperty>(Expression<Func<TEntity, TProperty>> property)

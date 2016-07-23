@@ -2,11 +2,9 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
-using System.Runtime.Serialization;
 
 namespace TinyCsvParser.Exceptions
 {
-    [Serializable]
     public class CsvTypeConverterNotRegisteredException : Exception
     {
         public CsvTypeConverterNotRegisteredException()
@@ -21,11 +19,6 @@ namespace TinyCsvParser.Exceptions
 
         public CsvTypeConverterNotRegisteredException(string message, Exception inner)
             : base(message, inner)
-        {
-        }
-
-        protected CsvTypeConverterNotRegisteredException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
         {
         }
     }

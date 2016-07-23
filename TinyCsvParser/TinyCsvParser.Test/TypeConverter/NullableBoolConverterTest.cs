@@ -39,7 +39,7 @@ namespace TinyCsvParser.Test.TypeConverter
     {
         protected override ITypeConverter<bool?> Converter
         {
-            get { return new NullableBoolConverter("true", "false", StringComparison.InvariantCulture); }
+            get { return new NullableBoolConverter("true", "false", StringComparison.OrdinalIgnoreCase); }
         }
         
     }

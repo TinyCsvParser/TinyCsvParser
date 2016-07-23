@@ -52,8 +52,11 @@ namespace TinyCsvParser.Test.CsvParser
                 .AppendLine("FirstName;LastName;BirthDate")
                 .AppendLine("     Philipp;Wagner;1986/05/12       ")
                 .AppendLine("Max;Mustermann;2014/01/01");
-
+#if NETCOREAPP
+            var basePath = AppContext.BaseDirectory;
+#else 
             var basePath = AppDomain.CurrentDomain.BaseDirectory;
+#endif
             var filePath = Path.Combine(basePath, "test_file.txt");
 
             File.WriteAllText(filePath, stringBuilder.ToString(), Encoding.UTF8);
