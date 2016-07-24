@@ -10,7 +10,7 @@ Welcome to the `TinyCsvParser`_ documentation!
 high performance and a clean API. It is probably the fastest .NET CSV Parser around 
 (:ref:`Benchmark<benchmark>`) and it is highly configurable to provide maximum flexibility. 
 
-**And it's released unter terms of the** `MIT license`_ **!**
+`TinyCsvParser`_ supports `.NET Core`_.
 
 To get started quickly, follow the :ref:`Quickstart <quickstart>`.
 
@@ -46,3 +46,4 @@ Indices and tables
 
 .. _MIT license: https://opensource.org/licenses/MIT
 .. _TinyCsvParser: https://github.com/bytefish/TinyCsvParser
+.. _.NET Core: https://www.microsoft.com/net/core
