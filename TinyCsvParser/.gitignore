@@ -4,6 +4,6 @@ obj
 *.suo
 packages
 
-#DNX
+# Dot Net Core
 project.lock.json
 artifacts/
