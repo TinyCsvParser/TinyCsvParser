@@ -7,3 +7,4 @@ packages
 # Dot Net Core
 project.lock.json
 artifacts/
+*.xproj.user
