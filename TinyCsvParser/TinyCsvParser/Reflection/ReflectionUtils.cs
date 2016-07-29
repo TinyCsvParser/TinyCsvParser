@@ -43,8 +43,9 @@ namespace TinyCsvParser.Reflection
 
         public static bool IsEnum(Type type)
         {
-#if NETSTANDARD1_6
-            return typeof(Enum).GetTypeInfo().IsAssignableFrom(type);
+#if NETSTANDARD1_3
+            return typeof(Enum).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo());
+            
 #else 
             return typeof(Enum).IsAssignableFrom(type);
 #endif
@@ -57,9 +58,15 @@ namespace TinyCsvParser.Reflection
             ParameterExpression instance = Expression.Parameter(typeof(TEntity), "instance");
             ParameterExpression parameter = Expression.Parameter(typeof(TProperty), "param");
 
+#if NETSTANDARD1_3
+            return Expression.Lambda<Action<TEntity, TProperty>>(
+                Expression.Call(instance, propertyInfo.SetMethod, parameter),
+                new ParameterExpression[] { instance, parameter }).Compile();
+#else
             return Expression.Lambda<Action<TEntity, TProperty>>(
                 Expression.Call(instance, propertyInfo.GetSetMethod(), parameter),
                 new ParameterExpression[] { instance, parameter }).Compile();
+#endif
         }
 
         public static Func<TEntity> CreateDefaultConstructor<TEntity>()
