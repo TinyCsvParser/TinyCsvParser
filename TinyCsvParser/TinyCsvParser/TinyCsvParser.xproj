@@ -6,7 +6,7 @@
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.Props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
-    <ProjectGuid>3c7d3f83-43be-4976-9e0e-02de714c6a29</ProjectGuid>
+    <ProjectGuid>0c75cbd4-7bcb-41b1-a1b1-83ced6c0571b</ProjectGuid>
     <RootNamespace>TinyCsvParser</RootNamespace>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">.\obj</BaseIntermediateOutputPath>
     <OutputPath Condition="'$(OutputPath)'=='' ">.\bin\</OutputPath>
