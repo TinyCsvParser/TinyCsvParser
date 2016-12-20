@@ -27,7 +27,7 @@ namespace TinyCsvParser.Tokenizer.RegularExpressions
 
         private string GetPreparedRegexp(char columnDelimiter)
         {
-            return string.Format("((?<=\")[^\"]*(?=\"({0}|$)+)|(?<={0}|^)[^{0}\"]*(?={0}|$))", columnDelimiter);
+            return string.Format("((?<=\")[^\"]*(?=\"(\\{0}|$)+)|(?<=\\{0}|^)[^\\{0}\"]*(?=\\{0}|$))", columnDelimiter);
         }
 
         public override string ToString()

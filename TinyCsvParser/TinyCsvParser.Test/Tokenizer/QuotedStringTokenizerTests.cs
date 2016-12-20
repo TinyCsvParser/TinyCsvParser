@@ -41,6 +41,21 @@ namespace TinyCsvParser.Test.Tokenizer
         }
 
         [Test]
+        public void QuotedString_VerticalBarDelimiter_Test()
+        {
+            var tokenizer = new QuotedStringTokenizer('|');
+
+            var input = "1|\"2|3\"|4";
+            var result = tokenizer.Tokenize(input);
+
+            Assert.AreEqual(3, result.Length);
+
+            Assert.AreEqual("1", result[0]);
+            Assert.AreEqual("2|3", result[1]);
+            Assert.AreEqual("4", result[2]);
+        }
+
+        [Test]
         public void QuotedString_ToString_Test()
         {
             var tokenizer = new QuotedStringTokenizer(';');
