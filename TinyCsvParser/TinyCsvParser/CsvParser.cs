@@ -11,13 +11,13 @@ namespace TinyCsvParser
   public class CsvParser<TEntity> : ICsvParser<TEntity>
       where TEntity : class, new()
   {
-    private readonly CsvParserOptions options;
-    private readonly CsvMapping<TEntity> mapping;
+    private readonly CsvParserOptions _options;
+    private readonly CsvMapping<TEntity> _mapping;
 
     public CsvParser(CsvParserOptions options, CsvMapping<TEntity> mapping)
     {
-      this.options = options;
-      this.mapping = mapping;
+      this._options = options;
+      this._mapping = mapping;
     }
 
     public ParallelQuery<CsvMappingResult<TEntity>> Parse(IEnumerable<string> csvData)
@@ -27,65 +27,64 @@ namespace TinyCsvParser
         throw new ArgumentNullException(nameof(csvData));
       }
 
-      if (options.StoreRowNumbers)
+      if (_options.StoreRowNumbers)
       {
-        var numberedQuery = csvData.Skip(options.SkipHeader ? 1 : 0)
-                          .Where(line => !string.IsNullOrWhiteSpace(line))
-                          .Select((line, i) => new KeyValuePair<int,string>(i, line))
+        var numberedQuery = csvData.Skip(_options.SkipHeader ? 1 : 0)
+                          .Select((line, i) => new KeyValuePair<int, string>(i, line))
                           .AsParallel();
 
         // If you want to get the same order as in the CSV file, this option needs to be set:
-        if (options.KeepOrder)
+        if (_options.KeepOrder)
         {
           numberedQuery = numberedQuery.AsOrdered();
         }
 
         //// Remove empty lines
-        //numberedQuery = numberedQuery
-        //  .WithDegreeOfParallelism(options.DegreeOfParallelism)
-        //  .Where(line => !string.IsNullOrWhiteSpace(line));
+        numberedQuery = numberedQuery
+          .WithDegreeOfParallelism(_options.DegreeOfParallelism)
+          .Where(rowKv => !string.IsNullOrWhiteSpace(rowKv.Value));
 
         // Ignore Lines, that start with a comment character:
-        if (!string.IsNullOrWhiteSpace(options.CommentCharacter))
+        if (!string.IsNullOrWhiteSpace(_options.CommentCharacter))
         {
-          numberedQuery = numberedQuery.Where(rowKv => !rowKv.Value.StartsWith(options.CommentCharacter));
+          numberedQuery = numberedQuery.Where(rowKv => !rowKv.Value.StartsWith(_options.CommentCharacter));
         }
 
         return numberedQuery
-          .Select(rowKv => options.Tokenizer.Tokenize(rowKv))
-          .Select((token) => mapping.Map(token));
+          .Select(rowKv => _options.Tokenizer.Tokenize(rowKv))
+          .Select((token) => _mapping.Map(token));
       }
 
       var query = csvData
-          .Skip(options.SkipHeader ? 1 : 0)
+          .Skip(_options.SkipHeader ? 1 : 0)
           .AsParallel();
 
       // If you want to get the same order as in the CSV file, this option needs to be set:
-      if (options.KeepOrder)
+      if (_options.KeepOrder)
       {
         query = query.AsOrdered();
       }
 
       // Remove empty lines
       query = query
-          .WithDegreeOfParallelism(options.DegreeOfParallelism)
+          .WithDegreeOfParallelism(_options.DegreeOfParallelism)
           .Where(line => !string.IsNullOrWhiteSpace(line));
 
       // Ignore Lines, that start with a comment character:
-      if (!string.IsNullOrWhiteSpace(options.CommentCharacter))
+      if (!string.IsNullOrWhiteSpace(_options.CommentCharacter))
       {
-        query = query.Where(line => !line.StartsWith(options.CommentCharacter));
+        query = query.Where(line => !line.StartsWith(_options.CommentCharacter));
       }
 
       return query
-          .Select(line => options.Tokenizer.Tokenize(line))
-          .Select(fields => mapping.Map(fields, null));
+          .Select(line => _options.Tokenizer.Tokenize(line))
+          .Select(fields => _mapping.Map(fields));
     }
 
 
     public override string ToString()
     {
-      return string.Format("CsvParser (Options = {0}, Mapping = {1})", options, mapping);
+      return string.Format("CsvParser (Options = {0}, Mapping = {1})", _options, _mapping);
     }
   }
 

@@ -6,21 +6,21 @@ using System.Globalization;
 
 namespace TinyCsvParser.TypeConverter
 {
-    public class NullableDoubleConverter : NullableInnerConverter<Double>
+  public class NullableDoubleConverter : NullableInnerConverter<double>
+  {
+    public NullableDoubleConverter()
+      : base(new DoubleConverter())
     {
-        public NullableDoubleConverter()
-            : base(new DoubleConverter())
-        {
-        }
-        
-        public NullableDoubleConverter(IFormatProvider formatProvider)
-            : base(new DoubleConverter(formatProvider))
-        {
-        }
-
-        public NullableDoubleConverter(IFormatProvider formatProvider, NumberStyles numberStyles)
-            : base(new DoubleConverter(formatProvider, numberStyles))
-        {
-        }
     }
+
+    public NullableDoubleConverter(IFormatProvider formatProvider)
+      : base(new DoubleConverter(formatProvider))
+    {
+    }
+
+    public NullableDoubleConverter(IFormatProvider formatProvider, NumberStyles numberStyles)
+      : base(new DoubleConverter(formatProvider, numberStyles))
+    {
+    }
+  }
 }

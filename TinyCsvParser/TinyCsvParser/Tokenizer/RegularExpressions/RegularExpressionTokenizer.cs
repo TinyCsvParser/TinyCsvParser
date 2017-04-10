@@ -7,26 +7,26 @@ using System.Text.RegularExpressions;
 
 namespace TinyCsvParser.Tokenizer.RegularExpressions
 {
-    public abstract class RegularExpressionTokenizer : ITokenizer
+  public abstract class RegularExpressionTokenizer : ITokenizer
+  {
+    public abstract Regex Regexp { get; }
+
+    public string[] Tokenize(string input)
     {
-        public abstract Regex Regexp { get; }
+      return Regexp.Matches(input)
+        .Cast<Match>()
+        .Select(x => x.Value)
+        .ToArray();
+    }
 
-        public string[] Tokenize(string input)
-        {
-            return Regexp.Matches(input)
-                .Cast<Match>()
-                .Select(x => x.Value)
-                .ToArray();
-        }
-
-      public KeyValuePair<int, string[]> Tokenize(KeyValuePair<int, string> input)
-      {
-        return new KeyValuePair<int, string[]>(input.Key, Tokenize(input.Value));
-      }
+    public KeyValuePair<int, string[]> Tokenize(KeyValuePair<int, string> input)
+    {
+      return new KeyValuePair<int, string[]>(input.Key, Tokenize(input.Value));
+    }
 
     public override string ToString()
-        {
-            return string.Format("Regexp = {0}", Regexp);
-        }
+    {
+      return string.Format("Regexp = {0}", Regexp);
     }
+  }
 }

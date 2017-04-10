@@ -17,9 +17,7 @@ namespace TinyCsvParser
       if (fileName == null)
         throw new ArgumentNullException(nameof(fileName));
 
-      var lines = File.ReadLines(fileName, encoding);
-
-      return csvParser.Parse(lines);
+      return csvParser.Parse(File.ReadLines(fileName, encoding));
     }
 
     public static ParallelQuery<CsvMappingResult<TEntity>> ReadFromString<TEntity>(this CsvParser<TEntity> csvParser, CsvReaderOptions csvReaderOptions, string csvData)

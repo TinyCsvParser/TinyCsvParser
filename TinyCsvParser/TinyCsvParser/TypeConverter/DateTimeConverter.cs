@@ -6,41 +6,39 @@ using System.Globalization;
 
 namespace TinyCsvParser.TypeConverter
 {
-    public class DateTimeConverter : NonNullableConverter<DateTime>
+  public class DateTimeConverter : NonNullableConverter<DateTime>
+  {
+    private readonly string _dateTimeFormat;
+    private readonly DateTimeStyles _dateTimeStyles;
+    private readonly IFormatProvider _formatProvider;
+
+    public DateTimeConverter()
+      : this(string.Empty)
     {
-        private readonly string dateTimeFormat;
-        private readonly IFormatProvider formatProvider;
-        private readonly DateTimeStyles dateTimeStyles;
-
-        public DateTimeConverter()
-            : this(string.Empty)
-        {
-        }
-
-        public DateTimeConverter(string dateTimeFormat)
-            : this(dateTimeFormat, CultureInfo.InvariantCulture)
-        {
-        }
-
-        public DateTimeConverter(string dateTimeFormat, IFormatProvider formatProvider)
-            : this(dateTimeFormat, formatProvider, DateTimeStyles.None)
-        {
-        }
-
-        public DateTimeConverter(string dateTimeFormat, IFormatProvider formatProvider, DateTimeStyles dateTimeStyles)
-        {
-            this.dateTimeFormat = dateTimeFormat;
-            this.formatProvider = formatProvider;
-            this.dateTimeStyles = dateTimeStyles;
-        }
-
-        protected override bool InternalConvert(string value, out DateTime result)
-        {
-            if (string.IsNullOrWhiteSpace(dateTimeFormat))
-            {
-                return DateTime.TryParse(value, out result);
-            }
-            return DateTime.TryParseExact(value, this.dateTimeFormat, this.formatProvider, this.dateTimeStyles, out result);
-        }
     }
+
+    public DateTimeConverter(string dateTimeFormat)
+      : this(dateTimeFormat, CultureInfo.InvariantCulture)
+    {
+    }
+
+    public DateTimeConverter(string dateTimeFormat, IFormatProvider formatProvider)
+      : this(dateTimeFormat, formatProvider, DateTimeStyles.None)
+    {
+    }
+
+    public DateTimeConverter(string dateTimeFormat, IFormatProvider formatProvider, DateTimeStyles dateTimeStyles)
+    {
+      _dateTimeFormat = dateTimeFormat;
+      _formatProvider = formatProvider;
+      _dateTimeStyles = dateTimeStyles;
+    }
+
+    protected override bool InternalConvert(string value, out DateTime result)
+    {
+      if (string.IsNullOrWhiteSpace(_dateTimeFormat))
+        return DateTime.TryParse(value, out result);
+      return DateTime.TryParseExact(value, _dateTimeFormat, _formatProvider, _dateTimeStyles, out result);
+    }
+  }
 }

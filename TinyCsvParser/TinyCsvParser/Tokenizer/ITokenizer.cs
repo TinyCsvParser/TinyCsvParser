@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 namespace TinyCsvParser.Tokenizer
 {
-    public interface ITokenizer
-    {
-        string[] Tokenize(string input);
-        KeyValuePair<int,string[]> Tokenize(KeyValuePair<int, string> input);
+  public interface ITokenizer
+  {
+    string[] Tokenize(string input);
+    KeyValuePair<int, string[]> Tokenize(KeyValuePair<int, string> input);
   }
 }

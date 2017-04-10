@@ -6,14 +6,58 @@ namespace TinyCsvParser.Tokenizer.Decorators
 {
   public class TokenizerProcessingDecorator : ITokenizer
   {
-    private readonly ITokenizer tokenizer;
+    private readonly Postprocessor _postprocessor;
+
+    private readonly Preprocessor _preprocessor;
+    private readonly ITokenizer _tokenizer;
+
+    public TokenizerProcessingDecorator(ITokenizer tokenizer, Preprocessor preprocessor)
+      : this(tokenizer, preprocessor, new Postprocessor())
+    {
+    }
+
+    public TokenizerProcessingDecorator(ITokenizer tokenizer, Postprocessor postprocessor)
+      : this(tokenizer, new Preprocessor(), postprocessor)
+    {
+    }
+
+    public TokenizerProcessingDecorator(ITokenizer tokenizer, Preprocessor preprocessor, Postprocessor postprocessor)
+    {
+      _tokenizer = tokenizer;
+
+      _preprocessor = preprocessor;
+      _postprocessor = postprocessor;
+    }
+
+    public string[] Tokenize(string input)
+    {
+      var preprocessedInput = _preprocessor.Processor(input);
+
+      var tokenizedInput = _tokenizer.Tokenize(preprocessedInput);
+
+      return tokenizedInput
+        .Select(token => _postprocessor.Processor(token))
+        .ToArray();
+    }
+
+    public KeyValuePair<int, string[]> Tokenize(KeyValuePair<int, string> input)
+    {
+      return new KeyValuePair<int, string[]>(input.Key, Tokenize(input.Value));
+    }
+
+    public override string ToString()
+    {
+      return string.Format("TokenizerProcessingDecorator (Preprocessor = {0}, Postprocessor = {1})", _preprocessor, _postprocessor);
+    }
 
     public class Preprocessor
     {
       public readonly Func<string, string> Processor;
 
       public Preprocessor()
-          : this(x => x) { }
+        : this(x => x)
+      {
+      }
 
       public Preprocessor(Func<string, string> preprocessor)
       {
@@ -26,54 +70,14 @@ namespace TinyCsvParser.Tokenizer.Decorators
       public readonly Func<string, string> Processor;
 
       public Postprocessor()
-          : this(x => x) { }
+        : this(x => x)
+      {
+      }
 
       public Postprocessor(Func<string, string> preprocessor)
       {
         Processor = preprocessor;
       }
-    }
-
-    private readonly Preprocessor preprocessor;
-    private readonly Postprocessor postprocessor;
-
-    public TokenizerProcessingDecorator(ITokenizer tokenizer, Preprocessor preprocessor)
-        : this(tokenizer, preprocessor, new Postprocessor())
-    {
-    }
-
-    public TokenizerProcessingDecorator(ITokenizer tokenizer, Postprocessor postprocessor)
-        : this(tokenizer, new Preprocessor(), postprocessor)
-    {
-    }
-
-    public TokenizerProcessingDecorator(ITokenizer tokenizer, Preprocessor preprocessor, Postprocessor postprocessor)
-    {
-      this.tokenizer = tokenizer;
-
-      this.preprocessor = preprocessor;
-      this.postprocessor = postprocessor;
-    }
-
-    public string[] Tokenize(string input)
-    {
-      var preprocessed_input = preprocessor.Processor(input);
-
-      var tokenized_input = tokenizer.Tokenize(preprocessed_input);
-
-      return tokenized_input
-          .Select(token => postprocessor.Processor(token))
-          .ToArray();
-    }
-
-    public KeyValuePair<int, string[]> Tokenize(KeyValuePair<int, string> input)
-    {
-      return new KeyValuePair<int, string[]>(input.Key, Tokenize(input.Value));
-    }
-
-    public override string ToString()
-    {
-      return string.Format("TokenizerProcessingDecorator (Preprocessor = {0}, Postprocessor = {1})", preprocessor, postprocessor);
     }
   }
 }

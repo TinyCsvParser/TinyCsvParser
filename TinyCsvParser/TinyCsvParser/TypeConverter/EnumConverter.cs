@@ -6,30 +6,28 @@ using TinyCsvParser.Reflection;
 
 namespace TinyCsvParser.TypeConverter
 {
-    public class EnumConverter<TTargetType> : NonNullableConverter<TTargetType>
-        where TTargetType : struct
+  public class EnumConverter<TTargetType> : NonNullableConverter<TTargetType>
+    where TTargetType : struct
+  {
+    private readonly Type _enumType;
+    private readonly bool _ignoreCase;
+
+    public EnumConverter()
+      : this(true)
     {
-        private readonly Type enumType;
-        private readonly bool ignoreCase;
-
-        public EnumConverter()
-            : this(true)
-        {
-        }
-
-        public EnumConverter(bool ignoreCase)
-        {
-            if (!ReflectionUtils.IsEnum(typeof(TTargetType)))
-            {
-                throw new ArgumentException(string.Format("Type {0} is not a valid Enum", enumType));
-            }
-            this.enumType = typeof(TTargetType);
-            this.ignoreCase = ignoreCase;
-        }
-
-        protected override bool InternalConvert(string value, out TTargetType result)
-        {
-            return Enum.TryParse<TTargetType>(value, ignoreCase, out result);
-        }
     }
+
+    public EnumConverter(bool ignoreCase)
+    {
+      if (!ReflectionUtils.IsEnum(typeof(TTargetType)))
+        throw new ArgumentException(string.Format("Type {0} is not a valid Enum", _enumType));
+      _enumType = typeof(TTargetType);
+      _ignoreCase = ignoreCase;
+    }
+
+    protected override bool InternalConvert(string value, out TTargetType result)
+    {
+      return Enum.TryParse(value, _ignoreCase, out result);
+    }
+  }
 }
