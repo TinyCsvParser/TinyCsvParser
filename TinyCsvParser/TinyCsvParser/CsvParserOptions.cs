@@ -12,8 +12,6 @@ namespace TinyCsvParser
 
     public readonly bool SkipHeader;
 
-    public bool StoreRowNumbers;
-
     public readonly string CommentCharacter;
 
     public readonly int DegreeOfParallelism;

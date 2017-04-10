@@ -27,34 +27,6 @@ namespace TinyCsvParser
         throw new ArgumentNullException(nameof(csvData));
       }
 
-      if (_options.StoreRowNumbers)
-      {
-        var numberedQuery = csvData.Skip(_options.SkipHeader ? 1 : 0)
-                          .Select((line, i) => new KeyValuePair<int, string>(i, line))
-                          .AsParallel();
-
-        // If you want to get the same order as in the CSV file, this option needs to be set:
-        if (_options.KeepOrder)
-        {
-          numberedQuery = numberedQuery.AsOrdered();
-        }
-
-        //// Remove empty lines
-        numberedQuery = numberedQuery
-          .WithDegreeOfParallelism(_options.DegreeOfParallelism)
-          .Where(rowKv => !string.IsNullOrWhiteSpace(rowKv.Value));
-
-        // Ignore Lines, that start with a comment character:
-        if (!string.IsNullOrWhiteSpace(_options.CommentCharacter))
-        {
-          numberedQuery = numberedQuery.Where(rowKv => !rowKv.Value.StartsWith(_options.CommentCharacter));
-        }
-
-        return numberedQuery
-          .Select(rowKv => _options.Tokenizer.Tokenize(rowKv))
-          .Select((token) => _mapping.Map(token));
-      }
-
       var query = csvData
           .Skip(_options.SkipHeader ? 1 : 0)
           .AsParallel();

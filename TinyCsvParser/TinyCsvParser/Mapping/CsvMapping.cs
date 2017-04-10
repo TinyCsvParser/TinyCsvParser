@@ -76,12 +76,7 @@ namespace TinyCsvParser.Mapping
       _csvPropertyMappings.Add(indexToPropertyMapping);
     }
 
-    public CsvMappingResult<TEntity> Map(KeyValuePair<int, string[]> token)
-    {
-      return Map(token.Value, token.Key);
-    }
-
-    public CsvMappingResult<TEntity> Map(string[] values, int? rowNumber = null)
+    public CsvMappingResult<TEntity> Map(string[] values)
     {
       TEntity entity = _invokeConstructor();
 
@@ -98,8 +93,7 @@ namespace TinyCsvParser.Mapping
             Error = new CsvMappingError
             {
               ColumnIndex = columnIndex,
-              Value = string.Format("Column {0} Out Of Range", columnIndex),
-              RowNumber = rowNumber
+              Value = string.Format("Column {0} Out Of Range", columnIndex)
             }
           };
         }
@@ -114,7 +108,6 @@ namespace TinyCsvParser.Mapping
             {
               ColumnIndex = columnIndex,
               Value = value,
-              RowNumber = rowNumber,
               ColumnMapDetails = indexToPropertyMapping.PropertyMapping.ToString()
             }
           };

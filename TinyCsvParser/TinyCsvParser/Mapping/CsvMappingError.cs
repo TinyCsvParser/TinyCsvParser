@@ -5,7 +5,6 @@ namespace TinyCsvParser.Mapping
 {
   public class CsvMappingError
   {
-    public int? RowNumber { get; set; }
     public int ColumnIndex { get; set; }
 
     public string Value { get; set; }
