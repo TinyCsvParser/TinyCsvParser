@@ -2,18 +2,19 @@
 
   <PropertyGroup>
     <Description>An easy to use and high-performance library for CSV parsing.</Description>
-    <Copyright>Copyright 2016 Philipp Wagner</Copyright>
+    <Copyright>Copyright 2017 Philipp Wagner</Copyright>
     <AssemblyTitle>TinyCsvParser</AssemblyTitle>
     <VersionPrefix>1.7.0</VersionPrefix>
     <Authors>Philipp Wagner</Authors>
     <TargetFrameworks>net45;netstandard1.3</TargetFrameworks>
     <AssemblyName>TinyCsvParser</AssemblyName>
     <PackageId>TinyCsvParser</PackageId>
+    <Title>TinyCsvParser</Title>
     <PackageTags>csv;csv parser</PackageTags>
     <PackageProjectUrl>https://github.com/bytefish/TinyCsvParser</PackageProjectUrl>
     <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
     <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>git://github.com/bytefish/TinyCsvParser</RepositoryUrl>
+    <RepositoryUrl>https://github.com/bytefish/TinyCsvParser</RepositoryUrl>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
     <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
@@ -22,6 +23,7 @@
     <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
@@ -29,24 +31,8 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 
-  <Target Name="PostcompileScript" AfterTargets="Build" Condition=" '$(IsCrossTargetingBuild)' != 'true' ">
-    <Exec Command="dotnet pack --no-build --configuration $(Configuration)" />
-  </Target>
-
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
-    <PackageReference Include="System.Runtime" Version="4.1.0" />
-    <PackageReference Include="System.Runtime.Extensions" Version="4.1.0" />
-    <PackageReference Include="System.Runtime.InteropServices" Version="4.1.0" />
-    <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.0.0" />
-    <PackageReference Include="System.Globalization" Version="4.0.11" />
-    <PackageReference Include="System.Linq" Version="4.1.0" />
-    <PackageReference Include="System.Linq.Expressions" Version="4.1.0" />
     <PackageReference Include="System.Linq.Parallel" Version="4.0.1" />
-    <PackageReference Include="System.Text.RegularExpressions" Version="4.1.0" />
-    <PackageReference Include="System.IO.FileSystem" Version="4.0.1" />
-    <PackageReference Include="System.Reflection" Version="4.1.0" />
-    <PackageReference Include="System.Reflection.Extensions" Version="4.0.1" />
-    <PackageReference Include="System.Reflection.TypeExtensions" Version="4.1.0" />
   </ItemGroup>
 
 </Project>
