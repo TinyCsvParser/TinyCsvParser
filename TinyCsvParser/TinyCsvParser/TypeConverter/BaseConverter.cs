@@ -5,13 +5,10 @@ using System;
 
 namespace TinyCsvParser.TypeConverter
 {
-    public abstract class BaseConverter<TTargetType> : ITypeConverter<TTargetType>
-    {
-        public abstract bool TryConvert(string value, out TTargetType result);
+  public abstract class BaseConverter<TTargetType> : ITypeConverter<TTargetType>
+  {
+    public abstract bool TryConvert(string value, out TTargetType result);
 
-        public Type TargetType
-        {
-            get { return typeof(TTargetType); }
-        }
-    }
+    public Type TargetType => typeof(TTargetType);
+  }
 }

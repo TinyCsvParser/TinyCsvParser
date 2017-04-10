@@ -6,31 +6,31 @@ using System.Globalization;
 
 namespace TinyCsvParser.TypeConverter
 {
-    public class SByteConverter : NonNullableConverter<SByte>
+  public class SByteConverter : NonNullableConverter<sbyte>
+  {
+    private readonly IFormatProvider _formatProvider;
+    private readonly NumberStyles _numberStyles;
+
+    public SByteConverter()
+      : this(CultureInfo.InvariantCulture)
     {
-        private readonly IFormatProvider formatProvider;
-        private readonly NumberStyles numberStyles;
-
-        public SByteConverter()
-            : this(CultureInfo.InvariantCulture)
-        {
-        }
-
-        public SByteConverter(IFormatProvider formatProvider)
-            : this(formatProvider, NumberStyles.Integer)
-        {
-        }
-
-        public SByteConverter(IFormatProvider formatProvider, NumberStyles numberStyles)
-        {
-            this.formatProvider = formatProvider;
-            this.numberStyles = numberStyles;
-        }
-
-
-        protected override bool InternalConvert(string value, out SByte result)
-        {
-            return SByte.TryParse(value, numberStyles, formatProvider, out result);
-        }
     }
+
+    public SByteConverter(IFormatProvider formatProvider)
+      : this(formatProvider, NumberStyles.Integer)
+    {
+    }
+
+    public SByteConverter(IFormatProvider formatProvider, NumberStyles numberStyles)
+    {
+      _formatProvider = formatProvider;
+      _numberStyles = numberStyles;
+    }
+
+
+    protected override bool InternalConvert(string value, out sbyte result)
+    {
+      return sbyte.TryParse(value, _numberStyles, _formatProvider, out result);
+    }
+  }
 }

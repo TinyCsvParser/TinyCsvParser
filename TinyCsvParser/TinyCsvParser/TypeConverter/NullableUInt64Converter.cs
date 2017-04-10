@@ -6,22 +6,22 @@ using System.Globalization;
 
 namespace TinyCsvParser.TypeConverter
 {
-    public class NullableUInt64Converter : NullableInnerConverter<UInt64>
+  public class NullableUInt64Converter : NullableInnerConverter<ulong>
+  {
+    public NullableUInt64Converter()
+      : base(new UInt64Converter())
+
     {
-        public NullableUInt64Converter()
-            : base(new UInt64Converter())
-
-        {
-        }
-
-        public NullableUInt64Converter(IFormatProvider formatProvider)
-            : base(new UInt64Converter(formatProvider))
-        {
-        }
-
-        public NullableUInt64Converter(IFormatProvider formatProvider, NumberStyles numberStyles)
-            : base(new UInt64Converter(formatProvider, numberStyles))
-        {
-        }
     }
+
+    public NullableUInt64Converter(IFormatProvider formatProvider)
+      : base(new UInt64Converter(formatProvider))
+    {
+    }
+
+    public NullableUInt64Converter(IFormatProvider formatProvider, NumberStyles numberStyles)
+      : base(new UInt64Converter(formatProvider, numberStyles))
+    {
+    }
+  }
 }

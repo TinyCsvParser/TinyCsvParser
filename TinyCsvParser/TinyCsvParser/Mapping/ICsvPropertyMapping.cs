@@ -3,9 +3,9 @@
 
 namespace TinyCsvParser.Mapping
 {
-    public interface ICsvPropertyMapping<TEntity>
-        where TEntity : class, new()
-    {
-        bool TryMapValue(TEntity entity, string value);
-    }
+  public interface ICsvPropertyMapping<TEntity>
+      where TEntity : class, new()
+  {
+    bool TryMapValue(TEntity entity, string value);
+  }
 }

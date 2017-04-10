@@ -9,27 +9,23 @@ using TinyCsvParser.Mapping;
 
 namespace TinyCsvParser
 {
-    public static class CsvParserExtensions
+  public static class CsvParserExtensions
+  {
+    public static ParallelQuery<CsvMappingResult<TEntity>> ReadFromFile<TEntity>(this ICsvParser<TEntity> csvParser, string fileName, Encoding encoding)
+      where TEntity : class, new()
     {
-        public static ParallelQuery<CsvMappingResult<TEntity>> ReadFromFile<TEntity>(this CsvParser<TEntity> csvParser, string fileName, Encoding encoding)
-            where TEntity : class, new()
-        {
-            if (fileName == null)
-            {
-                throw new ArgumentNullException("fileName");
-            }
+      if (fileName == null)
+        throw new ArgumentNullException(nameof(fileName));
 
-            var lines = File.ReadLines(fileName, encoding);
-
-            return csvParser.Parse(lines);
-        }
-
-        public static ParallelQuery<CsvMappingResult<TEntity>> ReadFromString<TEntity>(this CsvParser<TEntity> csvParser, CsvReaderOptions csvReaderOptions, string csvData)
-            where TEntity : class, new()
-        {
-            var lines = csvData.Split(csvReaderOptions.NewLine, StringSplitOptions.None);
-
-            return csvParser.Parse(lines);
-        }
+      return csvParser.Parse(File.ReadLines(fileName, encoding));
     }
+
+    public static ParallelQuery<CsvMappingResult<TEntity>> ReadFromString<TEntity>(this ICsvParser<TEntity> csvParser, CsvReaderOptions csvReaderOptions, string csvData)
+      where TEntity : class, new()
+    {
+      var lines = csvData.Split(csvReaderOptions.NewLine, StringSplitOptions.None);
+
+      return csvParser.Parse(lines);
+    }
+  }
 }

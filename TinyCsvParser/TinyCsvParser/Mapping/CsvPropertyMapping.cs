@@ -8,42 +8,42 @@ using TinyCsvParser.TypeConverter;
 
 namespace TinyCsvParser.Mapping
 {
-    public class CsvPropertyMapping<TEntity, TProperty> : ICsvPropertyMapping<TEntity>
-        where TEntity : class, new()
+  public class CsvPropertyMapping<TEntity, TProperty> : ICsvPropertyMapping<TEntity>
+      where TEntity : class, new()
+  {
+    private readonly string _propertyName;
+    private ITypeConverter<TProperty> _propertyConverter;
+    private readonly Action<TEntity, TProperty> _propertySetter;
+
+    public CsvPropertyMapping(Expression<Func<TEntity, TProperty>> property, ITypeConverter<TProperty> typeConverter)
     {
-        private string propertyName;
-        private ITypeConverter<TProperty> propertyConverter;
-        private Action<TEntity, TProperty> propertySetter;
-
-        public CsvPropertyMapping(Expression<Func<TEntity, TProperty>> property, ITypeConverter<TProperty> typeConverter) 
-        {
-            propertyConverter = typeConverter;
-            propertyName = ReflectionUtils.GetPropertyNameFromExpression(property);
-            propertySetter = ReflectionUtils.CreateSetter<TEntity, TProperty>(property);
-        }
-
-        public bool TryMapValue(TEntity entity, string value) 
-        {
-            TProperty convertedValue;
-
-            if (!propertyConverter.TryConvert(value, out convertedValue))
-            {
-                return false;
-            }
-
-            propertySetter(entity, convertedValue);
-
-            return true;
-        }
-
-        public void WithCustomConverter(ITypeConverter<TProperty> typeConverter)
-        {
-            propertyConverter = typeConverter;
-        }
-
-        public override string ToString()
-        {
-            return string.Format("CsvPropertyMapping (PropertyName = {0}, Converter = {1})", propertyName, propertyConverter);
-        }
+      _propertyConverter = typeConverter;
+      _propertyName = ReflectionUtils.GetPropertyNameFromExpression(property);
+      _propertySetter = ReflectionUtils.CreateSetter<TEntity, TProperty>(property);
     }
+
+    public bool TryMapValue(TEntity entity, string value)
+    {
+      TProperty convertedValue;
+
+      if (!_propertyConverter.TryConvert(value, out convertedValue))
+      {
+        return false;
+      }
+
+      _propertySetter(entity, convertedValue);
+
+      return true;
+    }
+
+    public void WithCustomConverter(ITypeConverter<TProperty> typeConverter)
+    {
+      _propertyConverter = typeConverter;
+    }
+
+    public override string ToString()
+    {
+      return string.Format("CsvPropertyMapping (PropertyName = {0}, Converter = {1})", _propertyName, _propertyConverter);
+    }
+  }
 }

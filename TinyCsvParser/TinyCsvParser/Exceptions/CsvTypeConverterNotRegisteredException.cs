@@ -5,21 +5,20 @@ using System;
 
 namespace TinyCsvParser.Exceptions
 {
-    public class CsvTypeConverterNotRegisteredException : Exception
+  public class CsvTypeConverterNotRegisteredException : Exception
+  {
+    public CsvTypeConverterNotRegisteredException()
     {
-        public CsvTypeConverterNotRegisteredException()
-            : base()
-        {
-        }
-
-        public CsvTypeConverterNotRegisteredException(string message)
-            : base(message)
-        {
-        }
-
-        public CsvTypeConverterNotRegisteredException(string message, Exception inner)
-            : base(message, inner)
-        {
-        }
     }
+
+    public CsvTypeConverterNotRegisteredException(string message)
+      : base(message)
+    {
+    }
+
+    public CsvTypeConverterNotRegisteredException(string message, Exception inner)
+      : base(message, inner)
+    {
+    }
+  }
 }

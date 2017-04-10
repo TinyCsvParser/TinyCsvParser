@@ -3,8 +3,8 @@
 
 namespace TinyCsvParser.TypeConverter
 {
-    public interface ITypeConverterProvider
-    {
-        ITypeConverter<TTypeConverter> Resolve<TTypeConverter>();
-    }
+  public interface ITypeConverterProvider
+  {
+    ITypeConverter<TTypeConverter> Resolve<TTypeConverter>();
+  }
 }

@@ -6,30 +6,30 @@ using System.Globalization;
 
 namespace TinyCsvParser.TypeConverter
 {
-    public class DoubleConverter : NonNullableConverter<Double>
+  public class DoubleConverter : NonNullableConverter<double>
+  {
+    private readonly IFormatProvider _formatProvider;
+    private readonly NumberStyles _numberStyles;
+
+    public DoubleConverter()
+      : this(CultureInfo.InvariantCulture)
     {
-        private readonly IFormatProvider formatProvider;
-        private readonly NumberStyles numberStyles;
-
-        public DoubleConverter()
-            : this(CultureInfo.InvariantCulture)
-        {
-        }
-
-        public DoubleConverter(IFormatProvider formatProvider)
-            : this(formatProvider, NumberStyles.Float | NumberStyles.AllowThousands)
-        {
-        }
-
-        public DoubleConverter(IFormatProvider formatProvider, NumberStyles numberStyles)
-        {
-            this.formatProvider = formatProvider;
-            this.numberStyles = numberStyles;
-        }
-
-        protected override bool InternalConvert(string value, out Double result)
-        {
-            return Double.TryParse(value, numberStyles, formatProvider, out result);
-        }
     }
+
+    public DoubleConverter(IFormatProvider formatProvider)
+      : this(formatProvider, NumberStyles.Float | NumberStyles.AllowThousands)
+    {
+    }
+
+    public DoubleConverter(IFormatProvider formatProvider, NumberStyles numberStyles)
+    {
+      _formatProvider = formatProvider;
+      _numberStyles = numberStyles;
+    }
+
+    protected override bool InternalConvert(string value, out double result)
+    {
+      return double.TryParse(value, _numberStyles, _formatProvider, out result);
+    }
+  }
 }

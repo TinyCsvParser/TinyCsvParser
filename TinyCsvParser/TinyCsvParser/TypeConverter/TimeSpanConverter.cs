@@ -6,42 +6,39 @@ using System.Globalization;
 
 namespace TinyCsvParser.TypeConverter
 {
-    public class TimeSpanConverter : NonNullableConverter<TimeSpan>
+  public class TimeSpanConverter : NonNullableConverter<TimeSpan>
+  {
+    private readonly string _format;
+    private readonly IFormatProvider _formatProvider;
+    private readonly TimeSpanStyles _timeSpanStyles;
+
+    public TimeSpanConverter()
+      : this(string.Empty)
     {
-        private readonly string format;
-        private readonly IFormatProvider formatProvider;
-        private readonly TimeSpanStyles timeSpanStyles;
-
-        public TimeSpanConverter()
-            : this(string.Empty)
-        {
-        }
-
-        public TimeSpanConverter(string format)
-            : this(format, CultureInfo.InvariantCulture)
-        {
-        }
-
-        public TimeSpanConverter(string format, IFormatProvider formatProvider)
-            : this(format, formatProvider, TimeSpanStyles.None)
-        {
-
-        }
-
-        public TimeSpanConverter(string format, IFormatProvider formatProvider, TimeSpanStyles timeSpanStyles)
-        {
-            this.format = format;
-            this.formatProvider = formatProvider;
-            this.timeSpanStyles = timeSpanStyles;
-        }
-
-        protected override bool InternalConvert(string value, out TimeSpan result)
-        {
-            if (string.IsNullOrWhiteSpace(format))
-            {
-                return TimeSpan.TryParse(value, formatProvider, out result);
-            }
-            return TimeSpan.TryParseExact(value, format, formatProvider, timeSpanStyles, out result);
-        }
     }
+
+    public TimeSpanConverter(string format)
+      : this(format, CultureInfo.InvariantCulture)
+    {
+    }
+
+    public TimeSpanConverter(string format, IFormatProvider formatProvider)
+      : this(format, formatProvider, TimeSpanStyles.None)
+    {
+    }
+
+    public TimeSpanConverter(string format, IFormatProvider formatProvider, TimeSpanStyles timeSpanStyles)
+    {
+      _format = format;
+      _formatProvider = formatProvider;
+      _timeSpanStyles = timeSpanStyles;
+    }
+
+    protected override bool InternalConvert(string value, out TimeSpan result)
+    {
+      if (string.IsNullOrWhiteSpace(_format))
+        return TimeSpan.TryParse(value, _formatProvider, out result);
+      return TimeSpan.TryParseExact(value, _format, _formatProvider, _timeSpanStyles, out result);
+    }
+  }
 }

@@ -1,110 +1,38 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{650E474D-3133-46A5-9A4E-377E9CD715F1}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TinyCsvParser</RootNamespace>
+    <Description>An easy to use and high-performance library for CSV parsing.</Description>
+    <Copyright>Copyright 2017 Philipp Wagner</Copyright>
+    <AssemblyTitle>TinyCsvParser</AssemblyTitle>
+    <VersionPrefix>1.7.0</VersionPrefix>
+    <Authors>Philipp Wagner</Authors>
+    <TargetFrameworks>net45;netstandard1.3</TargetFrameworks>
     <AssemblyName>TinyCsvParser</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <PackageId>TinyCsvParser</PackageId>
+    <Title>TinyCsvParser</Title>
+    <PackageTags>csv;csv parser</PackageTags>
+    <PackageProjectUrl>https://github.com/bytefish/TinyCsvParser</PackageProjectUrl>
+    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/bytefish/TinyCsvParser</RepositoryUrl>
+    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
     <Reference Include="System" />
-    <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="CsvReaderOptions.cs" />
-    <Compile Include="Exceptions\CsvTypeConverterAlreadyRegisteredException.cs" />
-    <Compile Include="ICsvParser.cs" />
-    <Compile Include="Mapping\CsvMapping.cs" />
-    <Compile Include="Mapping\CsvMappingError.cs" />
-    <Compile Include="CsvParser.cs" />
-    <Compile Include="Mapping\CsvMappingResult.cs" />
-    <Compile Include="CsvParserExtensions.cs" />
-    <Compile Include="CsvParserOptions.cs" />
-    <Compile Include="Mapping\CsvPropertyMapping.cs" />
-    <Compile Include="Exceptions\CsvTypeConverterNotRegisteredException.cs" />
-    <Compile Include="Mapping\ICsvPropertyMapping.cs" />
-    <Compile Include="Tokenizer\Decorators\TokenizerProcessingDecorator.cs" />
-    <Compile Include="Tokenizer\ITokenizer.cs" />
-    <Compile Include="Tokenizer\RegularExpressions\QuotedStringTokenizer.cs" />
-    <Compile Include="Tokenizer\RegularExpressions\RegularExpressionTokenizer.cs" />
-    <Compile Include="Tokenizer\FixedLengthTokenizer.cs" />
-    <Compile Include="Tokenizer\RFC4180\Options.cs" />
-    <Compile Include="Tokenizer\RFC4180\Reader.cs" />
-    <Compile Include="Tokenizer\RFC4180\RFC4180Tokenizer.cs" />
-    <Compile Include="Tokenizer\RFC4180\StringReaderExtensions.cs" />
-    <Compile Include="Tokenizer\StringSplitTokenizer.cs" />
-    <Compile Include="TypeConverter\DoubleConverter.cs" />
-    <Compile Include="TypeConverter\BoolConverter.cs" />
-    <Compile Include="TypeConverter\ITypeConverterProvider.cs" />
-    <Compile Include="Reflection\ReflectionUtils.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TypeConverter\NullableGuidConverter.cs" />
-    <Compile Include="TypeConverter\NullableBoolConverter.cs" />
-    <Compile Include="TypeConverter\NullableInnerConverter.cs" />
-    <Compile Include="TypeConverter\NullableDoubleConverter.cs" />
-    <Compile Include="TypeConverter\NullableSingleConverter.cs" />
-    <Compile Include="TypeConverter\NullableDecimalConverter.cs" />
-    <Compile Include="TypeConverter\NullableDateTimeConverter.cs" />
-    <Compile Include="TypeConverter\NullableTimeSpanConverter.cs" />
-    <Compile Include="TypeConverter\TypeConverterProvider.cs" />
-    <Compile Include="TypeConverter\BaseConverter.cs" />
-    <Compile Include="TypeConverter\NullableByteConverter.cs" />
-    <Compile Include="TypeConverter\NullableSByteConverter.cs" />
-    <Compile Include="TypeConverter\ByteConverter.cs" />
-    <Compile Include="TypeConverter\StringConverter.cs" />
-    <Compile Include="TypeConverter\TimeSpanConverter.cs" />
-    <Compile Include="TypeConverter\NullableUInt16Converter.cs" />
-    <Compile Include="TypeConverter\NullableUInt32Converter.cs" />
-    <Compile Include="TypeConverter\NullableUInt64Converter.cs" />
-    <Compile Include="TypeConverter\SByteConverter.cs" />
-    <Compile Include="TypeConverter\UInt16Converter.cs" />
-    <Compile Include="TypeConverter\UInt32Converter.cs" />
-    <Compile Include="TypeConverter\UInt64Converter.cs" />
-    <Compile Include="TypeConverter\SingleConverter.cs" />
-    <Compile Include="TypeConverter\DecimalConverter.cs" />
-    <Compile Include="TypeConverter\NullableInt64Converter.cs" />
-    <Compile Include="TypeConverter\NullableInt16Converter.cs" />
-    <Compile Include="TypeConverter\NullableInt32Converter.cs" />
-    <Compile Include="TypeConverter\EnumConverter.cs" />
-    <Compile Include="TypeConverter\GuidConverter.cs" />
-    <Compile Include="TypeConverter\Int16Converter.cs" />
-    <Compile Include="TypeConverter\Int32Converter.cs" />
-    <Compile Include="TypeConverter\NullableConverter.cs" />
-    <Compile Include="TypeConverter\NonNullableConverter.cs" />
-    <Compile Include="TypeConverter\Int64Converter.cs" />
-    <Compile Include="TypeConverter\DateTimeConverter.cs" />
-    <Compile Include="TypeConverter\ITypeConverter.cs" />
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
+    <PackageReference Include="System.Linq.Parallel" Version="4.0.1" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

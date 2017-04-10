@@ -4,17 +4,17 @@
 [MIT License]: https://opensource.org/licenses/MIT
 
 [TinyCsvParser] is a .NET library to parse CSV data in an easy and *fun way*, while offering very high performance and a very clean API. 
-It is probably the **fastest .NET CSV Parser around** (see [Benchmark](http://bytefish.github.io/TinyCsvParser/sections/benchmark.html)) 
+It is probably the **fastest .NET CSV Parser around** (see [Benchmark](https://bytefish.github.io/TinyCsvParser/sections/benchmark.html)) 
 and it is highly configurable to provide maximum flexibility.
 
-To get started quickly, follow the [Quickstart](http://bytefish.github.io/TinyCsvParser/sections/quickstart.html).
+To get started quickly, follow the [Quickstart](https://bytefish.github.io/TinyCsvParser/sections/quickstart.html).
 
 [TinyCsvParser] supports .NET Core as of Version 1.4.0.
 
 ## Installing TinyCsvParser ##
 
 You can use [NuGet](https://www.nuget.org) to install [TinyCsvParser]. Run the following command 
-in the [Package Manager Console](http://docs.nuget.org/consume/package-manager-console).
+in the [Package Manager Console](https://docs.nuget.org/consume/package-manager-console).
 
 ```
 PM> Install-Package TinyCsvParser
@@ -24,12 +24,12 @@ PM> Install-Package TinyCsvParser
 
 [TinyCsvParser] comes with an official and extensive documentation, which is located at:
 
-* [http://bytefish.github.io/TinyCsvParser/](http://bytefish.github.io/TinyCsvParser/)
+* [https://bytefish.github.io/TinyCsvParser/](https://bytefish.github.io/TinyCsvParser/)
 
 ## Basic Usage ##
 
 This is only an example for the most common use of TinyCsvParser. For more detailed information on custom formats and more advanced use-cases, 
-please consult the full [User Guide](http://bytefish.github.io/TinyCsvParser/sections/userguide.html) of the official documentation.
+please consult the full [User Guide](https://bytefish.github.io/TinyCsvParser/sections/userguide.html) of the official documentation.
 
 Imagine we have list of Persons in a CSV file ``persons.csv`` with their first name, last name and birthdate.
 

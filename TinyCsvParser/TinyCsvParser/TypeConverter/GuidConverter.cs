@@ -5,27 +5,25 @@ using System;
 
 namespace TinyCsvParser.TypeConverter
 {
-    public class GuidConverter : NonNullableConverter<Guid>
+  public class GuidConverter : NonNullableConverter<Guid>
+  {
+    private readonly string _format;
+
+    public GuidConverter()
+      : this(string.Empty)
     {
-        private readonly string format;
-
-        public GuidConverter()
-            : this(string.Empty)
-        {
-        }
-
-        public GuidConverter(string format)
-        {
-            this.format = format;
-        }
-
-        protected override bool InternalConvert(string value, out Guid result)
-        {
-            if (string.IsNullOrWhiteSpace(format))
-            {
-                return Guid.TryParse(value, out result);
-            }
-            return Guid.TryParseExact(value, format, out result);
-        }
     }
+
+    public GuidConverter(string format)
+    {
+      _format = format;
+    }
+
+    protected override bool InternalConvert(string value, out Guid result)
+    {
+      if (string.IsNullOrWhiteSpace(_format))
+        return Guid.TryParse(value, out result);
+      return Guid.TryParseExact(value, _format, out result);
+    }
+  }
 }
