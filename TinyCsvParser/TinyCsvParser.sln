@@ -1,11 +1,15 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26114.2
+VisualStudioVersion = 15.0.26403.0
 MinimumVisualStudioVersion = 15.0.0.0
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyCsvParser", "TinyCsvParser\TinyCsvParser.csproj", "{650E474D-3133-46A5-9A4E-377E9CD715F1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyCsvParser.Test", "TinyCsvParser.Test\TinyCsvParser.Test.csproj", "{B515F0DC-60D4-4915-80B1-D62D702D2E11}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "readme", "readme", "{B8404FD2-E1E4-4767-A72C-47AEE77828BF}"
+	ProjectSection(SolutionItems) = preProject
+		..\README.md = ..\README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
