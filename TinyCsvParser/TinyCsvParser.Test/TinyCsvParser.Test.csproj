@@ -48,6 +48,7 @@
     <Compile Include="CsvParser\CustomTypeConverterTest.cs" />
     <Compile Include="CsvParser\CsvParserTest.cs" />
     <Compile Include="Integration\BasicExampleTest.cs" />
+    <Compile Include="Integration\LineNumberCsvParserTest.cs" />
     <Compile Include="Issues\Issue4_PreprocessingTest.cs" />
     <Compile Include="Issues\Issue2_NegativeValueTest.cs" />
     <Compile Include="Mapping\CsvMappingTests.cs" />
