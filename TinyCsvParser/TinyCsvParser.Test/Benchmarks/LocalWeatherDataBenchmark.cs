@@ -12,7 +12,7 @@ using TinyCsvParser.TypeConverter;
 namespace TinyCsvParser.Test.Benchmarks
 {
 
-    [TestFixture, Ignore("LocalWeatherData, File has around 500 MB")]
+    [TestFixture,Description("Requires weather data from https://www.ncdc.noaa.gov/orders/qclcd/QCLCD201503.zip")]
     public class LocalWeatherDataBenchmark
     {
         public class LocalWeatherData
@@ -37,7 +37,7 @@ namespace TinyCsvParser.Test.Benchmarks
         {
             MeasurementUtils.MeasureElapsedTime(string.Format("Sequential Read"), () =>
             {
-                var a = File.ReadLines(@"C:\Users\philipp\Downloads\csv\201503hourly.txt", Encoding.ASCII)
+                var a = File.ReadLines(@"c:\filepathtoweatherdata\201503hourly.txt", Encoding.ASCII)
                     .AsParallel()
                     .Where(line => !string.IsNullOrWhiteSpace(line))
                     .Select(line => line.Trim().Split(new[] { ';' })).ToList();
@@ -55,19 +55,21 @@ namespace TinyCsvParser.Test.Benchmarks
             {
                 foreach (var degreeOfParallelism in degreeOfParallelismList)
                 {
-                    CsvParserOptions csvParserOptions = new CsvParserOptions(true, new[] { ',' }, degreeOfParallelism, order);
+                    CsvParserOptions csvParserOptions = new CsvParserOptions(true, new[] { ',' });
+                    csvParserOptions.StoreRowNumbers = true;
                     LocalWeatherDataMapper csvMapper = new LocalWeatherDataMapper();
                     CsvParser<LocalWeatherData> csvParser = new CsvParser<LocalWeatherData>(csvParserOptions, csvMapper);
 
-                    MeasurementUtils.MeasureElapsedTime(string.Format("LocalWeather (DegreeOfParallelism = {0}, KeepOrder = {1})", degreeOfParallelism, order),
+                    MeasurementUtils.MeasureElapsedTime($"LocalWeather (DegreeOfParallelism = {0}, KeepOrder = {0})",
                         () =>
                         {
                             var a = csvParser
-                                .ReadFromFile(@"C:\Users\philipp\Downloads\csv\201503hourly.txt", Encoding.ASCII)
+                                .ReadFromFile(@"c:\filepathtoweatherdata\201503hourly.txt", Encoding.ASCII)
                                 .ToList();
                         });
                 }
             }
         }
-    }
+
+  }
 }

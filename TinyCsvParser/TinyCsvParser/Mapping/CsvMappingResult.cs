@@ -4,13 +4,13 @@
 namespace TinyCsvParser.Mapping
 {
   public class CsvMappingResult<TEntity>
-      where TEntity : class, new()
+    where TEntity : class, new()
   {
     public CsvMappingError Error { get; set; }
 
-    public TEntity Result { get; set; }
-
     public bool IsValid => Error == null;
+
+    public TEntity Result { get; set; }
 
     public override string ToString()
     {

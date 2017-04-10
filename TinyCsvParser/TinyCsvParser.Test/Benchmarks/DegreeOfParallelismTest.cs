@@ -50,7 +50,7 @@ namespace TinyCsvParser.Test.Benchmarks
                 CsvPersonMapping csvMapper = new CsvPersonMapping();
                 CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
 
-                MeasurementUtils.MeasureElapsedTime(string.Format("DegreeOfParallelismTest (DegreeOfParallelism = {0})", degreeOfParallelism), () => csvParser.ReadFromString(csvReaderOptions, csvData).ToList());
+                MeasurementUtils.MeasureElapsedTime($"DegreeOfParallelismTest (DegreeOfParallelism = {degreeOfParallelism})", () => csvParser.ReadFromString(csvReaderOptions, csvData).ToList());
             }
         }
     }

@@ -11,7 +11,7 @@ namespace TinyCsvParser
 {
   public static class CsvParserExtensions
   {
-    public static ParallelQuery<CsvMappingResult<TEntity>> ReadFromFile<TEntity>(this CsvParser<TEntity> csvParser, string fileName, Encoding encoding)
+    public static ParallelQuery<CsvMappingResult<TEntity>> ReadFromFile<TEntity>(this ICsvParser<TEntity> csvParser, string fileName, Encoding encoding)
       where TEntity : class, new()
     {
       if (fileName == null)
@@ -20,7 +20,7 @@ namespace TinyCsvParser
       return csvParser.Parse(File.ReadLines(fileName, encoding));
     }
 
-    public static ParallelQuery<CsvMappingResult<TEntity>> ReadFromString<TEntity>(this CsvParser<TEntity> csvParser, CsvReaderOptions csvReaderOptions, string csvData)
+    public static ParallelQuery<CsvMappingResult<TEntity>> ReadFromString<TEntity>(this ICsvParser<TEntity> csvParser, CsvReaderOptions csvReaderOptions, string csvData)
       where TEntity : class, new()
     {
       var lines = csvData.Split(csvReaderOptions.NewLine, StringSplitOptions.None);
