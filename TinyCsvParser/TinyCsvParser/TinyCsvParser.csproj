@@ -4,7 +4,7 @@
     <Description>An easy to use and high-performance library for CSV parsing.</Description>
     <Copyright>Copyright 2016 Philipp Wagner</Copyright>
     <AssemblyTitle>TinyCsvParser</AssemblyTitle>
-    <VersionPrefix>1.6.0</VersionPrefix>
+    <VersionPrefix>1.7.0</VersionPrefix>
     <Authors>Philipp Wagner</Authors>
     <TargetFrameworks>net45;netstandard1.3</TargetFrameworks>
     <AssemblyName>TinyCsvParser</AssemblyName>

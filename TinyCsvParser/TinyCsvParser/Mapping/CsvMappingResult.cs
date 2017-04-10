@@ -3,18 +3,18 @@
 
 namespace TinyCsvParser.Mapping
 {
-    public class CsvMappingResult<TEntity>
-        where TEntity : class, new()
+  public class CsvMappingResult<TEntity>
+      where TEntity : class, new()
+  {
+    public CsvMappingError Error { get; set; }
+
+    public TEntity Result { get; set; }
+
+    public bool IsValid => Error == null;
+
+    public override string ToString()
     {
-        public CsvMappingError Error { get; set; }
-
-        public TEntity Result { get; set; }
-
-        public bool IsValid { get { return Error == null; } }
-
-        public override string ToString()
-        {
-            return string.Format("CsvMappingResult (Error = {0}, Result = {1})", Error, Result);
-        }
+      return $"CsvMappingResult (Error = {Error}, Result = {Result})";
     }
+  }
 }

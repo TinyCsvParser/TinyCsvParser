@@ -9,3 +9,4 @@ project.lock.json
 artifacts/
 *.xproj.user
 *.xproj
+_ReSharper.Caches/

@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Philipp Wagner. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using System.Collections.Generic;
+
 namespace TinyCsvParser.Tokenizer
 {
     public class StringSplitTokenizer : ITokenizer
@@ -16,16 +18,21 @@ namespace TinyCsvParser.Tokenizer
 
         public string[] Tokenize(string input)
         {
-            if(TrimLine) 
+            if(TrimLine)
             {
                 return input.Trim().Split(FieldsSeparator);
             }
             return input.Split(FieldsSeparator);
         }
 
+        public KeyValuePair<int, string[]> Tokenize(KeyValuePair<int, string> input)
+        {
+          return new KeyValuePair<int, string[]>(input.Key, Tokenize(input.Value));
+        }
+
         public override string ToString()
         {
-            return string.Format("StringSplitTokenizer (FieldsSeparator = {0}, TrimLine = {1})", FieldsSeparator, TrimLine);
+              return string.Format("StringSplitTokenizer (FieldsSeparator = {0}, TrimLine = {1})", FieldsSeparator, TrimLine);
         }
     }
 }
