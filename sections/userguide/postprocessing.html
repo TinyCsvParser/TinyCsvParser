@@ -1,0 +1,355 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Preprocessing and Postprocessing &mdash; TinyCsvParser 1.6 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="TinyCsvParser 1.6 documentation" href="../../index.html"/>
+        <link rel="up" title="User Guide" href="../userguide.html"/>
+        <link rel="next" title="☕ Parallel Processing" href="parallel.html"/>
+        <link rel="prev" title="Tokenizer" href="tokenizer.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> TinyCsvParser
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.6
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Conceptual Overview</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../userguide.html">User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parser.html">Parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concepts.html">Concepts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="typeconverter.html">Type Converter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tokenizer.html">Tokenizer</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Preprocessing and Postprocessing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#motivation">Motivation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tokenizerprocessingdecorator">TokenizerProcessingDecorator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="parallel.html">☕ Parallel Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="info.html">Learning More</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../benchmark.html">Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">TinyCsvParser</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../userguide.html">User Guide</a> &raquo;</li>
+        
+      <li>Preprocessing and Postprocessing</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/sections/userguide/postprocessing.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="preprocessing-and-postprocessing">
+<span id="userguide-postprocessing"></span><h1>Preprocessing and Postprocessing<a class="headerlink" href="#preprocessing-and-postprocessing" title="Permalink to this headline">¶</a></h1>
+<p>There may be times, when you simply cannot parse the CSV data, because the data contains problematic
+characters, unwanted characters or even malformed data. This is when you need to pre- or postprocess
+the data before and after tokenization.</p>
+<p>Tokenization described the process of splitting your data into column. You may have read about the
+<code class="code docutils literal"><span class="pre">StringSplitTokenizer</span></code>, the <code class="code docutils literal"><span class="pre">QuotedStringTokenizer</span></code> or the <code class="code docutils literal"><span class="pre">FixedLengthTokenizer</span></code>.
+The different tokenizers are simply different strategies for turning the data into their parts.</p>
+<p>Still sometimes, there is no alternative to preprocess or postprocess the data. This is where the
+<code class="code docutils literal"><span class="pre">TokenizerProcessingDecorator</span></code> is going to help you.</p>
+<div class="section" id="motivation">
+<h2>Motivation<a class="headerlink" href="#motivation" title="Permalink to this headline">¶</a></h2>
+<p>A Decorator, sometimes also called a Wrapper, is a simple pattern from the seminal Gang of Four Book. It allows you to add
+behavior to a class, by wrapping the original implementation of the class and implementing the same interface. This allows
+us to perform actions before and after invoking the wrapped object.</p>
+</div>
+<div class="section" id="tokenizerprocessingdecorator">
+<h2>TokenizerProcessingDecorator<a class="headerlink" href="#tokenizerprocessingdecorator" title="Permalink to this headline">¶</a></h2>
+<p>The decorator used for preprocessing and postprocessing the data is the <code class="code docutils literal"><span class="pre">TokenizerProcessingDecorator</span></code>.</p>
+<p>The processors responsible for processing the data are:</p>
+<ul class="simple">
+<li><code class="code docutils literal"><span class="pre">TokenizerProcessingDecorator.Preprocessor</span></code></li>
+<li><code class="code docutils literal"><span class="pre">TokenizerProcessingDecorator.Postprocessor</span></code></li>
+</ul>
+<p>The available constructors are:</p>
+<ul class="simple">
+<li><code class="code docutils literal"><span class="pre">TokenizerProcessingDecorator(ITokenizer</span> <span class="pre">tokenizer,</span> <span class="pre">Preprocessor</span> <span class="pre">preprocessor)</span></code></li>
+<li><code class="code docutils literal"><span class="pre">TokenizerProcessingDecorator(ITokenizer</span> <span class="pre">tokenizer,</span> <span class="pre">Postprocessor</span> <span class="pre">postprocessor)</span></code></li>
+<li><code class="code docutils literal"><span class="pre">TokenizerProcessingDecorator(ITokenizer</span> <span class="pre">tokenizer,</span> <span class="pre">Preprocessor</span> <span class="pre">preprocessor,</span> <span class="pre">Postprocessor</span> <span class="pre">postprocessor)</span></code></li>
+</ul>
+</div>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<p>Imagine a CSV file with fixed columns is parsed:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s2">&quot; Philipp   Wagner   &quot;</span>
+</pre></div>
+</div>
+<p>The first column starts at index 0 and ends at index 10, the second column starts at index 10 and ends at index 20.</p>
+<p>A <code class="code docutils literal"><span class="pre">FixedLengthTokenizer</span></code> can be used to parse the data. The parsing leads to the following values:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s2">&quot;Philipp   &quot;</span>
+<span class="s2">&quot;Wagner    &quot;</span>
+</pre></div>
+</div>
+<p>You can see, that we are left with unwanted whitespace characters in the tokenized data. This is probably not a huge problem, because it could be removed
+when processing the result object, but I do not think such raw data preprocessing and postprocessing steps should pollute your processing pipeline.</p>
+<p>Imagine we want the Tokenization result to be upper case and the whitespaces trimmed. Here is how to do it with a <code class="code docutils literal"><span class="pre">TokenizerProcessingDecorator</span></code>.</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="c1">// Copyright (c) Philipp Wagner. All rights reserved.</span>
+<span class="c1">// Licensed under the MIT license. See LICENSE file in the project root for full license information.</span>
+
+<span class="k">using</span> <span class="nn">NUnit.Framework</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Text</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">TinyCsvParser.Tokenizer</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">TinyCsvParser.Tokenizer.Decorators</span><span class="p">;</span>
+
+<span class="c1">// Used for defining fixed-width columns:</span>
+<span class="k">using</span> <span class="nn">ColumnDefinition</span> <span class="p">=</span> <span class="n">TinyCsvParser</span><span class="p">.</span><span class="n">Tokenizer</span><span class="p">.</span><span class="n">FixedLengthTokenizer</span><span class="p">.</span><span class="n">ColumnDefinition</span><span class="p">;</span>
+
+<span class="c1">// Used for Processing CSV Values before and after Tokenization:</span>
+<span class="k">using</span> <span class="nn">Preprocessor</span> <span class="p">=</span> <span class="n">TinyCsvParser</span><span class="p">.</span><span class="n">Tokenizer</span><span class="p">.</span><span class="n">Decorators</span><span class="p">.</span><span class="n">TokenizerProcessingDecorator</span><span class="p">.</span><span class="n">Preprocessor</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Postprocessor</span> <span class="p">=</span> <span class="n">TinyCsvParser</span><span class="p">.</span><span class="n">Tokenizer</span><span class="p">.</span><span class="n">Decorators</span><span class="p">.</span><span class="n">TokenizerProcessingDecorator</span><span class="p">.</span><span class="n">Postprocessor</span><span class="p">;</span>
+
+<span class="k">namespace</span> <span class="nn">TinyCsvParser.Test.Tokenizer</span>
+<span class="p">{</span>
+<span class="na">        [TestFixture]</span>
+        <span class="k">public</span> <span class="k">class</span> <span class="nc">TokenizerProcessingDecoratorTests</span>
+        <span class="p">{</span>
+<span class="na">                [Test]</span>
+                <span class="k">public</span> <span class="k">void</span> <span class="nf">Tokenize_With_Preprocess_ToUppercase_Postprocess_Trim_Test</span><span class="p">()</span>
+                <span class="p">{</span>
+                        <span class="c1">// Defines the Columns of a File:</span>
+                        <span class="n">ColumnDefinition</span><span class="p">[]</span> <span class="n">columns</span> <span class="p">=</span> <span class="k">new</span><span class="p">[]</span> <span class="p">{</span>
+                                <span class="k">new</span> <span class="n">FixedLengthTokenizer</span><span class="p">.</span><span class="n">ColumnDefinition</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">10</span><span class="p">),</span>
+                                <span class="k">new</span> <span class="n">FixedLengthTokenizer</span><span class="p">.</span><span class="n">ColumnDefinition</span><span class="p">(</span><span class="m">10</span><span class="p">,</span> <span class="m">20</span><span class="p">),</span>
+                        <span class="p">};</span>
+
+                        <span class="c1">// The Postprocessing Function on the Column value:</span>
+                        <span class="n">Preprocessor</span> <span class="n">preprocessor</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Preprocessor</span><span class="p">(</span><span class="n">s</span> <span class="p">=&gt;</span> <span class="n">s</span><span class="p">.</span><span class="n">ToUpperInvariant</span><span class="p">());</span>
+                        <span class="n">Postprocessor</span> <span class="n">postprocessor</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Postprocessor</span><span class="p">(</span><span class="n">s</span> <span class="p">=&gt;</span> <span class="n">s</span><span class="p">.</span><span class="n">Trim</span><span class="p">());</span>
+
+                        <span class="c1">// The Original Tokenizer, which tokenizes the line:</span>
+                        <span class="n">ITokenizer</span> <span class="n">decoratedTokenizer</span> <span class="p">=</span> <span class="k">new</span> <span class="n">FixedLengthTokenizer</span><span class="p">(</span><span class="n">columns</span><span class="p">);</span>
+
+                        <span class="n">ITokenizer</span> <span class="n">tokenizer</span> <span class="p">=</span> <span class="k">new</span> <span class="n">TokenizerProcessingDecorator</span><span class="p">(</span><span class="n">decoratedTokenizer</span><span class="p">,</span> <span class="n">preprocessor</span><span class="p">,</span> <span class="n">postprocessor</span><span class="p">);</span>
+
+                        <span class="kt">string</span> <span class="n">input</span> <span class="p">=</span> <span class="k">new</span> <span class="n">StringBuilder</span><span class="p">()</span>
+                                <span class="p">.</span><span class="n">AppendLine</span><span class="p">(</span><span class="s">&quot; Philipp   Wagner   &quot;</span><span class="p">)</span>
+                                <span class="p">.</span><span class="n">ToString</span><span class="p">();</span>
+
+                        <span class="kt">string</span><span class="p">[]</span> <span class="n">result</span> <span class="p">=</span> <span class="n">tokenizer</span><span class="p">.</span><span class="n">Tokenize</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
+
+                        <span class="n">Assert</span><span class="p">.</span><span class="n">AreEqual</span><span class="p">(</span><span class="s">&quot;PHILIPP&quot;</span><span class="p">,</span> <span class="n">result</span><span class="p">[</span><span class="m">0</span><span class="p">]);</span>
+                        <span class="n">Assert</span><span class="p">.</span><span class="n">AreEqual</span><span class="p">(</span><span class="s">&quot;WAGNER&quot;</span><span class="p">,</span> <span class="n">result</span><span class="p">[</span><span class="m">1</span><span class="p">]);</span>
+                <span class="p">}</span>
+        <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="parallel.html" class="btn btn-neutral float-right" title="☕ Parallel Processing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="tokenizer.html" class="btn btn-neutral" title="Tokenizer" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Philipp Wagner.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'1.6',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
