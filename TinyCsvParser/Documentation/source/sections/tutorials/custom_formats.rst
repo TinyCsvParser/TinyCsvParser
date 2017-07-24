@@ -19,7 +19,7 @@ Imagine a client sends data with a weird format for dates and writes dates like 
 These values cannot be parsed with the default date format, but in `TinyCsvParser`_ a :csharp:`DateTimeConverter` 
 with the custom date time format can be used for the mapping.
 
-To use the custom converter, you are simply using the :csharp:`WithCustomConverter` method to define a custom 
+To use the custom converter, you are simply pass the Converter to the :csharp:`MapProperty` method to define a custom 
 converter for the property mapping.
 
 .. code-block:: csharp
@@ -30,8 +30,7 @@ converter for the property mapping.
 		{
 			MapProperty(0, x => x.FirstName);
 			MapProperty(1, x => x.LastName);
-			MapProperty(2, x => x.BirthDate)
-				.WithCustomConverter(new DateTimeConverter("yyyy###MM###dd"));
+			MapProperty(2, x => x.BirthDate, new DateTimeConverter("yyyy###MM###dd"));
 		}
 	}
 
@@ -62,8 +61,7 @@ This converter can be used in a Property Mapping like this:
     {
         public BooleanMappingWithCustomConverter()
         {
-            MapProperty(0, x => x.PropertyBoolean);
-                .WithCustomConverter(new BoolConverter("ThisIsTrue", "ThisIsFalse", StringComparison.InvariantCulture));                
+            MapProperty(0, x => x.PropertyBoolean, new BoolConverter("ThisIsTrue", "ThisIsFalse", StringComparison.InvariantCulture));
         }
     }
 

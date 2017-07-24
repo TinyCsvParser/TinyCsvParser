@@ -8,9 +8,11 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Parsing Custom Formats &mdash; TinyCsvParser 1.4 documentation</title>
+  <title>Parsing Custom Formats &mdash; TinyCsvParser 1.6 documentation</title>
   
 
+  
+  
   
   
 
@@ -30,7 +32,10 @@
   
 
   
-    <link rel="top" title="TinyCsvParser 1.4 documentation" href="../../index.html"/>
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="TinyCsvParser 1.6 documentation" href="../../index.html"/>
         <link rel="up" title="Tutorials" href="../tutorials.html"/>
         <link rel="next" title="Parsing Enums" href="parsing_enums.html"/>
         <link rel="prev" title="Tutorials" href="../tutorials.html"/> 
@@ -42,6 +47,7 @@
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
@@ -61,7 +67,7 @@
             
             
               <div class="version">
-                1.4
+                1.6
               </div>
             
           
@@ -82,13 +88,16 @@
           
             
             
-                <ul class="current">
+              
+            
+            
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../overview.html">Conceptual Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../userguide.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../tutorials.html">Tutorials</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="">Parsing Custom Formats</a><ul>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Parsing Custom Formats</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#reading-a-date-with-a-custom-format">Reading a Date with a custom Format</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#reading-a-boolean-wit-a-custom-format">Reading a Boolean wit a custom Format</a></li>
 </ul>
@@ -110,8 +119,10 @@
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../../index.html">TinyCsvParser</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">TinyCsvParser</a>
+        
       </nav>
 
 
@@ -124,21 +135,38 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="../../index.html">Docs</a> &raquo;</li>
-      
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
           <li><a href="../tutorials.html">Tutorials</a> &raquo;</li>
-      
-    <li>Parsing Custom Formats</li>
+        
+      <li>Parsing Custom Formats</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
-            <a href="../../_sources/sections/tutorials/custom_formats.txt" rel="nofollow"> View page source</a>
+            
+            <a href="../../_sources/sections/tutorials/custom_formats.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -158,16 +186,15 @@ values in .NET.</p>
 <p>Imagine a client sends data with a weird format for dates and writes dates like this <code class="code docutils literal"><span class="pre">2004###01###25</span></code>.
 These values cannot be parsed with the default date format, but in <a class="reference external" href="https://github.com/bytefish/TinyCsvParser">TinyCsvParser</a> a <code class="code csharp docutils literal"><span class="name"><span class="pre">DateTimeConverter</span></span></code>
 with the custom date time format can be used for the mapping.</p>
-<p>To use the custom converter, you are simply using the <code class="code csharp docutils literal"><span class="name"><span class="pre">WithCustomConverter</span></span></code> method to define a custom
+<p>To use the custom converter, you are simply pass the Converter to the <code class="code csharp docutils literal"><span class="name"><span class="pre">MapProperty</span></span></code> method to define a custom
 converter for the property mapping.</p>
-<div class="highlight-csharp"><div class="highlight"><pre><span class="k">private</span> <span class="k">class</span> <span class="nc">CsvPersonMappingWithCustomConverter</span> <span class="p">:</span> <span class="n">CsvMapping</span><span class="p">&lt;</span><span class="n">Person</span><span class="p">&gt;</span>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="k">private</span> <span class="k">class</span> <span class="nc">CsvPersonMappingWithCustomConverter</span> <span class="p">:</span> <span class="n">CsvMapping</span><span class="p">&lt;</span><span class="n">Person</span><span class="p">&gt;</span>
 <span class="p">{</span>
         <span class="k">public</span> <span class="nf">CsvPersonMappingWithCustomConverter</span><span class="p">()</span>
         <span class="p">{</span>
                 <span class="n">MapProperty</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">FirstName</span><span class="p">);</span>
                 <span class="n">MapProperty</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">LastName</span><span class="p">);</span>
-                <span class="n">MapProperty</span><span class="p">(</span><span class="m">2</span><span class="p">,</span> <span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">BirthDate</span><span class="p">)</span>
-                        <span class="p">.</span><span class="n">WithCustomConverter</span><span class="p">(</span><span class="k">new</span> <span class="n">DateTimeConverter</span><span class="p">(</span><span class="s">&quot;yyyy###MM###dd&quot;</span><span class="p">));</span>
+                <span class="n">MapProperty</span><span class="p">(</span><span class="m">2</span><span class="p">,</span> <span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">BirthDate</span><span class="p">,</span> <span class="k">new</span> <span class="n">DateTimeConverter</span><span class="p">(</span><span class="s">&quot;yyyy###MM###dd&quot;</span><span class="p">));</span>
         <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -180,11 +207,11 @@ string value for true is <code class="code docutils literal"><span class="pre">&
 uses the text <code class="code docutils literal"><span class="pre">&quot;ThisIsTrue&quot;</span></code> for the boolean value <code class="code docutils literal"><span class="pre">true</span></code>, and <code class="code docutils literal"><span class="pre">&quot;ThisIsFalse&quot;</span></code> for
 the boolean value <code class="code docutils literal"><span class="pre">false</span></code>.</p>
 <p>Then you have to instantiate and use the <code class="code csharp docutils literal"><span class="name"><span class="pre">BoolConverter</span></span></code> like this:</p>
-<div class="highlight-csharp"><div class="highlight"><pre><span class="k">new</span> <span class="nf">BoolConverter</span><span class="p">(</span><span class="s">&quot;ThisIsTrue&quot;</span><span class="p">,</span> <span class="s">&quot;ThisIsFalse&quot;</span><span class="p">,</span> <span class="n">StringComparison</span><span class="p">.</span><span class="n">InvariantCulture</span><span class="p">);</span>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="k">new</span> <span class="nf">BoolConverter</span><span class="p">(</span><span class="s">&quot;ThisIsTrue&quot;</span><span class="p">,</span> <span class="s">&quot;ThisIsFalse&quot;</span><span class="p">,</span> <span class="n">StringComparison</span><span class="p">.</span><span class="n">InvariantCulture</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>This converter can be used in a Property Mapping like this:</p>
-<div class="highlight-csharp"><div class="highlight"><pre><span class="k">public</span> <span class="k">class</span> <span class="nc">EntityWithBoolean</span>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">class</span> <span class="nc">EntityWithBoolean</span>
 <span class="p">{</span>
     <span class="k">public</span> <span class="kt">bool</span> <span class="n">PropertyBoolean</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
 <span class="p">}</span>
@@ -193,8 +220,7 @@ the boolean value <code class="code docutils literal"><span class="pre">false</s
 <span class="p">{</span>
     <span class="k">public</span> <span class="nf">BooleanMappingWithCustomConverter</span><span class="p">()</span>
     <span class="p">{</span>
-        <span class="n">MapProperty</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">PropertyBoolean</span><span class="p">);</span>
-            <span class="p">.</span><span class="n">WithCustomConverter</span><span class="p">(</span><span class="k">new</span> <span class="n">BoolConverter</span><span class="p">(</span><span class="s">&quot;ThisIsTrue&quot;</span><span class="p">,</span> <span class="s">&quot;ThisIsFalse&quot;</span><span class="p">,</span> <span class="n">StringComparison</span><span class="p">.</span><span class="n">InvariantCulture</span><span class="p">));</span>
+        <span class="n">MapProperty</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">PropertyBoolean</span><span class="p">,</span> <span class="k">new</span> <span class="n">BoolConverter</span><span class="p">(</span><span class="s">&quot;ThisIsTrue&quot;</span><span class="p">,</span> <span class="s">&quot;ThisIsFalse&quot;</span><span class="p">,</span> <span class="n">StringComparison</span><span class="p">.</span><span class="n">InvariantCulture</span><span class="p">));</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -204,15 +230,18 @@ the boolean value <code class="code docutils literal"><span class="pre">false</s
 
 
            </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="parsing_enums.html" class="btn btn-neutral float-right" title="Parsing Enums" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="parsing_enums.html" class="btn btn-neutral float-right" title="Parsing Enums" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../tutorials.html" class="btn btn-neutral" title="Tutorials" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../tutorials.html" class="btn btn-neutral" title="Tutorials" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -243,10 +272,11 @@ the boolean value <code class="code docutils literal"><span class="pre">false</s
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.4',
+            VERSION:'1.6',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="../../_static/jquery.js"></script>

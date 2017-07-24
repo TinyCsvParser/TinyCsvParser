@@ -8,9 +8,11 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Type Converter &mdash; TinyCsvParser 1.4 documentation</title>
+  <title>Type Converter &mdash; TinyCsvParser 1.6 documentation</title>
   
 
+  
+  
   
   
 
@@ -30,7 +32,10 @@
   
 
   
-    <link rel="top" title="TinyCsvParser 1.4 documentation" href="../../index.html"/>
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="TinyCsvParser 1.6 documentation" href="../../index.html"/>
         <link rel="up" title="User Guide" href="../userguide.html"/>
         <link rel="next" title="Tokenizer" href="tokenizer.html"/>
         <link rel="prev" title="Concepts" href="concepts.html"/> 
@@ -42,6 +47,7 @@
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
@@ -61,7 +67,7 @@
             
             
               <div class="version">
-                1.4
+                1.6
               </div>
             
           
@@ -82,14 +88,17 @@
           
             
             
-                <ul class="current">
+              
+            
+            
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../overview.html">Conceptual Overview</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../userguide.html">User Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="parser.html">Parser</a></li>
 <li class="toctree-l2"><a class="reference internal" href="concepts.html">Concepts</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="">Type Converter</a><ul>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Type Converter</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#introduction">Introduction</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#available-type-converters">Available Type Converters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#parsing-custom-formats">Parsing Custom Formats</a><ul>
@@ -120,8 +129,10 @@
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../../index.html">TinyCsvParser</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">TinyCsvParser</a>
+        
       </nav>
 
 
@@ -134,21 +145,38 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="../../index.html">Docs</a> &raquo;</li>
-      
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
           <li><a href="../userguide.html">User Guide</a> &raquo;</li>
-      
-    <li>Type Converter</li>
+        
+      <li>Type Converter</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
-            <a href="../../_sources/sections/userguide/typeconverter.txt" rel="nofollow"> View page source</a>
+            
+            <a href="../../_sources/sections/userguide/typeconverter.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -283,21 +311,19 @@ the converter when defining the <code class="code docutils literal"><span class=
 take custom format strings. You should look up the MSDN documentation on the formatting strings for the specific .NET type. Some converters can
 also use an <a class="reference external" href="https://msdn.microsoft.com/en-us/library/system.iformatprovider(v=vs.110).aspx">IFormatProvider</a>, again MSDN is a great resource
 for information.</p>
-<p>The custom converter needs to be defined when defining the <code class="code docutils literal"><span class="pre">CsvMapping</span></code>, either by using the <cite>WithCustomConverter</cite> method for
-<code class="code docutils literal"><span class="pre">CsvPropertyMapping</span></code> or passing it into the <code class="code docutils literal"><span class="pre">CsvMapping.MapProperty(...)</span></code>. You will understand everything with an example.</p>
+<p>The custom converter needs to be defined when defining the <code class="code docutils literal"><span class="pre">CsvMapping</span></code>, by passing it into the <code class="code docutils literal"><span class="pre">CsvMapping.MapProperty(...)</span></code>. You will understand everything with an example.</p>
 <div class="section" id="datetimeconverter-example">
 <h3>DateTimeConverter Example<a class="headerlink" href="#datetimeconverter-example" title="Permalink to this headline">¶</a></h3>
 <p>Imagine a CSV file contains data with a weird format for dates, like this <code class="code docutils literal"><span class="pre">2004###01###25</span></code>. These values cannot be parsed with the default
 date format, but in TinyCsvParser a DateTimeConverter with the custom date time format can be defined.</p>
-<p>To use the custom converter, you have to use the <code class="code docutils literal"><span class="pre">CsvMapping.WithCustomConverter</span></code> method on the property mapping.</p>
-<div class="highlight-csharp"><div class="highlight"><pre><span class="k">private</span> <span class="k">class</span> <span class="nc">CsvPersonMappingWithCustomConverter</span> <span class="p">:</span> <span class="n">CsvMapping</span><span class="p">&lt;</span><span class="n">Person</span><span class="p">&gt;</span>
+<p>To use the custom converter, you have to pass it to the <code class="code docutils literal"><span class="pre">MapProperty</span></code> method on the property mapping.</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="k">private</span> <span class="k">class</span> <span class="nc">CsvPersonMappingWithCustomConverter</span> <span class="p">:</span> <span class="n">CsvMapping</span><span class="p">&lt;</span><span class="n">Person</span><span class="p">&gt;</span>
 <span class="p">{</span>
     <span class="k">public</span> <span class="nf">CsvPersonMappingWithCustomConverter</span><span class="p">()</span>
     <span class="p">{</span>
         <span class="n">MapProperty</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">FirstName</span><span class="p">);</span>
         <span class="n">MapProperty</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">LastName</span><span class="p">);</span>
-        <span class="n">MapProperty</span><span class="p">(</span><span class="m">2</span><span class="p">,</span> <span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">BirthDate</span><span class="p">)</span>
-            <span class="p">.</span><span class="n">WithCustomConverter</span><span class="p">(</span><span class="k">new</span> <span class="n">DateTimeConverter</span><span class="p">(</span><span class="s">&quot;yyyy###MM###dd&quot;</span><span class="p">));</span>
+        <span class="n">MapProperty</span><span class="p">(</span><span class="m">2</span><span class="p">,</span> <span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">BirthDate</span><span class="p">,</span> <span class="k">new</span> <span class="n">DateTimeConverter</span><span class="p">(</span><span class="s">&quot;yyyy###MM###dd&quot;</span><span class="p">));</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -308,15 +334,18 @@ date format, but in TinyCsvParser a DateTimeConverter with the custom date time 
 
 
            </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="tokenizer.html" class="btn btn-neutral float-right" title="Tokenizer" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="tokenizer.html" class="btn btn-neutral float-right" title="Tokenizer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="concepts.html" class="btn btn-neutral" title="Concepts" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="concepts.html" class="btn btn-neutral" title="Concepts" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -347,10 +376,11 @@ date format, but in TinyCsvParser a DateTimeConverter with the custom date time 
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.4',
+            VERSION:'1.6',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="../../_static/jquery.js"></script>

@@ -8,9 +8,11 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Contributing &mdash; TinyCsvParser 1.4 documentation</title>
+  <title>Contributing &mdash; TinyCsvParser 1.6 documentation</title>
   
 
+  
+  
   
   
 
@@ -30,7 +32,10 @@
   
 
   
-    <link rel="top" title="TinyCsvParser 1.4 documentation" href="../index.html"/>
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="TinyCsvParser 1.6 documentation" href="../index.html"/>
         <link rel="prev" title="Benchmark" href="benchmark.html"/> 
 
   
@@ -40,6 +45,7 @@
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
@@ -59,7 +65,7 @@
             
             
               <div class="version">
-                1.4
+                1.6
               </div>
             
           
@@ -80,14 +86,17 @@
           
             
             
-                <ul class="current">
+              
+            
+            
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Conceptual Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="userguide.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="benchmark.html">Benchmark</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">Contributing</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Contributing</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#help-out">Help Out</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#open-source">Open Source</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#building-the-documentation">Building the Documentation</a></li>
@@ -105,8 +114,10 @@
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../index.html">TinyCsvParser</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">TinyCsvParser</a>
+        
       </nav>
 
 
@@ -119,19 +130,36 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="../index.html">Docs</a> &raquo;</li>
-      
-    <li>Contributing</li>
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Contributing</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
-            <a href="../_sources/sections/contributing.txt" rel="nofollow"> View page source</a>
+            
+            <a href="../_sources/sections/contributing.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -161,7 +189,7 @@
 <li><a class="reference external" href="https://github.com/bytefish/TinyCsvParser">https://github.com/bytefish/TinyCsvParser</a></li>
 </ul>
 <p>Want to get your hands on the sources? Then clone the repository using the following git command:</p>
-<div class="highlight-python"><div class="highlight"><pre>git clone https://github.com/bytefish/TinyCsvParser
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">bytefish</span><span class="o">/</span><span class="n">TinyCsvParser</span>
 </pre></div>
 </div>
 </div>
@@ -175,19 +203,19 @@
 For example, if you install Python into the <code class="code docutils literal"><span class="pre">c:\python34</span> <span class="pre">directory</span></code>, you would add <code class="code docutils literal"><span class="pre">c:\python34;c:\python34\scripts</span></code> to your <code class="code docutils literal"><span class="pre">PATH</span></code> environment variable.</p>
 </li>
 <li><p class="first">Install Sphinx by opening a command prompt and running the following Python command. (Note that this operation might take a few minutes to complete.)</p>
-<div class="highlight-python"><div class="highlight"><pre>pip install sphinx
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">sphinx</span>
 </pre></div>
 </div>
 </li>
 <li><p class="first">By default, when you install Sphinx, it will install the ReadTheDocs custom theme automatically. If you need to update the installed version of this theme, you should run:</p>
-<div class="highlight-python"><div class="highlight"><pre>pip install -U sphinx_rtd_theme
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">U</span> <span class="n">sphinx_rtd_theme</span>
 </pre></div>
 </div>
 </li>
 <li><p class="first">Navigate to one of the projects Documentation located at <code class="code docutils literal"><span class="pre">TinyCsvParser/Documentation/</span></code>.</p>
 </li>
 <li><p class="first">Run <code class="code docutils literal"><span class="pre">make</span></code> (<code class="code docutils literal"><span class="pre">make.bat</span></code> on Windows, Makefile on Mac/Linux) from command line:</p>
-<div class="highlight-python"><div class="highlight"><pre>make html
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">html</span>
 </pre></div>
 </div>
 </li>
@@ -199,13 +227,16 @@ For example, if you install Python into the <code class="code docutils literal">
 
 
            </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
       
-        <a href="benchmark.html" class="btn btn-neutral" title="Benchmark" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="benchmark.html" class="btn btn-neutral" title="Benchmark" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -236,10 +267,11 @@ For example, if you install Python into the <code class="code docutils literal">
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.4',
+            VERSION:'1.6',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="../_static/jquery.js"></script>

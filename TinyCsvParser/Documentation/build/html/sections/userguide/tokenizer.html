@@ -8,9 +8,11 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Tokenizer &mdash; TinyCsvParser 1.4 documentation</title>
+  <title>Tokenizer &mdash; TinyCsvParser 1.6 documentation</title>
   
 
+  
+  
   
   
 
@@ -30,7 +32,10 @@
   
 
   
-    <link rel="top" title="TinyCsvParser 1.4 documentation" href="../../index.html"/>
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="TinyCsvParser 1.6 documentation" href="../../index.html"/>
         <link rel="up" title="User Guide" href="../userguide.html"/>
         <link rel="next" title="Preprocessing and Postprocessing" href="postprocessing.html"/>
         <link rel="prev" title="Type Converter" href="typeconverter.html"/> 
@@ -42,6 +47,7 @@
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
@@ -61,7 +67,7 @@
             
             
               <div class="version">
-                1.4
+                1.6
               </div>
             
           
@@ -82,7 +88,10 @@
           
             
             
-                <ul class="current">
+              
+            
+            
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../overview.html">Conceptual Overview</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../userguide.html">User Guide</a><ul class="current">
@@ -90,7 +99,7 @@
 <li class="toctree-l2"><a class="reference internal" href="parser.html">Parser</a></li>
 <li class="toctree-l2"><a class="reference internal" href="concepts.html">Concepts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="typeconverter.html">Type Converter</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="">Tokenizer</a><ul>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Tokenizer</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#motivation">Motivation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#available-tokenizers">Available Tokenizers</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#stringsplittokenizer">StringSplitTokenizer</a></li>
@@ -123,8 +132,10 @@
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../../index.html">TinyCsvParser</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">TinyCsvParser</a>
+        
       </nav>
 
 
@@ -137,21 +148,38 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="../../index.html">Docs</a> &raquo;</li>
-      
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
           <li><a href="../userguide.html">User Guide</a> &raquo;</li>
-      
-    <li>Tokenizer</li>
+        
+      <li>Tokenizer</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
-            <a href="../../_sources/sections/userguide/tokenizer.txt" rel="nofollow"> View page source</a>
+            
+            <a href="../../_sources/sections/userguide/tokenizer.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -165,9 +193,9 @@
 may look completely different. This rules out one single strategy to tokenize a given line in your CSV
 data.</p>
 <p>Imagine a situation, where a column delimiter is also present in the column data like this:</p>
-<div class="highlight-python"><div class="highlight"><pre>FirstNameLastName;BirthDate
-&quot;Philipp,Wagner&quot;,1986/05/12
-&quot;&quot;Max,Mustermann&quot;,2014/01/01
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">FirstNameLastName</span><span class="p">;</span><span class="n">BirthDate</span>
+<span class="s2">&quot;Philipp,Wagner&quot;</span><span class="p">,</span><span class="mi">1986</span><span class="o">/</span><span class="mi">05</span><span class="o">/</span><span class="mi">12</span>
+<span class="s2">&quot;&quot;</span><span class="n">Max</span><span class="p">,</span><span class="n">Mustermann</span><span class="s2">&quot;,2014/01/01</span>
 </pre></div>
 </div>
 <p>A simple <code class="code csharp docutils literal"><span class="keyword type"><span class="pre">string</span></span><span class="punctuation"><span class="pre">.</span></span><span class="name"><span class="pre">Split</span></span></code> with a comma as column delimiter will lead to wrong data, so the line
@@ -179,7 +207,7 @@ needs to be split differently. And this is exactely where a <code class="code do
 <div class="section" id="stringsplittokenizer">
 <h3>StringSplitTokenizer<a class="headerlink" href="#stringsplittokenizer" title="Permalink to this headline">¶</a></h3>
 <p>The <code class="code csharp docutils literal"><span class="name"><span class="pre">StringSplitTokenizer</span></span></code> splits a line at a given column delimiter.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">Philipp</span><span class="p">,</span><span class="n">Wagner</span><span class="p">,</span><span class="mi">1986</span><span class="o">/</span><span class="mo">05</span><span class="o">/</span><span class="mi">12</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Philipp</span><span class="p">,</span><span class="n">Wagner</span><span class="p">,</span><span class="mi">1986</span><span class="o">/</span><span class="mi">05</span><span class="o">/</span><span class="mi">12</span>
 </pre></div>
 </div>
 <p>Is tokenized into the following values:</p>
@@ -198,13 +226,13 @@ the <code class="code csharp docutils literal"><span class="name"><span class="p
 <p>Imagine a RFC4180-compliant CSV file with Person Names should be parsed. Each Person has a <code class="code docutils literal"><span class="pre">Name</span></code>,
 <code class="code docutils literal"><span class="pre">Age</span></code> and <code class="code docutils literal"><span class="pre">Description</span></code>. The <code class="code docutils literal"><span class="pre">Name</span></code> and <code class="code docutils literal"><span class="pre">Description</span></code> may contain the column
 delimiter and also double quotes.</p>
-<div class="highlight-python"><div class="highlight"><pre>Name, Age, Description
-    &quot;Michael, Chester&quot;, 24, &quot;Also goes by &quot;&quot;Mike&quot;&quot;, among friends that is&quot;
-    &quot;Robert, Willliamson&quot;, , &quot;All-around nice guy who always says hi&quot;
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Name</span><span class="p">,</span> <span class="n">Age</span><span class="p">,</span> <span class="n">Description</span>
+    <span class="s2">&quot;Michael, Chester&quot;</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="s2">&quot;Also goes by &quot;&quot;Mike&quot;&quot;, among friends that is&quot;</span>
+    <span class="s2">&quot;Robert, Willliamson&quot;</span><span class="p">,</span> <span class="p">,</span> <span class="s2">&quot;All-around nice guy who always says hi&quot;</span>
 </pre></div>
 </div>
 <p>The following example shows how to use the <code class="code docutils literal"><span class="pre">RFC4180Tokenizer</span></code> for the given example data.</p>
-<div class="highlight-csharp"><div class="highlight"><pre><span class="c1">// Copyright (c) Philipp Wagner. All rights reserved.</span>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="c1">// Copyright (c) Philipp Wagner. All rights reserved.</span>
 <span class="c1">// Licensed under the MIT license. See LICENSE file in the project root for full license information.</span>
 
 <span class="k">using</span> <span class="nn">NUnit.Framework</span><span class="p">;</span>
@@ -295,7 +323,7 @@ this base class.</p>
 <p>The <code class="code csharp docutils literal"><span class="name"><span class="pre">QuotedStringTokenizer</span></span></code> is an implementation of a <code class="code csharp docutils literal"><span class="name"><span class="pre">RegularExpressionTokenizer</span></span></code>. It uses
 a (rather complicated) regular expression to leave data in a double quotes (<code class="code docutils literal"><span class="pre">&quot;&quot;</span></code>) untouched, so a line
 like:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="s">&quot;Philipp,Wagner&quot;</span><span class="p">,</span><span class="mi">1986</span><span class="o">/</span><span class="mo">05</span><span class="o">/</span><span class="mi">12</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s2">&quot;Philipp,Wagner&quot;</span><span class="p">,</span><span class="mi">1986</span><span class="o">/</span><span class="mi">05</span><span class="o">/</span><span class="mi">12</span>
 </pre></div>
 </div>
 <p>Is tokenized into the following values:</p>
@@ -306,17 +334,17 @@ like:</p>
 <div class="section" id="id1">
 <h4>Example<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
 <p>Imagine a CSV file contains a list of persons with the following data:</p>
-<div class="highlight-python"><div class="highlight"><pre>FirstNameLastName;BirthDate
-&quot;Philipp,Wagner&quot;,1986/05/12
-&quot;&quot;Max,Mustermann&quot;,2014/01/01
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">FirstNameLastName</span><span class="p">;</span><span class="n">BirthDate</span>
+<span class="s2">&quot;Philipp,Wagner&quot;</span><span class="p">,</span><span class="mi">1986</span><span class="o">/</span><span class="mi">05</span><span class="o">/</span><span class="mi">12</span>
+<span class="s2">&quot;&quot;</span><span class="n">Max</span><span class="p">,</span><span class="n">Mustermann</span><span class="s2">&quot;,2014/01/01</span>
 </pre></div>
 </div>
 <p>The first name and the last name are using a comma, which is the same character as the column delimiter.
-So the file can&#8217;t be tokenized by only splitting at the column delimiter with the default
+So the file can’t be tokenized by only splitting at the column delimiter with the default
 <code class="code docutils literal"><span class="pre">StringSplitTokenizer</span></code>.</p>
 <p>This is where the <code class="code docutils literal"><span class="pre">QuotedStringTokenizer</span></code> is needed!</p>
 <p>The <code class="code docutils literal"><span class="pre">Tokenizer</span></code> is set in the <code class="code docutils literal"><span class="pre">CsvParserOptions</span></code>.</p>
-<div class="highlight-csharp"><div class="highlight"><pre><span class="k">using</span> <span class="nn">NUnit.Framework</span><span class="p">;</span>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="k">using</span> <span class="nn">NUnit.Framework</span><span class="p">;</span>
 <span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
 <span class="k">using</span> <span class="nn">System.Linq</span><span class="p">;</span>
 <span class="k">using</span> <span class="nn">System.Text</span><span class="p">;</span>
@@ -394,7 +422,7 @@ it possible to define columns by their start and end position in a given file. T
 <h4>Example<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
 <p>In the following example the textual input is split into two columns. The first column is between index 0 and 10, and the second column is between the
 index 10 and 20. You can see, that these values build the list of <code class="code docutils literal"><span class="pre">ColumnDefinition</span></code>, which are passed into the <code class="code docutils literal"><span class="pre">FixedLengthTokenizer</span></code>.</p>
-<div class="highlight-csharp"><div class="highlight"><pre><span class="c1">// Copyright (c) Philipp Wagner. All rights reserved.</span>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="c1">// Copyright (c) Philipp Wagner. All rights reserved.</span>
 <span class="c1">// Licensed under the MIT license. See LICENSE file in the project root for full license information.</span>
 
 <span class="k">using</span> <span class="nn">NUnit.Framework</span><span class="p">;</span>
@@ -436,15 +464,18 @@ index 10 and 20. You can see, that these values build the list of <code class="c
 
 
            </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="postprocessing.html" class="btn btn-neutral float-right" title="Preprocessing and Postprocessing" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="postprocessing.html" class="btn btn-neutral float-right" title="Preprocessing and Postprocessing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="typeconverter.html" class="btn btn-neutral" title="Type Converter" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="typeconverter.html" class="btn btn-neutral" title="Type Converter" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -475,10 +506,11 @@ index 10 and 20. You can see, that these values build the list of <code class="c
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.4',
+            VERSION:'1.6',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="../../_static/jquery.js"></script>

@@ -8,9 +8,11 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>FAQ &mdash; TinyCsvParser 1.4 documentation</title>
+  <title>FAQ &mdash; TinyCsvParser 1.6 documentation</title>
   
 
+  
+  
   
   
 
@@ -30,7 +32,10 @@
   
 
   
-    <link rel="top" title="TinyCsvParser 1.4 documentation" href="../index.html"/>
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="TinyCsvParser 1.6 documentation" href="../index.html"/>
         <link rel="next" title="Tutorials" href="tutorials.html"/>
         <link rel="prev" title="Learning More" href="userguide/info.html"/> 
 
@@ -41,6 +46,7 @@
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
@@ -60,7 +66,7 @@
             
             
               <div class="version">
-                1.4
+                1.6
               </div>
             
           
@@ -81,11 +87,14 @@
           
             
             
-                <ul class="current">
+              
+            
+            
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Conceptual Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="userguide.html">User Guide</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">FAQ</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="benchmark.html">Benchmark</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
@@ -101,8 +110,10 @@
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../index.html">TinyCsvParser</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">TinyCsvParser</a>
+        
       </nav>
 
 
@@ -115,19 +126,36 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="../index.html">Docs</a> &raquo;</li>
-      
-    <li>FAQ</li>
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>FAQ</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
-            <a href="../_sources/sections/faq.txt" rel="nofollow"> View page source</a>
+            
+            <a href="../_sources/sections/faq.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -142,7 +170,7 @@
 <dd><ul class="first last">
 <li><p class="first">By default the CSV data is split at the column delimiter given in the <code class="code docutils literal"><span class="pre">CsvParserOptions</span></code>. If the column delimiter is also present in the column data,
 then a simple split will lead to wrong column data.</p>
-<p>In this situation you need to use a custom <a class="reference internal" href="userguide/tokenizer.html#userguide-tokenizer"><span>Tokenizer</span></a>, please see the section on <a class="reference internal" href="userguide/tokenizer.html#userguide-tokenizer"><span>Tokenizers</span></a> for a detailed introduction.</p>
+<p>In this situation you need to use a custom <a class="reference internal" href="userguide/tokenizer.html#userguide-tokenizer"><span class="std std-ref">Tokenizer</span></a>, please see the section on <a class="reference internal" href="userguide/tokenizer.html#userguide-tokenizer"><span class="std std-ref">Tokenizers</span></a> for a detailed introduction.</p>
 </li>
 </ul>
 </dd>
@@ -151,8 +179,8 @@ then a simple split will lead to wrong column data.</p>
 <li><dl class="first docutils">
 <dt>How can I parse CSV data coming in a custom format?</dt>
 <dd><ul class="first last simple">
-<li>All built-in converters support format strings and other advanced formatting options. Please see the detailed guide on <a class="reference internal" href="userguide/typeconverter.html#userguide-type-converter"><span>Type Converter</span></a>
-and have a look at the tutorial on <a class="reference internal" href="tutorials/custom_formats.html#tutorials-custom-formats"><span>Parsing Custom Formats</span></a>.</li>
+<li>All built-in converters support format strings and other advanced formatting options. Please see the detailed guide on <a class="reference internal" href="userguide/typeconverter.html#userguide-type-converter"><span class="std std-ref">Type Converter</span></a>
+and have a look at the tutorial on <a class="reference internal" href="tutorials/custom_formats.html#tutorials-custom-formats"><span class="std std-ref">Parsing Custom Formats</span></a>.</li>
 </ul>
 </dd>
 </dl>
@@ -160,7 +188,7 @@ and have a look at the tutorial on <a class="reference internal" href="tutorials
 <li><dl class="first docutils">
 <dt>Can I contribute to the project?</dt>
 <dd><ul class="first last simple">
-<li><strong>Yes!</strong> You can help out with code, documentation, bug reports, bug fixes, ... Please see the section on <a class="reference internal" href="contributing.html#contributing"><span>Contributing</span></a>.</li>
+<li><strong>Yes!</strong> You can help out with code, documentation, bug reports, bug fixes, … Please see the section on <a class="reference internal" href="contributing.html#contributing"><span class="std std-ref">Contributing</span></a>.</li>
 </ul>
 </dd>
 </dl>
@@ -170,15 +198,18 @@ and have a look at the tutorial on <a class="reference internal" href="tutorials
 
 
            </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="tutorials.html" class="btn btn-neutral float-right" title="Tutorials" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="tutorials.html" class="btn btn-neutral float-right" title="Tutorials" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="userguide/info.html" class="btn btn-neutral" title="Learning More" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="userguide/info.html" class="btn btn-neutral" title="Learning More" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -209,10 +240,11 @@ and have a look at the tutorial on <a class="reference internal" href="tutorials
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.4',
+            VERSION:'1.6',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="../_static/jquery.js"></script>

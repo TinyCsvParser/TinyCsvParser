@@ -8,9 +8,11 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Benchmark &mdash; TinyCsvParser 1.4 documentation</title>
+  <title>Benchmark &mdash; TinyCsvParser 1.6 documentation</title>
   
 
+  
+  
   
   
 
@@ -30,7 +32,10 @@
   
 
   
-    <link rel="top" title="TinyCsvParser 1.4 documentation" href="../index.html"/>
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="TinyCsvParser 1.6 documentation" href="../index.html"/>
         <link rel="next" title="Contributing" href="contributing.html"/>
         <link rel="prev" title="Parsing Enums" href="tutorials/parsing_enums.html"/> 
 
@@ -41,6 +46,7 @@
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
@@ -60,7 +66,7 @@
             
             
               <div class="version">
-                1.4
+                1.6
               </div>
             
           
@@ -81,13 +87,16 @@
           
             
             
-                <ul class="current">
+              
+            
+            
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Conceptual Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="userguide.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">Benchmark</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Benchmark</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#dataset">Dataset</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#benchmark-results">Benchmark Results</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#benchmark-code">Benchmark Code</a><ul>
@@ -113,8 +122,10 @@
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../index.html">TinyCsvParser</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">TinyCsvParser</a>
+        
       </nav>
 
 
@@ -127,19 +138,36 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="../index.html">Docs</a> &raquo;</li>
-      
-    <li>Benchmark</li>
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Benchmark</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
-            <a href="../_sources/sections/benchmark.txt" rel="nofollow"> View page source</a>
+            
+            <a href="../_sources/sections/benchmark.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -152,7 +180,7 @@ parallel. You will see how fast <a class="reference external" href="https://gith
 parsing. This post is not meant to discredit the <a class="reference external" href="http://www.filehelpers.net">FileHelpers</a> or <a class="reference external" href="https://github.com/JoshClose/CsvHelper">CsvHelper</a> projects.</p>
 <div class="section" id="dataset">
 <h2>Dataset<a class="headerlink" href="#dataset" title="Permalink to this headline">¶</a></h2>
-<p>In this tutorial a real life dataset is parsed. It&#8217;s the local weather data in March 2015 gathered by
+<p>In this tutorial a real life dataset is parsed. It’s the local weather data in March 2015 gathered by
 all weather stations in the USA. You can obtain the data  <code class="docutils literal"><span class="pre">QCLCD201503.zip</span></code> from:</p>
 <ul class="simple">
 <li><a class="reference external" href="http://www.ncdc.noaa.gov/orders/qclcd">http://www.ncdc.noaa.gov/orders/qclcd</a></li>
@@ -162,12 +190,12 @@ all weather stations in the USA. You can obtain the data  <code class="docutils 
 <div class="section" id="benchmark-results">
 <h2>Benchmark Results<a class="headerlink" href="#benchmark-results" title="Permalink to this headline">¶</a></h2>
 <p>Without further explanation, here are the Benchmark results for parsing the dataset.</p>
-<div class="highlight-python"><div class="highlight"><pre>[TinyCsvParser (DegreeOfParallelism = 4, KeepOrder = True)] Elapsed Time = 00:00:10.48
-[CsvHelper] Elapsed Time = 00:00:32.60
-[FileHelpers] Crash
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">TinyCsvParser</span> <span class="p">(</span><span class="n">DegreeOfParallelism</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">KeepOrder</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)]</span> <span class="n">Elapsed</span> <span class="n">Time</span> <span class="o">=</span> <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mf">10.48</span>
+<span class="p">[</span><span class="n">CsvHelper</span><span class="p">]</span> <span class="n">Elapsed</span> <span class="n">Time</span> <span class="o">=</span> <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mf">32.60</span>
+<span class="p">[</span><span class="n">FileHelpers</span><span class="p">]</span> <span class="n">Crash</span>
 </pre></div>
 </div>
-<p>You can see, that <a class="reference external" href="https://github.com/bytefish/TinyCsvParser">TinyCsvParser</a> is able to parse the file in <cite>10.5</cite> seconds only. Even if you don&#8217;t
+<p>You can see, that <a class="reference external" href="https://github.com/bytefish/TinyCsvParser">TinyCsvParser</a> is able to parse the file in <cite>10.5</cite> seconds only. Even if you don’t
 process the data in parallel (<cite>DegreeOfParallelism = 1</cite>, which means it will utilize one thread only),
 it is still faster, than the <a class="reference external" href="https://github.com/JoshClose/CsvHelper">CsvHelper</a> library. The <a class="reference external" href="http://www.filehelpers.net">FileHelpers</a> implementation crashed with an
 <cite>OutOfMemory Exception</cite>.</p>
@@ -177,7 +205,7 @@ it is still faster, than the <a class="reference external" href="https://github.
 <div class="section" id="measuring-the-execution-time">
 <h3>Measuring the Execution Time<a class="headerlink" href="#measuring-the-execution-time" title="Permalink to this headline">¶</a></h3>
 <p>The elapsed time of the import can be easily measured by using the <code class="code csharp docutils literal"><span class="name"><span class="pre">System</span></span><span class="punctuation"><span class="pre">.</span></span><span class="name"><span class="pre">Diagnostics</span></span><span class="punctuation"><span class="pre">.</span></span><span class="name"><span class="pre">Stopwatch</span></span></code>.</p>
-<div class="highlight-csharp"><div class="highlight"><pre><span class="k">private</span> <span class="k">void</span> <span class="nf">MeasureElapsedTime</span><span class="p">(</span><span class="kt">string</span> <span class="n">description</span><span class="p">,</span> <span class="n">Action</span> <span class="n">action</span><span class="p">)</span>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="k">private</span> <span class="k">void</span> <span class="nf">MeasureElapsedTime</span><span class="p">(</span><span class="kt">string</span> <span class="n">description</span><span class="p">,</span> <span class="n">Action</span> <span class="n">action</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="c1">// Get the elapsed time as a TimeSpan value.</span>
     <span class="n">TimeSpan</span> <span class="n">ts</span> <span class="p">=</span> <span class="n">MeasureElapsedTime</span><span class="p">(</span><span class="n">action</span><span class="p">);</span>
@@ -205,7 +233,7 @@ it is still faster, than the <a class="reference external" href="https://github.
 </div>
 <div class="section" id="tinycsvparser">
 <h3>TinyCsvParser<a class="headerlink" href="#tinycsvparser" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-csharp"><div class="highlight"><pre><span class="k">public</span> <span class="k">class</span> <span class="nc">LocalWeatherData</span>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">class</span> <span class="nc">LocalWeatherData</span>
 <span class="p">{</span>
     <span class="k">public</span> <span class="kt">string</span> <span class="n">WBAN</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
     <span class="k">public</span> <span class="n">DateTime</span> <span class="n">Date</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
@@ -217,7 +245,7 @@ it is still faster, than the <a class="reference external" href="https://github.
     <span class="k">public</span> <span class="nf">LocalWeatherDataMapper</span><span class="p">()</span>
     <span class="p">{</span>
         <span class="n">MapProperty</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">WBAN</span><span class="p">);</span>
-        <span class="n">MapProperty</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">Date</span><span class="p">).</span><span class="n">WithCustomConverter</span><span class="p">(</span><span class="k">new</span> <span class="n">DateTimeConverter</span><span class="p">(</span><span class="s">&quot;yyyyMMdd&quot;</span><span class="p">));</span>
+        <span class="n">MapProperty</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">Date</span><span class="p">,</span> <span class="k">new</span> <span class="n">DateTimeConverter</span><span class="p">(</span><span class="s">&quot;yyyyMMdd&quot;</span><span class="p">));</span>
         <span class="n">MapProperty</span><span class="p">(</span><span class="m">4</span><span class="p">,</span> <span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">SkyCondition</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
@@ -252,7 +280,7 @@ it is still faster, than the <a class="reference external" href="https://github.
 </div>
 <div class="section" id="csvhelper">
 <h3>CsvHelper<a class="headerlink" href="#csvhelper" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-csharp"><div class="highlight"><pre><span class="k">public</span> <span class="k">class</span> <span class="nc">CustomDateConverter</span> <span class="p">:</span> <span class="n">CsvHelper</span><span class="p">.</span><span class="n">TypeConversion</span><span class="p">.</span><span class="n">DefaultTypeConverter</span>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">class</span> <span class="nc">CustomDateConverter</span> <span class="p">:</span> <span class="n">CsvHelper</span><span class="p">.</span><span class="n">TypeConversion</span><span class="p">.</span><span class="n">DefaultTypeConverter</span>
 <span class="p">{</span>
     <span class="k">private</span> <span class="k">const</span> <span class="kt">string</span> <span class="n">CustomDateFormat</span> <span class="p">=</span> <span class="s">@&quot;yyyyMMdd&quot;</span><span class="p">;</span>
 
@@ -317,7 +345,7 @@ it is still faster, than the <a class="reference external" href="https://github.
 <p>Sadly I was not able to figure out, how to select only the three columns in the mapping. Probably I am
 mistaken here and you should feel free to comment below, if you have a different solution to parse the
 file without writing the whole amount of columns.</p>
-<div class="highlight-csharp"><div class="highlight"><pre><span class="na">[FileHelpers.IgnoreFirst(1)]</span>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="na">[FileHelpers.IgnoreFirst(1)]</span>
 <span class="na">[FileHelpers.DelimitedRecord(&quot;,&quot;)]</span>
 <span class="k">public</span> <span class="k">class</span> <span class="nc">LocalWeatherDataFileHelper</span>
 <span class="p">{</span>
@@ -351,16 +379,16 @@ file without writing the whole amount of columns.</p>
 <div class="section" id="detailed-benchmark-results">
 <h2>Detailed Benchmark Results<a class="headerlink" href="#detailed-benchmark-results" title="Permalink to this headline">¶</a></h2>
 <p>Here are the full benchmark results of [TinyCsvParser]. You can see, that increasing the number of threads
-helps when processing the data. Keeping the order doesn&#8217;t have impact on the processing time, but it may
+helps when processing the data. Keeping the order doesn’t have impact on the processing time, but it may
 lead to a much higher memory consumption. This may be a subject for a future article.</p>
-<div class="highlight-python"><div class="highlight"><pre>[TinyCsvParser (DegreeOfParallelism = 4, KeepOrder = True)] Elapsed Time = 00:00:10.48
-[TinyCsvParser (DegreeOfParallelism = 3, KeepOrder = True)] Elapsed Time = 00:00:10.65
-[TinyCsvParser (DegreeOfParallelism = 2, KeepOrder = True)] Elapsed Time = 00:00:12.26
-[TinyCsvParser (DegreeOfParallelism = 1, KeepOrder = True)] Elapsed Time = 00:00:17.04
-[TinyCsvParser (DegreeOfParallelism = 4, KeepOrder = False)] Elapsed Time = 00:00:10.50
-[TinyCsvParser (DegreeOfParallelism = 3, KeepOrder = False)] Elapsed Time = 00:00:10.31
-[TinyCsvParser (DegreeOfParallelism = 2, KeepOrder = False)] Elapsed Time = 00:00:11.71
-[TinyCsvParser (DegreeOfParallelism = 1, KeepOrder = False)] Elapsed Time = 00:00:16.70
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">TinyCsvParser</span> <span class="p">(</span><span class="n">DegreeOfParallelism</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">KeepOrder</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)]</span> <span class="n">Elapsed</span> <span class="n">Time</span> <span class="o">=</span> <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mf">10.48</span>
+<span class="p">[</span><span class="n">TinyCsvParser</span> <span class="p">(</span><span class="n">DegreeOfParallelism</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">KeepOrder</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)]</span> <span class="n">Elapsed</span> <span class="n">Time</span> <span class="o">=</span> <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mf">10.65</span>
+<span class="p">[</span><span class="n">TinyCsvParser</span> <span class="p">(</span><span class="n">DegreeOfParallelism</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">KeepOrder</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)]</span> <span class="n">Elapsed</span> <span class="n">Time</span> <span class="o">=</span> <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mf">12.26</span>
+<span class="p">[</span><span class="n">TinyCsvParser</span> <span class="p">(</span><span class="n">DegreeOfParallelism</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">KeepOrder</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)]</span> <span class="n">Elapsed</span> <span class="n">Time</span> <span class="o">=</span> <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mf">17.04</span>
+<span class="p">[</span><span class="n">TinyCsvParser</span> <span class="p">(</span><span class="n">DegreeOfParallelism</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">KeepOrder</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)]</span> <span class="n">Elapsed</span> <span class="n">Time</span> <span class="o">=</span> <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mf">10.50</span>
+<span class="p">[</span><span class="n">TinyCsvParser</span> <span class="p">(</span><span class="n">DegreeOfParallelism</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">KeepOrder</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)]</span> <span class="n">Elapsed</span> <span class="n">Time</span> <span class="o">=</span> <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mf">10.31</span>
+<span class="p">[</span><span class="n">TinyCsvParser</span> <span class="p">(</span><span class="n">DegreeOfParallelism</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">KeepOrder</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)]</span> <span class="n">Elapsed</span> <span class="n">Time</span> <span class="o">=</span> <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mf">11.71</span>
+<span class="p">[</span><span class="n">TinyCsvParser</span> <span class="p">(</span><span class="n">DegreeOfParallelism</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">KeepOrder</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)]</span> <span class="n">Elapsed</span> <span class="n">Time</span> <span class="o">=</span> <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mf">16.70</span>
 </pre></div>
 </div>
 </div>
@@ -368,15 +396,18 @@ lead to a much higher memory consumption. This may be a subject for a future art
 
 
            </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="contributing.html" class="btn btn-neutral float-right" title="Contributing" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="contributing.html" class="btn btn-neutral float-right" title="Contributing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="tutorials/parsing_enums.html" class="btn btn-neutral" title="Parsing Enums" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="tutorials/parsing_enums.html" class="btn btn-neutral" title="Parsing Enums" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -407,10 +438,11 @@ lead to a much higher memory consumption. This may be a subject for a future art
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.4',
+            VERSION:'1.6',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="../_static/jquery.js"></script>

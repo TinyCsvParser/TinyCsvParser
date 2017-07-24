@@ -8,9 +8,11 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Parsing Enums &mdash; TinyCsvParser 1.4 documentation</title>
+  <title>Parsing Enums &mdash; TinyCsvParser 1.6 documentation</title>
   
 
+  
+  
   
   
 
@@ -30,7 +32,10 @@
   
 
   
-    <link rel="top" title="TinyCsvParser 1.4 documentation" href="../../index.html"/>
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="TinyCsvParser 1.6 documentation" href="../../index.html"/>
         <link rel="up" title="Tutorials" href="../tutorials.html"/>
         <link rel="next" title="Benchmark" href="../benchmark.html"/>
         <link rel="prev" title="Parsing Custom Formats" href="custom_formats.html"/> 
@@ -42,6 +47,7 @@
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
@@ -61,7 +67,7 @@
             
             
               <div class="version">
-                1.4
+                1.6
               </div>
             
           
@@ -82,14 +88,17 @@
           
             
             
-                <ul class="current">
+              
+            
+            
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../overview.html">Conceptual Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../userguide.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../tutorials.html">Tutorials</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="custom_formats.html">Parsing Custom Formats</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="">Parsing Enums</a><ul>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Parsing Enums</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#example">Example</a></li>
 </ul>
 </li>
@@ -109,8 +118,10 @@
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../../index.html">TinyCsvParser</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">TinyCsvParser</a>
+        
       </nav>
 
 
@@ -123,21 +134,38 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="../../index.html">Docs</a> &raquo;</li>
-      
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
           <li><a href="../tutorials.html">Tutorials</a> &raquo;</li>
-      
-    <li>Parsing Enums</li>
+        
+      <li>Parsing Enums</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
-            <a href="../../_sources/sections/tutorials/parsing_enums.txt" rel="nofollow"> View page source</a>
+            
+            <a href="../../_sources/sections/tutorials/parsing_enums.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -149,13 +177,13 @@
 <div class="section" id="example">
 <h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
 <p>Imagine we have a CSV file containing a vehicle, with a Name and a VehicleType. The VehicleType can only be a <code class="code docutils literal"><span class="pre">Car</span></code> or a <code class="code docutils literal"><span class="pre">Bike</span></code>.</p>
-<div class="highlight-python"><div class="highlight"><pre>VehicleType;Name
-Car;Suzuki Swift
-Bike;A Bike
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">VehicleType</span><span class="p">;</span><span class="n">Name</span>
+<span class="n">Car</span><span class="p">;</span><span class="n">Suzuki</span> <span class="n">Swift</span>
+<span class="n">Bike</span><span class="p">;</span><span class="n">A</span> <span class="n">Bike</span>
 </pre></div>
 </div>
 <p>It useful to represent the VehicleType as an enumeration in our C# code. So first define the <code class="code docutils literal"><span class="pre">enum</span></code> in code:</p>
-<div class="highlight-csharp"><div class="highlight"><pre><span class="k">private</span> <span class="k">enum</span> <span class="n">VehicleTypeEnum</span>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="k">private</span> <span class="k">enum</span> <span class="n">VehicleTypeEnum</span>
 <span class="p">{</span>
     <span class="n">Car</span><span class="p">,</span>
     <span class="n">Bike</span>
@@ -163,7 +191,7 @@ Bike;A Bike
 </pre></div>
 </div>
 <p>Then define the class the results should be mapped to:</p>
-<div class="highlight-csharp"><div class="highlight"><pre><span class="k">private</span> <span class="k">class</span> <span class="nc">Vehicle</span>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="k">private</span> <span class="k">class</span> <span class="nc">Vehicle</span>
 <span class="p">{</span>
     <span class="k">public</span> <span class="n">VehicleTypeEnum</span> <span class="n">VehicleType</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
 
@@ -174,7 +202,7 @@ Bike;A Bike
 <p>And now the mapping between the CSV File and the domain model has to be defined. For parsing the <code class="code docutils literal"><span class="pre">VehicleType</span></code>
 a custom converter has to be used, which simply is a <code class="code docutils literal"><span class="pre">EnumConverter&lt;VehicleTypeEnum</span></code>, the constructor argument
 signals to ignore the case (upper-case/lower-case) for parsing the enum.</p>
-<div class="highlight-csharp"><div class="highlight"><pre><span class="k">private</span> <span class="k">class</span> <span class="nc">CsvVehicleMapping</span> <span class="p">:</span> <span class="n">CsvMapping</span><span class="p">&lt;</span><span class="n">Vehicle</span><span class="p">&gt;</span>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="k">private</span> <span class="k">class</span> <span class="nc">CsvVehicleMapping</span> <span class="p">:</span> <span class="n">CsvMapping</span><span class="p">&lt;</span><span class="n">Vehicle</span><span class="p">&gt;</span>
 <span class="p">{</span>
     <span class="k">public</span> <span class="nf">CsvVehicleMapping</span><span class="p">()</span>
     <span class="p">{</span>
@@ -185,7 +213,7 @@ signals to ignore the case (upper-case/lower-case) for parsing the enum.</p>
 </pre></div>
 </div>
 <p>And then the CSV data can be parsed as usual:</p>
-<div class="highlight-csharp"><div class="highlight"><pre><span class="na">[Test]</span>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="na">[Test]</span>
 <span class="k">public</span> <span class="k">void</span> <span class="nf">CustomEnumConverterTest</span><span class="p">()</span>
 <span class="p">{</span>
     <span class="n">CsvParserOptions</span> <span class="n">csvParserOptions</span> <span class="p">=</span> <span class="k">new</span> <span class="n">CsvParserOptions</span><span class="p">(</span><span class="k">true</span><span class="p">,</span> <span class="k">new</span><span class="p">[]</span> <span class="p">{</span> <span class="sc">&#39;;&#39;</span> <span class="p">});</span>
@@ -216,15 +244,18 @@ signals to ignore the case (upper-case/lower-case) for parsing the enum.</p>
 
 
            </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../benchmark.html" class="btn btn-neutral float-right" title="Benchmark" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../benchmark.html" class="btn btn-neutral float-right" title="Benchmark" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="custom_formats.html" class="btn btn-neutral" title="Parsing Custom Formats" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="custom_formats.html" class="btn btn-neutral" title="Parsing Custom Formats" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -255,10 +286,11 @@ signals to ignore the case (upper-case/lower-case) for parsing the enum.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.4',
+            VERSION:'1.6',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="../../_static/jquery.js"></script>

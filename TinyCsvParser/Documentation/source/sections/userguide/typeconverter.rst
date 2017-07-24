@@ -94,8 +94,7 @@ take custom format strings. You should look up the MSDN documentation on the for
 also use an `IFormatProvider <https://msdn.microsoft.com/en-us/library/system.iformatprovider(v=vs.110).aspx>`_, again MSDN is a great resource 
 for information.
 
-The custom converter needs to be defined when defining the :code:`CsvMapping`, either by using the `WithCustomConverter` method for 
-:code:`CsvPropertyMapping` or passing it into the :code:`CsvMapping.MapProperty(...)`. You will understand everything with an example.
+The custom converter needs to be defined when defining the :code:`CsvMapping`, by passing it into the :code:`CsvMapping.MapProperty(...)`. You will understand everything with an example.
 
 DateTimeConverter Example
 """""""""""""""""""""""""
@@ -103,7 +102,7 @@ DateTimeConverter Example
 Imagine a CSV file contains data with a weird format for dates, like this :code:`2004###01###25`. These values cannot be parsed with the default 
 date format, but in TinyCsvParser a DateTimeConverter with the custom date time format can be defined.
 
-To use the custom converter, you have to use the :code:`CsvMapping.WithCustomConverter` method on the property mapping.
+To use the custom converter, you have to pass it to the :code:`MapProperty` method on the property mapping.
 
 .. code-block:: csharp
 
@@ -113,8 +112,7 @@ To use the custom converter, you have to use the :code:`CsvMapping.WithCustomCon
         {
             MapProperty(0, x => x.FirstName);
             MapProperty(1, x => x.LastName);
-            MapProperty(2, x => x.BirthDate)
-                .WithCustomConverter(new DateTimeConverter("yyyy###MM###dd"));
+            MapProperty(2, x => x.BirthDate, new DateTimeConverter("yyyy###MM###dd"));
         }
     }
 

@@ -87,7 +87,7 @@ TinyCsvParser
         public LocalWeatherDataMapper()
         {
             MapProperty(0, x => x.WBAN);
-            MapProperty(1, x => x.Date).WithCustomConverter(new DateTimeConverter("yyyyMMdd"));
+            MapProperty(1, x => x.Date, new DateTimeConverter("yyyyMMdd"));
             MapProperty(4, x => x.SkyCondition);
         }
     }
