@@ -45,7 +45,7 @@ namespace TinyCsvParser.Test.Benchmarks
 
             foreach (var degreeOfParallelism in degreeOfParallelismList)
             {
-                CsvParserOptions csvParserOptions = new CsvParserOptions(true, new[] { ';' }, degreeOfParallelism, true);
+                CsvParserOptions csvParserOptions = new CsvParserOptions(true, ';' , degreeOfParallelism, true);
                 CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
                 CsvPersonMapping csvMapper = new CsvPersonMapping();
                 CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);

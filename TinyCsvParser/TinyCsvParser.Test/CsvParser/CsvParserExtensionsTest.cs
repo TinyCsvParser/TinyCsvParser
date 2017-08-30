@@ -34,7 +34,7 @@ namespace TinyCsvParser.Test.CsvParser
         [Test]
         public void ReadFromFile_null_Test()
         {
-            CsvParserOptions csvParserOptions = new CsvParserOptions(true, new[] { ';' }, 1, true);
+            CsvParserOptions csvParserOptions = new CsvParserOptions(true, ';', 1, true);
             CsvPersonMapping csvMapper = new CsvPersonMapping();
             CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
 
@@ -44,7 +44,7 @@ namespace TinyCsvParser.Test.CsvParser
         [Test]
         public void ReadFromFileTest()
         {
-            CsvParserOptions csvParserOptions = new CsvParserOptions(true, new[] { ';' }, 1, true);
+            CsvParserOptions csvParserOptions = new CsvParserOptions(true, ';' , 1, true);
             CsvPersonMapping csvMapper = new CsvPersonMapping();
             CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
 

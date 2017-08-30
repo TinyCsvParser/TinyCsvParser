@@ -131,7 +131,7 @@ namespace TinyCsvParser.Test.Integration
         [Test]
         public void CsvParserWithLineCountingTest()
         {
-            var csvParserOptions = new CsvParserOptions(true, new[] { ';' });
+            var csvParserOptions = new CsvParserOptions(true, ';');
             var csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
             var csvMapper = new CsvPersonMapping();
             var csvParser = new LineCountingCsvParser<Person>(csvParserOptions, csvMapper);
