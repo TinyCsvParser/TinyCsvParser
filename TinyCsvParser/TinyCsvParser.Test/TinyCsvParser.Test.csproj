@@ -1,118 +1,24 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B515F0DC-60D4-4915-80B1-D62D702D2E11}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TinyCsvParser.Test</RootNamespace>
-    <AssemblyName>TinyCsvParser.Test</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <TargetFrameworks>netcoreapp1.1</TargetFrameworks>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=3.2.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\NUnit.3.2.0\lib\net45\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="Microsoft.CSharp" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
+    <PackageReference Include="NUnit" Version="3.7.1" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.8.0-alpha1" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="Benchmarks\DegreeOfParallelismTest.cs" />
-    <Compile Include="Benchmarks\LocalWeatherDataBenchmark.cs" />
-    <Compile Include="Benchmarks\MeasurementUtils.cs" />
-    <Compile Include="CsvParser\CsvParserExtensionsTest.cs" />
-    <Compile Include="CsvParser\CsvReaderOptionsTests.cs" />
-    <Compile Include="CsvParser\EnumConverterTest.cs" />
-    <Compile Include="CsvParser\CustomTypeConverterTest.cs" />
-    <Compile Include="CsvParser\CsvParserTest.cs" />
-    <Compile Include="Integration\BasicExampleTest.cs" />
-    <Compile Include="Integration\LineNumberCsvParserTest.cs" />
-    <Compile Include="Issues\Issue4_PreprocessingTest.cs" />
-    <Compile Include="Issues\Issue2_NegativeValueTest.cs" />
-    <Compile Include="Mapping\CsvMappingTests.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tokenizer\Decorators\TokenizerProcessingDecoratorTests.cs" />
-    <Compile Include="Tokenizer\QuotedStringTokenizerTests.cs" />
-    <Compile Include="Tokenizer\FixedLengthTokenizerTests.cs" />
-    <Compile Include="Tokenizer\Rfc4180TokenizerTest.cs" />
-    <Compile Include="Tokenizer\SplitStringTokenizerTests.cs" />
-    <Compile Include="Tokenizer\TokenizerExampleTest.cs" />
-    <Compile Include="TypeConverter\NullableDecimalConverterTest.cs" />
-    <Compile Include="TypeConverter\NullableGuidConverterTest.cs" />
-    <Compile Include="TypeConverter\TypeConverterProviderTests.cs" />
-    <Compile Include="TypeConverter\BaseConverterTest.cs" />
-    <Compile Include="TypeConverter\NullableByteConverterTest.cs" />
-    <Compile Include="TypeConverter\Int16ConverterTest.cs" />
-    <Compile Include="TypeConverter\NullableDateTimeConverterTest.cs" />
-    <Compile Include="TypeConverter\DecimalConverterTest.cs" />
-    <Compile Include="TypeConverter\ByteConverterTest.cs" />
-    <Compile Include="TypeConverter\DateTimeConverterTest.cs" />
-    <Compile Include="TypeConverter\NullableInt16ConverterTest.cs" />
-    <Compile Include="TypeConverter\NullableUInt32ConverterTest.cs" />
-    <Compile Include="TypeConverter\NullableSByteConverterTest.cs" />
-    <Compile Include="TypeConverter\SByteConverterTest.cs" />
-    <Compile Include="TypeConverter\NullableDoubleConverterTest.cs" />
-    <Compile Include="TypeConverter\GuidConverterTest.cs" />
-    <Compile Include="TypeConverter\EnumConverterTest.cs" />
-    <Compile Include="TypeConverter\BoolConverterTest.cs" />
-    <Compile Include="TypeConverter\DoubleConverterTest.cs" />
-    <Compile Include="TypeConverter\NullableInt64ConverterTest.cs" />
-    <Compile Include="TypeConverter\NullableSingleConverterTest.cs" />
-    <Compile Include="TypeConverter\SingleConverterTest.cs" />
-    <Compile Include="TypeConverter\NullableUInt16ConverterTest.cs" />
-    <Compile Include="TypeConverter\StringConverterTest.cs" />
-    <Compile Include="TypeConverter\NullableTimeSpanConverterTest.cs" />
-    <Compile Include="TypeConverter\UInt32ConverterTest.cs" />
-    <Compile Include="TypeConverter\UInt16ConverterTest.cs" />
-    <Compile Include="TypeConverter\NullableUInt64ConverterTest.cs" />
-    <Compile Include="TypeConverter\TimeSpanConverterTest.cs" />
-    <Compile Include="TypeConverter\UInt64ConverterTest.cs" />
-    <Compile Include="TypeConverter\Int64ConverterTest.cs" />
-    <Compile Include="TypeConverter\NullableBoolConverterTest.cs" />
-    <Compile Include="TypeConverter\NullableInt32ConverterTest.cs" />
-    <Compile Include="TypeConverter\Int32ConverterTest.cs" />
+    <ProjectReference Include="..\TinyCsvParser\TinyCsvParser.csproj" />
   </ItemGroup>
+
   <ItemGroup>
-    <None Include="packages.config" />
+    <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TinyCsvParser\TinyCsvParser.csproj">
-      <Project>{650e474d-3133-46a5-9a4e-377e9cd715f1}</Project>
-      <Name>TinyCsvParser</Name>
-    </ProjectReference>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp1.1'">
   </ItemGroup>
-  <ItemGroup>
-    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>
