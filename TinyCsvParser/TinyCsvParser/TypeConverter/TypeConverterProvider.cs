@@ -59,14 +59,7 @@ namespace TinyCsvParser.TypeConverter
 
             return this;
         }
-
-        public TypeConverterProvider Override<TTargetType>(ITypeConverter<TTargetType> typeConverter)
-        {
-            typeConverters[typeConverter.TargetType] = typeConverter;
-
-            return this;
-        }
-
+        
         public ITypeConverter<TTargetType> Resolve<TTargetType>()
         {
             Type targetType = typeof(TTargetType);

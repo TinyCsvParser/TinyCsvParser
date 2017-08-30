@@ -41,12 +41,6 @@ namespace TinyCsvParser.Test.TypeConverter
         }
 
         [Test]
-        public void OverrideTypeRegistrationTest()
-        {
-            Assert.DoesNotThrow(() => provider.Override(new Int16Converter()));
-        }
-
-        [Test]
         public void ResolveTypeConverter_Registered_Test()
         {
             var typeRegistration = provider.Resolve<Int16>();

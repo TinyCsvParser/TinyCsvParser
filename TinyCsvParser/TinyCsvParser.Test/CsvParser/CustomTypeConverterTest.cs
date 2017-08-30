@@ -57,34 +57,6 @@ namespace TinyCsvParser.Test.CsvParser
 
 
         [Test]
-        public void WeirdDateTimeTest_TypeProviderBased()
-        {
-            var typeConverterProvider = new TypeConverterProvider()
-                .Override(new DateTimeConverter("yyyy###MM###dd"));
-
-
-            CsvParserOptions csvParserOptions = new CsvParserOptions(true, new[] { ';' });
-            CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
-            CsvPersonMappingWithTypeConverterProvider csvMapper = new CsvPersonMappingWithTypeConverterProvider(typeConverterProvider);
-            CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
-
-            var stringBuilder = new StringBuilder()
-                .AppendLine("FirstName;LastName;BirthDate")
-                .AppendLine("Philipp;Wagner;1986###05###12");
-
-            var result = csvParser
-                .ReadFromString(csvReaderOptions, stringBuilder.ToString())
-                .ToList();
-
-            Assert.AreEqual("Philipp", result[0].Result.FirstName);
-            Assert.AreEqual("Wagner", result[0].Result.LastName);
-
-            Assert.AreEqual(1986, result[0].Result.BirthDate.Year);
-            Assert.AreEqual(5, result[0].Result.BirthDate.Month);
-            Assert.AreEqual(12, result[0].Result.BirthDate.Day);
-        }
-
-        [Test]
         public void WeirdDateTimeTest_CustomConverterBased()
         {
             CsvParserOptions csvParserOptions = new CsvParserOptions(true, new[] { ';' });
