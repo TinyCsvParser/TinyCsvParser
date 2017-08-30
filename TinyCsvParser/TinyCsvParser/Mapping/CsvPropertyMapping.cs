@@ -35,12 +35,7 @@ namespace TinyCsvParser.Mapping
 
             return true;
         }
-
-        public void WithCustomConverter(ITypeConverter<TProperty> typeConverter)
-        {
-            propertyConverter = typeConverter;
-        }
-
+        
         public override string ToString()
         {
             return string.Format("CsvPropertyMapping (PropertyName = {0}, Converter = {1})", propertyName, propertyConverter);

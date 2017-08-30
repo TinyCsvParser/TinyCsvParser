@@ -51,8 +51,7 @@ namespace TinyCsvParser.Test.CsvParser
             {
                 MapProperty(0, x => x.FirstName);
                 MapProperty(1, x => x.LastName);
-                MapProperty(2, x => x.BirthDate)
-                    .WithCustomConverter(new DateTimeConverter("yyyy###MM###dd"));
+                MapProperty(2, x => x.BirthDate, new DateTimeConverter("yyyy###MM###dd"));
             }
         }
 
