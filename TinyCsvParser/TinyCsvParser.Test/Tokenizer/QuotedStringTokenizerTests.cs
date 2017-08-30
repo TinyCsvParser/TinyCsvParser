@@ -2,7 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using NUnit.Framework;
-using TinyCsvParser.Tokenizer.RegularExpressions;
+using TinyCsvParser.Tokenizer;
 
 namespace TinyCsvParser.Test.Tokenizer
 {

@@ -3,7 +3,6 @@
 
 using System;
 using TinyCsvParser.Tokenizer;
-using TinyCsvParser.Tokenizer.RFC4180;
 
 namespace TinyCsvParser
 {
@@ -20,12 +19,12 @@ namespace TinyCsvParser
         public readonly bool KeepOrder;
 
         public CsvParserOptions(bool skipHeader, char fieldsSeparator)
-            : this(skipHeader, new RFC4180Tokenizer(new Options('"', '\\', fieldsSeparator)))
+            : this(skipHeader, new QuotedStringTokenizer(fieldsSeparator))
         {
         }
 
         public CsvParserOptions(bool skipHeader, char fieldsSeparator, int degreeOfParallelism, bool keepOrder)
-            : this(skipHeader, string.Empty, new RFC4180Tokenizer(new Options('"', '\\', fieldsSeparator)), degreeOfParallelism, keepOrder)
+            : this(skipHeader, string.Empty, new QuotedStringTokenizer(fieldsSeparator), degreeOfParallelism, keepOrder)
         {
         }
 

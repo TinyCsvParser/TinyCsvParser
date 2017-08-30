@@ -6,7 +6,7 @@ using System;
 using System.Linq;
 using System.Text;
 using TinyCsvParser.Mapping;
-using TinyCsvParser.Tokenizer.RegularExpressions;
+using TinyCsvParser.Tokenizer;
 
 namespace TinyCsvParser.Test.Tokenizer
 {

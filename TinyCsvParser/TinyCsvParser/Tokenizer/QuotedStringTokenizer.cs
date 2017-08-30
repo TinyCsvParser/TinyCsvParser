@@ -3,19 +3,19 @@
 
 using TinyCsvParser.Tokenizer.RFC4180;
 
-namespace TinyCsvParser.Tokenizer.RegularExpressions
+namespace TinyCsvParser.Tokenizer
 {
     public class QuotedStringTokenizer : RFC4180Tokenizer
     {
-        public QuotedStringTokenizer(Options options)
-            : base(options)
+        public QuotedStringTokenizer(char columnDelimiter)
+            : this('"', '\\', columnDelimiter)
         {
         }
 
-        public QuotedStringTokenizer(char columnDelimiter)
-            : base(new Options('"', '\\', columnDelimiter))
+        public QuotedStringTokenizer(char quoteCharacter, char escapeCharacter, char columnDelimiter)
+            : base(new Options(quoteCharacter, escapeCharacter, columnDelimiter))
         {
-        }
+        }        
 
         public override string ToString()
         {

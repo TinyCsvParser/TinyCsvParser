@@ -3,12 +3,10 @@
 
 using NUnit.Framework;
 using System;
-using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using TinyCsvParser.Mapping;
-using TinyCsvParser.Tokenizer.RegularExpressions;
+using TinyCsvParser.Tokenizer;
 
 namespace TinyCsvParser.Test.Issues
 {
