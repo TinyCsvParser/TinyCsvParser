@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using TinyCsvParser.TypeConverter;
 using TinyCsvParser.Reflection;
+using TinyCsvParser.Model;
 
 namespace TinyCsvParser.Mapping
 {
@@ -71,7 +72,7 @@ namespace TinyCsvParser.Mapping
             csvPropertyMappings.Add(indexToPropertyMapping);
         }
 
-        public CsvMappingResult<TEntity> Map(string[] values)
+        public CsvMappingResult<TEntity> Map(TokenizedRow values)
         {
             TEntity entity = invokeConstructor();
 
@@ -81,28 +82,30 @@ namespace TinyCsvParser.Mapping
 
                 var columnIndex = indexToPropertyMapping.ColumnIndex;
 
-                if (columnIndex >= values.Length)
+                if (columnIndex >= values.Tokens.Length)
                 {
                     return new CsvMappingResult<TEntity>()
                     {
+                        Index = values.Index,
                         Error = new CsvMappingError()
                         {
                             ColumnIndex = columnIndex,
-                            Value = string.Format("Column {0} Out Of Range", columnIndex)
+                            Value = string.Format("Column {0} is Out Of Range", columnIndex)
                         }
                     };
                 }
 
-                var value = values[columnIndex];
+                var value = values.Tokens[columnIndex];
 
                 if (!indexToPropertyMapping.PropertyMapping.TryMapValue(entity, value))
                 {
                     return new CsvMappingResult<TEntity>()
                     {
+                        Index = values.Index,
                         Error = new CsvMappingError
                         {
                             ColumnIndex = columnIndex,
-                            Value = value
+                            Value = string.Format("Column {0} with Value '{1}' cannot be converted", columnIndex, value)
                         }
                     };
                 }
@@ -110,6 +113,7 @@ namespace TinyCsvParser.Mapping
 
             return new CsvMappingResult<TEntity>()
             {
+                Index = values.Index,
                 Result = entity
             };
         }

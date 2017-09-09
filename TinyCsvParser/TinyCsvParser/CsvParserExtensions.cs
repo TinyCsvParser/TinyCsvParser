@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using TinyCsvParser.Mapping;
+using TinyCsvParser.Model;
 
 namespace TinyCsvParser
 {
@@ -19,7 +20,9 @@ namespace TinyCsvParser
                 throw new ArgumentNullException("fileName");
             }
 
-            var lines = File.ReadLines(fileName, encoding);
+            var lines = File
+                .ReadLines(fileName, encoding)
+                .Select((line, index) => new Row(index, line));
 
             return csvParser.Parse(lines);
         }
@@ -27,7 +30,9 @@ namespace TinyCsvParser
         public static ParallelQuery<CsvMappingResult<TEntity>> ReadFromString<TEntity>(this CsvParser<TEntity> csvParser, CsvReaderOptions csvReaderOptions, string csvData)
             where TEntity : class, new()
         {
-            var lines = csvData.Split(csvReaderOptions.NewLine, StringSplitOptions.None);
+            var lines = csvData
+                .Split(csvReaderOptions.NewLine, StringSplitOptions.None)
+                .Select((line, index) => new Row(index, line));
 
             return csvParser.Parse(lines);
         }

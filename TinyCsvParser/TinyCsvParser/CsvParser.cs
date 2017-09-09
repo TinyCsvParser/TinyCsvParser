@@ -2,10 +2,10 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using TinyCsvParser.Mapping;
+using TinyCsvParser.Model;
 
 namespace TinyCsvParser
 {
@@ -21,7 +21,7 @@ namespace TinyCsvParser
             this.mapping = mapping;
         }
 
-        public ParallelQuery<CsvMappingResult<TEntity>> Parse(IEnumerable<string> csvData)
+        public ParallelQuery<CsvMappingResult<TEntity>> Parse(IEnumerable<Row> csvData)
         {
             if (csvData == null)
             {
@@ -40,16 +40,16 @@ namespace TinyCsvParser
 
             query = query
                 .WithDegreeOfParallelism(options.DegreeOfParallelism)
-                .Where(line => !string.IsNullOrWhiteSpace(line));
+                .Where(row => !string.IsNullOrWhiteSpace(row.Data));
 
             // Ignore Lines, that start with a comment character:
             if(!string.IsNullOrWhiteSpace(options.CommentCharacter)) 
             {
-                query = query.Where(line => !line.StartsWith(options.CommentCharacter));
+                query = query.Where(line => !line.Data.StartsWith(options.CommentCharacter));
             }
                 
             return query
-                .Select(line => options.Tokenizer.Tokenize(line))
+                .Select(line => new TokenizedRow(line.Index, options.Tokenizer.Tokenize(line.Data)))
                 .Select(fields => mapping.Map(fields));
         }
 

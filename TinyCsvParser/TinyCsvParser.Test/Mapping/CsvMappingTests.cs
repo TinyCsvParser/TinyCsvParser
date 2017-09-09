@@ -4,6 +4,7 @@
 using NUnit.Framework;
 using System;
 using TinyCsvParser.Mapping;
+using TinyCsvParser.Model;
 
 namespace TinyCsvParser.Test.Issues
 {
@@ -44,7 +45,7 @@ namespace TinyCsvParser.Test.Issues
         {
             var mapping = new WrongColumnMapping();
 
-            var result = mapping.Map(new []{"1"});
+            var result = mapping.Map(new TokenizedRow(1, new []{"1"}));
 
             Assert.IsFalse(result.IsValid);
         }
@@ -63,11 +64,11 @@ namespace TinyCsvParser.Test.Issues
         {
             var mapping = new CorrectColumnMapping();
 
-            var result = mapping.Map(new[] { string.Empty });
+            var result = mapping.Map(new TokenizedRow(1, new[] { string.Empty }));
 
             Assert.IsFalse(result.IsValid);
 
-            Assert.AreEqual(string.Empty, result.Error.Value);
+            Assert.AreEqual("Column 0 with Value '' cannot be converted", result.Error.Value);
             Assert.AreEqual(0, result.Error.ColumnIndex);
 
             Assert.DoesNotThrow(() => result.ToString());
@@ -78,7 +79,7 @@ namespace TinyCsvParser.Test.Issues
         {
             var mapping = new CorrectColumnMapping();
 
-            var result = mapping.Map(new[] { "1" });
+            var result = mapping.Map(new TokenizedRow(1, new[] { "1" }));
 
             Assert.IsTrue(result.IsValid);
             Assert.AreEqual(1, result.Result.PropertyInt);
