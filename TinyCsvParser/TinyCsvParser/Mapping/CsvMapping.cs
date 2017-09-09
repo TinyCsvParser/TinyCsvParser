@@ -26,7 +26,6 @@ namespace TinyCsvParser.Mapping
             }
         }
 
-        private readonly Func<TEntity> invokeConstructor;
         private readonly ITypeConverterProvider typeConverterProvider;
         private readonly List<IndexToPropertyMapping> csvPropertyMappings;
 
@@ -38,7 +37,6 @@ namespace TinyCsvParser.Mapping
         protected CsvMapping(ITypeConverterProvider typeConverterProvider)
         {
             this.typeConverterProvider = typeConverterProvider;
-            this.invokeConstructor = ReflectionUtils.CreateDefaultConstructor<TEntity>();
             this.csvPropertyMappings = new List<IndexToPropertyMapping>();
         }
 
@@ -74,7 +72,7 @@ namespace TinyCsvParser.Mapping
 
         public CsvMappingResult<TEntity> Map(TokenizedRow values)
         {
-            TEntity entity = invokeConstructor();
+            TEntity entity = new TEntity();
 
             for (int pos = 0; pos < csvPropertyMappings.Count; pos++)
             {

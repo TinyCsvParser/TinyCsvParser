@@ -69,14 +69,6 @@ namespace TinyCsvParser.Reflection
 #endif
         }
 
-        public static Func<TEntity> CreateDefaultConstructor<TEntity>()
-        {
-            var body = Expression.New(typeof(TEntity));
-            var lambda = Expression.Lambda<Func<TEntity>>(body);
-
-            return lambda.Compile();
-        }
-
         public static string GetPropertyNameFromExpression<TEntity, TProperty>(Expression<Func<TEntity, TProperty>> expression)
         {
             var member = GetMemberExpression(expression).Member;
