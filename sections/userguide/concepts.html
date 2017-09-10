@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Concepts &mdash; TinyCsvParser 1.6 documentation</title>
+  <title>Concepts &mdash; TinyCsvParser 2.0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="TinyCsvParser 1.6 documentation" href="../../index.html"/>
+    <link rel="top" title="TinyCsvParser 2.0 documentation" href="../../index.html"/>
         <link rel="up" title="User Guide" href="../userguide.html"/>
         <link rel="next" title="Type Converter" href="typeconverter.html"/>
         <link rel="prev" title="Parser" href="parser.html"/> 
@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                1.6
+                2.0
               </div>
             
           
@@ -99,7 +99,7 @@
 <li class="toctree-l2"><a class="reference internal" href="parser.html">Parser</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Concepts</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#csvmapping">CsvMapping</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#csvparseroption">CsvParserOption</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#csvparseroptions">CsvParserOptions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#csvreaderoptions">CsvReaderOptions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#csvmappingresult">CsvMappingResult</a></li>
 </ul>
@@ -115,6 +115,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../benchmark.html">Benchmark</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
 </ul>
 
             
@@ -200,16 +201,16 @@ that needs to be implemented and it exposes the <code class="code docutils liter
 </pre></div>
 </div>
 </div>
-<div class="section" id="csvparseroption">
-<h2>CsvParserOption<a class="headerlink" href="#csvparseroption" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="csvparseroptions">
+<h2>CsvParserOptions<a class="headerlink" href="#csvparseroptions" title="Permalink to this headline">¶</a></h2>
 <p>In order to parse a CSV file, you need to define the column delimiter to use and define to skip the header
 or not. These options are passed into a <code class="code docutils literal"><span class="pre">CsvParser</span></code> by using the <code class="code docutils literal"><span class="pre">CsvParserOptions</span></code>. The most
 basic constructor for a <code class="code docutils literal"><span class="pre">CsvParserOption</span></code> is:</p>
-<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="n">CsvParserOptions</span><span class="p">(</span><span class="kt">bool</span> <span class="n">skipHeader</span><span class="p">,</span> <span class="kt">char</span><span class="p">[]</span> <span class="n">fieldsSeparator</span><span class="p">)</span>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="n">CsvParserOptions</span><span class="p">(</span><span class="kt">bool</span> <span class="n">skipHeader</span><span class="p">,</span> <span class="kt">char</span> <span class="n">fieldsSeparator</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>There are more advanced options, which can be passed with:</p>
-<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="n">CsvParserOptions</span><span class="p">(</span><span class="kt">bool</span> <span class="n">skipHeader</span><span class="p">,</span> <span class="n">ITokenizer</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="kt">int</span> <span class="n">degreeOfParallelism</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">keepOrder</span><span class="p">)</span>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="n">CsvParserOptions</span><span class="p">(</span><span class="kt">bool</span> <span class="n">skipHeader</span><span class="p">,</span> <span class="kt">string</span> <span class="n">commentCharacter</span><span class="p">,</span> <span class="n">ITokenizer</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="kt">int</span> <span class="n">degreeOfParallelism</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">keepOrder</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The Parameters are:</p>
@@ -271,9 +272,11 @@ from a file with <code class="code docutils literal"><span class="pre">CsvParser
 </div>
 <div class="section" id="csvmappingresult">
 <h2>CsvMappingResult<a class="headerlink" href="#csvmappingresult" title="Permalink to this headline">¶</a></h2>
-<p>The <code class="code docutils literal"><span class="pre">CsvMappingResult</span></code> is result of the parsing, and contains the populated objects. Why doesn’t
-a <code class="code docutils literal"><span class="pre">CsvParser</span></code> return the entities? Because the input data is processed in parallel and the
-<code class="code docutils literal"><span class="pre">CsvParser</span></code> can’t stop parsing, just because a single line has an error.</p>
+<p>The <code class="code docutils literal"><span class="pre">CsvMappingResult</span></code> is the result of the parsing. The class contains either the populated object or
+an error. Why doesn’t a <code class="code docutils literal"><span class="pre">CsvParser</span></code> return just the mapped entities? Because the input data is processed
+in parallel and the <code class="code docutils literal"><span class="pre">CsvParser</span></code> can’t stop parsing, because a single line has an error.</p>
+<p>That’s why the parsed entity is wrapped in a <code class="code docutils literal"><span class="pre">CsvMappingResult</span></code>, which holds either the entity or an error,
+that may have occured during parsing a CSV line.</p>
 <p>You can check, if a <code class="code docutils literal"><span class="pre">CsvMappingResult</span></code> is valid by checking the property <code class="code docutils literal"><span class="pre">CsvMappingResult&lt;TEntity&gt;.IsValid</span></code>.
 If the <code class="code docutils literal"><span class="pre">CsvMappingResult</span></code> is valid, then it contains the populated entity in the property. If the parsing was
 not possible due to an error, then the property <code class="code docutils literal"><span class="pre">CsvMappingResult&lt;TEntity&gt;.Error</span></code> is filled.</p>
@@ -325,7 +328,7 @@ not possible due to an error, then the property <code class="code docutils liter
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.6',
+            VERSION:'2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

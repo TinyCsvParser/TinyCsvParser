@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Benchmark &mdash; TinyCsvParser 1.6 documentation</title>
+  <title>Benchmark &mdash; TinyCsvParser 2.0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="TinyCsvParser 1.6 documentation" href="../index.html"/>
+    <link rel="top" title="TinyCsvParser 2.0 documentation" href="../index.html"/>
         <link rel="next" title="Contributing" href="contributing.html"/>
         <link rel="prev" title="Parsing Enums" href="tutorials/parsing_enums.html"/> 
 
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                1.6
+                2.0
               </div>
             
           
@@ -110,6 +110,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
 </ul>
 
             
@@ -204,7 +205,7 @@ it is still faster, than the <a class="reference external" href="https://github.
 <h2>Benchmark Code<a class="headerlink" href="#benchmark-code" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="measuring-the-execution-time">
 <h3>Measuring the Execution Time<a class="headerlink" href="#measuring-the-execution-time" title="Permalink to this headline">¶</a></h3>
-<p>The elapsed time of the import can be easily measured by using the <code class="code csharp docutils literal"><span class="name"><span class="pre">System</span></span><span class="punctuation"><span class="pre">.</span></span><span class="name"><span class="pre">Diagnostics</span></span><span class="punctuation"><span class="pre">.</span></span><span class="name"><span class="pre">Stopwatch</span></span></code>.</p>
+<p>The elapsed time of the import can be easily measured by using the <code class="code docutils literal"><span class="pre">System.Diagnostics.Stopwatch</span></code>.</p>
 <div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="k">private</span> <span class="k">void</span> <span class="nf">MeasureElapsedTime</span><span class="p">(</span><span class="kt">string</span> <span class="n">description</span><span class="p">,</span> <span class="n">Action</span> <span class="n">action</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="c1">// Get the elapsed time as a TimeSpan value.</span>
@@ -260,7 +261,7 @@ it is still faster, than the <a class="reference external" href="https://github.
     <span class="p">{</span>
         <span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">degreeOfParallelism</span> <span class="k">in</span> <span class="n">degreeOfParallelismList</span><span class="p">)</span>
         <span class="p">{</span>
-            <span class="n">CsvParserOptions</span> <span class="n">csvParserOptions</span> <span class="p">=</span> <span class="k">new</span> <span class="n">CsvParserOptions</span><span class="p">(</span><span class="k">true</span><span class="p">,</span> <span class="k">new</span><span class="p">[]</span> <span class="p">{</span> <span class="sc">&#39;,&#39;</span> <span class="p">},</span> <span class="n">degreeOfParallelism</span><span class="p">,</span> <span class="n">order</span><span class="p">);</span>
+            <span class="n">CsvParserOptions</span> <span class="n">csvParserOptions</span> <span class="p">=</span> <span class="k">new</span> <span class="n">CsvParserOptions</span><span class="p">(</span><span class="k">true</span><span class="p">,</span> <span class="sc">&#39;,&#39;</span><span class="p">,</span> <span class="n">degreeOfParallelism</span><span class="p">,</span> <span class="n">order</span><span class="p">);</span>
             <span class="n">CsvReaderOptions</span> <span class="n">csvReaderOptions</span> <span class="p">=</span> <span class="k">new</span> <span class="n">CsvReaderOptions</span><span class="p">(</span><span class="k">new</span><span class="p">[]</span> <span class="p">{</span> <span class="n">Environment</span><span class="p">.</span><span class="n">NewLine</span> <span class="p">});</span>
             <span class="n">LocalWeatherDataMapper</span> <span class="n">csvMapper</span> <span class="p">=</span> <span class="k">new</span> <span class="n">LocalWeatherDataMapper</span><span class="p">();</span>
             <span class="n">CsvParser</span><span class="p">&lt;</span><span class="n">LocalWeatherData</span><span class="p">&gt;</span> <span class="n">csvParser</span> <span class="p">=</span> <span class="k">new</span> <span class="n">CsvParser</span><span class="p">&lt;</span><span class="n">LocalWeatherData</span><span class="p">&gt;(</span><span class="n">csvParserOptions</span><span class="p">,</span> <span class="n">csvMapper</span><span class="p">);</span>
@@ -438,7 +439,7 @@ lead to a much higher memory consumption. This may be a subject for a future art
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.6',
+            VERSION:'2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

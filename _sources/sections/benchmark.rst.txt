@@ -41,7 +41,7 @@ Benchmark Code
 Measuring the Execution Time
 """"""""""""""""""""""""""""
 
-The elapsed time of the import can be easily measured by using the :csharp:`System.Diagnostics.Stopwatch`.
+The elapsed time of the import can be easily measured by using the :code:`System.Diagnostics.Stopwatch`.
 
 .. code-block:: csharp
 
@@ -102,7 +102,7 @@ TinyCsvParser
         {
             foreach (var degreeOfParallelism in degreeOfParallelismList)
             {
-                CsvParserOptions csvParserOptions = new CsvParserOptions(true, new[] { ',' }, degreeOfParallelism, order);
+                CsvParserOptions csvParserOptions = new CsvParserOptions(true, ',', degreeOfParallelism, order);
                 CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
                 LocalWeatherDataMapper csvMapper = new LocalWeatherDataMapper();
                 CsvParser<LocalWeatherData> csvParser = new CsvParser<LocalWeatherData>(csvParserOptions, csvMapper);

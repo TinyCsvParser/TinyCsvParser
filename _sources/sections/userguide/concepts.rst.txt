@@ -25,9 +25,8 @@ You have seen an example for a :code:`CsvMapping` in the :ref:`Quickstart<quicks
     }
 
 
-    
-CsvParserOption
-~~~~~~~~~~~~~~~
+CsvParserOptions
+~~~~~~~~~~~~~~~~
 
 In order to parse a CSV file, you need to define the column delimiter to use and define to skip the header 
 or not. These options are passed into a :code:`CsvParser` by using the :code:`CsvParserOptions`. The most 
@@ -35,13 +34,13 @@ basic constructor for a :code:`CsvParserOption` is:
 
 .. code-block:: csharp
 
-    CsvParserOptions(bool skipHeader, char[] fieldsSeparator)
+    CsvParserOptions(bool skipHeader, char fieldsSeparator)
  
 There are more advanced options, which can be passed with:
 
 .. code-block:: csharp
 
-    CsvParserOptions(bool skipHeader, ITokenizer tokenizer, int degreeOfParallelism, bool keepOrder)
+    CsvParserOptions(bool skipHeader, string commentCharacter, ITokenizer tokenizer, int degreeOfParallelism, bool keepOrder)
 
 The Parameters are:
   
@@ -75,9 +74,12 @@ The parameter is:
 CsvMappingResult
 ~~~~~~~~~~~~~~~~
 
-The :code:`CsvMappingResult` is result of the parsing, and contains the populated objects. Why doesn't 
-a :code:`CsvParser` return the entities? Because the input data is processed in parallel and the 
-:code:`CsvParser` can't stop parsing, just because a single line has an error.
+The :code:`CsvMappingResult` is the result of the parsing. The class contains either the populated object or 
+an error. Why doesn't a :code:`CsvParser` return just the mapped entities? Because the input data is processed 
+in parallel and the :code:`CsvParser` can't stop parsing, because a single line has an error.
+
+That's why the parsed entity is wrapped in a :code:`CsvMappingResult`, which holds either the entity or an error, 
+that may have occured during parsing a CSV line.
 
 You can check, if a :code:`CsvMappingResult` is valid by checking the property :code:`CsvMappingResult<TEntity>.IsValid`. 
 If the :code:`CsvMappingResult` is valid, then it contains the populated entity in the property. If the parsing was 

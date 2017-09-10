@@ -76,7 +76,7 @@ as :code:`ASCII`.
             [Test]
             public void TinyCsvTest()
             {
-                CsvParserOptions csvParserOptions = new CsvParserOptions(false, new[] { ';' });
+                CsvParserOptions csvParserOptions = new CsvParserOptions(false, ';');
                 CsvPersonMapping csvMapper = new CsvPersonMapping();
                 CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
     
@@ -110,7 +110,7 @@ as :code:`ASCII`.
 Reading From a String
 """""""""""""""""""""
 
-Reading from a string is possible with the :csharp:`CsvParser.ReadFromString` method.
+Reading from a string is possible with the :code:`CsvParser.ReadFromString` method.
 
 .. code-block:: csharp
 
@@ -122,7 +122,7 @@ Reading from a string is possible with the :csharp:`CsvParser.ReadFromString` me
             [Test]
             public void TinyCsvTest()
             {
-                CsvParserOptions csvParserOptions = new CsvParserOptions(true, new[] { ';' });
+                CsvParserOptions csvParserOptions = new CsvParserOptions(true, ';');
                 CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
                 CsvPersonMapping csvMapper = new CsvPersonMapping();
                 CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);

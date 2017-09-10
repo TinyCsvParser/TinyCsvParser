@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Introduction to TinyCsvParser &mdash; TinyCsvParser 1.6 documentation</title>
+  <title>Introduction to TinyCsvParser &mdash; TinyCsvParser 2.0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="TinyCsvParser 1.6 documentation" href="../../index.html"/>
+    <link rel="top" title="TinyCsvParser 2.0 documentation" href="../../index.html"/>
         <link rel="up" title="Conceptual Overview" href="../overview.html"/>
         <link rel="next" title="User Guide" href="../userguide.html"/>
         <link rel="prev" title="Conceptual Overview" href="../overview.html"/> 
@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                1.6
+                2.0
               </div>
             
           
@@ -96,7 +96,6 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../overview.html">Conceptual Overview</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Introduction to TinyCsvParser</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#what-is-tinycsvparser">What is TinyCsvParser?</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#why-build-tinycsvparser">Why build TinyCsvParser?</a></li>
 </ul>
 </li>
 </ul>
@@ -106,6 +105,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../benchmark.html">Benchmark</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
 </ul>
 
             
@@ -197,20 +197,6 @@ configurable to provide maximum flexibility.</p>
 <li>Extensively Documented</li>
 </ul>
 </div>
-<div class="section" id="why-build-tinycsvparser">
-<h2>Why build TinyCsvParser?<a class="headerlink" href="#why-build-tinycsvparser" title="Permalink to this headline">¶</a></h2>
-<p>I have often been tearing my hair out at work, when trying to grok custom hand-rolled CSV parsing code.</p>
-<p>CSV parsing can lead to code monsters in real life, that will eat your precious lifetime and pose
-a threat to your application. After all, you are importing data into your system. Your data must
-be valid or you (or your team) are going to suffer. Correcting imported data manually, is an expensive
-and frustrating task.</p>
-<p>CSV files are abused for a lot of things in reality. They can be complicated beasts and sometimes even
-contain malformed data. Often enough you don’t have any control of the format. Parsing the input data
-is often enough not just a <code class="code docutils literal"><span class="pre">string.Split</span></code>, think of File Encodings, Date formats, Number formats…</p>
-<p>A consistent approach for parsing CSV data in your application is important or you will get into severe
-problems maintaining an application. Enough hair was torn out by developers reading custom hand-rolled
-CSV parsing code!</p>
-</div>
 </div>
 
 
@@ -257,7 +243,7 @@ CSV parsing code!</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.6',
+            VERSION:'2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

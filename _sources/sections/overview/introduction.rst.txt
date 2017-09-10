@@ -28,22 +28,4 @@ In summary, TinyCsvParser offers the following key features:
 * Extensively Unit Tested
 * Extensively Documented
 
-Why build TinyCsvParser?
-~~~~~~~~~~~~~~~~~~~~~~~~
-
-I have often been tearing my hair out at work, when trying to grok custom hand-rolled CSV parsing code. 
-
-CSV parsing can lead to code monsters in real life, that will eat your precious lifetime and pose 
-a threat to your application. After all, you are importing data into your system. Your data must 
-be valid or you (or your team) are going to suffer. Correcting imported data manually, is an expensive 
-and frustrating task.
-
-CSV files are abused for a lot of things in reality. They can be complicated beasts and sometimes even 
-contain malformed data. Often enough you don't have any control of the format. Parsing the input data 
-is often enough not just a :code:`string.Split`, think of File Encodings, Date formats, Number formats...
-
-A consistent approach for parsing CSV data in your application is important or you will get into severe 
-problems maintaining an application. Enough hair was torn out by developers reading custom hand-rolled 
-CSV parsing code!
-
 .. _TinyCsvParser: https://github.com/bytefish/TinyCsvParser

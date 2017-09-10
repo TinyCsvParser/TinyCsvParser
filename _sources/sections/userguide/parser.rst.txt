@@ -47,7 +47,7 @@ You have seen an example for :code:`CsvParserOptions` in the :ref:`Quickstart<qu
 
 .. code-block:: csharp
 
-    CsvParserOptions csvParserOptions = new CsvParserOptions(false, new[] { ';' });
+    CsvParserOptions csvParserOptions = new CsvParserOptions(false, ';');
 
 Parsing CSV Data
 ~~~~~~~~~~~~~~~~

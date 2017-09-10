@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>User Guide &mdash; TinyCsvParser 2.0 documentation</title>
+  <title>Changelog &mdash; TinyCsvParser 2.0 documentation</title>
   
 
   
@@ -36,8 +36,7 @@
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="TinyCsvParser 2.0 documentation" href="../index.html"/>
-        <link rel="next" title="Installation" href="userguide/install.html"/>
-        <link rel="prev" title="Introduction to TinyCsvParser" href="overview/introduction.html"/> 
+        <link rel="prev" title="Contributing" href="contributing.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -93,22 +92,19 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Conceptual Overview</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">User Guide</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="userguide/install.html">Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="userguide/parser.html">Parser</a></li>
-<li class="toctree-l2"><a class="reference internal" href="userguide/concepts.html">Concepts</a></li>
-<li class="toctree-l2"><a class="reference internal" href="userguide/typeconverter.html">Type Converter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="userguide/tokenizer.html">Tokenizer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="userguide/postprocessing.html">Preprocessing and Postprocessing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="userguide/parallel.html">☕ Parallel Processing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="userguide/info.html">Learning More</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="userguide.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="benchmark.html">Benchmark</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">2.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#breaking-changes">Breaking Changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#features">Features</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 
             
@@ -153,13 +149,13 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>User Guide</li>
+      <li>Changelog</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/sections/userguide.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/sections/changelog.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -172,28 +168,31 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="user-guide">
-<span id="userguide"></span><h1>User Guide<a class="headerlink" href="#user-guide" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
+  <div class="section" id="changelog">
+<span id="id1"></span><h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id2">
+<h2>2.0<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="breaking-changes">
+<h3>Breaking Changes<a class="headerlink" href="#breaking-changes" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Removed the <code class="code docutils literal"><span class="pre">WithCustomConverter</span></code> method from the <code class="docutils literal"><span class="pre">CsvPropertyMapping</span></code></li>
+<li>Changed the constructors of <code class="code docutils literal"><span class="pre">CsvParserOptions</span></code><ul>
+<li>The parameter <code class="code docutils literal"><span class="pre">fieldsSeparator</span></code> (column separator) is now a <code class="code docutils literal"><span class="pre">char</span></code> (was <code class="code docutils literal"><span class="pre">char[]</span></code>)</li>
+</ul>
+</li>
+</ul>
 </div>
-<p>This user guide is intended to guide you through the most common tasks, that you want to
-accomplish using TinyCsvParser. The guide covers the following topics:</p>
-<dl class="docutils">
-<dt><a class="reference internal" href="userguide/install.html#userguide-install"><span class="std std-ref">Installation</span></a></dt>
-<dd>Explains how to install TinyCsvParser or build it from source.</dd>
-<dt><a class="reference internal" href="userguide/parser.html#userguide-parser"><span class="std std-ref">Parser</span></a></dt>
-<dd>Explains the concepts behind TinyCsvParser.</dd>
-<dt><a class="reference internal" href="userguide/concepts.html#userguide-concepts"><span class="std std-ref">Concepts</span></a></dt>
-<dd>Define and explain the most important concepts of the library.</dd>
-<dt><a class="reference internal" href="userguide/tokenizer.html#userguide-tokenizer"><span class="std std-ref">Tokenizer</span></a></dt>
-<dd>Explains how to use the built-in Tokenizers for custom line handling.</dd>
-<dt><a class="reference internal" href="userguide/postprocessing.html#userguide-postprocessing"><span class="std std-ref">Preprocessing and Postprocessing</span></a></dt>
-<dd>Explains how to preprocess and postprocess data for parsing.</dd>
-<dt><a class="reference internal" href="userguide/parallel.html#userguide-parallel"><span class="std std-ref">☕ Parallel Processing</span></a></dt>
-<dd>Explains how to build Parallel Processing pipelines.</dd>
-<dt><a class="reference internal" href="userguide/info.html#userguide-info"><span class="std std-ref">Learning More</span></a></dt>
-<dd>See where to go next for additional information and examples.</dd>
-</dl>
+<div class="section" id="features">
+<h3>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Added Row Numbers<ul>
+<li>Accessible through <code class="code docutils literal"><span class="pre">CsvMappingResult.RowIndex</span></code></li>
+</ul>
+</li>
+<li><code class="code docutils literal"><span class="pre">RFC4180Tokenizer</span></code> now set as default Tokenizer</li>
+</ul>
+</div>
+</div>
 </div>
 
 
@@ -206,10 +205,8 @@ accomplish using TinyCsvParser. The guide covers the following topics:</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="userguide/install.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
-      
-        <a href="overview/introduction.html" class="btn btn-neutral" title="Introduction to TinyCsvParser" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="contributing.html" class="btn btn-neutral" title="Contributing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
