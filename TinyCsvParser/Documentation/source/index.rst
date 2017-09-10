@@ -31,6 +31,7 @@ Topics
     sections/tutorials
     sections/benchmark
     sections/contributing
+    sections/changelog
 
 Getting involved
 ~~~~~~~~~~~~~~~~

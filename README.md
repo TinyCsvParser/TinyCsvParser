@@ -9,7 +9,7 @@ and it is highly configurable to provide maximum flexibility.
 
 To get started quickly, follow the [Quickstart](http://bytefish.github.io/TinyCsvParser/sections/quickstart.html).
 
-[TinyCsvParser] supports .NET Core as of Version 1.4.0.
+[TinyCsvParser] supports .NET Core.
 
 ## Installing TinyCsvParser ##
 
@@ -45,7 +45,9 @@ The corresponding domain model in our system might look like this.
 private class Person
 {
     public string FirstName { get; set; }
+    
     public string LastName { get; set; }
+    
     public DateTime BirthDate { get; set; }
 }
 ```
@@ -76,7 +78,7 @@ namespace TinyCsvParser.Test
         [Test]
         public void TinyCsvTest()
         {
-            CsvParserOptions csvParserOptions = new CsvParserOptions(true, new[] { ';' });
+            CsvParserOptions csvParserOptions = new CsvParserOptions(true, ';');
             CsvPersonMapping csvMapper = new CsvPersonMapping();
             CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
 

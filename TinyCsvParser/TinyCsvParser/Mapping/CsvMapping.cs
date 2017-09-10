@@ -6,7 +6,6 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using TinyCsvParser.TypeConverter;
-using TinyCsvParser.Reflection;
 using TinyCsvParser.Model;
 
 namespace TinyCsvParser.Mapping
@@ -84,7 +83,7 @@ namespace TinyCsvParser.Mapping
                 {
                     return new CsvMappingResult<TEntity>()
                     {
-                        Index = values.Index,
+                        RowIndex = values.Index,
                         Error = new CsvMappingError()
                         {
                             ColumnIndex = columnIndex,
@@ -99,7 +98,7 @@ namespace TinyCsvParser.Mapping
                 {
                     return new CsvMappingResult<TEntity>()
                     {
-                        Index = values.Index,
+                        RowIndex = values.Index,
                         Error = new CsvMappingError
                         {
                             ColumnIndex = columnIndex,
@@ -111,7 +110,7 @@ namespace TinyCsvParser.Mapping
 
             return new CsvMappingResult<TEntity>()
             {
-                Index = values.Index,
+                RowIndex = values.Index,
                 Result = entity
             };
         }

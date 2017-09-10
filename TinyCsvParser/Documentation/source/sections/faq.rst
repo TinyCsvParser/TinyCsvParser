@@ -5,6 +5,9 @@ FAQ
 
 This is a list of Frequently Asked Questions (FAQ) about TinyCsvParser.
 
+* How do I access the Line Number?
+    * The Line Number is accessible through the property :code:`CsvMappingResult.RowIndex`.
+    
 * Why is my CSV data split into wrong columns?
     * By default the CSV data is split at the column delimiter given in the :code:`CsvParserOptions`. If the column delimiter is also present in the column data, 
       then a simple split will lead to wrong column data. 
