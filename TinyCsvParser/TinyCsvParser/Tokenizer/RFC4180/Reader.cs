@@ -20,14 +20,14 @@ namespace TinyCsvParser.Tokenizer.RFC4180
         {
             public readonly TokenType Type;
 
-            public readonly string Content;
+            public readonly ReadOnlyMemory<char> Content;
 
             public Token(TokenType type)
-                : this(type, string.Empty)
+                : this(type, ReadOnlyMemory<char>.Empty)
             {
             }
 
-            public Token(TokenType type, string content)
+            public Token(TokenType type, ReadOnlyMemory<char> content)
             {
                 Type = type;
                 Content = content;

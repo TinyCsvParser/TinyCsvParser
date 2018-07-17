@@ -28,8 +28,7 @@ namespace TinyCsvParser.Mapping
         private readonly ITypeConverterProvider typeConverterProvider;
         private readonly List<IndexToPropertyMapping> csvPropertyMappings;
 
-        protected CsvMapping()
-            : this(new TypeConverterProvider())
+        protected CsvMapping() : this(new TypeConverterProvider())
         {
         }
 
@@ -53,7 +52,7 @@ namespace TinyCsvParser.Mapping
 
             var propertyMapping = new CsvPropertyMapping<TEntity, TProperty>(property, typeConverter);
 
-           AddPropertyMapping(columnIndex, propertyMapping);
+            AddPropertyMapping(columnIndex, propertyMapping);
 
             return propertyMapping;
         }
@@ -71,54 +70,61 @@ namespace TinyCsvParser.Mapping
 
         public CsvMappingResult<TEntity> Map(TokenizedRow values)
         {
-            TEntity entity = new TEntity();
-
-            for (int pos = 0; pos < csvPropertyMappings.Count; pos++)
+            try
             {
-                var indexToPropertyMapping = csvPropertyMappings[pos];
+                TEntity entity = new TEntity();
 
-                var columnIndex = indexToPropertyMapping.ColumnIndex;
-
-                if (columnIndex >= values.Tokens.Length)
+                for (int pos = 0; pos < csvPropertyMappings.Count; pos++)
                 {
-                    return new CsvMappingResult<TEntity>()
+                    var indexToPropertyMapping = csvPropertyMappings[pos];
+
+                    var columnIndex = indexToPropertyMapping.ColumnIndex;
+
+                    if (columnIndex >= values.Tokens.Length)
                     {
-                        RowIndex = values.Index,
-                        Error = new CsvMappingError()
+                        return new CsvMappingResult<TEntity>()
                         {
-                            ColumnIndex = columnIndex,
-                            Value = string.Format("Column {0} is Out Of Range", columnIndex)
-                        }
-                    };
+                            RowIndex = values.Index,
+                            Error = new CsvMappingError()
+                            {
+                                ColumnIndex = columnIndex,
+                                Value = string.Format("Column {0} is Out Of Range", columnIndex)
+                            }
+                        };
+                    }
+
+                    var value = values.Tokens[columnIndex];
+
+                    if (!indexToPropertyMapping.PropertyMapping.TryMapValue(entity, value))
+                    {
+                        return new CsvMappingResult<TEntity>()
+                        {
+                            RowIndex = values.Index,
+                            Error = new CsvMappingError
+                            {
+                                ColumnIndex = columnIndex,
+                                Value = string.Format("Column {0} with Value '{1}' cannot be converted", columnIndex, value)
+                            }
+                        };
+                    }
                 }
 
-                var value = values.Tokens[columnIndex];
-
-                if (!indexToPropertyMapping.PropertyMapping.TryMapValue(entity, value))
+                return new CsvMappingResult<TEntity>()
                 {
-                    return new CsvMappingResult<TEntity>()
-                    {
-                        RowIndex = values.Index,
-                        Error = new CsvMappingError
-                        {
-                            ColumnIndex = columnIndex,
-                            Value = string.Format("Column {0} with Value '{1}' cannot be converted", columnIndex, value)
-                        }
-                    };
-                }
+                    RowIndex = values.Index,
+                    Result = entity
+                };
             }
-
-            return new CsvMappingResult<TEntity>()
+            finally
             {
-                RowIndex = values.Index,
-                Result = entity
-            };
+                // TODO: this might be a good place to return the pooled memory
+            }
         }
 
-        
+
         public override string ToString()
         {
-            var csvPropertyMappingsString =  string.Join(", ", csvPropertyMappings.Select(x => x.ToString()));
+            var csvPropertyMappingsString = string.Join(", ", csvPropertyMappings.Select(x => x.ToString()));
 
             return string.Format("CsvMapping (TypeConverterProvider = {0}, Mappings = {1})", typeConverterProvider, csvPropertyMappingsString);
         }

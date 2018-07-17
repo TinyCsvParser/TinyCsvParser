@@ -12,7 +12,7 @@ namespace TinyCsvParser.Mapping
 
         public TEntity Result { get; set; }
 
-        public bool IsValid { get { return Error == null; } }
+        public bool IsValid => Error == null;
 
         public override string ToString()
         {
