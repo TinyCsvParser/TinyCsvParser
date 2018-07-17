@@ -72,13 +72,13 @@ namespace TinyCsvParser.Test.Extensions
         public void SplitAny_Remove_Empty_Test()
         {
             var input = ";;1,,2;,;|,3;;;4,;5,6|,|7|8||";
-            var expected = input.Split(new[] { ',', ';', '|' }, StringSplitOptions.RemoveEmptyEntries);
-            var results = input.AsSpan().Split(new[] { ',', ';', '|' }, StringSplitOptions.RemoveEmptyEntries);
+            var splitChars = new[] { ',', ';', '|' };
+            var expected = input.Split(splitChars, StringSplitOptions.RemoveEmptyEntries);
+            var results = input.AsSpan().Split(splitChars, StringSplitOptions.RemoveEmptyEntries);
             var i = 0;
 
             foreach (var part in results)
             {
-                Console.WriteLine($">{part.ToString()}<");
                 Assert.IsTrue(part.Equals(expected[i++], StringComparison.Ordinal));
             }
             Assert.AreEqual(expected.Length, i);

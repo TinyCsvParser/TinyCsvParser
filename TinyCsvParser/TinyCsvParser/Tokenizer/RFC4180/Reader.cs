@@ -3,8 +3,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
 
 namespace TinyCsvParser.Tokenizer.RFC4180
 {
@@ -34,19 +32,19 @@ namespace TinyCsvParser.Tokenizer.RFC4180
             }
         }
 
-        private Options options;
+        private readonly Options options;
 
         public Reader(Options options)
         {
             this.options = options;
         }
 
-        public IList<Token> ReadTokens(TextReader reader)
+        public IList<Token> ReadTokens(ReadOnlySpan<char> chars)
         {
             var tokens = new List<Token>();
             while (true)
             {
-                Token token = NextToken(reader);
+                Token token = NextToken(chars, out chars);
 
                 tokens.Add(token);
 
@@ -58,117 +56,88 @@ namespace TinyCsvParser.Tokenizer.RFC4180
             return tokens;
         }
 
-        private Token NextToken(TextReader reader)
+        private Token NextToken(ReadOnlySpan<char> chars, out ReadOnlySpan<char> remaining)
         {
-            Skip(reader);
+            chars = chars.TrimStart();
 
-            string result = string.Empty;
+            var result = ReadOnlyMemory<char>.Empty;
 
-            int c = reader.Peek();
+            if (chars.IsEmpty)
+            {
+                remaining = chars;
+                return new Token(TokenType.EndOfRecord);
+            }
+
+            char c = chars[0];
 
             if (c == options.DelimiterCharacter)
             {
-                reader.Read();
-
+                remaining = chars.Slice(1);
                 return new Token(TokenType.Token);
             }
             else
             {
                 if (IsQuoteCharacter(c))
                 {
-                    result = ReadQuoted(reader);
+                    result = ReadQuoted(chars, out chars);
 
-                    Skip(reader);
+                    chars = chars.TrimStart();
 
-                    if (IsEndOfStream(reader.Peek()))
+                    if (chars.Length <= 1)
                     {
+                        remaining = ReadOnlySpan<char>.Empty;
                         return new Token(TokenType.EndOfRecord, result);
                     }
 
-                    if (IsDelimiter(reader.Peek()))
+                    if (IsDelimiter(chars[0]))
                     {
-                        reader.Read();
+                        chars = chars.Slice(1);
                     }
 
+                    remaining = chars;
                     return new Token(TokenType.Token, result);
                 }
 
-                if (IsEndOfStream(c))
+                result = chars.ReadTo(options.DelimiterCharacter, out chars, trim: true);
+                chars = chars.TrimStart();
+
+                if (chars.Length == 0)
                 {
-                    return new Token(TokenType.EndOfRecord);
+                    remaining = chars;
+                    return new Token(TokenType.EndOfRecord, result);
                 }
-                else
+
+                if (IsDelimiter(chars[0]))
                 {
-                    result = reader.ReadTo(options.DelimiterCharacter).Trim();
-
-                    Skip(reader);
-
-                    if (IsEndOfStream(reader.Peek()))
-                    {
-                        return new Token(TokenType.EndOfRecord, result);
-                    }
-
-                    if (IsDelimiter(reader.Peek()))
-                    {
-                        reader.Read();
-                    }
-
-                    return new Token(TokenType.Token, result);
+                    chars = chars.Slice(1);
                 }
+
+                remaining = chars;
+                return new Token(TokenType.Token, result);
             }
         }
 
-        private string ReadQuoted(TextReader reader)
+        private ReadOnlyMemory<char> ReadQuoted(ReadOnlySpan<char> chars, out ReadOnlySpan<char> remaining)
         {
-            reader.Read();
+            chars = chars.Slice(1);
 
-            string result = reader.ReadTo(options.QuoteCharacter);
+            var result = chars.ReadTo(options.QuoteCharacter, out chars);
 
-            reader.Read();
+            if (chars[0] == options.QuoteCharacter)
+                chars = chars.Slice(1);
 
-            if (reader.Peek() != options.QuoteCharacter)
-            {
-                return result;
-            }
-
-            StringBuilder buffer = new StringBuilder(result);
-            do
-            {
-                buffer.Append((char)reader.Read());
-                buffer.Append(reader.ReadTo(options.QuoteCharacter));
-
-                reader.Read();
-            } while (reader.Peek() == options.QuoteCharacter);
-
-            return buffer.ToString();
+            remaining = chars;
+            return result;
         }
 
-        private void Skip(TextReader reader)
-        {
-            while (IsWhiteSpace(reader.Peek()))
-            {
-                reader.Read();
-            }
-        }
-
-        private bool IsQuoteCharacter(int c)
+        private bool IsQuoteCharacter(char c)
         {
             return c == options.QuoteCharacter;
         }
 
-        private bool IsEndOfStream(int c)
-        {
-            return c == -1;
-        }
-
-        private bool IsDelimiter(int c)
+        private bool IsDelimiter(char c)
         {
             return c == options.DelimiterCharacter;
-        }
-
-        private bool IsWhiteSpace(int c)
-        {
-            return c == ' ' || c == '\t';
         }
 
         public override string ToString()

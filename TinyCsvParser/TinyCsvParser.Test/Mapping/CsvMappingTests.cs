@@ -45,7 +45,7 @@ namespace TinyCsvParser.Test.Issues
         {
             var mapping = new WrongColumnMapping();
 
-            var result = mapping.Map(new TokenizedRow(1, new []{"1"}));
+            var result = mapping.Map(new TokenizedRow(1, new []{"1".AsMemory()}));
 
             Assert.IsFalse(result.IsValid);
         }
@@ -64,7 +64,7 @@ namespace TinyCsvParser.Test.Issues
         {
             var mapping = new CorrectColumnMapping();
 
-            var result = mapping.Map(new TokenizedRow(1, new[] { string.Empty }));
+            var result = mapping.Map(new TokenizedRow(1, new[] { ReadOnlyMemory<char>.Empty }));
 
             Assert.IsFalse(result.IsValid);
 
@@ -79,7 +79,7 @@ namespace TinyCsvParser.Test.Issues
         {
             var mapping = new CorrectColumnMapping();
 
-            var result = mapping.Map(new TokenizedRow(1, new[] { "1" }));
+            var result = mapping.Map(new TokenizedRow(1, new[] { "1".AsMemory() }));
 
             Assert.IsTrue(result.IsValid);
             Assert.AreEqual(1, result.Result.PropertyInt);

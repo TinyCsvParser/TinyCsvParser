@@ -20,9 +20,9 @@ namespace TinyCsvParser.Test.Tokenizer
 
             Assert.AreEqual(3, result.Length);
 
-            Assert.AreEqual("1", result[0]);
-            Assert.AreEqual("2,3", result[1]);
-            Assert.AreEqual("4", result[2]);
+            Assert.AreEqual("1", result[0].ToString());
+            Assert.AreEqual("2,3", result[1].ToString());
+            Assert.AreEqual("4", result[2].ToString());
         }
 
         [Test]
@@ -35,9 +35,9 @@ namespace TinyCsvParser.Test.Tokenizer
 
             Assert.AreEqual(3, result.Length);
 
-            Assert.AreEqual("1", result[0]);
-            Assert.AreEqual("2;3", result[1]);
-            Assert.AreEqual("4", result[2]);
+            Assert.AreEqual("1", result[0].ToString());
+            Assert.AreEqual("2;3", result[1].ToString());
+            Assert.AreEqual("4", result[2].ToString());
         }
 
         [Test]
@@ -52,9 +52,9 @@ namespace TinyCsvParser.Test.Tokenizer
 
             Assert.AreEqual(3, result.Length);
 
-            Assert.AreEqual("1", result[0]);
-            Assert.AreEqual("2|3", result[1]);
-            Assert.AreEqual("4", result[2]);
+            Assert.AreEqual("1", result[0].ToString());
+            Assert.AreEqual("2|3", result[1].ToString());
+            Assert.AreEqual("4", result[2].ToString());
         }
 
         [Test]

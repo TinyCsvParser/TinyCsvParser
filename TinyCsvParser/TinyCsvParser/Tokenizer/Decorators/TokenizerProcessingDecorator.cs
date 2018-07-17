@@ -68,6 +68,7 @@ namespace TinyCsvParser.Tokenizer.Decorators
             var preprocessed_input = preprocessor.IsDefault ? input : preprocessor.Processor(input);
             var tokenized_input = tokenizer.Tokenize(preprocessed_input);
 
+            // TODO: MemoryPool?
             var output = new ReadOnlyMemory<char>[tokenized_input.Length];
 
             for (int i = 0, len = output.Length; i < len; i++)

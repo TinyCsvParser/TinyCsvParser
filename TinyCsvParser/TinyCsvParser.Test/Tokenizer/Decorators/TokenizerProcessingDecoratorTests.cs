@@ -29,7 +29,12 @@ namespace TinyCsvParser.Test.Tokenizer
             };
 
             // The Postprocessing Function on the Column value:
-            Preprocessor preprocessor = new Preprocessor(s => s.ToUpperInvariant());
+            var preprocessor = new Preprocessor(s =>
+            {
+                var output = new Memory<char>(new char[s.Length]);
+                s.ToUpperInvariant(output.Span);
+                return output.Span;
+            });
             Postprocessor postprocessor = new Postprocessor(s => s.Trim());
 
             // The Original Tokenizer, which tokenizes the line:
@@ -41,10 +46,10 @@ namespace TinyCsvParser.Test.Tokenizer
                 .AppendLine(" Philipp   Wagner   ")
                 .ToString();
 
-            string[] result = tokenizer.Tokenize(input);
+            var result = tokenizer.Tokenize(input);
 
-            Assert.AreEqual("PHILIPP", result[0]);
-            Assert.AreEqual("WAGNER", result[1]);
+            Assert.AreEqual("PHILIPP", result[0].ToString());
+            Assert.AreEqual("WAGNER", result[1].ToString());
         }
     }
 }

@@ -11,15 +11,13 @@ namespace TinyCsvParser.Tokenizer.RegularExpressions
     {
         public abstract Regex Regexp { get; }
 
-        public string[] Tokenize(string input)
+        public ReadOnlyMemory<char>[] Tokenize(ReadOnlySpan<char> input)
         {
-            return Regexp.Matches(input)
+            return Regexp.Matches(input.ToString())
                 .Cast<Match>()
-                .Select(x => x.Value)
+                .Select(x => x.Value.AsMemory())
                 .ToArray();
         }
-
-        public string[] Tokenize(ReadOnlySpan<char> input) => Tokenize(input.ToString());
 
         public override string ToString()
         {

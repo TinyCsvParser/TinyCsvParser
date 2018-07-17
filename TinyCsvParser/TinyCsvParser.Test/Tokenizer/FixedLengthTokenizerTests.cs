@@ -26,8 +26,8 @@ namespace TinyCsvParser.Test.Tokenizer
 
             var result = tokenizer.Tokenize(input);
 
-            Assert.AreEqual("Philipp   ", result[0]);
-            Assert.AreEqual("Wagner    ", result[1]);
+            Assert.AreEqual("Philipp   ", result[0].ToString());
+            Assert.AreEqual("Wagner    ", result[1].ToString());
         }
      }
 }
