@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Philipp Wagner. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -15,7 +16,7 @@ namespace TinyCsvParser.Tokenizer.RFC4180
             EndOfRecord
         }
 
-        public class Token
+        public struct Token
         {
             public readonly TokenType Type;
 
@@ -40,13 +41,13 @@ namespace TinyCsvParser.Tokenizer.RFC4180
             this.options = options;
         }
 
-        public IList<Token> ReadTokens(StringReader reader)
+        public IList<Token> ReadTokens(TextReader reader)
         {
             var tokens = new List<Token>();
             while (true)
             {
                 Token token = NextToken(reader);
-               
+
                 tokens.Add(token);
 
                 if (token.Type == TokenType.EndOfRecord)
@@ -57,14 +58,14 @@ namespace TinyCsvParser.Tokenizer.RFC4180
             return tokens;
         }
 
-        private Token NextToken(StringReader reader)
+        private Token NextToken(TextReader reader)
         {
             Skip(reader);
 
             string result = string.Empty;
 
             int c = reader.Peek();
-            
+
             if (c == options.DelimiterCharacter)
             {
                 reader.Read();
@@ -91,11 +92,11 @@ namespace TinyCsvParser.Tokenizer.RFC4180
 
                     return new Token(TokenType.Token, result);
                 }
-                                
-                if (IsEndOfStream(c)) 
+
+                if (IsEndOfStream(c))
                 {
                     return new Token(TokenType.EndOfRecord);
-                } 
+                }
                 else
                 {
                     result = reader.ReadTo(options.DelimiterCharacter).Trim();
@@ -107,7 +108,7 @@ namespace TinyCsvParser.Tokenizer.RFC4180
                         return new Token(TokenType.EndOfRecord, result);
                     }
 
-                    if(IsDelimiter(reader.Peek())) 
+                    if (IsDelimiter(reader.Peek()))
                     {
                         reader.Read();
                     }
@@ -117,7 +118,7 @@ namespace TinyCsvParser.Tokenizer.RFC4180
             }
         }
 
-        private string ReadQuoted(StringReader reader)
+        private string ReadQuoted(TextReader reader)
         {
             reader.Read();
 
@@ -129,7 +130,7 @@ namespace TinyCsvParser.Tokenizer.RFC4180
             {
                 return result;
             }
-         
+
             StringBuilder buffer = new StringBuilder(result);
             do
             {
@@ -142,7 +143,7 @@ namespace TinyCsvParser.Tokenizer.RFC4180
             return buffer.ToString();
         }
 
-        private void Skip(StringReader reader)
+        private void Skip(TextReader reader)
         {
             while (IsWhiteSpace(reader.Peek()))
             {
@@ -150,10 +151,11 @@ namespace TinyCsvParser.Tokenizer.RFC4180
             }
         }
 
-        private bool IsQuoteCharacter(int c) {
+        private bool IsQuoteCharacter(int c)
+        {
             return c == options.QuoteCharacter;
         }
-        
+
         private bool IsEndOfStream(int c)
         {
             return c == -1;

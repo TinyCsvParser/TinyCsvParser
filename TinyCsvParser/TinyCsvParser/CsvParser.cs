@@ -43,7 +43,7 @@ namespace TinyCsvParser
                 .Where(row => !string.IsNullOrWhiteSpace(row.Data));
 
             // Ignore Lines, that start with a comment character:
-            if(!string.IsNullOrWhiteSpace(options.CommentCharacter)) 
+            if (!string.IsNullOrWhiteSpace(options.CommentCharacter)) 
             {
                 query = query.Where(line => !line.Data.StartsWith(options.CommentCharacter));
             }

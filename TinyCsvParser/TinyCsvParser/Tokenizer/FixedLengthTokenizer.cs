@@ -37,32 +37,24 @@ namespace TinyCsvParser.Tokenizer
 
         public FixedLengthTokenizer(ColumnDefinition[] columns)
         {
-            if (columns == null)
-            {
-                throw new ArgumentNullException("columns");
-            }
-            Columns = columns;
+            Columns = columns ?? throw new ArgumentNullException("columns");
         }
 
         public FixedLengthTokenizer(IList<ColumnDefinition> columns)
         {
-            if (columns == null)
-            {
-                throw new ArgumentNullException("columns");
-            }
-            Columns = columns.ToArray();
+            Columns = columns?.ToArray() ?? throw new ArgumentNullException("columns");
         }
 
-        public string[] Tokenize(string input)
+        public ReadOnlyMemory<char>[] Tokenize(ReadOnlySpan<char> input)
         {
-            string[] tokenizedLine = new string[Columns.Length];
+            var tokenizedLine = new ReadOnlyMemory<char>[Columns.Length];
 
             for (int columnIndex = 0; columnIndex < Columns.Length; columnIndex++)
             {
                 var columnDefinition = Columns[columnIndex];
-                var columnData = input.Substring(columnDefinition.Start, columnDefinition.End - columnDefinition.Start);
+                var columnData = input.Slice(columnDefinition.Start, columnDefinition.End - columnDefinition.Start);
 
-                tokenizedLine[columnIndex] = columnData;
+                tokenizedLine[columnIndex] = columnData.ToArray().AsMemory();
             }
 
             return tokenizedLine;

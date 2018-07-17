@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TinyCsvParser.Tokenizer.Decorators
 {
@@ -10,29 +6,39 @@ namespace TinyCsvParser.Tokenizer.Decorators
     {
         private readonly ITokenizer tokenizer;
 
+        public delegate ReadOnlySpan<char> ProcessorDelegate(ReadOnlySpan<char> input);
+
         public class Preprocessor
         {
-            public readonly Func<string, string> Processor;
+            public static readonly Preprocessor Default = new Preprocessor(x => x, true);
 
-            public Preprocessor()
-                : this(x => x) { }
+            public readonly ProcessorDelegate Processor;
 
-            public Preprocessor(Func<string, string> preprocessor)
+            public readonly bool IsDefault;
+
+            public Preprocessor(ProcessorDelegate processor) : this(processor, false) { }
+
+            private Preprocessor(ProcessorDelegate processor, bool isDefault)
             {
-                Processor = preprocessor;
+                Processor = processor;
+                IsDefault = isDefault;
             }
         }
 
         public class Postprocessor
         {
-            public readonly Func<string, string> Processor;
+            public static readonly Postprocessor Default = new Postprocessor(x => x, true);
 
-            public Postprocessor()
-                : this(x => x) { }
+            public readonly ProcessorDelegate Processor;
 
-            public Postprocessor(Func<string, string> preprocessor)
+            public readonly bool IsDefault;
+
+            public Postprocessor(ProcessorDelegate processor) : this(processor, false) { }
+
+            private Postprocessor(ProcessorDelegate processor, bool isDefault)
             {
-                Processor = preprocessor;
+                Processor = processor;
+                IsDefault = isDefault;
             }
         }
 
@@ -40,12 +46,12 @@ namespace TinyCsvParser.Tokenizer.Decorators
         private readonly Postprocessor postprocessor;
 
         public TokenizerProcessingDecorator(ITokenizer tokenizer, Preprocessor preprocessor)
-            : this(tokenizer, preprocessor, new Postprocessor())
+            : this(tokenizer, preprocessor, Postprocessor.Default)
         {
         }
 
         public TokenizerProcessingDecorator(ITokenizer tokenizer, Postprocessor postprocessor)
-            : this(tokenizer, new Preprocessor(), postprocessor)
+            : this(tokenizer, Preprocessor.Default, postprocessor)
         {
         }
 
@@ -57,15 +63,21 @@ namespace TinyCsvParser.Tokenizer.Decorators
             this.postprocessor = postprocessor;
         }
 
-        public string[] Tokenize(string input)
+        public ReadOnlyMemory<char>[] Tokenize(ReadOnlySpan<char> input)
         {
-            var preprocessed_input = preprocessor.Processor(input);
-
+            var preprocessed_input = preprocessor.IsDefault ? input : preprocessor.Processor(input);
             var tokenized_input = tokenizer.Tokenize(preprocessed_input);
 
-            return tokenized_input
-                .Select(token => postprocessor.Processor(token))
-                .ToArray();
+            var output = new ReadOnlyMemory<char>[tokenized_input.Length];
+
+            for (int i = 0, len = output.Length; i < len; i++)
+            {
+                output[i] = postprocessor.IsDefault 
+                    ? tokenized_input[i]
+                    : postprocessor.Processor(tokenized_input[i].Span).ToArray().AsMemory();
+            }
+
+            return output;
         }
 
         public override string ToString()
