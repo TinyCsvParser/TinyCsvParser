@@ -22,21 +22,19 @@ namespace TinyCsvParser.TypeConverter
             this.stringComparism = stringComparism;
         }
 
-        protected override bool InternalConvert(string value, out bool result)
+        protected override bool InternalConvert(ReadOnlySpan<char> value, out bool result)
         {
             result = false;
 
-            if(string.Equals(trueValue, value, stringComparism)) 
+            if (value.Equals(trueValue.AsSpan(), stringComparism)) 
             {
                 result = true;
-
                 return true;
             }
 
-            if (string.Equals(falseValue, value, stringComparism))
+            if (value.Equals(falseValue.AsSpan(), stringComparism))
             {
                 result = false;
-
                 return true;
             }
 

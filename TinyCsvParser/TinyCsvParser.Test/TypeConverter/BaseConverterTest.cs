@@ -12,7 +12,7 @@ namespace TinyCsvParser.Test.TypeConverter
     {
         protected abstract ITypeConverter<TTargetType> Converter { get; }
 
-        protected abstract Tuple<string, TTargetType>[] SuccessTestData { get; }
+        protected abstract (string, TTargetType)[] SuccessTestData { get; }
 
         protected abstract string[] FailTestData { get; }
 
@@ -21,9 +21,7 @@ namespace TinyCsvParser.Test.TypeConverter
         {
             foreach (var item in SuccessTestData)
             {
-                TTargetType result;
-
-                var canParse = Converter.TryConvert(item.Item1, out result);
+                var canParse = Converter.TryConvert(item.Item1, out TTargetType result);
 
                 Assert.IsTrue(canParse);
 
@@ -41,17 +39,10 @@ namespace TinyCsvParser.Test.TypeConverter
         {
             foreach (var item in FailTestData)
             {
-                TTargetType result;
-
-                var canParse = Converter.TryConvert(item, out result);
+                var canParse = Converter.TryConvert(item, out TTargetType result);
 
                 Assert.False(canParse);
             }
-        }
-
-        public Tuple<string, TTargetType> MakeTuple(string item1, TTargetType item2)
-        {
-            return new Tuple<string, TTargetType>(item1, item2);
         }
     }
 }

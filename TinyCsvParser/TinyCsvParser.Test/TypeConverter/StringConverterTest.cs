@@ -15,15 +15,15 @@ namespace TinyCsvParser.Test.TypeConverter
             get { return new StringConverter(); }
         }
 
-        protected override Tuple<string, String>[] SuccessTestData
+        protected override (string, String)[] SuccessTestData
         {
             get
             {
                 return new[] {
-                    MakeTuple(string.Empty, string.Empty),
-                    MakeTuple(" ", " "),
-                    MakeTuple("Abc", "Abc"),
-                    MakeTuple(null, null)
+                    (string.Empty, string.Empty),
+                    (" ", " "),
+                    ("Abc", "Abc"),
+                    (null, string.Empty) // spans can't be null, and null is evil
                 };
             }
         }

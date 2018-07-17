@@ -16,20 +16,20 @@ namespace TinyCsvParser.Test.TypeConverter
             get { return new NullableDoubleConverter(); }
         }
 
-        protected override Tuple<string, Double?>[] SuccessTestData
+        protected override (string, Double?)[] SuccessTestData
         {
             get
             {
                 return new[] {
-                    MakeTuple(Double.MinValue.ToString("R"), Double.MinValue),
-                    MakeTuple(Double.MaxValue.ToString("R"), Double.MaxValue),
-                    MakeTuple("0", 0),
-                    MakeTuple("-1000", -1000),
-                    MakeTuple("1000", 1000),
-                    MakeTuple("5e2", 500),
-                    MakeTuple(" ", default(Double?)),
-                    MakeTuple(null, default(Double?)),
-                    MakeTuple(string.Empty, default(Double?))
+                    (Double.MinValue.ToString("R"), Double.MinValue),
+                    (Double.MaxValue.ToString("R"), Double.MaxValue),
+                    ("0", 0),
+                    ("-1000", -1000),
+                    ("1000", 1000),
+                    ("5e2", 500),
+                    (" ", default(Double?)),
+                    (null, default(Double?)),
+                    (string.Empty, default(Double?))
                 };
             }
         }

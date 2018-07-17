@@ -16,19 +16,19 @@ namespace TinyCsvParser.Test.TypeConverter
             get { return new NullableInt64Converter(); }
         }
 
-        protected override Tuple<string, Int64?>[] SuccessTestData
+        protected override (string, Int64?)[] SuccessTestData
         {
             get
             {
                 return new[] {
-                    MakeTuple(Int64.MinValue.ToString(), Int64.MinValue),
-                    MakeTuple(Int64.MaxValue.ToString(), Int64.MaxValue),
-                    MakeTuple("0", 0),
-                    MakeTuple("-1000", -1000),
-                    MakeTuple("1000", 1000),
-                    MakeTuple(" ", default(Int64?)),
-                    MakeTuple(null, default(Int64?)),
-                    MakeTuple(string.Empty, default(Int64?))
+                    (Int64.MinValue.ToString(), Int64.MinValue),
+                    (Int64.MaxValue.ToString(), Int64.MaxValue),
+                    ("0", 0),
+                    ("-1000", -1000),
+                    ("1000", 1000),
+                    (" ", default(Int64?)),
+                    (null, default(Int64?)),
+                    (string.Empty, default(Int64?))
                 };
             }
         }

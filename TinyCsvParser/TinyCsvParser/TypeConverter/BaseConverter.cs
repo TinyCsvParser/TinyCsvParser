@@ -7,7 +7,7 @@ namespace TinyCsvParser.TypeConverter
 {
     public abstract class BaseConverter<TTargetType> : ITypeConverter<TTargetType>
     {
-        public abstract bool TryConvert(string value, out TTargetType result);
+        public abstract bool TryConvert(ReadOnlySpan<char> value, out TTargetType result);
 
         public Type TargetType
         {

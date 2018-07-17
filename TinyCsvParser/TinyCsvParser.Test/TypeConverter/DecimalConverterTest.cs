@@ -15,16 +15,16 @@ namespace TinyCsvParser.Test.TypeConverter
             get { return new DecimalConverter(); }
         }
 
-        protected override Tuple<string, Decimal>[] SuccessTestData
+        protected override (string, Decimal)[] SuccessTestData
         {
             get
             {
                 return new[] {
-                    MakeTuple(Decimal.MinValue.ToString(), Decimal.MinValue),
-                    MakeTuple(Decimal.MaxValue.ToString(), Decimal.MaxValue),
-                    MakeTuple("0", 0),
-                    MakeTuple("-1000", -1000),
-                    MakeTuple("1000", 1000)
+                    (Decimal.MinValue.ToString(), Decimal.MinValue),
+                    (Decimal.MaxValue.ToString(), Decimal.MaxValue),
+                    ("0", 0),
+                    ("-1000", -1000),
+                    ("1000", 1000)
                 };
             }
         }

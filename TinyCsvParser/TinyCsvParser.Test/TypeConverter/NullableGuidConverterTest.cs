@@ -16,14 +16,14 @@ namespace TinyCsvParser.Test.TypeConverter
             get { return new NullableGuidConverter(); }
         }
 
-        protected override Tuple<string, Guid?>[] SuccessTestData
+        protected override (string, Guid?)[] SuccessTestData
         {
             get
             {
                 return new [] {
-                    MakeTuple("02001000-0010-0000-0000-003200000000", Guid.Parse("02001000-0010-0000-0000-003200000000")),
-                    MakeTuple(null, default(Guid?)),
-                    MakeTuple(string.Empty, default(Guid?)),
+                    ("02001000-0010-0000-0000-003200000000", Guid.Parse("02001000-0010-0000-0000-003200000000")),
+                    (null, default(Guid?)),
+                    (string.Empty, default(Guid?)),
                 };
             }
         }

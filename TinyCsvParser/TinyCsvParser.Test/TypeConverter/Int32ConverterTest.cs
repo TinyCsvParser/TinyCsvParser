@@ -15,16 +15,16 @@ namespace TinyCsvParser.Test.TypeConverter
             get { return new Int32Converter(); }
         }
 
-        protected override Tuple<string, int>[] SuccessTestData
+        protected override (string, int)[] SuccessTestData
         {
             get
             {
                 return new[] {
-                    MakeTuple(Int32.MinValue.ToString(), Int32.MinValue),
-                    MakeTuple(Int32.MaxValue.ToString(), Int32.MaxValue),
-                    MakeTuple("0", 0),
-                    MakeTuple("-1000", -1000),
-                    MakeTuple("1000", 1000)
+                    (Int32.MinValue.ToString(), Int32.MinValue),
+                    (Int32.MaxValue.ToString(), Int32.MaxValue),
+                    ("0", 0),
+                    ("-1000", -1000),
+                    ("1000", 1000)
                 };
             }
         }

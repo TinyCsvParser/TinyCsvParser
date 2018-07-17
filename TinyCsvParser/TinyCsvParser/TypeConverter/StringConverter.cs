@@ -8,9 +8,9 @@ namespace TinyCsvParser.TypeConverter
 {
     public class StringConverter : BaseConverter<string>
     {
-        public override bool TryConvert(string value, out string result)
+        public override bool TryConvert(ReadOnlySpan<char> value, out string result)
         {
-            result = value;
+            result = value.ToString();
 
             return true;
         }

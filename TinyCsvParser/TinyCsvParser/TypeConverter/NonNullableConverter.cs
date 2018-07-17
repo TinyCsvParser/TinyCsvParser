@@ -8,9 +8,9 @@ namespace TinyCsvParser.TypeConverter
 {
     public abstract class NonNullableConverter<TTargetType> : BaseConverter<TTargetType>
     {
-        public override bool TryConvert(string value, out TTargetType result)
+        public override bool TryConvert(ReadOnlySpan<char> value, out TTargetType result)
         {
-            if (string.IsNullOrWhiteSpace(value))
+            if (value.IsWhiteSpace())
             {
                 result = default(TTargetType);
 
@@ -20,6 +20,6 @@ namespace TinyCsvParser.TypeConverter
             
         }
 
-        protected abstract bool InternalConvert(string value, out TTargetType result);
+        protected abstract bool InternalConvert(ReadOnlySpan<char> value, out TTargetType result);
     }
 }

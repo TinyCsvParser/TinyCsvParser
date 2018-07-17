@@ -15,15 +15,15 @@ namespace TinyCsvParser.Test.TypeConverter
             get { return new ByteConverter(); }
         }
 
-        protected override Tuple<string, Byte>[] SuccessTestData
+        protected override (string, Byte)[] SuccessTestData
         {
             get
             {
-                return new[] {
-                    MakeTuple(Byte.MinValue.ToString(), Byte.MinValue),
-                    MakeTuple(Byte.MaxValue.ToString(), Byte.MaxValue),
-                    MakeTuple("0", 0),
-                    MakeTuple("255", 255)
+                return new (string, Byte)[] {
+                    (Byte.MinValue.ToString(), Byte.MinValue),
+                    (Byte.MaxValue.ToString(), Byte.MaxValue),
+                    ("0", 0),
+                    ("255", 255)
                 };
             }
         }

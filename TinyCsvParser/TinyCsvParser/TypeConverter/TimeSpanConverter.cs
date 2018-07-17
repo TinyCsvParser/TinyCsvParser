@@ -35,7 +35,7 @@ namespace TinyCsvParser.TypeConverter
             this.timeSpanStyles = timeSpanStyles;
         }
 
-        protected override bool InternalConvert(string value, out TimeSpan result)
+        protected override bool InternalConvert(ReadOnlySpan<char> value, out TimeSpan result)
         {
             if (string.IsNullOrWhiteSpace(format))
             {

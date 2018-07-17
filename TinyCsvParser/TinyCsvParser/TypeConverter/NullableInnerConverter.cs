@@ -17,13 +17,11 @@ namespace TinyCsvParser.TypeConverter
             this.internalConverter = internalConverter;
         }
 
-        protected override bool InternalConvert(string value, out TTargetType? result)
+        protected override bool InternalConvert(ReadOnlySpan<char> value, out TTargetType? result)
         {
             result = default(TTargetType?);
 
-            TTargetType innerConverterResult;
-
-            if (internalConverter.TryConvert(value, out innerConverterResult))
+            if (internalConverter.TryConvert(value, out TTargetType innerConverterResult))
             {
                 result = innerConverterResult;
 

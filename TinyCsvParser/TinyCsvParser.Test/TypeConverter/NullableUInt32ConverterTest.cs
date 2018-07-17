@@ -16,18 +16,18 @@ namespace TinyCsvParser.Test.TypeConverter
             get { return new NullableUInt32Converter(); }
         }
 
-        protected override Tuple<string, UInt32?>[] SuccessTestData
+        protected override (string, UInt32?)[] SuccessTestData
         {
             get
             {
-                return new[] {
-                    MakeTuple(UInt32.MinValue.ToString(), UInt32.MinValue),
-                    MakeTuple(UInt32.MaxValue.ToString(), UInt32.MaxValue),
-                    MakeTuple("0", 0),
-                    MakeTuple("1000", 1000),
-                    MakeTuple(" ", default(UInt32?)),
-                    MakeTuple(null, default(UInt32?)),
-                    MakeTuple(string.Empty, default(UInt32?))
+                return new (string, UInt32?)[] {
+                    (UInt32.MinValue.ToString(), UInt32.MinValue),
+                    (UInt32.MaxValue.ToString(), UInt32.MaxValue),
+                    ("0", 0),
+                    ("1000", 1000),
+                    (" ", default(UInt32?)),
+                    (null, default(UInt32?)),
+                    (string.Empty, default(UInt32?))
                 };
             }
         }
