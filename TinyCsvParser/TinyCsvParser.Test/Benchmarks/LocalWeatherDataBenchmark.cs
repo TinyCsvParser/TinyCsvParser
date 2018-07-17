@@ -12,7 +12,7 @@ using TinyCsvParser.TypeConverter;
 namespace TinyCsvParser.Test.Benchmarks
 {
 
-    [TestFixture]//, Ignore("LocalWeatherData, File has around 500 MB")]
+    [TestFixture, Explicit("LocalWeatherData, File has around 500 MB")]
     public class LocalWeatherDataBenchmark
     {
         public class LocalWeatherData
@@ -49,7 +49,7 @@ namespace TinyCsvParser.Test.Benchmarks
         public void LocalWeatherReadTest()
         {
             bool[] keepOrder = new bool[] { true, false };
-            int[] degreeOfParallelismList = new[] { 1 };//, 2, 3, 4 };
+            int[] degreeOfParallelismList = new[] { 1, 2, 3, 4 };
 
             foreach (var order in keepOrder)
             {
