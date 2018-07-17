@@ -10,7 +10,7 @@ using TinyCsvParser.Mapping;
 namespace TinyCsvParser.Test.Benchmarks
 {
 
-    [TestFixture(Description="Performance Test"), Ignore("Could take too much time...")]
+    [TestFixture(Description="Performance Test"), Explicit("Could take too much time...")]
     public class TinyCsvParserTest
     {
         private class Person
@@ -30,7 +30,7 @@ namespace TinyCsvParser.Test.Benchmarks
             }
         }
 
-        [Test, Ignore("Performance Test creating a string with 1000000 lines")]
+        [Test, Explicit("Performance Test creating a string with 1000000 lines")]
         public void DegreeOfParallelismTest()
         {
             int csvDataLines = 1000000;
