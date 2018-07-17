@@ -60,7 +60,7 @@ namespace TinyCsvParser.Test.CsvParser
         public void WeirdDateTimeTest_CustomConverterBased()
         {
             CsvParserOptions csvParserOptions = new CsvParserOptions(true,  ';');
-            CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
+            CsvReaderOptions csvReaderOptions = new CsvReaderOptions(Environment.NewLine);
             CsvPersonMappingWithCustomConverter csvMapper = new CsvPersonMappingWithCustomConverter();
             CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
 

@@ -10,7 +10,7 @@ using TinyCsvParser.Mapping;
 namespace TinyCsvParser.Test.Benchmarks
 {
 
-    [TestFixture(Description="Performance Test"), Ignore("Could take too much time...")]
+    [TestFixture(Description="Performance Test")]//, Ignore("Could take too much time...")]
     public class TinyCsvParserTest
     {
         private class Person
@@ -30,7 +30,7 @@ namespace TinyCsvParser.Test.Benchmarks
             }
         }
 
-        [Test, Ignore("Performance Test creating a string with 1000000 lines")]
+        [Test, Explicit("Performance Test creating a string with 1000000 lines")]
         public void DegreeOfParallelismTest()
         {
             int csvDataLines = 1000000;
@@ -46,7 +46,7 @@ namespace TinyCsvParser.Test.Benchmarks
             foreach (var degreeOfParallelism in degreeOfParallelismList)
             {
                 CsvParserOptions csvParserOptions = new CsvParserOptions(true, ';' , degreeOfParallelism, true);
-                CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
+                CsvReaderOptions csvReaderOptions = new CsvReaderOptions(Environment.NewLine);
                 CsvPersonMapping csvMapper = new CsvPersonMapping();
                 CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
 

@@ -12,7 +12,7 @@ using TinyCsvParser.TypeConverter;
 namespace TinyCsvParser.Test.Benchmarks
 {
 
-    [TestFixture, Ignore("LocalWeatherData, File has around 500 MB")]
+    [TestFixture]//, Ignore("LocalWeatherData, File has around 500 MB")]
     public class LocalWeatherDataBenchmark
     {
         public class LocalWeatherData
@@ -32,12 +32,12 @@ namespace TinyCsvParser.Test.Benchmarks
             }
         }
 
-        [Test, Ignore("Performance Test for a Sequential Read")]
+        [Test, Explicit("Performance Test for a Sequential Read")]
         public void SeqReadTest()
         {
             MeasurementUtils.MeasureElapsedTime(string.Format("Sequential Read"), () =>
             {
-                var a = File.ReadLines(@"C:\Users\philipp\Downloads\csv\201503hourly.txt", Encoding.ASCII)
+                var a = File.ReadLines(@"C:\Temp\201503hourly.txt", Encoding.ASCII)
                     .AsParallel()
                     .Where(line => !string.IsNullOrWhiteSpace(line))
                     .Select(line => line.Trim().Split(new[] { ';' })).ToList();
@@ -49,7 +49,7 @@ namespace TinyCsvParser.Test.Benchmarks
         public void LocalWeatherReadTest()
         {
             bool[] keepOrder = new bool[] { true, false };
-            int[] degreeOfParallelismList = new[] { 4, 3, 2, 1 };
+            int[] degreeOfParallelismList = new[] { 1 };//, 2, 3, 4 };
 
             foreach (var order in keepOrder)
             {
@@ -63,7 +63,7 @@ namespace TinyCsvParser.Test.Benchmarks
                         () =>
                         {
                             var a = csvParser
-                                .ReadFromFile(@"C:\Users\philipp\Downloads\csv\201503hourly.txt", Encoding.ASCII)
+                                .ReadFromFile(@"C:\Temp\201503hourly.txt", Encoding.ASCII)
                                 .ToList();
                         });
                 }

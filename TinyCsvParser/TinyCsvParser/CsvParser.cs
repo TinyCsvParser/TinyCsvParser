@@ -40,16 +40,16 @@ namespace TinyCsvParser
 
             query = query
                 .WithDegreeOfParallelism(options.DegreeOfParallelism)
-                .Where(row => !string.IsNullOrWhiteSpace(row.Data));
+                .Where(row => !row.Data.Span.IsWhiteSpace());
 
             // Ignore Lines, that start with a comment character:
             if (!string.IsNullOrWhiteSpace(options.CommentCharacter)) 
             {
-                query = query.Where(line => !line.Data.StartsWith(options.CommentCharacter));
+                query = query.Where(line => !line.Data.Span.StartsWith(options.CommentCharacter));
             }
                 
             return query
-                .Select(line => new TokenizedRow(line.Index, options.Tokenizer.Tokenize(line.Data)))
+                .Select(line => new TokenizedRow(line.Index, options.Tokenizer.Tokenize(line.Data.Span)))
                 .Select(fields => mapping.Map(fields));
         }
 

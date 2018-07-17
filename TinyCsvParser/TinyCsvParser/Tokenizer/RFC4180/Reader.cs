@@ -15,7 +15,7 @@ namespace TinyCsvParser.Tokenizer.RFC4180
             EndOfRecord
         }
 
-        public struct Token
+        public class Token
         {
             public readonly TokenType Type;
 
@@ -102,7 +102,7 @@ namespace TinyCsvParser.Tokenizer.RFC4180
                 result = chars.ReadTo(options.DelimiterCharacter, out chars, trim: true);
                 chars = chars.TrimStart();
 
-                if (chars.Length == 0)
+                if (chars.IsEmpty)
                 {
                     remaining = chars;
                     return new Token(TokenType.EndOfRecord, result);

@@ -12,7 +12,7 @@ namespace TinyCsvParser.Test.CsvParser
         [Test]
         public void ToStringTest()
         {
-            var csvReaderOptions = new CsvReaderOptions(new string[] { Environment.NewLine });
+            var csvReaderOptions = new CsvReaderOptions(Environment.NewLine);
 
             Assert.DoesNotThrow(() => csvReaderOptions.ToString());
         }

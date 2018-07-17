@@ -30,7 +30,7 @@ namespace TinyCsvParser.Test.Issues
         public void NegativeValueParsingTest()
         {
             CsvParserOptions csvParserOptions = new CsvParserOptions(true, ';');
-            CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
+            CsvReaderOptions csvReaderOptions = new CsvReaderOptions(Environment.NewLine);
             NegativeValueEntityMapping csvMapper = new NegativeValueEntityMapping();
             CsvParser<NegativeValueEntity> csvParser = new CsvParser<NegativeValueEntity>(csvParserOptions, csvMapper);
 

@@ -5,7 +5,7 @@ using System;
 
 namespace TinyCsvParser.Model
 {
-    public struct TokenizedRow
+    public class TokenizedRow
     {
         public readonly int Index;
 

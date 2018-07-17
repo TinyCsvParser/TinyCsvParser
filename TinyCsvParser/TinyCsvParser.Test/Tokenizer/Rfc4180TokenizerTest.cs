@@ -53,7 +53,7 @@ namespace TinyCsvParser.Test.Tokenizer
                 .AppendLine("\"Robert, Willliamson\", , \"All-around nice guy who always says hi\"");
             
             // Define the NewLine Character to split at:
-            CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
+            CsvReaderOptions csvReaderOptions = new CsvReaderOptions(Environment.NewLine);
 
             var result = csvParser
                 .ReadFromString(csvReaderOptions, stringBuilder.ToString())

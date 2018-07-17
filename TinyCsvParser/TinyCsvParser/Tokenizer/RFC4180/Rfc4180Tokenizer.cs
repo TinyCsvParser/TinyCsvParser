@@ -17,10 +17,14 @@ namespace TinyCsvParser.Tokenizer.RFC4180
 
         public ReadOnlyMemory<char>[] Tokenize(ReadOnlySpan<char> input)
         {
-            // TODO: Need to rewrite Reader in terms of ReadOnlySpan<char>
-            return _reader.ReadTokens(input)
-                .Select(token => token.Content)
-                .ToArray();
+            var tokens = _reader.ReadTokens(input);
+            var len = tokens.Count;
+            var output = new ReadOnlyMemory<char>[len];
+            for (int i = 0; i < len; i++)
+            {
+                output[i] = tokens[i].Content;
+            }
+            return output;
         }
 
         public override string ToString()
