@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace TinyCsvParser.Tokenizer.RFC4180
 {
@@ -126,23 +127,29 @@ namespace TinyCsvParser.Tokenizer.RFC4180
             if (chars[0] == options.QuoteCharacter)
                 chars = chars.Slice(1);
 
+            if (chars.IsEmpty || chars[0] != options.QuoteCharacter)
+            {
+                remaining = chars;
+                return result;
+            }
+
+            var buffer = new StringBuilder(result.ToString());
+            do
+            {
+                buffer.Append(chars[0]);
+                chars = chars.Slice(1);
+                buffer.Append(chars.ReadTo(options.QuoteCharacter, out chars).Span);
+                chars = chars.Slice(1);
+            } while (!chars.IsEmpty && chars[0] == options.QuoteCharacter);
+
             remaining = chars;
-            return result;
+            return buffer.ToString().AsMemory();
         }
 
-        private bool IsQuoteCharacter(char c)
-        {
-            return c == options.QuoteCharacter;
-        }
+        private bool IsQuoteCharacter(char c) => c == options.QuoteCharacter;
 
-        private bool IsDelimiter(char c)
-        {
-            return c == options.DelimiterCharacter;
-        }
+        private bool IsDelimiter(char c) => c == options.DelimiterCharacter;
 
-        public override string ToString()
-        {
-            return string.Format("Reader (Options = {0})", options);
-        }
+        public override string ToString() => $"Reader (Options = {options})";
     }
 }
