@@ -2,7 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
-using System.Linq;
+using ITokens = System.Buffers.IMemoryOwner<System.Buffers.IMemoryOwner<char>>;
 
 namespace TinyCsvParser.Tokenizer.RFC4180
 {
@@ -15,16 +15,9 @@ namespace TinyCsvParser.Tokenizer.RFC4180
             _reader = new Reader(options);
         }
 
-        public ReadOnlyMemory<char>[] Tokenize(ReadOnlySpan<char> input)
+        public ITokens Tokenize(ReadOnlySpan<char> input)
         {
-            var tokens = _reader.ReadTokens(input);
-            var len = tokens.Count;
-            var output = new ReadOnlyMemory<char>[len];
-            for (int i = 0; i < len; i++)
-            {
-                output[i] = tokens[i].Content;
-            }
-            return output;
+            return _reader.ReadTokens(input);
         }
 
         public override string ToString()

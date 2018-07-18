@@ -2,15 +2,40 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
+using IToken = System.Buffers.IMemoryOwner<char>;
+using ITokens = System.Buffers.IMemoryOwner<System.Buffers.IMemoryOwner<char>>;
 
 namespace TinyCsvParser.Tokenizer
 {
+    public sealed class EmptyToken : IToken
+    {
+        public static readonly IToken Instance = new EmptyToken();
+
+        private EmptyToken() { }
+
+        Memory<char> IToken.Memory => Memory<char>.Empty;
+
+        void IDisposable.Dispose() { }
+    }
+
+    public sealed class EmptyTokens : ITokens
+    {
+        public static readonly ITokens Instance = new EmptyTokens();
+
+        private readonly Memory<IToken> _memory;
+
+        private EmptyTokens()
+        {
+            _memory = new[] { EmptyToken.Instance }.AsMemory();
+        }
+
+        Memory<IToken> ITokens.Memory => _memory;
+
+        void IDisposable.Dispose() { }
+    }
+
     public interface ITokenizer
     {
-        // TODO: implementations could use array pooling, if there's a reliable place to return the arrays when finished.
-        // TODO??: System.Buffers.IMemoryOwner<char>[] so the memory and the array get rented? What happens if the pool is bigger than we asked for?
-        // Might need custom version of ArrayMemoryPool that slices the returned Memory to the requested size.
-        // https://github.com/dotnet/corefx/blob/master/src/System.Memory/src/System/Buffers/ArrayMemoryPool.cs
-        ReadOnlyMemory<char>[] Tokenize(ReadOnlySpan<char> input);
+        ITokens Tokenize(ReadOnlySpan<char> input);
     }
 }

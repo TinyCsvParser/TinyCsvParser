@@ -29,7 +29,16 @@ namespace TinyCsvParser
             }
 
             var query = csvData
-                .Skip(options.SkipHeader ? 1 : 0)
+                //.Skip(options.SkipHeader ? 1 : 0)
+                .Where((row, i) =>
+                {
+                    if (i == 0 && options.SkipHeader)
+                    {
+                        row.Dispose();
+                        return false;
+                    }
+                    return true;
+                })
                 .AsParallel();
 
             // If you want to get the same order as in the CSV file, this option needs to be set:
@@ -40,16 +49,37 @@ namespace TinyCsvParser
 
             query = query
                 .WithDegreeOfParallelism(options.DegreeOfParallelism)
-                .Where(row => !row.Data.Span.IsWhiteSpace());
+                .Where(row =>
+                {
+                    if (row.Data.Span.IsWhiteSpace())
+                    {
+                        row.Dispose();
+                        return false;
+                    }
+                    return true;
+                });
 
             // Ignore Lines, that start with a comment character:
-            if (!string.IsNullOrWhiteSpace(options.CommentCharacter)) 
+            if (!string.IsNullOrWhiteSpace(options.CommentCharacter))
             {
-                query = query.Where(line => !line.Data.Span.StartsWith(options.CommentCharacter));
+                query = query.Where(line =>
+                {
+                    if (line.Data.Span.StartsWith(options.CommentCharacter))
+                    {
+                        line.Dispose();
+                        return false;
+                    }
+                    return true;
+                });
             }
-                
+
             return query
-                .Select(line => new TokenizedRow(line.Index, options.Tokenizer.Tokenize(line.Data.Span)))
+                .Select(line =>
+                {
+                    var tokens = options.Tokenizer.Tokenize(line.Data.Span);
+                    line.Dispose();
+                    return new TokenizedRow(line.Index, tokens);
+                })
                 .Select(fields => mapping.Map(fields));
         }
 

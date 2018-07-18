@@ -3,8 +3,12 @@
 
 using NUnit.Framework;
 using System;
+using System.Buffers;
 using TinyCsvParser.Mapping;
 using TinyCsvParser.Model;
+using TinyCsvParser.Tokenizer;
+using IToken = System.Buffers.IMemoryOwner<char>;
+using ITokens = System.Buffers.IMemoryOwner<System.Buffers.IMemoryOwner<char>>;
 
 namespace TinyCsvParser.Test.Issues
 {
@@ -12,6 +16,28 @@ namespace TinyCsvParser.Test.Issues
     [TestFixture]
     public class CsvMappingTests
     {
+        private class StringToken : ITokens
+        {
+            private ITokens _tokens;
+            private IToken _token;
+
+            public StringToken(string token)
+            {
+                _tokens = SizedMemoryPool<IToken>.Instance.Rent(1);
+                _token = SizedMemoryPool<char>.Instance.Rent(token.Length);
+                token.AsSpan().CopyTo(_token.Memory.Span);
+                _tokens.Memory.Span[0] = _token;
+            }
+
+            public Memory<IToken> Memory => _tokens.Memory;
+
+            public void Dispose()
+            {
+                _token.Dispose();
+                _tokens.Dispose();
+            }
+        }
+
         private class SampleEntity
         {
             public int PropertyInt { get; set; }
@@ -45,7 +71,7 @@ namespace TinyCsvParser.Test.Issues
         {
             var mapping = new WrongColumnMapping();
 
-            var result = mapping.Map(new TokenizedRow(1, new []{"1".AsMemory()}));
+            var result = mapping.Map(new TokenizedRow(1, new StringToken("1")));
 
             Assert.IsFalse(result.IsValid);
         }
@@ -64,7 +90,7 @@ namespace TinyCsvParser.Test.Issues
         {
             var mapping = new CorrectColumnMapping();
 
-            var result = mapping.Map(new TokenizedRow(1, new[] { ReadOnlyMemory<char>.Empty }));
+            var result = mapping.Map(new TokenizedRow(1, EmptyTokens.Instance));
 
             Assert.IsFalse(result.IsValid);
 
@@ -79,7 +105,7 @@ namespace TinyCsvParser.Test.Issues
         {
             var mapping = new CorrectColumnMapping();
 
-            var result = mapping.Map(new TokenizedRow(1, new[] { "1".AsMemory() }));
+            var result = mapping.Map(new TokenizedRow(1, new StringToken("1")));
 
             Assert.IsTrue(result.IsValid);
             Assert.AreEqual(1, result.Result.PropertyInt);

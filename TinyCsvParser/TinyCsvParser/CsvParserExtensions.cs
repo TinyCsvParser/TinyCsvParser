@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,8 +23,7 @@ namespace TinyCsvParser
                 throw new ArgumentNullException("fileName");
             }
 
-            var lines = File
-                .ReadLines(fileName, encoding)
+            var lines = File.ReadLines(fileName, encoding)
                 .Select((line, index) => new Row(index, line.AsMemory()));
 
             return csvParser.Parse(lines);
@@ -32,23 +32,22 @@ namespace TinyCsvParser
         public static ParallelQuery<CsvMappingResult<TEntity>> ReadFromString<TEntity>(this CsvParser<TEntity> csvParser, CsvReaderOptions csvReaderOptions, string csvData)
             where TEntity : class, new()
         {
-            var lines = csvData
-                .Split(csvReaderOptions.NewLine, StringSplitOptions.None)
-                .Select((line, index) => new Row(index, line.AsMemory()));
-
-            return csvParser.Parse(lines);
+            return ReadFromSpan(csvParser, csvReaderOptions, csvData.AsSpan());
         }
 
         public static ParallelQuery<CsvMappingResult<TEntity>> ReadFromSpan<TEntity>(this CsvParser<TEntity> csvParser, CsvReaderOptions csvReaderOptions, ReadOnlySpan<char> csvData)
             where TEntity : class, new()
         {
+            var pool = SizedMemoryPool<char>.Instance;
             var lines = new List<Row>();
             var parts = csvData.Split(csvReaderOptions.NewLine, StringSplitOptions.RemoveEmptyEntries);
             var i = 0;
 
             foreach (var part in parts)
             {
-                lines.Add(new Row(i++, part.ToArray().AsMemory()));
+                var mem = pool.Rent(part.Length);
+                part.CopyTo(mem.Memory.Span);
+                lines.Add(new Row(i++, mem));
             }
 
             // TODO: can we make an overload of csvParser.Parse that takes a SpanSplitCharEnumerable directly?

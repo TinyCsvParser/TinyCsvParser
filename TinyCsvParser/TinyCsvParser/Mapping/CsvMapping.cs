@@ -80,7 +80,9 @@ namespace TinyCsvParser.Mapping
 
                     var columnIndex = indexToPropertyMapping.ColumnIndex;
 
-                    if (columnIndex >= values.Tokens.Length)
+                    var tokens = values.Tokens.Memory.Span;
+
+                    if (columnIndex >= tokens.Length)
                     {
                         return new CsvMappingResult<TEntity>()
                         {
@@ -93,7 +95,8 @@ namespace TinyCsvParser.Mapping
                         };
                     }
 
-                    var value = values.Tokens[columnIndex];
+                    var token = tokens[columnIndex];
+                    var value = token.Memory;
 
                     if (!indexToPropertyMapping.PropertyMapping.TryMapValue(entity, value))
                     {
@@ -117,7 +120,7 @@ namespace TinyCsvParser.Mapping
             }
             finally
             {
-                // TODO: this might be a good place to return the pooled memory
+                values.Dispose();
             }
         }
 

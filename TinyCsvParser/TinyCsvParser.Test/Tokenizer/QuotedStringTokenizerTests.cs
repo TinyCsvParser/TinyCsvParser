@@ -15,14 +15,15 @@ namespace TinyCsvParser.Test.Tokenizer
             var tokenizer = new QuotedStringTokenizer(',');
             
             var input = "1,\"2,3\",4";
-            var result = tokenizer.Tokenize(input);
+            using (var tokens = tokenizer.Tokenize(input))
+            {
+                var result = tokens.Memory.Span;
+                Assert.AreEqual(3, result.Length);
 
-
-            Assert.AreEqual(3, result.Length);
-
-            Assert.AreEqual("1", result[0].ToString());
-            Assert.AreEqual("2,3", result[1].ToString());
-            Assert.AreEqual("4", result[2].ToString());
+                Assert.AreEqual("1", result[0].Memory.ToString());
+                Assert.AreEqual("2,3", result[1].Memory.ToString());
+                Assert.AreEqual("4", result[2].Memory.ToString());
+            }
         }
 
         [Test]
@@ -31,13 +32,15 @@ namespace TinyCsvParser.Test.Tokenizer
             var tokenizer = new QuotedStringTokenizer(';');
 
             var input = "1;\"2;3\";4";
-            var result = tokenizer.Tokenize(input);
+            using (var tokens = tokenizer.Tokenize(input))
+            {
+                var result = tokens.Memory.Span;
+                Assert.AreEqual(3, result.Length);
 
-            Assert.AreEqual(3, result.Length);
-
-            Assert.AreEqual("1", result[0].ToString());
-            Assert.AreEqual("2;3", result[1].ToString());
-            Assert.AreEqual("4", result[2].ToString());
+                Assert.AreEqual("1", result[0].Memory.ToString());
+                Assert.AreEqual("2;3", result[1].Memory.ToString());
+                Assert.AreEqual("4", result[2].Memory.ToString());
+            }
         }
 
         [Test]
@@ -47,14 +50,16 @@ namespace TinyCsvParser.Test.Tokenizer
 
             var input = "1|\"2|3\"|4";
 
-            var result = tokenizer.Tokenize(input);
+            using (var tokens = tokenizer.Tokenize(input))
+            {
+                var result = tokens.Memory.Span;
 
+                Assert.AreEqual(3, result.Length);
 
-            Assert.AreEqual(3, result.Length);
-
-            Assert.AreEqual("1", result[0].ToString());
-            Assert.AreEqual("2|3", result[1].ToString());
-            Assert.AreEqual("4", result[2].ToString());
+                Assert.AreEqual("1", result[0].Memory.ToString());
+                Assert.AreEqual("2|3", result[1].Memory.ToString());
+                Assert.AreEqual("4", result[2].Memory.ToString());
+            }
         }
 
         [Test]

@@ -24,10 +24,12 @@ namespace TinyCsvParser.Test.Tokenizer
                 .AppendLine("Philipp   Wagner    ")
                 .ToString();
 
-            var result = tokenizer.Tokenize(input);
-
-            Assert.AreEqual("Philipp   ", result[0].ToString());
-            Assert.AreEqual("Wagner    ", result[1].ToString());
+            using (var tokens = tokenizer.Tokenize(input))
+            {
+                var result = tokens.Memory.Span;
+                Assert.AreEqual("Philipp   ", result[0].Memory.ToString());
+                Assert.AreEqual("Wagner    ", result[1].Memory.ToString());
+            }
         }
      }
 }

@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Buffers;
+using IToken = System.Buffers.IMemoryOwner<char>;
+using ITokens = System.Buffers.IMemoryOwner<System.Buffers.IMemoryOwner<char>>;
 
 namespace TinyCsvParser.Tokenizer.Decorators
 {
@@ -63,22 +66,28 @@ namespace TinyCsvParser.Tokenizer.Decorators
             this.postprocessor = postprocessor;
         }
 
-        public ReadOnlyMemory<char>[] Tokenize(ReadOnlySpan<char> input)
+        public ITokens Tokenize(ReadOnlySpan<char> input)
         {
             var preprocessed_input = preprocessor.IsDefault ? input : preprocessor.Processor(input);
             var tokenized_input = tokenizer.Tokenize(preprocessed_input);
+            var inputSpan = tokenized_input.Memory.Span;
+            var pool = SizedMemoryPool<char>.Instance;
 
-            // TODO: MemoryPool?
-            var output = new ReadOnlyMemory<char>[tokenized_input.Length];
-
-            for (int i = 0, len = output.Length; i < len; i++)
+            for (int i = 0, len = inputSpan.Length; i < len; i++)
             {
-                output[i] = postprocessor.IsDefault 
-                    ? tokenized_input[i]
-                    : postprocessor.Processor(tokenized_input[i].Span).ToArray().AsMemory();
+                if (!postprocessor.IsDefault)
+                {
+                    var token = inputSpan[i];
+                    var tokenSpan = token.Memory.Span;
+                    var processed = postprocessor.Processor(tokenSpan);
+                    var newToken = pool.Rent(processed.Length);
+                    processed.CopyTo(newToken.Memory.Span);
+                    token.Dispose();
+                    inputSpan[i] = newToken;
+                }
             }
 
-            return output;
+            return tokenized_input;
         }
 
         public override string ToString()

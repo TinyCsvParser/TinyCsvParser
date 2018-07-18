@@ -85,16 +85,16 @@ namespace TinyCsvParser.Test.Tokenizer
             var line = "\"Michael, Chester\",24,\"Also goes by \"\"Mike\"\", among friends that is\"";
 
             // Split the Line into its Tokens:
-            var tokens = tokenizer.Tokenize(line);
+            using (var tokens = tokenizer.Tokenize(line))
+            {
+                var result = tokens.Memory.Span;
+                // make sure the Quotes are retained:
+                Assert.AreEqual(3, result.Length);
 
-            // And make sure the Quotes are retained:
-            Assert.IsNotNull(tokens);
-
-            Assert.AreEqual(3, tokens.Length);
-
-            Assert.AreEqual("Michael, Chester", tokens[0].ToString());
-            Assert.AreEqual("24", tokens[1].ToString());
-            Assert.AreEqual("Also goes by \"Mike\", among friends that is", tokens[2].ToString());
+                Assert.AreEqual("Michael, Chester", result[0].Memory.ToString());
+                Assert.AreEqual("24", result[1].Memory.ToString());
+                Assert.AreEqual("Also goes by \"Mike\", among friends that is", result[2].Memory.ToString());
+            }
         }
 
         [Test]
@@ -109,16 +109,18 @@ namespace TinyCsvParser.Test.Tokenizer
             // Initialize a String with Double Quoted Data:
             var line = "\"Robert, Willliamson\", , \"All-around nice guy who always says hi\"";
             // Split the Line into its Tokens:
-            var tokens = tokenizer.Tokenize(line);
+            using (var tokens = tokenizer.Tokenize(line))
+            {
+                var result = tokens.Memory.Span;
 
-            // And make sure the Quotes are retained:
-            Assert.IsNotNull(tokens);
+                // And make sure the Quotes are retained:
 
-            Assert.AreEqual(3, tokens.Length);
+                Assert.AreEqual(3, result.Length);
 
-            Assert.AreEqual("Robert, Willliamson", tokens[0].ToString());
-            Assert.AreEqual("", tokens[1].ToString());
-            Assert.AreEqual("All-around nice guy who always says hi", tokens[2].ToString());
+                Assert.AreEqual("Robert, Willliamson", result[0].Memory.ToString());
+                Assert.AreEqual("", result[1].Memory.ToString());
+                Assert.AreEqual("All-around nice guy who always says hi", result[2].Memory.ToString());
+            }
         }
 
         [Test]
@@ -133,16 +135,19 @@ namespace TinyCsvParser.Test.Tokenizer
             // Initialize a String with Double Quoted Data:
             var line = " , 24 ,\"Great Guy\"";
             // Split the Line into its Tokens:
-            var tokens = tokenizer.Tokenize(line);
+            using (var tokens = tokenizer.Tokenize(line))
+            {
+                var result = tokens.Memory.Span;
 
-            // And make sure the Quotes are retained:
-            Assert.IsNotNull(tokens);
+                // And make sure the Quotes are retained:
+                Assert.IsNotNull(tokens);
 
-            Assert.AreEqual(3, tokens.Length);
+                Assert.AreEqual(3, result.Length);
 
-            Assert.AreEqual("", tokens[0].ToString());
-            Assert.AreEqual("24", tokens[1].ToString());
-            Assert.AreEqual("Great Guy", tokens[2].ToString());
+                Assert.AreEqual("", result[0].Memory.ToString());
+                Assert.AreEqual("24", result[1].Memory.ToString());
+                Assert.AreEqual("Great Guy", result[2].Memory.ToString());
+            }
         }
 
         [Test]
@@ -157,16 +162,19 @@ namespace TinyCsvParser.Test.Tokenizer
             // Initialize a String with Double Quoted Data:
             var line = "\"Robert, Willliamson\",27,";
             // Split the Line into its Tokens:
-            var tokens = tokenizer.Tokenize(line);
+            using (var tokens = tokenizer.Tokenize(line))
+            {
+                var result = tokens.Memory.Span;
 
-            // And make sure the Quotes are retained:
-            Assert.IsNotNull(tokens);
+                // And make sure the Quotes are retained:
+                Assert.IsNotNull(tokens);
 
-            Assert.AreEqual(3, tokens.Length);
+                Assert.AreEqual(3, result.Length);
 
-            Assert.AreEqual("Robert, Willliamson", tokens[0].ToString());
-            Assert.AreEqual("27", tokens[1].ToString());
-            Assert.AreEqual("", tokens[2].ToString());
+                Assert.AreEqual("Robert, Willliamson", result[0].Memory.ToString());
+                Assert.AreEqual("27", result[1].Memory.ToString());
+                Assert.AreEqual("", result[2].Memory.ToString());
+            }
         }
 
         [Test]
@@ -181,16 +189,19 @@ namespace TinyCsvParser.Test.Tokenizer
             // Initialize a String with Double Quoted Data:
             var line = ",,";
             // Split the Line into its Tokens:
-            var tokens = tokenizer.Tokenize(line);
+            using (var tokens = tokenizer.Tokenize(line))
+            {
+                var result = tokens.Memory.Span;
 
-            // And make sure the Quotes are retained:
-            Assert.IsNotNull(tokens);
+                // And make sure the Quotes are retained:
+                Assert.IsNotNull(tokens);
 
-            Assert.AreEqual(3, tokens.Length);
+                Assert.AreEqual(3, result.Length);
 
-            Assert.AreEqual("", tokens[0].ToString());
-            Assert.AreEqual("", tokens[1].ToString());
-            Assert.AreEqual("", tokens[2].ToString());
+                Assert.AreEqual("", result[0].Memory.ToString());
+                Assert.AreEqual("", result[1].Memory.ToString());
+                Assert.AreEqual("", result[2].Memory.ToString());
+            }
         }
 
         [Test]
@@ -205,16 +216,19 @@ namespace TinyCsvParser.Test.Tokenizer
             // Initialize a String with Double Quoted Data:
             var line = ",,a";
             // Split the Line into its Tokens:
-            var tokens = tokenizer.Tokenize(line);
+            using (var tokens = tokenizer.Tokenize(line))
+            {
+                var result = tokens.Memory.Span;
 
-            // And make sure the Quotes are retained:
-            Assert.IsNotNull(tokens);
+                // And make sure the Quotes are retained:
+                Assert.IsNotNull(tokens);
 
-            Assert.AreEqual(3, tokens.Length);
+                Assert.AreEqual(3, result.Length);
 
-            Assert.AreEqual("", tokens[0].ToString());
-            Assert.AreEqual("", tokens[1].ToString());
-            Assert.AreEqual("a", tokens[2].ToString());
+                Assert.AreEqual("", result[0].Memory.ToString());
+                Assert.AreEqual("", result[1].Memory.ToString());
+                Assert.AreEqual("a", result[2].Memory.ToString());
+            }
         }
     }
 }

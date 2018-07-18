@@ -2,19 +2,25 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
+using ITokens = System.Buffers.IMemoryOwner<System.Buffers.IMemoryOwner<char>>;
 
 namespace TinyCsvParser.Model
 {
-    public class TokenizedRow
+    public class TokenizedRow : IDisposable
     {
         public readonly int Index;
 
-        public readonly ReadOnlyMemory<char>[] Tokens;
+        public readonly ITokens Tokens;
 
-        public TokenizedRow(int index, ReadOnlyMemory<char>[] tokens)
+        public TokenizedRow(int index, ITokens tokens)
         {
             Index = index;
             Tokens = tokens;
+        }
+
+        public void Dispose()
+        {
+            Tokens?.Dispose();
         }
     }
 }

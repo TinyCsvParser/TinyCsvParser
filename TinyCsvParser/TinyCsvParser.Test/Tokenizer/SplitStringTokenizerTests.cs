@@ -15,12 +15,13 @@ namespace TinyCsvParser.Test.Tokenizer
             var tokenizer = new StringSplitTokenizer(new char[] { ',' }, true);
             
             var input = " 1,2,3 ";
-            var result = tokenizer.Tokenize(input);
-
-
-            Assert.AreEqual("1", result[0].ToString());
-            Assert.AreEqual("2", result[1].ToString());
-            Assert.AreEqual("3", result[2].ToString());
+            using (var tokens = tokenizer.Tokenize(input))
+            {
+                var result = tokens.Memory.Span;
+                Assert.AreEqual("1", result[0].Memory.ToString());
+                Assert.AreEqual("2", result[1].Memory.ToString());
+                Assert.AreEqual("3", result[2].Memory.ToString());
+            }
         }
 
         [Test]
@@ -29,12 +30,14 @@ namespace TinyCsvParser.Test.Tokenizer
             var tokenizer = new StringSplitTokenizer(new char[] { ',' }, false);
             
             var input = " 1,2,3 ";
-            var result = tokenizer.Tokenize(input);
+            using (var tokens = tokenizer.Tokenize(input))
+            {
+                var result = tokens.Memory.Span;
 
-
-            Assert.AreEqual(" 1", result[0].ToString());
-            Assert.AreEqual("2", result[1].ToString());
-            Assert.AreEqual("3 ", result[2].ToString());
+                Assert.AreEqual(" 1", result[0].Memory.ToString());
+                Assert.AreEqual("2", result[1].Memory.ToString());
+                Assert.AreEqual("3 ", result[2].Memory.ToString());
+            }
         }
      }
 }

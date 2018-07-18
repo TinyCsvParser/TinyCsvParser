@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Buffers;
+using IToken = System.Buffers.IMemoryOwner<char>;
 
 namespace TinyCsvParser.Tokenizer.RFC4180
 {
@@ -9,14 +11,18 @@ namespace TinyCsvParser.Tokenizer.RFC4180
         /// Advances the input span to the indicated character but not past it.
         /// Optionally trims the return value.
         /// </summary>
-        public static ReadOnlyMemory<char> ReadTo(this ReadOnlySpan<char> chars, char readTo, out ReadOnlySpan<char> remaining, bool trim = false)
+        public static IToken ReadTo(this ReadOnlySpan<char> chars, char readTo, out ReadOnlySpan<char> remaining, bool trim = false)
         {
+            var pool = SizedMemoryPool<char>.Instance;
+            IToken token;
             var idx = chars.IndexOf(readTo);
 
             if (idx < 0)
             {
                 remaining = ReadOnlySpan<char>.Empty;
-                return chars.ToArray().AsMemory();
+                token = pool.Rent(chars.Length);
+                chars.CopyTo(token.Memory.Span);
+                return token;
             }
 
             remaining = chars.Slice(idx);
@@ -24,7 +30,9 @@ namespace TinyCsvParser.Tokenizer.RFC4180
             if (trim)
                 output = output.Trim();
 
-            return output.ToArray().AsMemory();
+            token = pool.Rent(output.Length);
+            output.CopyTo(token.Memory.Span);
+            return token;
         }
     }
 }

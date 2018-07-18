@@ -3,7 +3,10 @@
 
 using System.Linq;
 using System.Collections.Generic;
+using System.Buffers;
 using System;
+using IToken = System.Buffers.IMemoryOwner<char>;
+using ITokens = System.Buffers.IMemoryOwner<System.Buffers.IMemoryOwner<char>>;
 
 namespace TinyCsvParser.Tokenizer
 {
@@ -45,26 +48,31 @@ namespace TinyCsvParser.Tokenizer
             Columns = columns?.ToArray() ?? throw new ArgumentNullException("columns");
         }
 
-        public ReadOnlyMemory<char>[] Tokenize(ReadOnlySpan<char> input)
+        public ITokens Tokenize(ReadOnlySpan<char> input)
         {
-            var tokenizedLine = new ReadOnlyMemory<char>[Columns.Length];
+            var container = SizedMemoryPool<IToken>.Instance.Rent(Columns.Length);
+            var tokenizedLine = container.Memory.Span;
+            var pool = SizedMemoryPool<char>.Instance;
 
             for (int columnIndex = 0; columnIndex < Columns.Length; columnIndex++)
             {
                 var columnDefinition = Columns[columnIndex];
                 var columnData = input.Slice(columnDefinition.Start, columnDefinition.End - columnDefinition.Start);
 
-                tokenizedLine[columnIndex] = columnData.ToArray().AsMemory();
+                var stored = pool.Rent(columnData.Length);
+                columnData.CopyTo(stored.Memory.Span);
+
+                tokenizedLine[columnIndex] = stored;
             }
 
-            return tokenizedLine;
+            return container;
         }
 
         public override string ToString()
         {
             var columnDefinitionsString = string.Join(", ", Columns.Select(x => x.ToString()));
 
-            return string.Format("FixedLengthTokenizer (Columns = [{0}])", columnDefinitionsString);
+            return $"FixedLengthTokenizer (Columns = [{columnDefinitionsString}])";
         }
     }
 }

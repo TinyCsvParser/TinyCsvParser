@@ -2,8 +2,11 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using TinyCsvParser.Extensions;
+using IToken = System.Buffers.IMemoryOwner<char>;
+using ITokens = System.Buffers.IMemoryOwner<System.Buffers.IMemoryOwner<char>>;
 
 namespace TinyCsvParser.Tokenizer
 {
@@ -18,16 +21,23 @@ namespace TinyCsvParser.Tokenizer
             TrimLine = trimLine;
         }
 
-        public ReadOnlyMemory<char>[] Tokenize(ReadOnlySpan<char> input)
+        public ITokens Tokenize(ReadOnlySpan<char> input)
         {
-            var output = new List<ReadOnlyMemory<char>>();
+            var pool = SizedMemoryPool<char>.Instance;
+            var tokens = new List<IToken>();
             var parts = TrimLine ? input.Trim().Split(FieldsSeparator) : input.Split(FieldsSeparator);
 
             foreach (var part in parts)
             {
-                output.Add(part.ToArray().AsMemory());
+                var token = pool.Rent(part.Length);
+                part.CopyTo(token.Memory.Span);
+                tokens.Add(token);
             }
-            return output.ToArray();
+
+            var output = SizedMemoryPool<IToken>.Instance.Rent(tokens.Count);
+            tokens.CopyTo(output.Memory.Span);
+
+            return output;
         }
 
         public override string ToString()

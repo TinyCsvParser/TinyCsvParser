@@ -2,35 +2,20 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
+using System.Buffers;
 using System.Collections.Generic;
-using System.Text;
+using TinyCsvParser.Extensions;
+using IToken = System.Buffers.IMemoryOwner<char>;
+using ITokens = System.Buffers.IMemoryOwner<System.Buffers.IMemoryOwner<char>>;
 
 namespace TinyCsvParser.Tokenizer.RFC4180
 {
-    public class Reader
+    public sealed class Reader
     {
         public enum TokenType
         {
             Token,
             EndOfRecord
-        }
-
-        public class Token
-        {
-            public readonly TokenType Type;
-
-            public readonly ReadOnlyMemory<char> Content;
-
-            public Token(TokenType type)
-                : this(type, ReadOnlyMemory<char>.Empty)
-            {
-            }
-
-            public Token(TokenType type, ReadOnlyMemory<char> content)
-            {
-                Type = type;
-                Content = content;
-            }
         }
 
         private readonly Options options;
@@ -40,33 +25,36 @@ namespace TinyCsvParser.Tokenizer.RFC4180
             this.options = options;
         }
 
-        public IList<Token> ReadTokens(ReadOnlySpan<char> chars)
+        public ITokens ReadTokens(ReadOnlySpan<char> chars)
         {
-            var tokens = new List<Token>();
+            var tokens = new List<IToken>();
             while (true)
             {
-                Token token = NextToken(chars, out chars);
+                var (tokenType, token) = NextToken(chars, out chars);
 
                 tokens.Add(token);
 
-                if (token.Type == TokenType.EndOfRecord)
+                if (tokenType == TokenType.EndOfRecord)
                 {
                     break;
                 }
             }
-            return tokens;
+
+            var output = SizedMemoryPool<IToken>.Instance.Rent(tokens.Count);
+            tokens.CopyTo(output.Memory.Span);
+            return output;
         }
 
-        private Token NextToken(ReadOnlySpan<char> chars, out ReadOnlySpan<char> remaining)
+        private (TokenType, IToken) NextToken(ReadOnlySpan<char> chars, out ReadOnlySpan<char> remaining)
         {
             chars = chars.TrimStart();
 
-            var result = ReadOnlyMemory<char>.Empty;
+            IToken result = EmptyToken.Instance;
 
             if (chars.IsEmpty)
             {
                 remaining = chars;
-                return new Token(TokenType.EndOfRecord);
+                return (TokenType.EndOfRecord, result);
             }
 
             char c = chars[0];
@@ -74,7 +62,7 @@ namespace TinyCsvParser.Tokenizer.RFC4180
             if (c == options.DelimiterCharacter)
             {
                 remaining = chars.Slice(1);
-                return new Token(TokenType.Token);
+                return (TokenType.Token, result);
             }
             else
             {
@@ -87,7 +75,7 @@ namespace TinyCsvParser.Tokenizer.RFC4180
                     if (chars.Length <= 1)
                     {
                         remaining = ReadOnlySpan<char>.Empty;
-                        return new Token(TokenType.EndOfRecord, result);
+                        return (TokenType.EndOfRecord, result);
                     }
 
                     if (IsDelimiter(chars[0]))
@@ -96,7 +84,7 @@ namespace TinyCsvParser.Tokenizer.RFC4180
                     }
 
                     remaining = chars;
-                    return new Token(TokenType.Token, result);
+                    return (TokenType.Token, result);
                 }
 
                 result = chars.ReadTo(options.DelimiterCharacter, out chars, trim: true);
@@ -105,7 +93,7 @@ namespace TinyCsvParser.Tokenizer.RFC4180
                 if (chars.IsEmpty)
                 {
                     remaining = chars;
-                    return new Token(TokenType.EndOfRecord, result);
+                    return (TokenType.EndOfRecord, result);
                 }
 
                 if (IsDelimiter(chars[0]))
@@ -114,15 +102,16 @@ namespace TinyCsvParser.Tokenizer.RFC4180
                 }
 
                 remaining = chars;
-                return new Token(TokenType.Token, result);
+                return (TokenType.Token, result);
             }
         }
 
-        private ReadOnlyMemory<char> ReadQuoted(ReadOnlySpan<char> chars, out ReadOnlySpan<char> remaining)
+        private IToken ReadQuoted(ReadOnlySpan<char> chars, out ReadOnlySpan<char> remaining)
         {
             chars = chars.Slice(1);
 
             var result = chars.ReadTo(options.QuoteCharacter, out chars);
+            var resultSpan = result.Memory.Span;
 
             if (chars[0] == options.QuoteCharacter)
                 chars = chars.Slice(1);
@@ -133,17 +122,28 @@ namespace TinyCsvParser.Tokenizer.RFC4180
                 return result;
             }
 
-            var buffer = new StringBuilder(result.ToString());
-            do
+            try
             {
-                buffer.Append(chars[0]);
-                chars = chars.Slice(1);
-                buffer.Append(chars.ReadTo(options.QuoteCharacter, out chars).Span);
-                chars = chars.Slice(1);
-            } while (!chars.IsEmpty && chars[0] == options.QuoteCharacter);
+                var buffer = new List<char>(resultSpan.Length + 10);
+                buffer.AddRange(resultSpan);
+                do
+                {
+                    buffer.Add(chars[0]);
+                    chars = chars.Slice(1);
+                    using (var read = chars.ReadTo(options.QuoteCharacter, out chars))
+                        buffer.AddRange(read.Memory.Span);
+                    chars = chars.Slice(1);
+                } while (!chars.IsEmpty && chars[0] == options.QuoteCharacter);
 
-            remaining = chars;
-            return buffer.ToString().AsMemory();
+                remaining = chars;
+                var token = SizedMemoryPool<char>.Instance.Rent(buffer.Count);
+                buffer.CopyTo(token.Memory.Span);
+                return token;
+            }
+            finally
+            {
+                result?.Dispose();
+            }
         }
 
         private bool IsQuoteCharacter(char c) => c == options.QuoteCharacter;
