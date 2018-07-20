@@ -7,8 +7,7 @@ TinyCsvParser
 Welcome to the `TinyCsvParser`_ documentation!
 
 `TinyCsvParser`_ is a library to parse CSV data in an easy and fun way, while offering a very 
-high performance and a clean API. It is probably the fastest .NET CSV Parser around 
-(:ref:`Benchmark<benchmark>`) and it is highly configurable to provide maximum flexibility. 
+high performance and a clean API. It is highly configurable to provide maximum flexibility. 
 
 `TinyCsvParser`_ supports `.NET Core`_.
 
@@ -29,7 +28,6 @@ Topics
     sections/userguide
     sections/faq
     sections/tutorials
-    sections/benchmark
     sections/contributing
     sections/changelog
 

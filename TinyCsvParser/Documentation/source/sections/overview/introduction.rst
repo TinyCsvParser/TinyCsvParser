@@ -7,13 +7,11 @@ What is TinyCsvParser?
 ~~~~~~~~~~~~~~~~~~~~~~
 
 `TinyCsvParser`_ is an open source library to parse CSV data into strongly typed .NET objects. It 
-is probably the fastest .NET CSV Parser around (see :ref:`Benchmark<benchmark>`) and is highly 
-configurable to provide maximum flexibility. 
+is highly configurable to provide maximum flexibility. 
 
 In summary, TinyCsvParser offers the following key features:
 
 * Easy to use and a very clean API
-* **Fast!** (:ref:`Benchmark<benchmark>`)
 * Open Source
 * Highly Flexible
 
