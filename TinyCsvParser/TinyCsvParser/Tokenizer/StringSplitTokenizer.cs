@@ -10,7 +10,7 @@ using ITokens = System.Buffers.IMemoryOwner<System.Buffers.IMemoryOwner<char>>;
 
 namespace TinyCsvParser.Tokenizer
 {
-    public class StringSplitTokenizer : ITokenizer
+    public class StringSplitTokenizer : ITokenizer, ITokenizer2
     {
         public readonly char[] FieldsSeparator;
         public readonly bool TrimLine;
@@ -38,6 +38,24 @@ namespace TinyCsvParser.Tokenizer
             tokens.CopyTo(output.Memory.Span);
 
             return output;
+        }
+
+        TokenEnumerable ITokenizer2.Tokenize(ReadOnlySpan<char> input)
+        {
+            ReadOnlySpan<char> nextToken(ReadOnlySpan<char> chars, out ReadOnlySpan<char> remaining)
+            {
+                int idx = chars.IndexOf(FieldsSeparator, StringComparison.Ordinal);
+                if (idx == -1)
+                {
+                    remaining = ReadOnlySpan<char>.Empty;
+                    return chars;
+                }
+
+                remaining = chars.Slice(idx + 1);
+                return chars.Slice(0, idx);
+            }
+
+            return new TokenEnumerable(TrimLine ? input.Trim() : input, nextToken);
         }
 
         public override string ToString()

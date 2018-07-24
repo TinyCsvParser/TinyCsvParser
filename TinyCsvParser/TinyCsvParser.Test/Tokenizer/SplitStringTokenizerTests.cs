@@ -22,6 +22,13 @@ namespace TinyCsvParser.Test.Tokenizer
                 Assert.AreEqual("2", result[1].Memory.ToString());
                 Assert.AreEqual("3", result[2].Memory.ToString());
             }
+
+            int i = 1;
+            foreach (var token in ((ITokenizer2)tokenizer).Tokenize(input))
+            {
+                Assert.AreEqual(i.ToString(), token.ToString());
+                i++;
+            }
         }
 
         [Test]
@@ -37,6 +44,27 @@ namespace TinyCsvParser.Test.Tokenizer
                 Assert.AreEqual(" 1", result[0].Memory.ToString());
                 Assert.AreEqual("2", result[1].Memory.ToString());
                 Assert.AreEqual("3 ", result[2].Memory.ToString());
+            }
+
+            int i = 1;
+            foreach (var token in ((ITokenizer2)tokenizer).Tokenize(input))
+            {
+                switch (i)
+                {
+                    case 1:
+                        Assert.AreEqual(" 1", token.ToString());
+                        break;
+                    case 2:
+                        Assert.AreEqual("2", token.ToString());
+                        break;
+                    case 3:
+                        Assert.AreEqual("3 ", token.ToString());
+                        break;
+                    default:
+                        Assert.Fail($"Unexpected token '{token.ToString()}' at position {i}.");
+                        break;
+                }
+                i++;
             }
         }
      }

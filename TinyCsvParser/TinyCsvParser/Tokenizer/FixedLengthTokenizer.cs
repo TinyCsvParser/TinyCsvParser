@@ -13,7 +13,7 @@ namespace TinyCsvParser.Tokenizer
     /// <summary>
     /// Implements a Tokenizer, that makes it possible to Tokenize a CSV line using fixed length columns.
     /// </summary>
-    public class FixedLengthTokenizer : ITokenizer
+    public class FixedLengthTokenizer : ITokenizer, ITokenizer2
     {
         /// <summary>
         /// A column in a CSV file, which is described by the start and end position (zero-based indices).
@@ -66,6 +66,33 @@ namespace TinyCsvParser.Tokenizer
             }
 
             return container;
+        }
+
+        TokenEnumerable ITokenizer2.Tokenize(ReadOnlySpan<char> input)
+        {
+            int colIndex = 0;
+            int colCount = Columns.Length;
+
+            ReadOnlySpan<char> nextToken(ReadOnlySpan<char> chars, out ReadOnlySpan<char> remaining)
+            {
+                if (colIndex >= colCount)
+                {
+                    remaining = ReadOnlySpan<char>.Empty;
+                    return chars;
+                }
+
+                var col = Columns[colIndex];
+
+                if (chars.Length < col.End - col.Start)
+                {
+                    return chars = remaining = ReadOnlySpan<char>.Empty;
+                }
+
+                remaining = chars.Slice(col.End);
+                return chars.Slice(col.Start, col.End - col.Start);
+            }
+
+            return new TokenEnumerable(input, nextToken);
         }
 
         public override string ToString()

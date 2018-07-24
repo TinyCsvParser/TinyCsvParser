@@ -38,4 +38,9 @@ namespace TinyCsvParser.Tokenizer
     {
         ITokens Tokenize(ReadOnlySpan<char> input);
     }
+
+    public interface ITokenizer2
+    {
+        TokenEnumerable Tokenize(ReadOnlySpan<char> input);
+    }
 }
