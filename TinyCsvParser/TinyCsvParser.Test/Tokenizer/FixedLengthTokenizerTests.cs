@@ -32,23 +32,10 @@ namespace TinyCsvParser.Test.Tokenizer
                 Assert.AreEqual(2, result.Length);
             }
 
-            int i = 0;
-            foreach (var token in ((ITokenizer2)tokenizer).Tokenize(input))
-            {
-                switch (i)
-                {
-                    case 0:
-                        Assert.AreEqual("Philipp   ", token.ToString());
-                        break;
-                    case 1:
-                        Assert.AreEqual("Wagner    ", token.ToString());
-                        break;
-                    default:
-                        Assert.Fail($"Unexpected token '{token.ToString()}' at index {i}.");
-                        break;
-                }
-                i++;
-            }
+            var result2 = ((ITokenizer2)tokenizer).Tokenize(input).ToArray();
+            Assert.AreEqual("Philipp   ", result2[0]);
+            Assert.AreEqual("Wagner    ", result2[1]);
+            Assert.AreEqual(2, result2.Length);
         }
      }
 }

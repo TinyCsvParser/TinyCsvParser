@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TinyCsvParser.Tokenizer
 {
@@ -15,6 +16,20 @@ namespace TinyCsvParser.Tokenizer
         private ReadOnlySpan<char> Line { get; }
         private NextTokenDelegate NextToken { get; }
         public TokenEnumerator GetEnumerator() => new TokenEnumerator(Line, NextToken);
+
+        /// <summary>
+        ///     Converts the token enumerable to a string array.
+        ///     Useful for storing results - do not use in high-performance scenarios.
+        /// </summary>
+        public string[] ToArray()
+        {
+            var list = new List<string>();
+            foreach (var part in this)
+            {
+                list.Add(part.ToString());
+            }
+            return list.ToArray();
+        }
     }
 
     public ref struct TokenEnumerator
