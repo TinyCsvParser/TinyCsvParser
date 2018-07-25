@@ -49,7 +49,7 @@ namespace TinyCsvParser.Tokenizer.RFC4180
         {
             chars = chars.TrimStart();
 
-            IToken result = EmptyToken.Instance;
+            IToken result = null;
 
             if (chars.IsEmpty)
             {

@@ -5,8 +5,8 @@ using System;
 
 namespace TinyCsvParser.Mapping
 {
-    public interface ICsvPropertyMapping<TEntity> where TEntity : class, new()
+    public interface ICsvPropertyMapping<TEntity> where TEntity : new()
     {
-        bool TryMapValue(TEntity entity, ReadOnlyMemory<char> value);
+        bool TryMapValue(TEntity entity, ReadOnlySpan<char> value);
     }
 }

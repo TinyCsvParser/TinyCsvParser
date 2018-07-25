@@ -31,23 +31,9 @@ namespace TinyCsvParser.Test.CsvParser
         }
 
         [Test]
-        public void NullInputTest()
-        {
-            CsvParserOptions csvParserOptions = new CsvParserOptions(true, ';' );
-            CsvReaderOptions csvReaderOptions = new CsvReaderOptions(Environment.NewLine);
-            CsvPersonMapping csvMapper = new CsvPersonMapping();
-            CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
-
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                var result = csvParser.Parse(null);
-            });
-        }
-
-        [Test]
         public void ToStringTest()
         {
-            CsvParserOptions csvParserOptions = new CsvParserOptions(true,  ';');
+            CsvParserOptions csvParserOptions = new CsvParserOptions(true, new StringSplitTokenizer(';'));
             CsvReaderOptions csvReaderOptions = new CsvReaderOptions(Environment.NewLine);
             CsvPersonMapping csvMapper = new CsvPersonMapping();
             CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
@@ -61,7 +47,7 @@ namespace TinyCsvParser.Test.CsvParser
         [Test]
         public void SkipHeaderTest()
         {
-            CsvParserOptions csvParserOptions = new CsvParserOptions(true, ';');
+            CsvParserOptions csvParserOptions = new CsvParserOptions(true, new StringSplitTokenizer(';'));
             CsvReaderOptions csvReaderOptions = new CsvReaderOptions(Environment.NewLine);
             CsvPersonMapping csvMapper = new CsvPersonMapping();
             CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
@@ -99,7 +85,7 @@ namespace TinyCsvParser.Test.CsvParser
         [Test]
         public void DoNotSkipHeaderTest()
         {
-            CsvParserOptions csvParserOptions = new CsvParserOptions(false, ';');
+            CsvParserOptions csvParserOptions = new CsvParserOptions(false, new StringSplitTokenizer(';'));
             CsvReaderOptions csvReaderOptions = new CsvReaderOptions(Environment.NewLine);
             CsvPersonMapping csvMapper = new CsvPersonMapping();
             CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
@@ -137,7 +123,7 @@ namespace TinyCsvParser.Test.CsvParser
         [Test]
         public void EmptyDataTest()
         {
-            CsvParserOptions csvParserOptions = new CsvParserOptions(true, ';');
+            CsvParserOptions csvParserOptions = new CsvParserOptions(true, new StringSplitTokenizer(';'));
             CsvReaderOptions csvReaderOptions = new CsvReaderOptions(Environment.NewLine);
 
             CsvPersonMapping csvMapper = new CsvPersonMapping();
@@ -221,7 +207,7 @@ namespace TinyCsvParser.Test.CsvParser
         [Test]
         public void CommentLineTest()
         {
-            CsvParserOptions csvParserOptions = new CsvParserOptions(true, "#", new StringSplitTokenizer(new [] {';'}, false));
+            CsvParserOptions csvParserOptions = new CsvParserOptions(true, "#", new StringSplitTokenizer(';', false));
             CsvReaderOptions csvReaderOptions = new CsvReaderOptions(Environment.NewLine);
             CsvPersonMapping csvMapper = new CsvPersonMapping();
             CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);

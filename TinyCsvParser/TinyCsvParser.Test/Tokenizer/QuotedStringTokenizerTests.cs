@@ -13,17 +13,14 @@ namespace TinyCsvParser.Test.Tokenizer
         public void QuotedString_CommaDelimiter_Test()
         {
             var tokenizer = new QuotedStringTokenizer(',');
-            
-            var input = "1,\"2,3\",4";
-            using (var tokens = tokenizer.Tokenize(input))
-            {
-                var result = tokens.Memory.Span;
-                Assert.AreEqual(3, result.Length);
 
-                Assert.AreEqual("1", result[0].Memory.ToString());
-                Assert.AreEqual("2,3", result[1].Memory.ToString());
-                Assert.AreEqual("4", result[2].Memory.ToString());
-            }
+            var input = "1,\"2,3\",4";
+            var result = tokenizer.Tokenize(input).ToArray();
+            Assert.AreEqual(3, result.Length);
+
+            Assert.AreEqual("1", result[0]);
+            Assert.AreEqual("2,3", result[1]);
+            Assert.AreEqual("4", result[2]);
         }
 
         [Test]
@@ -32,15 +29,12 @@ namespace TinyCsvParser.Test.Tokenizer
             var tokenizer = new QuotedStringTokenizer(';');
 
             var input = "1;\"2;3\";4";
-            using (var tokens = tokenizer.Tokenize(input))
-            {
-                var result = tokens.Memory.Span;
-                Assert.AreEqual(3, result.Length);
+            var result = tokenizer.Tokenize(input).ToArray();
+            Assert.AreEqual(3, result.Length);
 
-                Assert.AreEqual("1", result[0].Memory.ToString());
-                Assert.AreEqual("2;3", result[1].Memory.ToString());
-                Assert.AreEqual("4", result[2].Memory.ToString());
-            }
+            Assert.AreEqual("1", result[0]);
+            Assert.AreEqual("2;3", result[1]);
+            Assert.AreEqual("4", result[2]);
         }
 
         [Test]
@@ -50,16 +44,13 @@ namespace TinyCsvParser.Test.Tokenizer
 
             var input = "1|\"2|3\"|4";
 
-            using (var tokens = tokenizer.Tokenize(input))
-            {
-                var result = tokens.Memory.Span;
+            var result = tokenizer.Tokenize(input).ToArray();
 
-                Assert.AreEqual(3, result.Length);
+            Assert.AreEqual(3, result.Length);
 
-                Assert.AreEqual("1", result[0].Memory.ToString());
-                Assert.AreEqual("2|3", result[1].Memory.ToString());
-                Assert.AreEqual("4", result[2].Memory.ToString());
-            }
+            Assert.AreEqual("1", result[0]);
+            Assert.AreEqual("2|3", result[1]);
+            Assert.AreEqual("4", result[2]);
         }
 
         [Test]
@@ -69,5 +60,5 @@ namespace TinyCsvParser.Test.Tokenizer
 
             Assert.DoesNotThrow(() => tokenizer.ToString());
         }
-     }
+    }
 }

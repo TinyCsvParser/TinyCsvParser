@@ -14,7 +14,7 @@ namespace TinyCsvParser.Test.Extensions
             var expected = input.Split(',');
             var results = input.AsSpan().Split(',').ToArray();
 
-            Assert.AreEqual(expected.Length, results.Length);
+            Assert.AreEqual(expected.Length, results.Length, "Wrong number of results!");
 
             for (var i = 0; i < expected.Length; i++)
             {
@@ -27,14 +27,14 @@ namespace TinyCsvParser.Test.Extensions
         {
             var input = "1,2,3,4,5";
             var expected = input.Split(',');
-            var results = input.AsSpan().Split(',');
-            var i = 0;
+            var results = input.AsSpan().Split(',').ToArray();
 
-            foreach (var part in results)
+            Assert.AreEqual(expected.Length, results.Length, "Wrong number of results!");
+
+            for (var i = 0; i < expected.Length; i++)
             {
-                Assert.IsTrue(part.Equals(expected[i++], StringComparison.Ordinal));
+                Assert.AreEqual(expected[i], results[i]);
             }
-            Assert.AreEqual(expected.Length, i);
         }
 
         [Test]
@@ -42,14 +42,14 @@ namespace TinyCsvParser.Test.Extensions
         {
             var input = "1,2;3,4,;5,6|7|8";
             var expected = input.Split(',', ';', '|');
-            var results = input.AsSpan().Split(',', ';', '|');
-            var i = 0;
+            var results = input.AsSpan().Split(',', ';', '|').ToArray();
 
-            foreach (var part in results)
+            Assert.AreEqual(expected.Length, results.Length, "Wrong number of results!");
+
+            for (var i = 0; i < expected.Length; i++)
             {
-                Assert.IsTrue(part.Equals(expected[i++], StringComparison.Ordinal));
+                Assert.AreEqual(expected[i], results[i]);
             }
-            Assert.AreEqual(expected.Length, i);
         }
 
         [Test]
@@ -57,15 +57,14 @@ namespace TinyCsvParser.Test.Extensions
         {
             var input = ",1,2,,3,,,4,5,";
             var expected = input.Split(',', StringSplitOptions.RemoveEmptyEntries);
-            var results = input.AsSpan().Split(',', StringSplitOptions.RemoveEmptyEntries);
-            var i = 0;
+            var results = input.AsSpan().Split(',', StringSplitOptions.RemoveEmptyEntries).ToArray();
 
-            foreach (var part in results)
+            Assert.AreEqual(expected.Length, results.Length, "Wrong number of results!");
+
+            for (var i = 0; i < expected.Length; i++)
             {
-                Console.WriteLine($">{part.ToString()}<");
-                Assert.IsTrue(part.Equals(expected[i++], StringComparison.Ordinal));
+                Assert.AreEqual(expected[i], results[i]);
             }
-            Assert.AreEqual(expected.Length, i);
         }
 
         [Test]
@@ -74,14 +73,14 @@ namespace TinyCsvParser.Test.Extensions
             var input = ";;1,,2;,;|,3;;;4,;5,6|,|7|8||";
             var splitChars = new[] { ',', ';', '|' };
             var expected = input.Split(splitChars, StringSplitOptions.RemoveEmptyEntries);
-            var results = input.AsSpan().Split(splitChars, StringSplitOptions.RemoveEmptyEntries);
-            var i = 0;
+            var results = input.AsSpan().Split(splitChars, StringSplitOptions.RemoveEmptyEntries).ToArray();
 
-            foreach (var part in results)
+            Assert.AreEqual(expected.Length, results.Length, "Wrong number of results!");
+
+            for (var i = 0; i < expected.Length; i++)
             {
-                Assert.IsTrue(part.Equals(expected[i++], StringComparison.Ordinal));
+                Assert.AreEqual(expected[i], results[i]);
             }
-            Assert.AreEqual(expected.Length, i);
         }
     }
 }

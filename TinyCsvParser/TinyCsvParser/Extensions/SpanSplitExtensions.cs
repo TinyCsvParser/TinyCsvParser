@@ -1,234 +1,138 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 
-namespace TinyCsvParser.Extensions
+namespace System
 {
     // Based on: https://gist.github.com/LordJZ/e0b5245d69497f2a43a5f09c1d26e34c
 
-    public static class SpanSplitExtensions
+    public ref struct SpanSplitEnumerable
+    {
+        private readonly char _separator;
+        private readonly ReadOnlySpan<char> _separators;
+        private readonly ReadOnlySpan<char> _span;
+        private readonly StringSplitOptions _options;
+
+        public SpanSplitEnumerable(ReadOnlySpan<char> span, ReadOnlySpan<char> separators, StringSplitOptions options = StringSplitOptions.None)
+        {
+            _span = span;
+            _separators = separators;
+            _separator = (char)0;
+            _options = options;
+        }
+
+        public SpanSplitEnumerable(ReadOnlySpan<char> span, char separator, StringSplitOptions options = StringSplitOptions.None)
+        {
+            _span = span;
+            _separators = ReadOnlySpan<char>.Empty;
+            _separator = separator;
+            _options = options;
+        }
+
+        public SpanSplitEnumerator GetEnumerator() => new SpanSplitEnumerator(_span, _separators, _separator, _options);
+
+        /// <summary>
+        ///     Converts the span enumerable to a string array.
+        ///     Useful for storing results - do not use when avoiding allocations.
+        /// </summary>
+        public string[] ToArray()
+        {
+            var list = new List<string>();
+            foreach (var part in this)
+            {
+                list.Add(part.ToString());
+            }
+            return list.ToArray();
+        }
+    }
+
+    public ref struct SpanSplitEnumerator
     {
         static private long _sentinel;
 
-        #region SpanSplitChar
+        private readonly char _separator;
+        private readonly ReadOnlySpan<char> _separators;
+        private ReadOnlySpan<char> _span;
+        private readonly StringSplitOptions _options;
 
-        public ref struct SpanSplitCharEnumerable
+        public SpanSplitEnumerator(ReadOnlySpan<char> span, ReadOnlySpan<char> separators, char separator, StringSplitOptions options)
         {
-            public SpanSplitCharEnumerable(ReadOnlySpan<char> span, char separator, StringSplitOptions options = StringSplitOptions.None)
-            {
-                Span = span;
-                Separator = separator;
-                Options = options;
-            }
+            _span = span;
+            _separators = separators;
+            _separator = separator;
+            _options = options;
+            Current = default;
 
-            ReadOnlySpan<char> Span { get; }
-            char Separator { get; }
-            StringSplitOptions Options { get; }
-
-            public SpanSplitCharEnumerator GetEnumerator() => new SpanSplitCharEnumerator(Span, Separator, Options);
-
-            /// <summary>
-            ///     Converts the span enumerable to a string array.
-            ///     Useful for storing results - do not use when avoiding allocations.
-            /// </summary>
-            public string[] ToArray()
-            {
-                var list = new List<string>();
-                foreach (var part in this)
-                {
-                    list.Add(part.ToString());
-                }
-                return list.ToArray();
-            }
+            if (_span.IsEmpty)
+                TrailingEmptyItem = true;
         }
 
-        public ref struct SpanSplitCharEnumerator
-        {
-            public SpanSplitCharEnumerator(ReadOnlySpan<char> span, char separator, StringSplitOptions options = StringSplitOptions.None)
-            {
-                Span = span;
-                Separator = separator;
-                Options = options;
-                Current = default;
+        unsafe ReadOnlySpan<char> TrailingEmptyItemSentinel =>
+            new ReadOnlySpan<char>(Unsafe.AsPointer(ref _sentinel), 1);
 
-                if (Span.IsEmpty)
+        bool TrailingEmptyItem
+        {
+            get => _span == TrailingEmptyItemSentinel;
+            set => _span = value ? TrailingEmptyItemSentinel : default;
+        }
+
+        public bool MoveNext()
+        {
+            if (TrailingEmptyItem)
+            {
+                TrailingEmptyItem = false;
+                Current = default;
+                return _options == 0;
+            }
+
+        next:
+            if (_span.IsEmpty)
+            {
+                _span = Current = default;
+                return false;
+            }
+
+            int idx = _separators.IsEmpty ? _span.IndexOf(_separator) : _span.IndexOfAny(_separators);
+
+            if (idx < 0)
+            {
+                Current = _span;
+                _span = default;
+            }
+            else
+            {
+                Current = _span.Slice(0, idx);
+                _span = _span.Slice(idx + 1);
+
+                if (_options == StringSplitOptions.RemoveEmptyEntries && Current.IsEmpty)
+                    goto next;
+
+                if (_span.IsEmpty)
                     TrailingEmptyItem = true;
             }
 
-            ReadOnlySpan<char> Span { get; set; }
-            char Separator { get; }
-            StringSplitOptions Options { get; }
-            int SeparatorLength => 1;
-
-            unsafe ReadOnlySpan<char> TrailingEmptyItemSentinel =>
-                new ReadOnlySpan<char>(Unsafe.AsPointer(ref _sentinel), SeparatorLength);
-
-            bool TrailingEmptyItem
-            {
-                get => Span == TrailingEmptyItemSentinel;
-                set => Span = value ? TrailingEmptyItemSentinel : default;
-            }
-
-            public bool MoveNext()
-            {
-                if (TrailingEmptyItem)
-                {
-                    TrailingEmptyItem = false;
-                    Current = default;
-                    return Options == 0;
-                }
-
-            next:
-                if (Span.IsEmpty)
-                {
-                    Span = Current = default;
-                    return false;
-                }
-
-                int idx = Span.IndexOf(Separator);
-
-                if (idx < 0)
-                {
-                    Current = Span;
-                    Span = default;
-                }
-                else
-                {
-                    Current = Span.Slice(0, idx);
-                    Span = Span.Slice(idx + SeparatorLength);
-
-                    if (Options == StringSplitOptions.RemoveEmptyEntries && Current.IsEmpty)
-                        goto next;
-
-                    if (Span.IsEmpty)
-                        TrailingEmptyItem = true;
-                }
-
-                return true;
-            }
-
-            public ReadOnlySpan<char> Current { get; private set; }
+            return true;
         }
 
-        #endregion
+        public ReadOnlySpan<char> Current { get; private set; }
+    }
 
-        #region SpanSplitAnyChar 
-
-        public ref struct SpanSplitAnyCharEnumerable
-        {
-            public SpanSplitAnyCharEnumerable(ReadOnlySpan<char> span, ReadOnlySpan<char> separators, StringSplitOptions options = StringSplitOptions.None)
-            {
-                Span = span;
-                Separators = separators;
-                Options = options;
-            }
-
-            ReadOnlySpan<char> Span { get; }
-            ReadOnlySpan<char> Separators { get; }
-            StringSplitOptions Options { get; }
-
-            public SpanSplitAnyCharEnumerator GetEnumerator() => new SpanSplitAnyCharEnumerator(Span, Separators, Options);
-
-            /// <summary>
-            ///     Converts the span enumerable to a string array.
-            ///     Useful for storing results - do not use when avoiding allocations.
-            /// </summary>
-            public string[] ToArray()
-            {
-                var list = new List<string>();
-                foreach (var part in this)
-                {
-                    list.Add(part.ToString());
-                }
-                return list.ToArray();
-            }
-        }
-
-        public ref struct SpanSplitAnyCharEnumerator
-        {
-            public SpanSplitAnyCharEnumerator(ReadOnlySpan<char> span, ReadOnlySpan<char> separators, StringSplitOptions options = StringSplitOptions.None)
-            {
-                Span = span;
-                Separators = separators;
-                Options = options;
-                Current = default;
-
-                if (Span.IsEmpty)
-                    TrailingEmptyItem = true;
-            }
-
-            ReadOnlySpan<char> Span { get; set; }
-            ReadOnlySpan<char> Separators { get; }
-            StringSplitOptions Options { get; }
-            int SeparatorLength => 1;
-
-            unsafe ReadOnlySpan<char> TrailingEmptyItemSentinel =>
-                new ReadOnlySpan<char>(Unsafe.AsPointer(ref _sentinel), SeparatorLength);
-
-            bool TrailingEmptyItem
-            {
-                get => Span == TrailingEmptyItemSentinel;
-                set => Span = value ? TrailingEmptyItemSentinel : default;
-            }
-
-            public bool MoveNext()
-            {
-                if (TrailingEmptyItem)
-                {
-                    TrailingEmptyItem = false;
-                    Current = default;
-                    return Options == 0;
-                }
-
-            next:
-                if (Span.IsEmpty)
-                {
-                    Span = Current = default;
-                    return false;
-                }
-
-                int idx = Span.IndexOfAny(Separators);
-
-                if (idx < 0)
-                {
-                    Current = Span;
-                    Span = default;
-                }
-                else
-                {
-                    Current = Span.Slice(0, idx);
-                    Span = Span.Slice(idx + SeparatorLength);
-
-                    if (Options == StringSplitOptions.RemoveEmptyEntries && Current.IsEmpty)
-                        goto next;
-
-                    if (Span.IsEmpty)
-                        TrailingEmptyItem = true;
-                }
-
-                return true;
-            }
-
-            public ReadOnlySpan<char> Current { get; private set; }
-        }
-
-        #endregion
+    public static class SpanSplitExtensions
+    {
+        [Pure]
+        public static SpanSplitEnumerable Split(this ReadOnlySpan<char> span, char separator, StringSplitOptions options = StringSplitOptions.None)
+            => new SpanSplitEnumerable(span, separator, options);
 
         [Pure]
-        public static SpanSplitCharEnumerable Split(this ReadOnlySpan<char> span, char separator, StringSplitOptions options = StringSplitOptions.None)
-            => new SpanSplitCharEnumerable(span, separator, options);
+        public static SpanSplitEnumerable Split(this ReadOnlySpan<char> span, ReadOnlySpan<char> separators, StringSplitOptions options = StringSplitOptions.None)
+            => new SpanSplitEnumerable(span, separators, options);
 
         [Pure]
-        public static SpanSplitAnyCharEnumerable Split(this ReadOnlySpan<char> span, ReadOnlySpan<char> separators, StringSplitOptions options = StringSplitOptions.None)
-            => new SpanSplitAnyCharEnumerable(span, separators, options);
+        public static SpanSplitEnumerable Split(this ReadOnlySpan<char> span, char[] separators, StringSplitOptions options = StringSplitOptions.None)
+           => new SpanSplitEnumerable(span, separators, options);
 
         [Pure]
-        public static SpanSplitAnyCharEnumerable Split(this ReadOnlySpan<char> span, char[] separators, StringSplitOptions options = StringSplitOptions.None)
-           => new SpanSplitAnyCharEnumerable(span, separators, options);
-
-        [Pure]
-        public static SpanSplitAnyCharEnumerable Split(this ReadOnlySpan<char> span, params char[] separators)
-            => new SpanSplitAnyCharEnumerable(span, separators);
+        public static SpanSplitEnumerable Split(this ReadOnlySpan<char> span, params char[] separators)
+            => new SpanSplitEnumerable(span, separators);
     }
 }

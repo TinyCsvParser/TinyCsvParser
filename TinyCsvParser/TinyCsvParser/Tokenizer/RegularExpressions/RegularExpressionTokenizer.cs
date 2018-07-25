@@ -2,13 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
-using System.Buffers;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
-using TinyCsvParser.Extensions;
-using IToken = System.Buffers.IMemoryOwner<char>;
-using ITokens = System.Buffers.IMemoryOwner<System.Buffers.IMemoryOwner<char>>;
 
 namespace TinyCsvParser.Tokenizer.RegularExpressions
 {
@@ -16,21 +10,25 @@ namespace TinyCsvParser.Tokenizer.RegularExpressions
     {
         public abstract Regex Regexp { get; }
 
-        public ITokens Tokenize(ReadOnlySpan<char> input)
+        public TokenEnumerable Tokenize(ReadOnlySpan<char> input)
         {
-            var pool = SizedMemoryPool<char>.Instance;
+            // Sadly no support for ReadOnlySpan<char> in Regex yet, so we have to allocate a string here:
             var matches = Regexp.Matches(input.ToString());
-            var tokens = new List<IToken>(matches.Count);
-            foreach (var (index, length) in matches.Cast<Match>())
+            int i = 0;
+            
+            ReadOnlySpan<char> nextToken(ReadOnlySpan<char> chars, out ReadOnlySpan<char> remaining)
             {
-                var token = pool.Rent(length);
-                input.Slice(index, length).CopyTo(token.Memory.Span);
-                tokens.Add(token);
+                if (i >= matches.Count)
+                {
+                    return remaining = ReadOnlySpan<char>.Empty;
+                }
+
+                var match = matches[i++];
+                remaining = chars;
+                return chars.Slice(match.Index, match.Length);
             }
 
-            var output = SizedMemoryPool<IToken>.Instance.Rent(tokens.Count);
-            tokens.CopyTo(output.Memory.Span);
-            return output;
+            return new TokenEnumerable(input, nextToken);
         }
 
         public override string ToString() => $"Regexp = {Regexp}";

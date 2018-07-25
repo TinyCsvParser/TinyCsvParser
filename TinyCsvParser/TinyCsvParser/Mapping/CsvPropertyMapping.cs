@@ -9,34 +9,34 @@ using TinyCsvParser.TypeConverter;
 namespace TinyCsvParser.Mapping
 {
     public class CsvPropertyMapping<TEntity, TProperty> : ICsvPropertyMapping<TEntity>
-        where TEntity : class, new()
+        where TEntity : new()
     {
-        private readonly string propertyName;
-        private readonly ITypeConverter<TProperty> propertyConverter;
-        private readonly Action<TEntity, TProperty> propertySetter;
+        private readonly string _propertyName;
+        private readonly ITypeConverter<TProperty> _propertyConverter;
+        private readonly Action<TEntity, TProperty> _propertySetter;
 
         public CsvPropertyMapping(Expression<Func<TEntity, TProperty>> property, ITypeConverter<TProperty> typeConverter) 
         {
-            propertyConverter = typeConverter;
-            propertyName = ReflectionUtils.GetPropertyNameFromExpression(property);
-            propertySetter = ReflectionUtils.CreateSetter<TEntity, TProperty>(property);
+            _propertyConverter = typeConverter;
+            _propertyName = ReflectionUtils.GetPropertyNameFromExpression(property);
+            _propertySetter = ReflectionUtils.CreateSetter(property);
         }
 
-        public bool TryMapValue(TEntity entity, ReadOnlyMemory<char> value) 
+        public bool TryMapValue(TEntity entity, ReadOnlySpan<char> value) 
         {
-            if (!propertyConverter.TryConvert(value.Span, out TProperty convertedValue))
+            if (!_propertyConverter.TryConvert(value, out TProperty convertedValue))
             {
                 return false;
             }
 
-            propertySetter(entity, convertedValue);
+            _propertySetter(entity, convertedValue);
 
             return true;
         }
         
         public override string ToString()
         {
-            return string.Format("CsvPropertyMapping (PropertyName = {0}, Converter = {1})", propertyName, propertyConverter);
+            return $"CsvPropertyMapping (PropertyName = {_propertyName}, Converter = {_propertyConverter})";
         }
     }
 }

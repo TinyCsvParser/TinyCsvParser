@@ -1,30 +1,28 @@
 ﻿// Copyright (c) Philipp Wagner. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using System.Linq;
-using System.Collections.Generic;
-using System.Buffers;
 using System;
-using IToken = System.Buffers.IMemoryOwner<char>;
-using ITokens = System.Buffers.IMemoryOwner<System.Buffers.IMemoryOwner<char>>;
+using System.Buffers;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace TinyCsvParser.Tokenizer
 {
     /// <summary>
     /// Implements a Tokenizer, that makes it possible to Tokenize a CSV line using fixed length columns.
     /// </summary>
-    public class FixedLengthTokenizer : ITokenizer, ITokenizer2
+    public class FixedLengthTokenizer : ITokenizer
     {
         /// <summary>
         /// A column in a CSV file, which is described by the start and end position (zero-based indices).
         /// </summary>
-        public class ColumnDefinition
+        public class Column
         {
             public readonly int Start;
 
             public readonly int End;
 
-            public ColumnDefinition(int start, int end)
+            public Column(int start, int end)
             {
                 Start = start;
                 End = end;
@@ -36,39 +34,20 @@ namespace TinyCsvParser.Tokenizer
             }
         }
 
-        public readonly ColumnDefinition[] Columns;
+        private readonly Column[] _columns;
 
-        public FixedLengthTokenizer(ColumnDefinition[] columns)
+        public FixedLengthTokenizer(IList<Column> columns, bool trimToken = false) : this(columns?.ToArray(), trimToken) { }
+
+        public FixedLengthTokenizer(Column[] columns, bool trimToken = false)
         {
-            Columns = columns ?? throw new ArgumentNullException("columns");
+            _columns = columns ?? throw new ArgumentNullException("columns");
+            TrimToken = trimToken;
         }
 
-        public FixedLengthTokenizer(IList<ColumnDefinition> columns)
-        {
-            Columns = columns?.ToArray() ?? throw new ArgumentNullException("columns");
-        }
+        public bool TrimToken { get; }
+        public ReadOnlyMemory<Column> Columns => _columns.AsMemory();
 
-        public ITokens Tokenize(ReadOnlySpan<char> input)
-        {
-            var container = SizedMemoryPool<IToken>.Instance.Rent(Columns.Length);
-            var tokenizedLine = container.Memory.Span;
-            var pool = SizedMemoryPool<char>.Instance;
-
-            for (int columnIndex = 0; columnIndex < Columns.Length; columnIndex++)
-            {
-                var columnDefinition = Columns[columnIndex];
-                var columnData = input.Slice(columnDefinition.Start, columnDefinition.End - columnDefinition.Start);
-
-                var stored = pool.Rent(columnData.Length);
-                columnData.CopyTo(stored.Memory.Span);
-
-                tokenizedLine[columnIndex] = stored;
-            }
-
-            return container;
-        }
-
-        TokenEnumerable ITokenizer2.Tokenize(ReadOnlySpan<char> input)
+        public TokenEnumerable Tokenize(ReadOnlySpan<char> input)
         {
             int colIndex = 0;
             int colCount = Columns.Length;
@@ -81,7 +60,7 @@ namespace TinyCsvParser.Tokenizer
                     return chars;
                 }
 
-                var col = Columns[colIndex];
+                var col = _columns[colIndex];
 
                 if (chars.Length < col.End - col.Start)
                 {
@@ -89,7 +68,7 @@ namespace TinyCsvParser.Tokenizer
                 }
 
                 remaining = chars.Slice(col.End);
-                return chars.Slice(col.Start, col.End - col.Start);
+                return TrimToken ? chars.Slice(col.Start, col.End - col.Start).Trim() : chars.Slice(col.Start, col.End - col.Start);
             }
 
             return new TokenEnumerable(input, nextToken);
@@ -97,7 +76,7 @@ namespace TinyCsvParser.Tokenizer
 
         public override string ToString()
         {
-            var columnDefinitionsString = string.Join(", ", Columns.Select(x => x.ToString()));
+            var columnDefinitionsString = string.Join(", ", _columns.Select(x => x.ToString()));
 
             return $"FixedLengthTokenizer (Columns = [{columnDefinitionsString}])";
         }

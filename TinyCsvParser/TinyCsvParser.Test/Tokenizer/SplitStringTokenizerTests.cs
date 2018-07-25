@@ -12,46 +12,29 @@ namespace TinyCsvParser.Test.Tokenizer
         [Test]
         public void SplitLine_WithTrim_Test()
         {
-            var tokenizer = new StringSplitTokenizer(new char[] { ',' }, true);
+            var tokenizer = new StringSplitTokenizer(',', true);
             
             var input = " 1,2,3 ";
-            using (var tokens = tokenizer.Tokenize(input))
-            {
-                var result = tokens.Memory.Span;
-                Assert.AreEqual("1", result[0].Memory.ToString());
-                Assert.AreEqual("2", result[1].Memory.ToString());
-                Assert.AreEqual("3", result[2].Memory.ToString());
-                Assert.AreEqual(3, result.Length);
-            }
 
-            var result2 = ((ITokenizer2)tokenizer).Tokenize(input).ToArray();
-            Assert.AreEqual("1", result2[0]);
-            Assert.AreEqual("2", result2[1]);
-            Assert.AreEqual("3", result2[2]);
-            Assert.AreEqual(3, result2.Length);
+            var result = tokenizer.Tokenize(input).ToArray();
+            Assert.AreEqual("1", result[0]);
+            Assert.AreEqual("2", result[1]);
+            Assert.AreEqual("3", result[2]);
+            Assert.AreEqual(3, result.Length);
         }
 
         [Test]
         public void SplitLine_WithOutTrim_Test()
         {
-            var tokenizer = new StringSplitTokenizer(new char[] { ',' }, false);
+            var tokenizer = new StringSplitTokenizer(',', false);
             
             var input = " 1,2,3 ";
-            using (var tokens = tokenizer.Tokenize(input))
-            {
-                var result = tokens.Memory.Span;
 
-                Assert.AreEqual(" 1", result[0].Memory.ToString());
-                Assert.AreEqual("2", result[1].Memory.ToString());
-                Assert.AreEqual("3 ", result[2].Memory.ToString());
-                Assert.AreEqual(3, result.Length);
-            }
-
-            var result2 = ((ITokenizer2)tokenizer).Tokenize(input).ToArray();
-            Assert.AreEqual(" 1", result2[0]);
-            Assert.AreEqual("2", result2[1]);
-            Assert.AreEqual("3 ", result2[2]);
-            Assert.AreEqual(3, result2.Length);
+            var result = tokenizer.Tokenize(input).ToArray();
+            Assert.AreEqual(" 1", result[0]);
+            Assert.AreEqual("2", result[1]);
+            Assert.AreEqual("3 ", result[2]);
+            Assert.AreEqual(3, result.Length);
         }
      }
 }
