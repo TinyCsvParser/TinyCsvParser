@@ -9,27 +9,42 @@ namespace System
     public ref struct SpanSplitEnumerable
     {
         private readonly char _separator;
-        private readonly ReadOnlySpan<char> _separators;
+        private readonly char[] _separators;
+        private readonly string _separatorString;
         private readonly ReadOnlySpan<char> _span;
         private readonly StringSplitOptions _options;
 
-        public SpanSplitEnumerable(ReadOnlySpan<char> span, ReadOnlySpan<char> separators, StringSplitOptions options = StringSplitOptions.None)
+        public SpanSplitEnumerable(ReadOnlySpan<char> span, char[] separators, StringSplitOptions options = StringSplitOptions.None)
         {
             _span = span;
             _separators = separators;
-            _separator = (char)0;
             _options = options;
+
+            _separator = (char)0;
+            _separatorString = String.Empty;
         }
 
         public SpanSplitEnumerable(ReadOnlySpan<char> span, char separator, StringSplitOptions options = StringSplitOptions.None)
         {
             _span = span;
-            _separators = ReadOnlySpan<char>.Empty;
             _separator = separator;
             _options = options;
+
+            _separators = Array.Empty<char>();
+            _separatorString = String.Empty;
         }
 
-        public SpanSplitEnumerator GetEnumerator() => new SpanSplitEnumerator(_span, _separators, _separator, _options);
+        public SpanSplitEnumerable(ReadOnlySpan<char> span, string separatorString, StringSplitOptions options = StringSplitOptions.None)
+        {
+            _span = span;
+            _separatorString = separatorString;
+            _options = options;
+
+            _separators = Array.Empty<char>();
+            _separator = (char)0;
+        }
+
+        public SpanSplitEnumerator GetEnumerator() => new SpanSplitEnumerator(_span, _separators, _separator, _separatorString, _options);
 
         /// <summary>
         ///     Converts the span enumerable to a string array.
@@ -52,14 +67,16 @@ namespace System
 
         private readonly char _separator;
         private readonly ReadOnlySpan<char> _separators;
+        private readonly string _separatorString;
         private ReadOnlySpan<char> _span;
         private readonly StringSplitOptions _options;
 
-        public SpanSplitEnumerator(ReadOnlySpan<char> span, ReadOnlySpan<char> separators, char separator, StringSplitOptions options)
+        internal SpanSplitEnumerator(ReadOnlySpan<char> span, ReadOnlySpan<char> separators, char separator, string separatorString, StringSplitOptions options)
         {
             _span = span;
             _separators = separators;
             _separator = separator;
+            _separatorString = separatorString;
             _options = options;
             Current = default;
 
@@ -92,7 +109,26 @@ namespace System
                 return false;
             }
 
-            int idx = _separators.IsEmpty ? _span.IndexOf(_separator) : _span.IndexOfAny(_separators);
+            int idx;
+            int sepLen = 1;
+
+            if (_separator != 0)
+            {
+                idx = _span.IndexOf(_separator);
+            }
+            else if (!_separators.IsEmpty)
+            {
+                idx = _span.IndexOfAny(_separators);
+            }
+            else if (_separatorString?.Length > 0)
+            {
+                idx = _span.IndexOf(_separatorString, StringComparison.Ordinal);
+                sepLen = _separatorString.Length;
+            }
+            else
+            {
+                throw new InvalidOperationException("No separator specified!");
+            }
 
             if (idx < 0)
             {
@@ -102,7 +138,7 @@ namespace System
             else
             {
                 Current = _span.Slice(0, idx);
-                _span = _span.Slice(idx + 1);
+                _span = _span.Slice(idx + sepLen);
 
                 if (_options == StringSplitOptions.RemoveEmptyEntries && Current.IsEmpty)
                     goto next;
@@ -124,8 +160,8 @@ namespace System
             => new SpanSplitEnumerable(span, separator, options);
 
         [Pure]
-        public static SpanSplitEnumerable Split(this ReadOnlySpan<char> span, ReadOnlySpan<char> separators, StringSplitOptions options = StringSplitOptions.None)
-            => new SpanSplitEnumerable(span, separators, options);
+        public static SpanSplitEnumerable Split(this ReadOnlySpan<char> span, string separatorString, StringSplitOptions options = StringSplitOptions.None)
+            => new SpanSplitEnumerable(span, separatorString, options);
 
         [Pure]
         public static SpanSplitEnumerable Split(this ReadOnlySpan<char> span, char[] separators, StringSplitOptions options = StringSplitOptions.None)

@@ -52,7 +52,7 @@ namespace TinyCsvParser.Mapping
         {
             if (_csvPropertyMappings.ContainsKey(columnIndex))
             {
-                throw new InvalidOperationException(string.Format("Duplicate mapping for column index {0}", columnIndex));
+                throw new InvalidOperationException($"Duplicate mapping for column index {columnIndex}.");
             }
 
             var propertyMapping = new CsvPropertyMapping<TEntity, TProperty>(property, typeConverter);

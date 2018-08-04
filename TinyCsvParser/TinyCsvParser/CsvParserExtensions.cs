@@ -31,7 +31,7 @@ namespace TinyCsvParser
         public static CsvMappingEnumerable<TEntity> ReadFromSpan<TEntity>(this CsvParser<TEntity> csvParser, CsvReaderOptions csvReaderOptions, ReadOnlySpan<char> csvData)
             where TEntity : new()
         {
-            var parts = csvData.Split(csvReaderOptions.NewLine);
+            var parts = csvData.Split(csvReaderOptions.NewLine, StringSplitOptions.RemoveEmptyEntries);
             return csvParser.Parse(parts);
         }
     }

@@ -21,17 +21,17 @@ namespace TinyCsvParser
     public ref struct CsvMappingEnumerable<T> where T : new()
     {
         private readonly CsvParserOptions _options;
-        private readonly SpanSplitEnumerable _lines;
+        private SpanSplitEnumerable _lines;
         private readonly CsvMapping<T> _mapping;
 
-        public CsvMappingEnumerable(CsvParserOptions options, CsvMapping<T> mapping, SpanSplitEnumerable lines)
+        public CsvMappingEnumerable(CsvParserOptions options, CsvMapping<T> mapping, ref SpanSplitEnumerable lines)
         {
             _options = options;
             _mapping = mapping;
             _lines = lines;
         }
 
-        public CsvMappingEnumerator<T> GetEnumerator() => new CsvMappingEnumerator<T>(_options, _mapping, _lines);
+        public CsvMappingEnumerator<T> GetEnumerator() => new CsvMappingEnumerator<T>(_options, _mapping, ref _lines);
 
         public CsvMappingResult<T>[] ToArray() => ToList().ToArray();
 
@@ -60,11 +60,11 @@ namespace TinyCsvParser
     public ref struct CsvMappingEnumerator<T> where T : new()
     {
         private readonly CsvParserOptions _options;
-        private readonly SpanSplitEnumerator _lines;
+        private SpanSplitEnumerator _lines;
         private readonly CsvMapping<T> _mapping;
         private int _curLine;
 
-        public CsvMappingEnumerator(CsvParserOptions options, CsvMapping<T> mapping, SpanSplitEnumerable lines)
+        public CsvMappingEnumerator(CsvParserOptions options, CsvMapping<T> mapping, ref SpanSplitEnumerable lines)
         {
             _options = options;
             _mapping = mapping;
@@ -87,21 +87,23 @@ namespace TinyCsvParser
             if (_curLine == 0 && _options.SkipHeader)
             {
                 hasNext = _lines.MoveNext();
+                _curLine++;
+
                 if (!hasNext)
                 {
                     Current = default;
-                    _curLine++;
                     return false;
                 }
             }
 
-            if (_lines.Current.IsWhiteSpace())
+            while (_lines.Current.IsWhiteSpace())
             {
                 hasNext = _lines.MoveNext();
+                _curLine++;
+
                 if (!hasNext)
                 {
                     Current = default;
-                    _curLine++;
                     return false;
                 }
             }
@@ -109,9 +111,13 @@ namespace TinyCsvParser
             if (!string.IsNullOrWhiteSpace(_options.CommentCharacter) && _lines.Current.StartsWith(_options.CommentCharacter))
             {
                 hasNext = _lines.MoveNext();
-                Current = default;
                 _curLine++;
-                return false;
+
+                if (!hasNext)
+                {
+                    Current = default;
+                    return false;
+                }
             }
 
             var tokens = _options.Tokenizer.Tokenize(_lines.Current);

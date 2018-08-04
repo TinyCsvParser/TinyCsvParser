@@ -82,7 +82,7 @@ namespace TinyCsvParser
 
         public CsvMappingEnumerable<TEntity> Parse(SpanSplitEnumerable csvData)
         {
-            return new CsvMappingEnumerable<TEntity>(_options, _mapping, csvData);
+            return new CsvMappingEnumerable<TEntity>(_options, _mapping, ref csvData);
         }
 
         public override string ToString()

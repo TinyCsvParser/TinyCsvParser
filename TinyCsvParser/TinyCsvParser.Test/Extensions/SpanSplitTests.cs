@@ -82,5 +82,20 @@ namespace TinyCsvParser.Test.Extensions
                 Assert.AreEqual(expected[i], results[i]);
             }
         }
+
+        [Test]
+        public void Split_By_String_Test()
+        {
+            var input = String.Join(Environment.NewLine, new[] { "foo", "bar", "baz", "quux" });
+            var expected = input.Split(Environment.NewLine);
+            var results = input.AsSpan().Split(Environment.NewLine).ToArray();
+
+            Assert.AreEqual(expected.Length, results.Length, "Wrong number of results!");
+
+            for (var i = 0; i < expected.Length; i++)
+            {
+                Assert.AreEqual(expected[i], results[i]);
+            }
+        }
     }
 }
