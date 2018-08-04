@@ -36,5 +36,19 @@ namespace TinyCsvParser.Test.Tokenizer
             Assert.AreEqual("3 ", result[2]);
             Assert.AreEqual(3, result.Length);
         }
+
+        [Test]
+        public void SplitLine_WithMultCharSeparator_Test()
+        {
+            var tokenizer = new StringSplitTokenizer("||");
+
+            var input = "1||2|3||4";
+
+            var result = tokenizer.Tokenize(input).ToArray();
+            Assert.AreEqual("1", result[0]);
+            Assert.AreEqual("2|3", result[1]);
+            Assert.AreEqual("4", result[2]);
+            Assert.AreEqual(3, result.Length);
+        }
      }
 }

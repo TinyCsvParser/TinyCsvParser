@@ -33,7 +33,7 @@ namespace TinyCsvParser.Tokenizer
                     return chars;
                 }
 
-                remaining = chars.Slice(idx + 1);
+                remaining = chars.Slice(idx + FieldsSeparator.Length);
                 return chars.Slice(0, idx);
             }
 

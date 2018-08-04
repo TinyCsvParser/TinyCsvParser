@@ -72,14 +72,36 @@ namespace TinyCsvParser.Test.Issues
 
             ReadOnlySpan<char> nextToken(ReadOnlySpan<char> chars, out ReadOnlySpan<char> remaining)
             {
-                return remaining = ReadOnlySpan<char>.Empty;
+                remaining = ReadOnlySpan<char>.Empty;
+                return chars;
             }
 
-            var result = mapping.Map(new TokenEnumerable("1", nextToken), 0);
+            var result = mapping.Map(new TokenEnumerable("a", nextToken), 0);
 
             Assert.IsFalse(result.IsValid);
 
-            Assert.AreEqual("Column 0 with Value '' cannot be converted", result.Error.Message);
+            Assert.AreEqual("Column 0 with Value 'a' cannot be converted.", result.Error.Message);
+            Assert.AreEqual(0, result.Error.ColumnIndex);
+
+            Assert.DoesNotThrow(() => result.ToString());
+        }
+
+        [Test]
+        public void MapEntity_NotEnoughColumns_Test()
+        {
+            var mapping = new CorrectColumnMapping();
+
+            ReadOnlySpan<char> nextToken(ReadOnlySpan<char> chars, out ReadOnlySpan<char> remaining)
+            {
+                remaining = ReadOnlySpan<char>.Empty;
+                return chars;
+            }
+
+            var result = mapping.Map(new TokenEnumerable("", nextToken), 0);
+
+            Assert.IsFalse(result.IsValid);
+
+            Assert.AreEqual("Expected 1 columns, but found 0 columns.", result.Error.Message);
             Assert.AreEqual(0, result.Error.ColumnIndex);
 
             Assert.DoesNotThrow(() => result.ToString());

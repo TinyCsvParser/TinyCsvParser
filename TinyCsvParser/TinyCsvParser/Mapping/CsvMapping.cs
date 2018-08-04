@@ -85,6 +85,12 @@ namespace TinyCsvParser.Mapping
                 colIndex++;
             }
 
+            if (colIndex < _csvPropertyMappings.Count)
+            {
+                return new CsvMappingResult<TEntity>(rowIndex, colIndex,
+                    $"Expected {_csvPropertyMappings.Count} columns, but found {colIndex} columns.");
+            }
+
             return new CsvMappingResult<TEntity>(rowIndex, entity);
         }
 
