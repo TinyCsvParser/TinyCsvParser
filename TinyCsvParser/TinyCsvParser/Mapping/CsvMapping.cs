@@ -98,7 +98,7 @@ namespace TinyCsvParser.Mapping
         {
             var csvPropertyMappingsString = string.Join(", ", _csvPropertyMappings.Select(x => x.ToString()));
 
-            return string.Format("CsvMapping (TypeConverterProvider = {0}, Mappings = {1})", _typeConverterProvider, csvPropertyMappingsString);
+            return $"CsvMapping (TypeConverterProvider = {_typeConverterProvider}, Mappings = {csvPropertyMappingsString})";
         }
     }
 }
