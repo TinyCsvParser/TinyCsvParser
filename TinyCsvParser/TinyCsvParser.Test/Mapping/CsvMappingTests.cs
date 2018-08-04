@@ -47,8 +47,6 @@ namespace TinyCsvParser.Test.Issues
             Assert.Throws<InvalidOperationException>(() => new DuplicateMapping());
         }
 
-
-
         [Test]
         public void MapEntity_Invalid_Column_Test()
         {
@@ -67,7 +65,6 @@ namespace TinyCsvParser.Test.Issues
             }
         }
         
-
         [Test]
         public void MapEntity_ConversionError_Test()
         {
@@ -78,21 +75,6 @@ namespace TinyCsvParser.Test.Issues
             Assert.IsFalse(result.IsValid);
 
             Assert.AreEqual("Column 0 with Value 'a' cannot be converted.", result.Error.Message);
-            Assert.AreEqual(0, result.Error.ColumnIndex);
-
-            Assert.DoesNotThrow(() => result.ToString());
-        }
-
-        [Test]
-        public void MapEntity_NotEnoughColumns_Test()
-        {
-            var mapping = new CorrectColumnMapping();
-
-            var result = mapping.Map(new TokenEnumerable("", ReadOneToken), 0);
-
-            Assert.IsFalse(result.IsValid);
-
-            Assert.AreEqual("Expected 1 columns, but found 0 columns.", result.Error.Message);
             Assert.AreEqual(0, result.Error.ColumnIndex);
 
             Assert.DoesNotThrow(() => result.ToString());
