@@ -73,16 +73,18 @@ namespace TinyCsvParser
 
             var tokenizer = _options.Tokenizer;
 
-            return query.Select(x =>
-            {
-                var tokens = tokenizer.Tokenize(x.line);
-                return _mapping.Map(tokens, x.index);
-            });
+            return query.Select(x => ParseLine(x.line, x.index));
         }
 
         public CsvMappingEnumerable<TEntity> Parse(SpanSplitEnumerable csvData)
         {
             return new CsvMappingEnumerable<TEntity>(_options, _mapping, ref csvData);
+        }
+
+        public CsvMappingResult<TEntity> ParseLine(ReadOnlySpan<char> line, int lineNum)
+        {
+            var tokens = _options.Tokenizer.Tokenize(line);
+            return _mapping.Map(tokens, lineNum);
         }
 
         public override string ToString()

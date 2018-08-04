@@ -13,6 +13,11 @@ namespace TinyCsvParser.Benchmark
         public string WBAN { get; set; }
         public DateTime Date { get; set; }
         public string SkyCondition { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Date}: {SkyCondition}";
+        }
     }
 
     public class LocalWeatherDataMapper : CsvMapping<LocalWeatherData>
@@ -51,13 +56,24 @@ namespace TinyCsvParser.Benchmark
                 .ReadFromFile(@"C:\Temp\201503hourly.txt", Encoding.ASCII)
                 .ToList();
         }
+
+        [Benchmark]
+        public void LocalWeatherPipeline()
+        {
+            var csvParserOptions = new CsvParserOptions(true, ',', 4, true);
+            var csvMapper = new LocalWeatherDataMapper();
+            var csvParser = new CsvParser<LocalWeatherData>(csvParserOptions, csvMapper);
+
+            Piper.ReadFileAsync(@"C:\Temp\201503hourly.txt", Encoding.ASCII, csvParser).Wait();
+        }
     }
 
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            var summary = BenchmarkRunner.Run<CsvBenchmark>();
+            //var summary = BenchmarkRunner.Run<CsvBenchmark>();
+            new CsvBenchmark().LocalWeatherPipeline();
         }
     }
 }
