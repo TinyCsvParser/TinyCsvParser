@@ -10,7 +10,7 @@ using TinyCsvParser.Mapping;
 namespace TinyCsvParser.Test.Benchmarks
 {
 
-    [TestFixture(Description="Performance Test")]//, Ignore("Could take too much time...")]
+    [TestFixture(Description="Performance Test"), Explicit("Could take too much time...")]
     public class TinyCsvParserTest
     {
         private class Person
