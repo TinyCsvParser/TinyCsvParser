@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TinyCsvParser", "TinyCsvPar
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TinyCsvParser.Test", "TinyCsvParser.Test\TinyCsvParser.Test.csproj", "{7093B73C-A1AB-42F0-BB04-353ED3444654}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyCsvParser.Benchmark", "TinyCsvParser.Benchmark\TinyCsvParser.Benchmark.csproj", "{090EC02A-F7A0-4373-AF55-FB6A8C668A09}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,14 @@ Global
 		{7093B73C-A1AB-42F0-BB04-353ED3444654}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7093B73C-A1AB-42F0-BB04-353ED3444654}.Release|x64.ActiveCfg = Release|Any CPU
 		{7093B73C-A1AB-42F0-BB04-353ED3444654}.Release|x64.Build.0 = Release|Any CPU
+		{090EC02A-F7A0-4373-AF55-FB6A8C668A09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{090EC02A-F7A0-4373-AF55-FB6A8C668A09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{090EC02A-F7A0-4373-AF55-FB6A8C668A09}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{090EC02A-F7A0-4373-AF55-FB6A8C668A09}.Debug|x64.Build.0 = Debug|Any CPU
+		{090EC02A-F7A0-4373-AF55-FB6A8C668A09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{090EC02A-F7A0-4373-AF55-FB6A8C668A09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{090EC02A-F7A0-4373-AF55-FB6A8C668A09}.Release|x64.ActiveCfg = Release|Any CPU
+		{090EC02A-F7A0-4373-AF55-FB6A8C668A09}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
