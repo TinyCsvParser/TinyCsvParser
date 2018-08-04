@@ -25,12 +25,6 @@ namespace TinyCsvParser.Test.Issues
                 MapProperty(0, x => x.PropertyInt);
             }
         }
-        
-        [Test]
-        public void DuplicateMappingTest()
-        {
-            Assert.Throws<InvalidOperationException>(() => new DuplicateMapping());
-        }
 
         private class WrongColumnMapping : CsvMapping<SampleEntity>
         {
@@ -40,18 +34,27 @@ namespace TinyCsvParser.Test.Issues
             }
         }
 
+        private static ReadOnlySpan<char> ReadOneToken(ReadOnlySpan<char> chars, out ReadOnlySpan<char> remaining, out bool foundToken)
+        {
+            remaining = ReadOnlySpan<char>.Empty;
+            foundToken = !chars.IsEmpty;
+            return chars;
+        }
+
+        [Test]
+        public void DuplicateMappingTest()
+        {
+            Assert.Throws<InvalidOperationException>(() => new DuplicateMapping());
+        }
+
+
+
         [Test]
         public void MapEntity_Invalid_Column_Test()
         {
             var mapping = new WrongColumnMapping();
 
-            ReadOnlySpan<char> nextToken(ReadOnlySpan<char> chars, out ReadOnlySpan<char> remaining)
-            {
-                remaining = ReadOnlySpan<char>.Empty;
-                return chars;
-            }
-
-            var result = mapping.Map(new TokenEnumerable("1", nextToken), 0);
+            var result = mapping.Map(new TokenEnumerable("1", ReadOneToken), 0);
 
             Assert.IsFalse(result.IsValid);
         }
@@ -70,13 +73,7 @@ namespace TinyCsvParser.Test.Issues
         {
             var mapping = new CorrectColumnMapping();
 
-            ReadOnlySpan<char> nextToken(ReadOnlySpan<char> chars, out ReadOnlySpan<char> remaining)
-            {
-                remaining = ReadOnlySpan<char>.Empty;
-                return chars;
-            }
-
-            var result = mapping.Map(new TokenEnumerable("a", nextToken), 0);
+            var result = mapping.Map(new TokenEnumerable("a", ReadOneToken), 0);
 
             Assert.IsFalse(result.IsValid);
 
@@ -91,13 +88,7 @@ namespace TinyCsvParser.Test.Issues
         {
             var mapping = new CorrectColumnMapping();
 
-            ReadOnlySpan<char> nextToken(ReadOnlySpan<char> chars, out ReadOnlySpan<char> remaining)
-            {
-                remaining = ReadOnlySpan<char>.Empty;
-                return chars;
-            }
-
-            var result = mapping.Map(new TokenEnumerable("", nextToken), 0);
+            var result = mapping.Map(new TokenEnumerable("", ReadOneToken), 0);
 
             Assert.IsFalse(result.IsValid);
 
@@ -112,13 +103,7 @@ namespace TinyCsvParser.Test.Issues
         {
             var mapping = new CorrectColumnMapping();
 
-            ReadOnlySpan<char> nextToken(ReadOnlySpan<char> chars, out ReadOnlySpan<char> remaining)
-            {
-                remaining = ReadOnlySpan<char>.Empty;
-                return chars;
-            }
-
-            var result = mapping.Map(new TokenEnumerable("1", nextToken), 0);
+            var result = mapping.Map(new TokenEnumerable("1", ReadOneToken), 0);
 
             Assert.IsTrue(result.IsValid);
             Assert.AreEqual(1, result.Result.PropertyInt);

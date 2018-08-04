@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace TinyCsvParser.Tokenizer
 {
-    public delegate ReadOnlySpan<char> NextTokenDelegate(ReadOnlySpan<char> input, out ReadOnlySpan<char> remaining);
+    public delegate ReadOnlySpan<char> NextTokenDelegate(ReadOnlySpan<char> input, out ReadOnlySpan<char> remaining, out bool foundToken);
 
     public ref struct TokenEnumerable
     {
@@ -49,14 +49,8 @@ namespace TinyCsvParser.Tokenizer
 
         public bool MoveNext()
         {
-            if (_line.IsEmpty)
-            {
-                _line = Current = default;
-                return false;
-            }
-
-            Current = NextToken(_line, out _line);
-            return !(Current.IsEmpty && _line.IsEmpty);
+            Current = NextToken(_line, out _line, out bool foundToken);
+            return foundToken;
         }
     }
 }

@@ -24,16 +24,25 @@ namespace TinyCsvParser.Tokenizer
 
         public TokenEnumerable Tokenize(ReadOnlySpan<char> input)
         {
-            ReadOnlySpan<char> nextToken(ReadOnlySpan<char> chars, out ReadOnlySpan<char> remaining)
+            ReadOnlySpan<char> nextToken(ReadOnlySpan<char> chars, out ReadOnlySpan<char> remaining, out bool foundToken)
             {
+                if (chars.IsEmpty)
+                {
+                    remaining = chars;
+                    foundToken = false;
+                    return chars;
+                }
+
                 int idx = chars.IndexOf(FieldsSeparator.Span, StringComparison.Ordinal);
                 if (idx == -1)
                 {
                     remaining = ReadOnlySpan<char>.Empty;
+                    foundToken = !chars.IsEmpty;
                     return chars;
                 }
 
                 remaining = chars.Slice(idx + FieldsSeparator.Length);
+                foundToken = true;
                 return chars.Slice(0, idx);
             }
 

@@ -16,15 +16,17 @@ namespace TinyCsvParser.Tokenizer.RegularExpressions
             var matches = Regexp.Matches(input.ToString());
             int i = 0;
             
-            ReadOnlySpan<char> nextToken(ReadOnlySpan<char> chars, out ReadOnlySpan<char> remaining)
+            ReadOnlySpan<char> nextToken(ReadOnlySpan<char> chars, out ReadOnlySpan<char> remaining, out bool foundToken)
             {
                 if (i >= matches.Count)
                 {
+                    foundToken = false;
                     return remaining = ReadOnlySpan<char>.Empty;
                 }
 
                 var match = matches[i++];
                 remaining = chars;
+                foundToken = true;
                 return chars.Slice(match.Index, match.Length);
             }
 

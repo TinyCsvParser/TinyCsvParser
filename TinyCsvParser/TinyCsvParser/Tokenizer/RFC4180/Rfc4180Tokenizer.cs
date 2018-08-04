@@ -9,6 +9,8 @@ namespace TinyCsvParser.Tokenizer.RFC4180
 {
     public class RFC4180Tokenizer : ITokenizer 
     {
+        private char _lastChar;
+
         public RFC4180Tokenizer(Options options)
         {
             Options = options;
@@ -21,22 +23,25 @@ namespace TinyCsvParser.Tokenizer.RFC4180
             return new TokenEnumerable(input, NextToken);
         }
 
-        private ReadOnlySpan<char> NextToken(ReadOnlySpan<char> chars, out ReadOnlySpan<char> remaining)
+        private ReadOnlySpan<char> NextToken(ReadOnlySpan<char> chars, out ReadOnlySpan<char> remaining, out bool foundToken)
         {
             chars = chars.TrimStart();
             var options = Options;
 
             if (chars.IsEmpty)
             {
-                remaining = chars;
-                return ReadOnlySpan<char>.Empty;
+                foundToken = _lastChar == options.DelimiterCharacter;
+                _lastChar = (char)0;
+                return remaining = ReadOnlySpan<char>.Empty;
             }
 
             char c = chars[0];
+            _lastChar = c;
 
             if (c == options.DelimiterCharacter)
             {
                 remaining = chars.Slice(1);
+                foundToken = true;
                 return ReadOnlySpan<char>.Empty;
             }
             else
@@ -51,15 +56,18 @@ namespace TinyCsvParser.Tokenizer.RFC4180
                     if (chars.Length <= 1)
                     {
                         remaining = ReadOnlySpan<char>.Empty;
+                        foundToken = true;
                         return result;
                     }
 
                     if (IsDelimiter(chars[0]))
                     {
+                        _lastChar = chars[0];
                         chars = chars.Slice(1);
                     }
 
                     remaining = chars;
+                    foundToken = true;
                     return result;
                 }
 
@@ -69,15 +77,18 @@ namespace TinyCsvParser.Tokenizer.RFC4180
                 if (chars.IsEmpty)
                 {
                     remaining = chars;
+                    foundToken = true;
                     return result;
                 }
 
                 if (IsDelimiter(chars[0]))
                 {
+                    _lastChar = chars[0];
                     chars = chars.Slice(1);
                 }
 
                 remaining = chars;
+                foundToken = true;
                 return result;
             }
         }
@@ -99,6 +110,7 @@ namespace TinyCsvParser.Tokenizer.RFC4180
                 return result;
             }
 
+            // this could be more efficient by figuring out indices and slicing the original input accordingly
             var buffer = new List<char>(result.Length + 10);
             buffer.AddRange(result);
             do

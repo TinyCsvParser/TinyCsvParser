@@ -52,11 +52,12 @@ namespace TinyCsvParser.Tokenizer
             int colIndex = 0;
             int colCount = Columns.Length;
 
-            ReadOnlySpan<char> nextToken(ReadOnlySpan<char> chars, out ReadOnlySpan<char> remaining)
+            ReadOnlySpan<char> nextToken(ReadOnlySpan<char> chars, out ReadOnlySpan<char> remaining, out bool foundToken)
             {
                 if (colIndex >= colCount)
                 {
                     remaining = ReadOnlySpan<char>.Empty;
+                    foundToken = false;
                     return chars;
                 }
 
@@ -64,10 +65,12 @@ namespace TinyCsvParser.Tokenizer
 
                 if (chars.Length < col.End - col.Start)
                 {
+                    foundToken = false;
                     return chars = remaining = ReadOnlySpan<char>.Empty;
                 }
 
                 remaining = chars.Slice(col.End);
+                foundToken = true;
                 return TrimToken ? chars.Slice(col.Start, col.End - col.Start).Trim() : chars.Slice(col.Start, col.End - col.Start);
             }
 
