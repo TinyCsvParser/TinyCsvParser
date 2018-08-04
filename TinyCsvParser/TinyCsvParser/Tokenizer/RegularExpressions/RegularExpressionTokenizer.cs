@@ -6,28 +6,44 @@ using System.Text.RegularExpressions;
 
 namespace TinyCsvParser.Tokenizer.RegularExpressions
 {
-    public abstract class RegularExpressionTokenizer : ITokenizer
+    public class RegularExpressionTokenizer : ITokenizer
     {
-        public abstract Regex Regexp { get; }
+        public RegularExpressionTokenizer(Regex regex)
+        {
+            Regexp = regex;
+        }
+
+        public Regex Regexp { get; }
 
         public TokenEnumerable Tokenize(ReadOnlySpan<char> input)
         {
             // Sadly no support for ReadOnlySpan<char> in Regex yet, so we have to allocate a string here:
-            var matches = Regexp.Matches(input.ToString());
+            var orig = input.ToString();
+            var matches = Regexp.Matches(orig);
             int i = 0;
+            int lastStart = 0;
             
             ReadOnlySpan<char> nextToken(ReadOnlySpan<char> chars, out ReadOnlySpan<char> remaining, out bool foundToken)
             {
-                if (i >= matches.Count)
+                if (i == matches.Count)
+                {
+                    foundToken = true;
+                    i++;
+                    remaining = ReadOnlySpan<char>.Empty;
+                    return orig.AsSpan(lastStart);
+                }
+                else if (i > matches.Count)
                 {
                     foundToken = false;
                     return remaining = ReadOnlySpan<char>.Empty;
                 }
 
                 var match = matches[i++];
-                remaining = chars;
+                remaining = orig.AsSpan(match.Index + match.Length);
                 foundToken = true;
-                return chars.Slice(match.Index, match.Length);
+                var result = orig.AsSpan(lastStart, match.Index - lastStart);
+                lastStart = match.Index + match.Length;
+                return result;
             }
 
             return new TokenEnumerable(input, nextToken);
