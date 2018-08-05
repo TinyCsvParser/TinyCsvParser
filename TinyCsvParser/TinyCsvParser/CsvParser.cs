@@ -20,8 +20,8 @@ namespace TinyCsvParser
             _mapping = mapping;
         }
 
-        // TODO: Could we use System.IO.Pipelines to improve the performance of this overload?
-        // https://blogs.msdn.microsoft.com/dotnet/2018/07/09/system-io-pipelines-high-performance-io-in-net/
+        public CsvParserOptions Options => _options;
+
         public IEnumerable<CsvMappingResult<TEntity>> Parse(Stream csvData)
         {
             if (csvData is null)

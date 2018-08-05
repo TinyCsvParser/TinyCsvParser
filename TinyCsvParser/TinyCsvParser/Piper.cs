@@ -1,39 +1,43 @@
 ﻿using System;
 using System.Buffers;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Pipelines;
+using System.Reactive.Disposables;
+using System.Reactive.Subjects;
 using System.Text;
 using System.Threading.Tasks;
+using TinyCsvParser.Mapping;
 
 namespace TinyCsvParser
 {
-    public class Piper
+    internal class Piper
     {
-        public static async Task ReadFileAsync<T>(string path, Encoding encoding, CsvParser<T> parser) where T : new()
+        public static IObservable<T> ObserveFile<T>(string path, Encoding encoding, CsvParser<T> parser) where T : new()
         {
-            using (var fs = File.OpenRead(path))
+            return ObserveStream(File.OpenRead(path), encoding, parser);
+        }
+
+        public static IObservable<T> ObserveFile<T>(FileInfo file, Encoding encoding, CsvParser<T> parser) where T : new()
+        {
+            return ObserveStream(file.OpenRead(), encoding, parser);
+        }
+
+        public static IObservable<T> ObserveStream<T>(Stream fileStream, Encoding encoding, CsvParser<T> parser) where T : new()
+        {
+            if (fileStream is null) throw new ArgumentNullException(nameof(fileStream));
+            if (parser is null) throw new ArgumentException(nameof(parser));
+            
+            var observable = new LineObservable<T>(fileStream, x =>
             {
-                await ReadStreamAsync(fs, encoding, parser);
-            }
+                var pipe = new Pipe();
+                Task writing = FillPipeAsync(fileStream, pipe.Writer);
+                Task reading = ReadPipeAsync(pipe.Reader, encoding, parser, x);
+            });
+
+            return observable;
         }
-
-        public static async Task ReadFileAsync<T>(FileInfo file, Encoding encoding, CsvParser<T> parser) where T : new()
-        {
-            using (var fs = file.OpenRead())
-            {
-                await ReadStreamAsync(fs, encoding, parser);
-            }
-        }
-
-        public static async Task ReadStreamAsync<T>(Stream fileStream, Encoding encoding, CsvParser<T> parser) where T : new()
-        {
-            var pipe = new Pipe();
-            Task writing = FillPipeAsync(fileStream, pipe.Writer);
-            Task reading = ReadPipeAsync(pipe.Reader, encoding, parser);
-
-            await Task.WhenAll(reading, writing);
-        }
-
+        
         private static async Task FillPipeAsync(Stream fileStream, PipeWriter writer)
         {
             const int minimumBufferSize = 512;
@@ -71,53 +75,85 @@ namespace TinyCsvParser
             writer.Complete();
         }
 
-        private static async Task ReadPipeAsync<T>(PipeReader reader, Encoding encoding, CsvParser<T> parser) where T : new()
+        private static async Task ReadPipeAsync<T>(PipeReader reader, Encoding encoding, CsvParser<T> parser, IObserver<T> observer) where T : new()
         {
             while (true)
             {
-                ReadResult result = await reader.ReadAsync();
-
-                ReadOnlySequence<byte> buffer = result.Buffer;
-                SequencePosition? position = null;
-                int lineNum = 0;
-
-                do
+                try
                 {
-                    // Find the EOL
-                    position = buffer.PositionOf((byte)'\r') ?? buffer.PositionOf((byte)'\n');
+                    ReadResult result = await reader.ReadAsync();
 
-                    if (position != null)
+                    ReadOnlySequence<byte> buffer = result.Buffer;
+                    SequencePosition? position = null;
+                    int lineNum = 0;
+
+                    do
                     {
-                        var line = buffer.Slice(0, position.Value);
-                        if (!line.First.IsEmpty && line.First.Span[0] == (byte)'\n')
+                        // Find the EOL
+                        position = buffer.PositionOf((byte)'\r');
+                        bool foundCR = !(position is null);
+                        if (!foundCR)
+                            position = buffer.PositionOf((byte)'\n');
+
+                        if (position != null)
                         {
-                            line = line.Slice(1);
+                            var line = buffer.Slice(0, position.Value);
+                            if (foundCR && !line.First.IsEmpty && line.First.Span[0] == (byte)'\n')
+                            {
+                                line = line.Slice(1);
+                            }
+
+                            if (lineNum > 0 || !parser.Options.SkipHeader)
+                            {
+                                var parsed = ProcessLine(line, encoding, parser, lineNum);
+
+                                if (parsed.HasValue)
+                                {
+                                    var val = parsed.Value;
+                                    if (val.IsValid)
+                                    {
+                                        observer.OnNext(val.Result);
+                                    }
+                                    else
+                                    {
+                                        observer.OnError(val.Error);
+                                        goto done;
+                                    }
+                                }
+                            }
+                            lineNum++;
+
+                            // This is equivalent to position + 1
+                            var next = buffer.GetPosition(1, position.Value);
+
+                            // Skip what we've already processed including \n
+                            buffer = buffer.Slice(next);
                         }
-                        ProcessLine(line, encoding, parser, lineNum++);
+                    }
+                    while (position != null);
 
-                        // This is equivalent to position + 1
-                        var next = buffer.GetPosition(1, position.Value);
+                    // We sliced the buffer until no more data could be processed
+                    // Tell the PipeReader how much we consumed and how much we have left to process
+                    reader.AdvanceTo(buffer.Start, buffer.End);
 
-                        // Skip what we've already processed including \n
-                        buffer = buffer.Slice(next);
+                    if (result.IsCompleted)
+                    {
+                        break;
                     }
                 }
-                while (position != null);
-
-                // We sliced the buffer until no more data could be processed
-                // Tell the PipeReader how much we consumed and how much we have left to process
-                reader.AdvanceTo(buffer.Start, buffer.End);
-
-                if (result.IsCompleted)
+                catch (Exception exn)
                 {
+                    observer.OnError(exn);
                     break;
                 }
             }
 
+            done:
             reader.Complete();
+            observer.OnCompleted();
         }
 
-        private static void ProcessLine<T>(in ReadOnlySequence<byte> buffer, Encoding encoding, CsvParser<T> parser, int lineNum) where T : new()
+        private static CsvMappingResult<T>? ProcessLine<T>(in ReadOnlySequence<byte> buffer, Encoding encoding, CsvParser<T> parser, int lineNum) where T : new()
         {
             var pool = MemoryPool<char>.Shared;
             var sb = new StringBuilder();
@@ -134,18 +170,103 @@ namespace TinyCsvParser
                 }
             }
 
-            Console.WriteLine(sb.ToString());
-
+            CsvMappingResult<T>? result = null;
             using (var chrMem = pool.Rent(sb.Length))
             {
                 var chars = chrMem.Memory.Span;
                 sb.CopyTo(0, chars, sb.Length);
-                var result = parser.ParseLine(chars.Slice(0, sb.Length), lineNum);
-                if (result.IsValid)
-                    Console.WriteLine(result.Result.ToString());
-                else
-                    Console.Write(result.Error.ToString());
+                var line = chars.Slice(0, sb.Length);
+
+                if (!line.IsEmpty
+                    && (string.IsNullOrEmpty(parser.Options.CommentCharacter)
+                        || !line.StartsWith(parser.Options.CommentCharacter)))
+                {
+                    result = parser.ParseLine(line, lineNum);
+                }
+
             }
+
+            return result;
+        }
+    }
+
+    internal class LineObservable<T> : SubjectBase<T> where T : new()
+    {
+        private readonly List<IObserver<T>> _observers;
+        private IDisposable _resource;
+        private Action<IObserver<T>> _startAction;
+        private bool _disposed = false;
+        private bool _started = false;
+
+        public LineObservable(IDisposable resource, Action<IObserver<T>> startAction)
+        {
+            _resource = resource;
+            _startAction = startAction;
+            _observers = new List<IObserver<T>>();
+        }
+
+        public override bool HasObservers => _observers.Count > 0;
+
+        public override bool IsDisposed => _disposed;
+
+        public override void OnCompleted()
+        {
+            foreach (var observer in _observers)
+            {
+                observer.OnCompleted();
+            }
+            Dispose();
+        }
+
+        public override void OnError(Exception error)
+        {
+            foreach (var observer in _observers)
+            {
+                observer.OnError(error);
+            }
+            Dispose();
+        }
+
+        public override void OnNext(T value)
+        {
+            foreach (var observer in _observers)
+            {
+                observer.OnNext(value);
+            }
+        }
+
+        public override IDisposable Subscribe(IObserver<T> observer)
+        {
+            if (observer is null) throw new ArgumentNullException(nameof(observer));
+
+            if (_disposed || _observers.Contains(observer))
+            {
+                return Disposable.Empty;
+            }
+            
+            _observers.Add(observer);
+
+            if (!_started)
+            {
+                _started = true;
+                _startAction?.Invoke(this);
+            }
+
+            return Disposable.Create(() =>
+            {
+                _observers.Remove(observer);
+            });
+        }
+
+        public override void Dispose()
+        {
+            if (_disposed) return;
+
+            _observers.Clear();
+            _resource?.Dispose();
+            _startAction = null;
+            _resource = null;
+            _disposed = true;
         }
     }
 }

@@ -21,13 +21,13 @@ namespace TinyCsvParser.Mapping
         {
             RowIndex = rowIndex;
             _result = default;
-            Error = new CsvMappingError(colIndex, errorMessage);
+            Error = new CsvMappingException(rowIndex, colIndex, errorMessage);
             IsValid = false;
         }
 
         public readonly int RowIndex;
 
-        public readonly CsvMappingError Error;
+        public readonly CsvMappingException Error;
 
         public TEntity Result => 
             IsValid ? _result : throw new InvalidOperationException($"{Error.Message} (Row: {RowIndex}, Column: {Error.ColumnIndex})");

@@ -34,5 +34,23 @@ namespace TinyCsvParser
             var parts = csvData.Split(csvReaderOptions.NewLine, StringSplitOptions.RemoveEmptyEntries);
             return csvParser.Parse(parts);
         }
+
+        public static IObservable<TEntity> ObserveFromFile<TEntity>(this CsvParser<TEntity> csvParser, string fileName, Encoding encoding)
+            where TEntity : new()
+        {
+            return Piper.ObserveFile(fileName, encoding, csvParser);
+        }
+
+        public static IObservable<TEntity> ObserveFromFile<TEntity>(this CsvParser<TEntity> csvParser, FileInfo file, Encoding encoding)
+            where TEntity : new()
+        {
+            return Piper.ObserveFile(file, encoding, csvParser);
+        }
+
+        public static IObservable<TEntity> ObserveFromStream<TEntity>(this CsvParser<TEntity> csvParser, Stream stream, Encoding encoding)
+            where TEntity : new()
+        {
+            return Piper.ObserveStream(stream, encoding, csvParser);
+        }
     }
 }

@@ -5,6 +5,9 @@ using System.Linq;
 using System.Text;
 using TinyCsvParser.Mapping;
 using TinyCsvParser.TypeConverter;
+using System.Reactive;
+using System.Reactive.Threading.Tasks;
+using System.Threading.Tasks;
 
 namespace TinyCsvParser.Benchmark
 {
@@ -43,6 +46,8 @@ namespace TinyCsvParser.Benchmark
             var a = csvParser
                 .ReadFromFile(@"C:\Temp\201503hourly.txt", Encoding.ASCII)
                 .ToList();
+
+            //Console.WriteLine($"Parsed {a.Count:N0} lines.");
         }
 
         [Benchmark]
@@ -58,13 +63,21 @@ namespace TinyCsvParser.Benchmark
         }
 
         [Benchmark]
-        public void LocalWeatherPipeline()
+        public async Task LocalWeatherPipeline()
         {
+            // TODO: This method is missing some lines!
+            // LocalWeatherRead_One_Core: Parsed 4,496,262 lines.
+            // LocalWeatherPipeline:      Parsed 4,441,695 lines.
+
             var csvParserOptions = new CsvParserOptions(true, ',', 4, true);
             var csvMapper = new LocalWeatherDataMapper();
             var csvParser = new CsvParser<LocalWeatherData>(csvParserOptions, csvMapper);
 
-            Piper.ReadFileAsync(@"C:\Temp\201503hourly.txt", Encoding.ASCII, csvParser).Wait();
+            int parsedCount = 0;
+            var observable = csvParser.ObserveFromFile(@"C:\Temp\201503hourly.txt", Encoding.ASCII);
+            observable.Subscribe(x => { parsedCount++; }, ex => Console.Error.WriteLine(ex.ToString()));
+            await observable.ToTask();
+            //Console.WriteLine($"Parsed {parsedCount:N0} lines.");
         }
     }
 
@@ -72,8 +85,10 @@ namespace TinyCsvParser.Benchmark
     {
         public static void Main(string[] args)
         {
-            //var summary = BenchmarkRunner.Run<CsvBenchmark>();
-            new CsvBenchmark().LocalWeatherPipeline();
+            var summary = BenchmarkRunner.Run<CsvBenchmark>();
+            //var bm = new CsvBenchmark();
+            //bm.LocalWeatherRead_One_Core();
+            //bm.LocalWeatherPipeline().Wait();
         }
     }
 }
