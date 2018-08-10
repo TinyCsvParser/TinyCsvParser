@@ -13,6 +13,10 @@ using System.Threading.Tasks;
 namespace CoreCsvParser
 {
     // https://blogs.msdn.microsoft.com/dotnet/2018/07/09/system-io-pipelines-high-performance-io-in-net/
+    // https://blog.marcgravell.com/2018/07/pipe-dreams-part-1.html
+
+    // TODO: Experiment with StreamConnection from https://github.com/mgravell/Pipelines.Sockets.Unofficial
+    // Useful examples there, including PipeTextReader and MemoryMappedPipeReader
 
     internal class Piper
     {
@@ -90,6 +94,10 @@ namespace CoreCsvParser
                     ReadResult result = await reader.ReadAsync();
 
                     ReadOnlySequence<byte> buffer = result.Buffer;
+
+                    if (buffer.IsEmpty && (result.IsCompleted || result.IsCanceled))
+                        break;
+
                     SequencePosition? position = null;
                     int lineNum = 0;
 
@@ -135,7 +143,7 @@ namespace CoreCsvParser
                     // Tell the PipeReader how much we consumed and how much we have left to process
                     reader.AdvanceTo(buffer.Start, buffer.End);
 
-                    if (result.IsCompleted)
+                    if (result.IsCompleted || result.IsCanceled)
                     {
                         break;
                     }

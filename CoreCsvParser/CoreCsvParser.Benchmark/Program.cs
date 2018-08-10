@@ -169,9 +169,9 @@ namespace CoreCsvParser.Benchmark
     {
         public static void Main(string[] args)
         {
-            var summary = BenchmarkRunner.Run<CsvBenchmark>();
-            //CsvBenchmark.CompareLoaders();
-            //CsvBenchmark.CompareLoaders();
+            //var summary = BenchmarkRunner.Run<CsvBenchmark>();
+            CsvBenchmark.CompareLoaders();
+            CsvBenchmark.CompareLoaders();
             //new CsvBenchmark().LocalWeatherPipeline();
         }
     }
