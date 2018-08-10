@@ -1,34 +1,19 @@
-# TinyCsvParser #
+# CoreCsvParser #
 
-[TinyCsvParser]: https://github.com/bytefish/TinyCsvParser
+[CoreCsvParser]: https://github.com/jtmueller/CoreCsvParser
 [MIT License]: https://opensource.org/licenses/MIT
 
-[TinyCsvParser] is a .NET library to parse CSV data in an easy and *fun way*, while offering very high performance and a very clean API. 
-It is probably the **fastest .NET CSV Parser around** (see [Benchmark](http://bytefish.github.io/TinyCsvParser/sections/benchmark.html)) 
-and it is highly configurable to provide maximum flexibility.
+[CoreCsvParser] is a .NET library to parse CSV data in an easy and *fun way*, while offering very high performance and a very clean API. 
+It is based on [TinyCsvParser](https://github.com/bytefish/TinyCsvParser) but modified to use the Span and Pipeline types introduced
+in .NET Core 2.1 for in some cases dramatically improved performance and much lower memory allocation.
 
 To get started quickly, follow the [Quickstart](http://bytefish.github.io/TinyCsvParser/sections/quickstart.html).
 
-[TinyCsvParser] supports .NET Core.
-
-## Installing TinyCsvParser ##
-
-You can use [NuGet](https://www.nuget.org) to install [TinyCsvParser]. Run the following command 
-in the [Package Manager Console](http://docs.nuget.org/consume/package-manager-console).
-
-```
-PM> Install-Package TinyCsvParser
-```
-
-## Documentation and Changelog ##
-
-[TinyCsvParser] comes with an official documentation and changelog:
-
-* [http://bytefish.github.io/TinyCsvParser/](http://bytefish.github.io/TinyCsvParser/)
+[CoreCsvParser] requries .NET Core 2.1 (or .NET Standard 1.3 when that comes out).
 
 ## Basic Usage ##
 
-This is only an example for the most common use of TinyCsvParser. For more detailed information on custom formats and more advanced use-cases, 
+This is only an example for the most common use of CoreCsvParser. For more detailed information on custom formats and more advanced use-cases, 
 please consult the full [User Guide](http://bytefish.github.io/TinyCsvParser/sections/userguide.html) of the official documentation.
 
 Imagine we have list of Persons in a CSV file ``persons.csv`` with their first name, last name and birthdate.
@@ -52,7 +37,7 @@ private class Person
 }
 ```
 
-When using [TinyCsvParser] you have to define the mapping between the columns in the CSV data and the property in you domain model.
+When using [CoreCsvParser] you have to define the mapping between the columns in the CSV data and the property in you domain model.
 
 ```csharp
 private class CsvPersonMapping : CsvMapping<Person>
@@ -70,10 +55,10 @@ private class CsvPersonMapping : CsvMapping<Person>
 And then we can use the mapping to parse the CSV data with a ``CsvParser``.
 
 ```csharp
-namespace TinyCsvParser.Test
+namespace CoreCsvParser.Test
 {
     [TestFixture]
-    public class TinyCsvParserTest
+    public class CoreCsvParserTest
     {
         [Test]
         public void TinyCsvTest()
@@ -112,4 +97,4 @@ namespace TinyCsvParser.Test
 
 The library is released under terms of the [MIT License]:
 
-* [https://github.com/bytefish/TinyCsvParser](https://github.com/bytefish/TinyCsvParser)
+* [https://github.com/jtmueller/CoreCsvParser](https://github.com/jtmueller/CoreCsvParser)
