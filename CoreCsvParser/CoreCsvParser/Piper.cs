@@ -2,6 +2,7 @@
 using System;
 using System.Buffers;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Pipelines;
 using System.Reactive.Disposables;
@@ -11,6 +12,8 @@ using System.Threading.Tasks;
 
 namespace CoreCsvParser
 {
+    // https://blogs.msdn.microsoft.com/dotnet/2018/07/09/system-io-pipelines-high-performance-io-in-net/
+
     internal class Piper
     {
         public static IObservable<T> ObserveFile<T>(string path, Encoding encoding, CsvParser<T> parser) where T : new()
@@ -35,12 +38,12 @@ namespace CoreCsvParser
                 Task reading = ReadPipeAsync(pipe.Reader, encoding, parser, observable);
 
                 Task.WhenAll(reading, writing)
-                    .ContinueWith(x => observable.OnCompleted(), 
+                    .ContinueWith(_ => observable.OnCompleted(),
                         TaskContinuationOptions.AttachedToParent | TaskContinuationOptions.ExecuteSynchronously);
             });
 
         }
-        
+
         private static async Task FillPipeAsync(Stream fileStream, PipeWriter writer)
         {
             const int minimumBufferSize = 512;
@@ -144,45 +147,61 @@ namespace CoreCsvParser
                 }
             }
 
-            done:
+        done:
             reader.Complete();
+            observer.OnCompleted();
         }
 
         private static CsvMappingResult<T>? ProcessLine<T>(in ReadOnlySequence<byte> buffer, Encoding encoding, CsvParser<T> parser, int lineNum) where T : new()
         {
             var pool = MemoryPool<char>.Shared;
-            var sb = new StringBuilder();
+            int maxChars;
 
-            foreach (var segment in buffer)
+            if (buffer.IsSingleSegment)
             {
-                var bytes = segment.Span;
-                var maxChars = encoding.GetMaxCharCount(bytes.Length);
+                var bytes = buffer.First.Span;
+                maxChars = encoding.GetMaxCharCount(bytes.Length);
                 using (var chrMem = pool.Rent(maxChars))
                 {
                     var chars = chrMem.Memory.Span;
                     var charCount = encoding.GetChars(bytes, chars);
-                    sb.Append(chars.Slice(0, charCount));
+                    var line = chars.Slice(0, charCount);
+                    return ParseLine(parser, lineNum, line);
                 }
             }
 
-            using (var chrMem = pool.Rent(sb.Length))
+            int len = 0;
+            maxChars = encoding.GetMaxCharCount((int)buffer.Length);
+            using (var chrMem = pool.Rent(maxChars))
             {
                 var chars = chrMem.Memory.Span;
-                sb.CopyTo(0, chars, sb.Length);
-                var line = chars.Slice(0, sb.Length);
+                foreach (var segment in buffer)
+                {
+                    var bytes = segment.Span;
+                    var charCount = encoding.GetChars(bytes, chars.Slice(len));
+                    len += charCount;
+                }
 
-                if (line.IsEmpty)
-                    return null;
-
-                var commentChar = parser.Options.CommentCharacter;
-                if (!string.IsNullOrEmpty(commentChar) && line.StartsWith(commentChar))
-                    return null;
-
-                if (line[line.Length - 1] == '\r')
-                    line = line.Slice(0, line.Length - 1);
-
-                return parser.ParseLine(line, lineNum);
+                var line = chars.Slice(0, len);
+                return ParseLine(parser, lineNum, line);
             }
+        }
+
+        private static CsvMappingResult<T>? ParseLine<T>(CsvParser<T> parser, int lineNum, in ReadOnlySpan<char> line) where T : new()
+        {
+            if (line.IsEmpty)
+                return null;
+
+            var commentChar = parser.Options.CommentCharacter;
+            if (!string.IsNullOrEmpty(commentChar) && line.StartsWith(commentChar))
+                return null;
+
+            // since we're splitting on \n, a \r\n file
+            // will have \r at the end of each line, so slice that off
+            if (line[line.Length - 1] == '\r')
+                return parser.ParseLine(line.Slice(0, line.Length - 1), lineNum);
+
+            return parser.ParseLine(line, lineNum);
         }
     }
 
@@ -207,7 +226,8 @@ namespace CoreCsvParser
 
         public override void OnCompleted()
         {
-            foreach (var observer in _observers)
+            //Debug.WriteLine("OnCompleted");
+            foreach (var observer in _observers.ToArray())
             {
                 observer.OnCompleted();
             }
@@ -216,7 +236,8 @@ namespace CoreCsvParser
 
         public override void OnError(Exception error)
         {
-            foreach (var observer in _observers)
+            //Debug.WriteLine("OnError: {0}", error);
+            foreach (var observer in _observers.ToArray())
             {
                 observer.OnError(error);
             }
@@ -225,6 +246,7 @@ namespace CoreCsvParser
 
         public override void OnNext(T value)
         {
+            //Debug.WriteLine("OnNext: {0}", value);
             foreach (var observer in _observers)
             {
                 observer.OnNext(value);
@@ -235,15 +257,19 @@ namespace CoreCsvParser
         {
             if (observer is null) throw new ArgumentNullException(nameof(observer));
 
-            if (_disposed || _observers.Contains(observer))
+            if (_disposed)
+                throw new ObjectDisposedException("LineObservable");
+
+            if (_observers.Contains(observer))
             {
                 return Disposable.Empty;
             }
-            
+
             _observers.Add(observer);
 
             if (!_started)
             {
+                Debug.WriteLine("Starting Action");
                 _started = true;
                 _startAction?.Invoke(this);
             }

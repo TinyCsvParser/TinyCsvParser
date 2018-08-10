@@ -48,6 +48,16 @@ namespace CoreCsvParser.Benchmark
     {
         public LocalWeatherDataMapper()
         {
+            MapProperty(0, x => x.WBAN);
+            MapProperty(1, x => x.Date, new DateTimeConverter("yyyyMMdd"));
+            MapProperty(4, x => x.SkyCondition);
+        }
+    }
+
+    public class LocalWeatherDataMapperWithRowNum : CsvMapping<LocalWeatherData>
+    {
+        public LocalWeatherDataMapperWithRowNum()
+        {
             MapProperty(0, x => x.RowNum);
             MapProperty(1, x => x.WBAN);
             MapProperty(2, x => x.Date, new DateTimeConverter("yyyyMMdd"));
@@ -89,7 +99,7 @@ namespace CoreCsvParser.Benchmark
             // LocalWeatherRead_One_Core: Parsed 4,496,262 lines.
             // LocalWeatherPipeline:      Parsed 4,441,695 lines.
 
-            var csvParserOptions = new CsvParserOptions(true, ',', 4, true);
+            var csvParserOptions = new CsvParserOptions(true, ',', 1, true);
             var csvMapper = new LocalWeatherDataMapper();
             var csvParser = new CsvParser<LocalWeatherData>(csvParserOptions, csvMapper);
 
@@ -120,7 +130,7 @@ namespace CoreCsvParser.Benchmark
 
             Console.WriteLine("Starting direct file read...");
             var csvParserOptions = new CsvParserOptions(true, ',', 1, true);
-            var csvMapper = new LocalWeatherDataMapper();
+            var csvMapper = new LocalWeatherDataMapperWithRowNum();
             var csvParser = new CsvParser<LocalWeatherData>(csvParserOptions, csvMapper);
 
             var read = csvParser.ReadFromFile(@"C:\Temp\201503hourly-first-1000.txt", Encoding.ASCII)
@@ -150,6 +160,8 @@ namespace CoreCsvParser.Benchmark
                     Console.WriteLine(item.ToString());
                 }
             }
+
+            Console.WriteLine();
         }
     }
 
@@ -157,8 +169,10 @@ namespace CoreCsvParser.Benchmark
     {
         public static void Main(string[] args)
         {
-            //var summary = BenchmarkRunner.Run<CsvBenchmark>();
-            CsvBenchmark.CompareLoaders();
+            var summary = BenchmarkRunner.Run<CsvBenchmark>();
+            //CsvBenchmark.CompareLoaders();
+            //CsvBenchmark.CompareLoaders();
+            //new CsvBenchmark().LocalWeatherPipeline();
         }
     }
 }
