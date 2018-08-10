@@ -93,18 +93,11 @@ namespace CoreCsvParser
                     do
                     {
                         // Find the EOL
-                        position = buffer.PositionOf((byte)'\r');
-                        bool foundCR = !(position is null);
-                        if (!foundCR)
-                            position = buffer.PositionOf((byte)'\n');
+                        position = buffer.PositionOf((byte)'\n');
 
                         if (position != null)
                         {
                             var line = buffer.Slice(0, position.Value);
-                            if (foundCR && !line.First.IsEmpty && line.First.Span[0] == (byte)'\n')
-                            {
-                                line = line.Slice(1);
-                            }
 
                             if (lineNum > 0 || !parser.Options.SkipHeader)
                             {
@@ -172,23 +165,24 @@ namespace CoreCsvParser
                 }
             }
 
-            CsvMappingResult<T>? result = null;
             using (var chrMem = pool.Rent(sb.Length))
             {
                 var chars = chrMem.Memory.Span;
                 sb.CopyTo(0, chars, sb.Length);
                 var line = chars.Slice(0, sb.Length);
 
-                if (!line.IsEmpty
-                    && (string.IsNullOrEmpty(parser.Options.CommentCharacter)
-                        || !line.StartsWith(parser.Options.CommentCharacter)))
-                {
-                    result = parser.ParseLine(line, lineNum);
-                }
+                if (line.IsEmpty)
+                    return null;
 
+                var commentChar = parser.Options.CommentCharacter;
+                if (!string.IsNullOrEmpty(commentChar) && line.StartsWith(commentChar))
+                    return null;
+
+                if (line[line.Length - 1] == '\r')
+                    line = line.Slice(0, line.Length - 1);
+
+                return parser.ParseLine(line, lineNum);
             }
-
-            return result;
         }
     }
 
