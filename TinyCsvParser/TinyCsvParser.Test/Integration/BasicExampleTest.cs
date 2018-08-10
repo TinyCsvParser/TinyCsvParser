@@ -33,7 +33,7 @@ namespace TinyCsvParser.Test.Integration
         public void PersonMappingTest()
         {
             CsvParserOptions csvParserOptions = new CsvParserOptions(true, ';');
-            CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
+            CsvReaderOptions csvReaderOptions = new CsvReaderOptions(Environment.NewLine);
             CsvPersonMapping csvMapper = new CsvPersonMapping();
             CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
 

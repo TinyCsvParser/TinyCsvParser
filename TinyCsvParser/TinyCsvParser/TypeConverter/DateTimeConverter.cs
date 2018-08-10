@@ -34,7 +34,7 @@ namespace TinyCsvParser.TypeConverter
             this.dateTimeStyles = dateTimeStyles;
         }
 
-        protected override bool InternalConvert(string value, out DateTime result)
+        protected override bool InternalConvert(ReadOnlySpan<char> value, out DateTime result)
         {
             if (string.IsNullOrWhiteSpace(dateTimeFormat))
             {

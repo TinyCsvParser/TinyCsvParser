@@ -13,11 +13,9 @@ namespace TinyCsvParser.Test.Tokenizer
         public void QuotedString_CommaDelimiter_Test()
         {
             var tokenizer = new QuotedStringTokenizer(',');
-            
+
             var input = "1,\"2,3\",4";
-            var result = tokenizer.Tokenize(input);
-
-
+            var result = tokenizer.Tokenize(input).ToArray();
             Assert.AreEqual(3, result.Length);
 
             Assert.AreEqual("1", result[0]);
@@ -31,8 +29,7 @@ namespace TinyCsvParser.Test.Tokenizer
             var tokenizer = new QuotedStringTokenizer(';');
 
             var input = "1;\"2;3\";4";
-            var result = tokenizer.Tokenize(input);
-
+            var result = tokenizer.Tokenize(input).ToArray();
             Assert.AreEqual(3, result.Length);
 
             Assert.AreEqual("1", result[0]);
@@ -47,8 +44,7 @@ namespace TinyCsvParser.Test.Tokenizer
 
             var input = "1|\"2|3\"|4";
 
-            var result = tokenizer.Tokenize(input);
-
+            var result = tokenizer.Tokenize(input).ToArray();
 
             Assert.AreEqual(3, result.Length);
 
@@ -64,5 +60,5 @@ namespace TinyCsvParser.Test.Tokenizer
 
             Assert.DoesNotThrow(() => tokenizer.ToString());
         }
-     }
+    }
 }

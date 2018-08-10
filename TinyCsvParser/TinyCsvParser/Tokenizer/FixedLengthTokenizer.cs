@@ -1,9 +1,10 @@
 ﻿// Copyright (c) Philipp Wagner. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using System.Linq;
-using System.Collections.Generic;
 using System;
+using System.Buffers;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace TinyCsvParser.Tokenizer
 {
@@ -15,13 +16,13 @@ namespace TinyCsvParser.Tokenizer
         /// <summary>
         /// A column in a CSV file, which is described by the start and end position (zero-based indices).
         /// </summary>
-        public class ColumnDefinition
+        public class Column
         {
             public readonly int Start;
 
             public readonly int End;
 
-            public ColumnDefinition(int start, int end)
+            public Column(int start, int end)
             {
                 Start = start;
                 End = end;
@@ -33,46 +34,54 @@ namespace TinyCsvParser.Tokenizer
             }
         }
 
-        public readonly ColumnDefinition[] Columns;
+        private readonly Column[] _columns;
 
-        public FixedLengthTokenizer(ColumnDefinition[] columns)
+        public FixedLengthTokenizer(IList<Column> columns, bool trimToken = false) : this(columns?.ToArray(), trimToken) { }
+
+        public FixedLengthTokenizer(Column[] columns, bool trimToken = false)
         {
-            if (columns == null)
-            {
-                throw new ArgumentNullException("columns");
-            }
-            Columns = columns;
+            _columns = columns ?? throw new ArgumentNullException("columns");
+            TrimToken = trimToken;
         }
 
-        public FixedLengthTokenizer(IList<ColumnDefinition> columns)
+        public bool TrimToken { get; }
+        public ReadOnlyMemory<Column> Columns => _columns.AsMemory();
+
+        public TokenEnumerable Tokenize(ReadOnlySpan<char> input)
         {
-            if (columns == null)
+            int colIndex = 0;
+            int colCount = Columns.Length;
+
+            ReadOnlySpan<char> nextToken(ReadOnlySpan<char> chars, out ReadOnlySpan<char> remaining, out bool foundToken)
             {
-                throw new ArgumentNullException("columns");
+                if (colIndex >= colCount)
+                {
+                    remaining = ReadOnlySpan<char>.Empty;
+                    foundToken = false;
+                    return chars;
+                }
+
+                var col = _columns[colIndex];
+
+                if (chars.Length < col.End - col.Start)
+                {
+                    foundToken = false;
+                    return chars = remaining = ReadOnlySpan<char>.Empty;
+                }
+
+                remaining = chars.Slice(col.End);
+                foundToken = true;
+                return TrimToken ? chars.Slice(col.Start, col.End - col.Start).Trim() : chars.Slice(col.Start, col.End - col.Start);
             }
-            Columns = columns.ToArray();
-        }
 
-        public string[] Tokenize(string input)
-        {
-            string[] tokenizedLine = new string[Columns.Length];
-
-            for (int columnIndex = 0; columnIndex < Columns.Length; columnIndex++)
-            {
-                var columnDefinition = Columns[columnIndex];
-                var columnData = input.Substring(columnDefinition.Start, columnDefinition.End - columnDefinition.Start);
-
-                tokenizedLine[columnIndex] = columnData;
-            }
-
-            return tokenizedLine;
+            return new TokenEnumerable(input, nextToken);
         }
 
         public override string ToString()
         {
-            var columnDefinitionsString = string.Join(", ", Columns.Select(x => x.ToString()));
+            var columnDefinitionsString = string.Join(", ", _columns.Select(x => x.ToString()));
 
-            return string.Format("FixedLengthTokenizer (Columns = [{0}])", columnDefinitionsString);
+            return $"FixedLengthTokenizer (Columns = [{columnDefinitionsString}])";
         }
     }
 }

@@ -27,9 +27,9 @@ namespace TinyCsvParser.TypeConverter
             this.ignoreCase = ignoreCase;
         }
 
-        protected override bool InternalConvert(string value, out TTargetType result)
+        protected override bool InternalConvert(ReadOnlySpan<char> value, out TTargetType result)
         {
-            return Enum.TryParse<TTargetType>(value, ignoreCase, out result);
+            return Enum.TryParse(value.ToString(), ignoreCase, out result);
         }
     }
 }

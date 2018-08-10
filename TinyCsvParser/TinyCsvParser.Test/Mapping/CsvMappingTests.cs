@@ -4,7 +4,7 @@
 using NUnit.Framework;
 using System;
 using TinyCsvParser.Mapping;
-using TinyCsvParser.Model;
+using TinyCsvParser.Tokenizer;
 
 namespace TinyCsvParser.Test.Issues
 {
@@ -25,12 +25,6 @@ namespace TinyCsvParser.Test.Issues
                 MapProperty(0, x => x.PropertyInt);
             }
         }
-        
-        [Test]
-        public void DuplicateMappingTest()
-        {
-            Assert.Throws<InvalidOperationException>(() => new DuplicateMapping());
-        }
 
         private class WrongColumnMapping : CsvMapping<SampleEntity>
         {
@@ -40,12 +34,25 @@ namespace TinyCsvParser.Test.Issues
             }
         }
 
+        private static ReadOnlySpan<char> ReadOneToken(ReadOnlySpan<char> chars, out ReadOnlySpan<char> remaining, out bool foundToken)
+        {
+            remaining = ReadOnlySpan<char>.Empty;
+            foundToken = !chars.IsEmpty;
+            return chars;
+        }
+
+        [Test]
+        public void DuplicateMappingTest()
+        {
+            Assert.Throws<InvalidOperationException>(() => new DuplicateMapping());
+        }
+
         [Test]
         public void MapEntity_Invalid_Column_Test()
         {
             var mapping = new WrongColumnMapping();
 
-            var result = mapping.Map(new TokenizedRow(1, new []{"1"}));
+            var result = mapping.Map(new TokenEnumerable("1", ReadOneToken), 0);
 
             Assert.IsFalse(result.IsValid);
         }
@@ -58,17 +65,16 @@ namespace TinyCsvParser.Test.Issues
             }
         }
         
-
         [Test]
         public void MapEntity_ConversionError_Test()
         {
             var mapping = new CorrectColumnMapping();
 
-            var result = mapping.Map(new TokenizedRow(1, new[] { string.Empty }));
+            var result = mapping.Map(new TokenEnumerable("a", ReadOneToken), 0);
 
             Assert.IsFalse(result.IsValid);
 
-            Assert.AreEqual("Column 0 with Value '' cannot be converted", result.Error.Value);
+            Assert.AreEqual("Column 0 with Value 'a' cannot be converted.", result.Error.Message);
             Assert.AreEqual(0, result.Error.ColumnIndex);
 
             Assert.DoesNotThrow(() => result.ToString());
@@ -79,7 +85,7 @@ namespace TinyCsvParser.Test.Issues
         {
             var mapping = new CorrectColumnMapping();
 
-            var result = mapping.Map(new TokenizedRow(1, new[] { "1" }));
+            var result = mapping.Map(new TokenEnumerable("1", ReadOneToken), 0);
 
             Assert.IsTrue(result.IsValid);
             Assert.AreEqual(1, result.Result.PropertyInt);

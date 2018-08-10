@@ -39,7 +39,7 @@ namespace TinyCsvParser.Test.CsvParser
         public void CustomEnumConverterTest()
         {
             CsvParserOptions csvParserOptions = new CsvParserOptions(true, ';');
-            CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
+            CsvReaderOptions csvReaderOptions = new CsvReaderOptions(Environment.NewLine);
             CsvVehicleMapping csvMapper = new CsvVehicleMapping();
             CsvParser<Vehicle> csvParser = new CsvParser<Vehicle>(csvParserOptions, csvMapper);
 

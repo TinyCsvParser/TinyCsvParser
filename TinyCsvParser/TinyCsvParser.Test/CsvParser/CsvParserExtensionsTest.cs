@@ -38,7 +38,7 @@ namespace TinyCsvParser.Test.CsvParser
             CsvPersonMapping csvMapper = new CsvPersonMapping();
             CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
 
-            Assert.Throws<ArgumentNullException>(() => csvParser.ReadFromFile(null, Encoding.UTF8));
+            Assert.Throws<ArgumentException>(() => csvParser.ReadFromFile(null, Encoding.UTF8));
         }
 
         [Test]

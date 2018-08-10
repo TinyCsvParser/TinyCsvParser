@@ -15,15 +15,15 @@ namespace TinyCsvParser.Test.TypeConverter
             get { return new NullableBoolConverter(); }
         }
 
-        protected override Tuple<string, bool?>[] SuccessTestData
+        protected override (string, bool?)[] SuccessTestData
         {
             get
             {
                 return new[] {
-                    MakeTuple("true", true),
-                    MakeTuple("false", false),
-                    MakeTuple(null, default(bool?)),
-                    MakeTuple(string.Empty, default(bool?)),
+                    ("true", true),
+                    ("false", false),
+                    (null, default(bool?)),
+                    (string.Empty, default(bool?)),
                 };
             }
         }

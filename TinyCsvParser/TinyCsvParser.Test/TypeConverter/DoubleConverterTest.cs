@@ -15,17 +15,17 @@ namespace TinyCsvParser.Test.TypeConverter
             get { return new DoubleConverter(); }
         }
 
-        protected override Tuple<string, Double>[] SuccessTestData
+        protected override (string, Double)[] SuccessTestData
         {
             get
             {
                 return new[] {
-                    MakeTuple(Double.MinValue.ToString("R"), Double.MinValue),
-                    MakeTuple(Double.MaxValue.ToString("R"), Double.MaxValue),
-                    MakeTuple("0", 0),
-                    MakeTuple("-1000", -1000),
-                    MakeTuple("1000", 1000),
-                    MakeTuple("5e2", 500),
+                    (Double.MinValue.ToString("R"), Double.MinValue),
+                    (Double.MaxValue.ToString("R"), Double.MaxValue),
+                    ("0", 0),
+                    ("-1000", -1000),
+                    ("1000", 1000),
+                    ("5e2", 500),
                 };
             }
         }

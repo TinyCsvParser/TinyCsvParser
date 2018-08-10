@@ -15,16 +15,16 @@ namespace TinyCsvParser.Test.TypeConverter
             get { return new SByteConverter(); }
         }
 
-        protected override Tuple<string, SByte>[] SuccessTestData
+        protected override (string, SByte)[] SuccessTestData
         {
             get
             {
-                return new[] {
-                    MakeTuple(SByte.MinValue.ToString(), SByte.MinValue),
-                    MakeTuple(SByte.MaxValue.ToString(), SByte.MaxValue),
-                    MakeTuple("0", 0),
-                    MakeTuple("-128", -128),
-                    MakeTuple("127", 127)
+                return new (string, SByte)[] {
+                    (SByte.MinValue.ToString(), SByte.MinValue),
+                    (SByte.MaxValue.ToString(), SByte.MaxValue),
+                    ("0", 0),
+                    ("-128", -128),
+                    ("127", 127)
                 };
             }
         }

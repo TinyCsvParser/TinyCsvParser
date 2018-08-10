@@ -16,16 +16,16 @@ namespace TinyCsvParser.Test.TypeConverter
             get { return new NullableDateTimeConverter(); }
         }
 
-        protected override Tuple<string, DateTime?>[] SuccessTestData
+        protected override (string, DateTime?)[] SuccessTestData
         {
             get
             {
                 return new[] {
-                    MakeTuple("2014/01/01", new DateTime(2014, 1, 1)),
-                    MakeTuple("9999/12/31", new DateTime(9999, 12, 31)),
-                    MakeTuple(" ", default(DateTime?)),
-                    MakeTuple(null, default(DateTime?)),
-                    MakeTuple(string.Empty, default(DateTime?))
+                    ("2014/01/01", new DateTime(2014, 1, 1)),
+                    ("9999/12/31", new DateTime(9999, 12, 31)),
+                    (" ", default(DateTime?)),
+                    (null, default(DateTime?)),
+                    (string.Empty, default(DateTime?))
                 };
             }
         }

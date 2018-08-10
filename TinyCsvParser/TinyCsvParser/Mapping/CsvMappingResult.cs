@@ -1,22 +1,44 @@
 ﻿// Copyright (c) Philipp Wagner. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using System;
+
 namespace TinyCsvParser.Mapping
 {
-    public class CsvMappingResult<TEntity>
-        where TEntity : class, new()
+    public readonly struct CsvMappingResult<TEntity> where TEntity : new()
     {
-        public int RowIndex { get; set; }
+        private readonly TEntity _result;
 
-        public CsvMappingError Error { get; set; }
+        public CsvMappingResult(int rowIndex, TEntity result)
+        {
+            RowIndex = rowIndex;
+            _result = result;
+            Error = default;
+            IsValid = true;
+        }
 
-        public TEntity Result { get; set; }
+        public CsvMappingResult(int rowIndex, int colIndex, string errorMessage)
+        {
+            RowIndex = rowIndex;
+            _result = default;
+            Error = new CsvMappingError(colIndex, errorMessage);
+            IsValid = false;
+        }
 
-        public bool IsValid { get { return Error == null; } }
+        public readonly int RowIndex;
+
+        public readonly CsvMappingError Error;
+
+        public TEntity Result => 
+            IsValid ? _result : throw new InvalidOperationException($"{Error.Message} (Row: {RowIndex}, Column: {Error.ColumnIndex})");
+
+        public readonly bool IsValid;
 
         public override string ToString()
         {
-            return string.Format("CsvMappingResult (Error = {0}, Result = {1})", Error, Result);
+            if (!IsValid)
+                return $"CsvMappingResult (RowIndex = {RowIndex}, Error = {Error})";
+            return $"CsvMappingResult (RowIndex = {RowIndex}, Result = {Result})";
         }
     }
 }

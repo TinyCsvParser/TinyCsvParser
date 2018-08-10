@@ -15,13 +15,13 @@ namespace TinyCsvParser.Test.TypeConverter
             get { return new DateTimeConverter(); }
         }
 
-        protected override Tuple<string, DateTime>[] SuccessTestData
+        protected override (string, DateTime)[] SuccessTestData
         {
             get
             {
                 return new[] {
-                    MakeTuple("2014/01/01", new DateTime(2014, 1, 1)),
-                    MakeTuple("9999/12/31", new DateTime(9999, 12, 31)),
+                    ("2014/01/01", new DateTime(2014, 1, 1)),
+                    ("9999/12/31", new DateTime(9999, 12, 31)),
                 };
             }
         }

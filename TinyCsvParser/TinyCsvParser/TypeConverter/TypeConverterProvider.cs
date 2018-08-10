@@ -63,9 +63,8 @@ namespace TinyCsvParser.TypeConverter
         public ITypeConverter<TTargetType> Resolve<TTargetType>()
         {
             Type targetType = typeof(TTargetType);
-            
-            ITypeConverter typeConverter = null;
-            if (!typeConverters.TryGetValue(targetType, out typeConverter))
+
+            if (!typeConverters.TryGetValue(targetType, out ITypeConverter typeConverter))
             {
                 throw new CsvTypeConverterNotRegisteredException(string.Format("No TypeConverter registered for Type {0}", targetType));
             }

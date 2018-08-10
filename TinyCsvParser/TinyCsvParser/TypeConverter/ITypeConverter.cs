@@ -12,7 +12,7 @@ namespace TinyCsvParser.TypeConverter
 
     public interface ITypeConverter<TTargetType> : ITypeConverter
     {
-        bool TryConvert(string value, out TTargetType result);
+        bool TryConvert(ReadOnlySpan<char> value, out TTargetType result);
 
         Type TargetType { get; }
     }

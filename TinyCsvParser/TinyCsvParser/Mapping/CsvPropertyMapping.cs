@@ -9,36 +9,34 @@ using TinyCsvParser.TypeConverter;
 namespace TinyCsvParser.Mapping
 {
     public class CsvPropertyMapping<TEntity, TProperty> : ICsvPropertyMapping<TEntity>
-        where TEntity : class, new()
+        where TEntity : new()
     {
-        private string propertyName;
-        private ITypeConverter<TProperty> propertyConverter;
-        private Action<TEntity, TProperty> propertySetter;
+        private readonly string _propertyName;
+        private readonly ITypeConverter<TProperty> _propertyConverter;
+        private readonly Action<TEntity, TProperty> _propertySetter;
 
         public CsvPropertyMapping(Expression<Func<TEntity, TProperty>> property, ITypeConverter<TProperty> typeConverter) 
         {
-            propertyConverter = typeConverter;
-            propertyName = ReflectionUtils.GetPropertyNameFromExpression(property);
-            propertySetter = ReflectionUtils.CreateSetter<TEntity, TProperty>(property);
+            _propertyConverter = typeConverter;
+            _propertyName = ReflectionUtils.GetPropertyNameFromExpression(property);
+            _propertySetter = ReflectionUtils.CreateSetter(property);
         }
 
-        public bool TryMapValue(TEntity entity, string value) 
+        public bool TryMapValue(TEntity entity, ReadOnlySpan<char> value) 
         {
-            TProperty convertedValue;
-
-            if (!propertyConverter.TryConvert(value, out convertedValue))
+            if (!_propertyConverter.TryConvert(value, out TProperty convertedValue))
             {
                 return false;
             }
 
-            propertySetter(entity, convertedValue);
+            _propertySetter(entity, convertedValue);
 
             return true;
         }
         
         public override string ToString()
         {
-            return string.Format("CsvPropertyMapping (PropertyName = {0}, Converter = {1})", propertyName, propertyConverter);
+            return $"CsvPropertyMapping (PropertyName = {_propertyName}, Converter = {_propertyConverter})";
         }
     }
 }

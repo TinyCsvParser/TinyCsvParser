@@ -21,12 +21,12 @@ namespace TinyCsvParser.Test.TypeConverter
             get { return new EnumConverter<TestEnum>(false); }
         }
 
-        protected override Tuple<string, TestEnum>[] SuccessTestData
+        protected override (string, TestEnum)[] SuccessTestData
         {
             get
             {
                 return new[] {
-                    MakeTuple("A", TestEnum.A),
+                    ("A", TestEnum.A),
                 };
             }
         }
@@ -45,13 +45,13 @@ namespace TinyCsvParser.Test.TypeConverter
             get { return new EnumConverter<TestEnum>(true); }
         }
 
-        protected override Tuple<string, TestEnum>[] SuccessTestData
+        protected override (string, TestEnum)[] SuccessTestData
         {
             get
             {
                 return new[] {
-                    MakeTuple("A", TestEnum.A),
-                    MakeTuple("a", TestEnum.A),
+                    ("A", TestEnum.A),
+                    ("a", TestEnum.A),
                 };
             }
         }

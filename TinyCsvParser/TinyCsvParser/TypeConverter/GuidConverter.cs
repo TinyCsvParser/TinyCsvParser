@@ -19,7 +19,7 @@ namespace TinyCsvParser.TypeConverter
             this.format = format;
         }
 
-        protected override bool InternalConvert(string value, out Guid result)
+        protected override bool InternalConvert(ReadOnlySpan<char> value, out Guid result)
         {
             if (string.IsNullOrWhiteSpace(format))
             {

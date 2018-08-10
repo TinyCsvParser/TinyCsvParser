@@ -15,15 +15,15 @@ namespace TinyCsvParser.Test.TypeConverter
             get { return new UInt64Converter(); }
         }
 
-        protected override Tuple<string, ulong>[] SuccessTestData
+        protected override (string, ulong)[] SuccessTestData
         {
             get
             {
-                return new[] {
-                    MakeTuple(UInt64.MinValue.ToString(), UInt64.MinValue),
-                    MakeTuple(UInt64.MaxValue.ToString(), UInt64.MaxValue),
-                    MakeTuple("0", 0),
-                    MakeTuple("1000", 1000)
+                return new (string, ulong)[] {
+                    (UInt64.MinValue.ToString(), UInt64.MinValue),
+                    (UInt64.MaxValue.ToString(), UInt64.MaxValue),
+                    ("0", 0),
+                    ("1000", 1000)
                 };
             }
         }

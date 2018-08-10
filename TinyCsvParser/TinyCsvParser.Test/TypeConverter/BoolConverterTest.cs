@@ -15,15 +15,15 @@ namespace TinyCsvParser.Test.TypeConverter
             get { return new BoolConverter(); }
         }
 
-        protected override Tuple<string, bool>[] SuccessTestData
+        protected override (string, bool)[] SuccessTestData
         {
             get
             {
                 return new[] {
-                    MakeTuple("true", true),
-                    MakeTuple("false", false),
-                    MakeTuple("True", true),
-                    MakeTuple("False", false),
+                    ("true", true),
+                    ("false", false),
+                    ("True", true),
+                    ("False", false),
                 };
             }
         }
@@ -42,13 +42,13 @@ namespace TinyCsvParser.Test.TypeConverter
             get { return new BoolConverter("ThisIsTrue", "ThisIsFalse", StringComparison.Ordinal); }
         }
 
-        protected override Tuple<string, bool>[] SuccessTestData
+        protected override (string, bool)[] SuccessTestData
         {
             get
             {
                 return new[] {
-                    MakeTuple("ThisIsTrue", true),
-                    MakeTuple("ThisIsFalse", false),
+                    ("ThisIsTrue", true),
+                    ("ThisIsFalse", false),
                 };
             }
         }

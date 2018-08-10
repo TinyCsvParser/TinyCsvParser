@@ -16,17 +16,17 @@ namespace TinyCsvParser.Test.TypeConverter
             get { return new NullableTimeSpanConverter(); }
         }
 
-        protected override Tuple<string, TimeSpan?>[] SuccessTestData
+        protected override (string, TimeSpan?)[] SuccessTestData
         {
             get
             {
                 return new[] {
-                    MakeTuple(TimeSpan.MinValue.ToString(), TimeSpan.MinValue),
-                    MakeTuple("14", TimeSpan.FromDays(14)),
-                    MakeTuple("1:2:3", TimeSpan.FromHours(1).Add(TimeSpan.FromMinutes(2)).Add(TimeSpan.FromSeconds(3))),
-                    MakeTuple(" ", default(TimeSpan?)),
-                    MakeTuple(null, default(TimeSpan?)),
-                    MakeTuple(string.Empty, default(TimeSpan?))
+                    (TimeSpan.MinValue.ToString(), TimeSpan.MinValue),
+                    ("14", TimeSpan.FromDays(14)),
+                    ("1:2:3", TimeSpan.FromHours(1).Add(TimeSpan.FromMinutes(2)).Add(TimeSpan.FromSeconds(3))),
+                    (" ", default(TimeSpan?)),
+                    (null, default(TimeSpan?)),
+                    (string.Empty, default(TimeSpan?))
                 };
             }
         }

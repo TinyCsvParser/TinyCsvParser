@@ -16,14 +16,14 @@ namespace TinyCsvParser.Test.TypeConverter
             get { return new TimeSpanConverter(); }
         }
 
-        protected override Tuple<string, TimeSpan>[] SuccessTestData
+        protected override (string, TimeSpan)[] SuccessTestData
         {
             get
             {
                 return new[] {
-                    MakeTuple(TimeSpan.MinValue.ToString(), TimeSpan.MinValue),
-                    MakeTuple("14", TimeSpan.FromDays(14)),
-                    MakeTuple("1:2:3", TimeSpan.FromHours(1).Add(TimeSpan.FromMinutes(2)).Add(TimeSpan.FromSeconds(3))),
+                    (TimeSpan.MinValue.ToString(), TimeSpan.MinValue),
+                    ("14", TimeSpan.FromDays(14)),
+                    ("1:2:3", TimeSpan.FromHours(1).Add(TimeSpan.FromMinutes(2)).Add(TimeSpan.FromSeconds(3))),
                 };
             }
         }
@@ -42,12 +42,12 @@ namespace TinyCsvParser.Test.TypeConverter
             get { return new TimeSpanConverter(@"hh\:mm\:ss"); }
         }
 
-        protected override Tuple<string, TimeSpan>[] SuccessTestData
+        protected override (string, TimeSpan)[] SuccessTestData
         {
             get
             {
                 return new[] {
-                    MakeTuple("01:02:03", TimeSpan.FromHours(1).Add(TimeSpan.FromMinutes(2)).Add(TimeSpan.FromSeconds(3))),
+                    ("01:02:03", TimeSpan.FromHours(1).Add(TimeSpan.FromMinutes(2)).Add(TimeSpan.FromSeconds(3))),
                 };
             }
         }

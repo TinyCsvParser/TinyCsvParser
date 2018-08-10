@@ -16,18 +16,18 @@ namespace TinyCsvParser.Test.TypeConverter
             get { return new NullableInt16Converter(); }
         }
 
-        protected override Tuple<string, Int16?>[] SuccessTestData
+        protected override (string, Int16?)[] SuccessTestData
         {
             get
             {
-                return new [] {
-                    MakeTuple(Int16.MinValue.ToString(), Int16.MinValue),
-                    MakeTuple(Int16.MaxValue.ToString(), Int16.MaxValue),
-                    MakeTuple(null, default(Int16?)),
-                    MakeTuple(string.Empty, default(Int16?)),
-                    MakeTuple("0", 0),
-                    MakeTuple("-1000", -1000),
-                    MakeTuple("1000", 1000)
+                return new (string, Int16?)[] {
+                    (Int16.MinValue.ToString(), Int16.MinValue),
+                    (Int16.MaxValue.ToString(), Int16.MaxValue),
+                    (null, default(Int16?)),
+                    (string.Empty, default(Int16?)),
+                    ("0", 0),
+                    ("-1000", -1000),
+                    ("1000", 1000)
                 };
             }
         }

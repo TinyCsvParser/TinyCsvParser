@@ -16,19 +16,19 @@ namespace TinyCsvParser.Test.TypeConverter
             get { return new NullableSByteConverter(); }
         }
 
-        protected override Tuple<string, SByte?>[] SuccessTestData
+        protected override (string, SByte?)[] SuccessTestData
         {
             get
             {
-                return new[] {
-                    MakeTuple(SByte.MinValue.ToString(), SByte.MinValue),
-                    MakeTuple(SByte.MaxValue.ToString(), SByte.MaxValue),
-                    MakeTuple("0", 0),
-                    MakeTuple("-128", -128),
-                    MakeTuple("127", 127),
-                    MakeTuple(" ", default(SByte?)),
-                    MakeTuple(null, default(SByte?)),
-                    MakeTuple(string.Empty, default(SByte?))
+                return new (string, SByte?)[] {
+                    (SByte.MinValue.ToString(), SByte.MinValue),
+                    (SByte.MaxValue.ToString(), SByte.MaxValue),
+                    ("0", 0),
+                    ("-128", -128),
+                    ("127", 127),
+                    (" ", default(SByte?)),
+                    (null, default(SByte?)),
+                    (string.Empty, default(SByte?))
                 };
             }
         }

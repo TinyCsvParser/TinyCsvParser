@@ -28,7 +28,7 @@ namespace TinyCsvParser.TypeConverter
         }
 
 
-        protected override bool InternalConvert(string value, out SByte result)
+        protected override bool InternalConvert(ReadOnlySpan<char> value, out SByte result)
         {
             return SByte.TryParse(value, numberStyles, formatProvider, out result);
         }

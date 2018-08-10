@@ -39,7 +39,7 @@ namespace TinyCsvParser.Test.Issues
         public void QuotedStringParsingTest()
         {
             CsvParserOptions csvParserOptions = new CsvParserOptions(true, string.Empty, new QuotedStringTokenizer(','));
-            CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
+            CsvReaderOptions csvReaderOptions = new CsvReaderOptions(Environment.NewLine);
             SampleEntityMapping csvMapper = new SampleEntityMapping();
             CsvParser<SampleEntity> csvParser = new CsvParser<SampleEntity>(csvParserOptions, csvMapper);
 

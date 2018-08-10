@@ -15,7 +15,7 @@ namespace TinyCsvParser.Reflection
             var property = member as PropertyInfo;
             if (property == null)
             {
-                throw new InvalidOperationException(string.Format("Member with Name '{0}' is not a property.", member.Name));
+                throw new InvalidOperationException($"Member with Name '{member.Name}' is not a property.");
             }
             return property;
         }
