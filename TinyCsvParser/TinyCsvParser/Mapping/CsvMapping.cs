@@ -5,10 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using CoreCsvParser.Tokenizer;
-using CoreCsvParser.TypeConverter;
+using TinyCsvParser.Tokenizer;
+using TinyCsvParser.TypeConverter;
 
-namespace CoreCsvParser.Mapping
+namespace TinyCsvParser.Mapping
 {
     public abstract class CsvMapping<TEntity> where TEntity : new()
     {

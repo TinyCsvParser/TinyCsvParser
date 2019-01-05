@@ -2,9 +2,8 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
-using CoreCsvParser.Reflection;
 
-namespace CoreCsvParser.TypeConverter
+namespace TinyCsvParser.TypeConverter
 {
     public class BoolConverter : NonNullableConverter<bool>
     {

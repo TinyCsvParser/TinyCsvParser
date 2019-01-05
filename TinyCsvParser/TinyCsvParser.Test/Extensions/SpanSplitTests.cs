@@ -1,8 +1,8 @@
-﻿using NUnit.Framework;
-using System;
-using CoreCsvParser.Extensions;
+﻿using System;
+using NUnit.Framework;
+using TinyCsvParser.Extensions;
 
-namespace CoreCsvParser.Test.Extensions
+namespace TinyCsvParser.Test.Extensions
 {
     [TestFixture]
     public class SpanSplitTests

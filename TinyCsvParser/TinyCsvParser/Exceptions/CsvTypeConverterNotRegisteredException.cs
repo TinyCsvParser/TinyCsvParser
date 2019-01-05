@@ -3,7 +3,7 @@
 
 using System;
 
-namespace CoreCsvParser.Exceptions
+namespace TinyCsvParser.Exceptions
 {
     public class CsvTypeConverterNotRegisteredException : Exception
     {

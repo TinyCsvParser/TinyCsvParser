@@ -1,5 +1,4 @@
-﻿using CoreCsvParser.Mapping;
-using System;
+﻿using System;
 using System.Buffers;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,8 +8,9 @@ using System.Reactive.Disposables;
 using System.Reactive.Subjects;
 using System.Text;
 using System.Threading.Tasks;
+using TinyCsvParser.Mapping;
 
-namespace CoreCsvParser
+namespace TinyCsvParser
 {
     // https://blogs.msdn.microsoft.com/dotnet/2018/07/09/system-io-pipelines-high-performance-io-in-net/
     // https://blog.marcgravell.com/2018/07/pipe-dreams-part-1.html

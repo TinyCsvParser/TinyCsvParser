@@ -4,9 +4,9 @@
 using System;
 using System.Globalization;
 
-namespace CoreCsvParser.TypeConverter
+namespace TinyCsvParser.TypeConverter
 {
-    public class NullableByteConverter : NullableInnerConverter<byte>
+    public class NullableByteConverter : NullableInnerConverter<Byte>
     {
         public NullableByteConverter()
             : base(new ByteConverter())

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CoreCsvParser.Extensions
+namespace TinyCsvParser.Extensions
 {
     public static class ListExtensions
     {

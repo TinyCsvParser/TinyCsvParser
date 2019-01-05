@@ -1,14 +1,13 @@
-﻿using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Running;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Threading.Tasks;
 using System.Text;
-using CoreCsvParser.Mapping;
-using CoreCsvParser.TypeConverter;
+using BenchmarkDotNet.Attributes;
+using TinyCsvParser.Mapping;
+using TinyCsvParser.TypeConverter;
 
-namespace CoreCsvParser.Benchmark
+namespace TinyCsvParser.Benchmark
 {
     public class LocalWeatherData : IEquatable<LocalWeatherData>
     {

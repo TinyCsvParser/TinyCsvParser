@@ -3,7 +3,7 @@
 
 using System;
 
-namespace CoreCsvParser.Tokenizer
+namespace TinyCsvParser.Tokenizer
 {
     public class StringSplitTokenizer : ITokenizer
     {

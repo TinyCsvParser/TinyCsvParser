@@ -2,10 +2,8 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
-using System.Globalization;
-using CoreCsvParser.Exceptions;
 
-namespace CoreCsvParser.TypeConverter
+namespace TinyCsvParser.TypeConverter
 {
     public abstract class NullableInnerConverter<TTargetType> : NullableConverter<TTargetType?>
         where TTargetType : struct

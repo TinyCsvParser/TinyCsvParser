@@ -3,10 +3,10 @@
 
 using System;
 using System.Linq.Expressions;
-using CoreCsvParser.Reflection;
-using CoreCsvParser.TypeConverter;
+using TinyCsvParser.Reflection;
+using TinyCsvParser.TypeConverter;
 
-namespace CoreCsvParser.Mapping
+namespace TinyCsvParser.Mapping
 {
     public class CsvPropertyMapping<TEntity, TProperty> : ICsvPropertyMapping<TEntity>
         where TEntity : new()

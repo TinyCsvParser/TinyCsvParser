@@ -4,7 +4,7 @@
 using System;
 using System.Diagnostics;
 
-namespace CoreCsvParser.Test.Benchmarks
+namespace TinyCsvParser.Test.Benchmarks
 {
     public static class MeasurementUtils
     {

@@ -4,7 +4,7 @@
 using System;
 using System.Globalization;
 
-namespace CoreCsvParser.TypeConverter
+namespace TinyCsvParser.TypeConverter
 {
     public class NullableUInt32Converter : NullableInnerConverter<UInt32>
     {

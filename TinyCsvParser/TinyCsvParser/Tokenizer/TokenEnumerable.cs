@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CoreCsvParser.Tokenizer
+namespace TinyCsvParser.Tokenizer
 {
     public delegate ReadOnlySpan<char> NextTokenDelegate(ReadOnlySpan<char> input, out ReadOnlySpan<char> remaining, out bool foundToken);
 

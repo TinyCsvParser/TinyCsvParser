@@ -3,9 +3,9 @@
 
 using System;
 using System.Collections.Generic;
-using CoreCsvParser.Extensions;
+using TinyCsvParser.Extensions;
 
-namespace CoreCsvParser.Tokenizer.RFC4180
+namespace TinyCsvParser.Tokenizer.RFC4180
 {
     public class RFC4180Tokenizer : ITokenizer 
     {

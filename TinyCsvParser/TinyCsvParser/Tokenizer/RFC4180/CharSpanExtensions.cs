@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CoreCsvParser.Tokenizer.RFC4180
+namespace TinyCsvParser.Tokenizer.RFC4180
 {
     public static class CharSpanExtensions
     {

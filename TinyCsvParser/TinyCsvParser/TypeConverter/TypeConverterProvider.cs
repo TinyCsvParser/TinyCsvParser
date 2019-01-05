@@ -3,9 +3,9 @@
 
 using System;
 using System.Collections.Generic;
-using CoreCsvParser.Exceptions;
+using TinyCsvParser.Exceptions;
 
-namespace CoreCsvParser.TypeConverter
+namespace TinyCsvParser.TypeConverter
 {
     public class TypeConverterProvider : ITypeConverterProvider
     {

@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 
-namespace System
+namespace TinyCsvParser.Extensions
 {
     // Based on: https://gist.github.com/LordJZ/e0b5245d69497f2a43a5f09c1d26e34c
 

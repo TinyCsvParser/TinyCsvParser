@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Philipp Wagner and Joel Mueller. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using NUnit.Framework;
 using System;
-using CoreCsvParser.TypeConverter;
+using NUnit.Framework;
+using TinyCsvParser.TypeConverter;
 
-namespace CoreCsvParser.Test.TypeConverter
+namespace TinyCsvParser.Test.TypeConverter
 {
     [TestFixture]
     public class GuidConverterTest : BaseConverterTest<Guid>

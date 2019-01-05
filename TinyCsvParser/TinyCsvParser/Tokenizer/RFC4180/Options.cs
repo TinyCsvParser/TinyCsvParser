@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Philipp Wagner and Joel Mueller. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-namespace CoreCsvParser.Tokenizer.RFC4180
+namespace TinyCsvParser.Tokenizer.RFC4180
 {
     public class Options
     {

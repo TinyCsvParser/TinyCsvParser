@@ -3,7 +3,7 @@
 
 using System;
 
-namespace CoreCsvParser.Mapping
+namespace TinyCsvParser.Mapping
 {
     public interface ICsvPropertyMapping<TEntity> where TEntity : new()
     {

@@ -1,16 +1,16 @@
 ﻿// Copyright (c) Philipp Wagner and Joel Mueller. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using NUnit.Framework;
 using System;
 using System.Linq;
 using System.Text;
-using CoreCsvParser.Mapping;
+using NUnit.Framework;
+using TinyCsvParser.Mapping;
 
-namespace CoreCsvParser.Test.Issues
+namespace TinyCsvParser.Test.Issues
 {
 
-    [TestFixture, Description("https://github.com/bytefish/CoreCsvParser/issues/2")]
+    [TestFixture, Description("https://github.com/bytefish/TinyCsvParser/issues/2")]
     public class Issue2_NegativeValueTest
     {
         public class NegativeValueEntity

@@ -2,11 +2,10 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
-using System.Buffers;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CoreCsvParser.Tokenizer
+namespace TinyCsvParser.Tokenizer
 {
     /// <summary>
     /// Implements a Tokenizer, that makes it possible to Tokenize a CSV line using fixed length columns.

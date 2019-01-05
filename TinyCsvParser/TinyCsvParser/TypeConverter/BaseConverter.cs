@@ -3,7 +3,7 @@
 
 using System;
 
-namespace CoreCsvParser.TypeConverter
+namespace TinyCsvParser.TypeConverter
 {
     public abstract class BaseConverter<TTargetType> : ITypeConverter<TTargetType>
     {

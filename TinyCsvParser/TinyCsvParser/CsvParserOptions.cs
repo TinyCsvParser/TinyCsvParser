@@ -2,9 +2,9 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
-using CoreCsvParser.Tokenizer;
+using TinyCsvParser.Tokenizer;
 
-namespace CoreCsvParser
+namespace TinyCsvParser
 {
     public class CsvParserOptions
     {

@@ -5,9 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using CoreCsvParser.Mapping;
+using TinyCsvParser.Extensions;
+using TinyCsvParser.Mapping;
 
-namespace CoreCsvParser
+namespace TinyCsvParser
 {
     public class CsvParser<TEntity> : ICsvParser<TEntity> where TEntity : new()
     {

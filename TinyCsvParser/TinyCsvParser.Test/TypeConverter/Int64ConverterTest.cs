@@ -1,16 +1,16 @@
 ﻿// Copyright (c) Philipp Wagner and Joel Mueller. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using NUnit.Framework;
 using System;
-using CoreCsvParser.TypeConverter;
+using NUnit.Framework;
+using TinyCsvParser.TypeConverter;
 
-namespace CoreCsvParser.Test.TypeConverter
+namespace TinyCsvParser.Test.TypeConverter
 {
     [TestFixture]
     public class Int64ConverterTest : BaseConverterTest<Int64>
     {
-        protected override ITypeConverter<long> Converter
+        protected override ITypeConverter<Int64> Converter
         {
             get { return new Int64Converter(); }
         }

@@ -4,7 +4,7 @@
 
 using System;
 
-namespace CoreCsvParser.Mapping
+namespace TinyCsvParser.Mapping
 {
     public class CsvMappingException : Exception
     {

@@ -2,10 +2,9 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using NUnit.Framework;
-using System;
-using CoreCsvParser.TypeConverter;
+using TinyCsvParser.TypeConverter;
 
-namespace CoreCsvParser.Test.TypeConverter
+namespace TinyCsvParser.Test.TypeConverter
 {
     [TestFixture]
     public abstract class BaseConverterTest<TTargetType>

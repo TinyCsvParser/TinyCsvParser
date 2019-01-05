@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Philipp Wagner and Joel Mueller. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using NUnit.Framework;
 using System.Text;
-using CoreCsvParser.Tokenizer;
+using NUnit.Framework;
+using TinyCsvParser.Tokenizer;
 
-namespace CoreCsvParser.Test.Tokenizer
+namespace TinyCsvParser.Test.Tokenizer
 {
     [TestFixture]
     public class FixedLengthTokenizerTests

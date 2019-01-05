@@ -4,7 +4,7 @@
 using System;
 using System.Text.RegularExpressions;
 
-namespace CoreCsvParser.Tokenizer.RegularExpressions
+namespace TinyCsvParser.Tokenizer.RegularExpressions
 {
     public class RegularExpressionTokenizer : ITokenizer
     {
