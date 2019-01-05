@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CoreCsvParser\CoreCsvParser.csproj" />
+    <ProjectReference Include="..\TinyCsvParser\TinyCsvParser.csproj" />
   </ItemGroup>
 
   <ItemGroup>
