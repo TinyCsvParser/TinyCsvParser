@@ -106,6 +106,10 @@ namespace TinyCsvParser.Test
 }
 ```
 
+## Thanks ##
+
+Thanks to [@jtmueller](https://github.com/jtmueller) for his great work on using ``Span<T>`` and improving the performance!
+
 ## License ##
 
 The library is released under terms of the [MIT License]:
