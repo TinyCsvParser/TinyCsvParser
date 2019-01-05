@@ -72,8 +72,6 @@ namespace TinyCsvParser
                 query = query.Where(x => !x.line.StartsWith(_options.CommentCharacter));
             }
 
-            var tokenizer = _options.Tokenizer;
-
             return query.Select(x => ParseLine(x.line, x.index));
         }
 
