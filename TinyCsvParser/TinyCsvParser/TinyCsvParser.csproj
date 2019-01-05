@@ -10,7 +10,7 @@
     <RepositoryUrl>git://github.com/bytefish/TinyCsvParser</RepositoryUrl>
     <PackageProjectUrl>https://github.com/bytefish/TinyCsvParser</PackageProjectUrl>
     <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
-    <Copyright>Copyright © 2019 Philipp Wagner</Copyright>
+    <Copyright>Copyright © 2019 Philipp Wagner, Joel Mueller</Copyright>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <AssemblyVersion>3.0.0.0</AssemblyVersion>
     <FileVersion>3.0.0.0</FileVersion>
