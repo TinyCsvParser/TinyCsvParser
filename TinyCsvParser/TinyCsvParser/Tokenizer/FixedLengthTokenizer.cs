@@ -33,18 +33,18 @@ namespace TinyCsvParser.Tokenizer
             }
         }
 
-        private readonly Column[] _columns;
+        private readonly Column[] columns;
 
         public FixedLengthTokenizer(IList<Column> columns, bool trimToken = false) : this(columns?.ToArray(), trimToken) { }
 
         public FixedLengthTokenizer(Column[] columns, bool trimToken = false)
         {
-            _columns = columns ?? throw new ArgumentNullException("columns");
+            this.columns = columns ?? throw new ArgumentNullException("columns");
             TrimToken = trimToken;
         }
 
         public bool TrimToken { get; }
-        public ReadOnlyMemory<Column> Columns => _columns.AsMemory();
+        public ReadOnlyMemory<Column> Columns => columns.AsMemory();
 
         public TokenEnumerable Tokenize(ReadOnlySpan<char> input)
         {
@@ -53,6 +53,7 @@ namespace TinyCsvParser.Tokenizer
 
             ReadOnlySpan<char> nextToken(ReadOnlySpan<char> chars, out ReadOnlySpan<char> remaining, out bool foundToken)
             {
+                // Stop if, we have reached the number of columns to extract:
                 if (colIndex >= colCount)
                 {
                     remaining = ReadOnlySpan<char>.Empty;
@@ -60,16 +61,30 @@ namespace TinyCsvParser.Tokenizer
                     return chars;
                 }
 
-                var col = _columns[colIndex];
+                // Get the current column we iterate:
+                var col = columns[colIndex];
 
-                if (chars.Length < col.End - col.Start)
+                // If we have not enough characters for a split, then the column cannot be parsed!
+                // We should exit at this point, because the assumption of a fixed format does not
+                // hold anymore:
+                if (chars.Length < col.End)
                 {
                     foundToken = false;
-                    return chars = remaining = ReadOnlySpan<char>.Empty;
+
+                    chars = remaining = ReadOnlySpan<char>.Empty;
+
+                    return chars;
                 }
 
-                remaining = chars.Slice(col.End);
+                // Make sure we always return all chars as remaining, so we can do a split on index
+                // instead parsing by length:
+                remaining = chars;
+
                 foundToken = true;
+                
+                // Increase the Column Index for the next Tokenize:
+                colIndex++;
+
                 return TrimToken ? chars.Slice(col.Start, col.End - col.Start).Trim() : chars.Slice(col.Start, col.End - col.Start);
             }
 
@@ -78,7 +93,7 @@ namespace TinyCsvParser.Tokenizer
 
         public override string ToString()
         {
-            var columnDefinitionsString = string.Join(", ", _columns.Select(x => x.ToString()));
+            var columnDefinitionsString = string.Join(", ", columns.Select(x => x.ToString()));
 
             return $"FixedLengthTokenizer (Columns = [{columnDefinitionsString}])";
         }
