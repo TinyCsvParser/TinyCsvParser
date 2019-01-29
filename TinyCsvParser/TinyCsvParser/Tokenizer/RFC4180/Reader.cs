@@ -166,6 +166,11 @@ namespace TinyCsvParser.Tokenizer.RFC4180
 
         private bool IsWhiteSpace(int c)
         {
+            if (IsDelimiter(c))
+            {
+                return false;
+            }
+
             return c == ' ' || c == '\t';
         }
 

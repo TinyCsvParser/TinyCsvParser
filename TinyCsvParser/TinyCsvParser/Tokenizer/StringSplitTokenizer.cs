@@ -1,31 +1,37 @@
 ﻿// Copyright (c) Philipp Wagner. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using System.Linq;
+
 namespace TinyCsvParser.Tokenizer
 {
     public class StringSplitTokenizer : ITokenizer
     {
         public readonly char[] FieldsSeparator;
-        public readonly bool TrimLine;
+        public readonly bool TrimValues;
 
-        public StringSplitTokenizer(char[] fieldsSeparator, bool trimLine)
+        public StringSplitTokenizer(char[] fieldsSeparator, bool trimValues)
         {
             FieldsSeparator = fieldsSeparator;
-            TrimLine = trimLine;
+            TrimValues = trimValues;
         }
 
         public string[] Tokenize(string input)
         {
-            if(TrimLine) 
+            if(TrimValues) 
             {
-                return input.Trim().Split(FieldsSeparator);
+                return input
+                    .Split(FieldsSeparator)
+                    .Select(x => x.Trim())
+                    .ToArray();
             }
+
             return input.Split(FieldsSeparator);
         }
 
         public override string ToString()
         {
-            return string.Format("StringSplitTokenizer (FieldsSeparator = {0}, TrimLine = {1})", FieldsSeparator, TrimLine);
+            return string.Format("StringSplitTokenizer (FieldsSeparator = {0}, TrimValues = {1})", FieldsSeparator, TrimValues);
         }
     }
 }
