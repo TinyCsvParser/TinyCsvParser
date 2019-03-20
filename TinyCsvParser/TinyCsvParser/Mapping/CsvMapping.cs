@@ -81,13 +81,14 @@ namespace TinyCsvParser.Mapping
 
                 if (columnIndex >= values.Tokens.Length)
                 {
-                    return new CsvMappingResult<TEntity>()
+                    return new CsvMappingResult<TEntity>
                     {
                         RowIndex = values.Index,
-                        Error = new CsvMappingError()
+                        Error = new CsvMappingError
                         {
                             ColumnIndex = columnIndex,
-                            Value = string.Format("Column {0} is Out Of Range", columnIndex)
+                            Value = $"Column {columnIndex} is Out Of Range",
+                            UnmappedRow = string.Join("|", values.Tokens)
                         }
                     };
                 }
@@ -96,19 +97,20 @@ namespace TinyCsvParser.Mapping
 
                 if (!indexToPropertyMapping.PropertyMapping.TryMapValue(entity, value))
                 {
-                    return new CsvMappingResult<TEntity>()
+                    return new CsvMappingResult<TEntity>
                     {
                         RowIndex = values.Index,
                         Error = new CsvMappingError
                         {
                             ColumnIndex = columnIndex,
-                            Value = string.Format("Column {0} with Value '{1}' cannot be converted", columnIndex, value)
+                            Value = $"Column {columnIndex} with Value '{value}' cannot be converted",
+                            UnmappedRow = string.Join("|", values.Tokens)
                         }
                     };
                 }
             }
 
-            return new CsvMappingResult<TEntity>()
+            return new CsvMappingResult<TEntity>
             {
                 RowIndex = values.Index,
                 Result = entity

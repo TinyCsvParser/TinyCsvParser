@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Philipp Wagner. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using NUnit.Framework;
 using System;
+using NUnit.Framework;
 using TinyCsvParser.Mapping;
 using TinyCsvParser.Model;
 
-namespace TinyCsvParser.Test.Issues
+namespace TinyCsvParser.Test.Mapping
 {
 
     [TestFixture]
@@ -70,6 +70,7 @@ namespace TinyCsvParser.Test.Issues
 
             Assert.AreEqual("Column 0 with Value '' cannot be converted", result.Error.Value);
             Assert.AreEqual(0, result.Error.ColumnIndex);
+            Assert.AreEqual(string.Empty, result.Error.UnmappedRow);
 
             Assert.DoesNotThrow(() => result.ToString());
         }
