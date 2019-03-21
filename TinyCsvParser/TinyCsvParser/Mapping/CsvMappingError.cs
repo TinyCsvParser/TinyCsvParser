@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Philipp Wagner. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using System;
-
 namespace TinyCsvParser.Mapping
 {
     public class CsvMappingError
@@ -11,9 +9,11 @@ namespace TinyCsvParser.Mapping
 
         public string Value { get; set; }
 
+        public string UnmappedRow { get; set; }
+
         public override string ToString()
         {
-            return string.Format("CsvMappingError (ColumnIndex = {0}, Value = {1})", ColumnIndex, Value);
+            return $"CsvMappingError (ColumnIndex = {ColumnIndex}, Value = {Value}, UnmappedRow = {UnmappedRow})";
         }
     }
 }
