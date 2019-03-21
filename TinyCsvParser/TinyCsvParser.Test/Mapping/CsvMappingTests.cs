@@ -36,7 +36,7 @@ namespace TinyCsvParser.Test.Mapping
         {
             public WrongColumnMapping()
             {
-                MapProperty(1, x => x.PropertyInt);
+                MapProperty(2, x => x.PropertyInt);
             }
         }
 
@@ -45,9 +45,11 @@ namespace TinyCsvParser.Test.Mapping
         {
             var mapping = new WrongColumnMapping();
 
-            var result = mapping.Map(new TokenizedRow(1, new []{"1"}));
+            var result = mapping.Map(new TokenizedRow(1, new[] { "A", "1" }));
 
             Assert.IsFalse(result.IsValid);
+            Assert.IsNotNull(result.Error);
+            Assert.AreEqual("A|1", result.Error.UnmappedRow);
         }
 
         private class CorrectColumnMapping : CsvMapping<SampleEntity>
