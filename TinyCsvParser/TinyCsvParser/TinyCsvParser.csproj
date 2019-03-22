@@ -12,10 +12,10 @@
     <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
     <Copyright>Copyright © 2019 Philipp Wagner</Copyright>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <AssemblyVersion>2.1.1.0</AssemblyVersion>
-    <FileVersion>2.1.1.0</FileVersion>
+    <AssemblyVersion>2.2.0.0</AssemblyVersion>
+    <FileVersion>2.2.0.0</FileVersion>
     <RepositoryType>git</RepositoryType>
-    <Version>2.1.1</Version>
+    <Version>2.2.0</Version>
     <IncludeSource>True</IncludeSource>
     <IncludeSymbols>True</IncludeSymbols>
     <SignAssembly>true</SignAssembly>
