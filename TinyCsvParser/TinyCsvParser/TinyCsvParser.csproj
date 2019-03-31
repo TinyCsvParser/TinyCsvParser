@@ -9,7 +9,7 @@
     <PackageTags>csv, parser, csvparser</PackageTags>
     <RepositoryUrl>git://github.com/bytefish/TinyCsvParser</RepositoryUrl>
     <PackageProjectUrl>https://github.com/bytefish/TinyCsvParser</PackageProjectUrl>
-    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>Copyright © 2019 Philipp Wagner</Copyright>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <AssemblyVersion>2.2.1.0</AssemblyVersion>
