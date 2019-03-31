@@ -38,19 +38,18 @@ namespace TinyCsvParser
             return csvParser.Parse(lines);
         }
 
-        private static IEnumerable<string> ReadLinesFromStream(Stream stream, Encoding encoding)
+        private static IEnumerable<string> ReadLinesFromStream(Stream stream, Encoding encoding, bool detectEncodingFromByteOrderMarks = false, int bufferSize = 1024, bool leaveOpen = false)
         {
-            using (var reader = new StreamReader(stream, encoding, false, 4096, true)) // This stream is volontary kept open allow other uses of it
+            using (var reader = new StreamReader(stream, encoding, detectEncodingFromByteOrderMarks, bufferSize, leaveOpen))
             {
-                string line;
-                while ((line = reader.ReadLine()) != null)
+                while (!reader.EndOfStream)
                 {
-                    yield return line;
+                    yield return reader.ReadLine();
                 }
             }
         }
 
-        public static ParallelQuery<CsvMappingResult<TEntity>> ReadFromStream<TEntity>(this CsvParser<TEntity> csvParser, Stream stream, Encoding encoding)
+        public static ParallelQuery<CsvMappingResult<TEntity>> ReadFromStream<TEntity>(this CsvParser<TEntity> csvParser, Stream stream, Encoding encoding, bool detectEncodingFromByteOrderMarks = false, int bufferSize = 1024, bool leaveOpen = false)
             where TEntity : class, new()
         {
             if (stream == null)
@@ -58,7 +57,7 @@ namespace TinyCsvParser
                 throw new ArgumentNullException("stream");
             }
 
-            var lines = ReadLinesFromStream(stream, encoding)
+            var lines = ReadLinesFromStream(stream, encoding, detectEncodingFromByteOrderMarks, bufferSize, leaveOpen)
                 .Select((line, index) => new Row(index, line));
 
             return csvParser.Parse(lines);
