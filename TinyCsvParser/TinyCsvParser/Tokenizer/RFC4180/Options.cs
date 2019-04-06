@@ -18,8 +18,7 @@ namespace TinyCsvParser.Tokenizer.RFC4180
 
         public override string ToString()
         {
-            return string.Format("Options (QuoteCharacter = {0}, EscapeCharacter = {1}, DelimiterCharacter = {2})",
-                QuoteCharacter, EscapeCharacter, DelimiterCharacter);
+            return $"Options (QuoteCharacter = {QuoteCharacter}, EscapeCharacter = {EscapeCharacter}, DelimiterCharacter = {DelimiterCharacter})";
         }
     }
 }

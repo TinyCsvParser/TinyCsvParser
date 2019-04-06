@@ -122,7 +122,7 @@ namespace TinyCsvParser.Mapping
         {
             var csvPropertyMappingsString =  string.Join(", ", csvPropertyMappings.Select(x => x.ToString()));
 
-            return string.Format("CsvMapping (TypeConverterProvider = {0}, Mappings = {1})", typeConverterProvider, csvPropertyMappingsString);
+            return $"CsvMapping (TypeConverterProvider = {typeConverterProvider}, Mappings = {csvPropertyMappingsString})";
         }
     }
 }

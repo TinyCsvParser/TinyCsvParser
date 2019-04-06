@@ -27,7 +27,7 @@ namespace TinyCsvParser.Tokenizer.RFC4180
 
         public override string ToString()
         {
-            return string.Format("RFC4180Tokenizer (Reader = {0})", reader);
+            return $"RFC4180Tokenizer (Reader = {reader})";
         }
     }
 }

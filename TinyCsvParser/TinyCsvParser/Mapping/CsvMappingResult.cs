@@ -16,7 +16,7 @@ namespace TinyCsvParser.Mapping
 
         public override string ToString()
         {
-            return string.Format("CsvMappingResult (Error = {0}, Result = {1})", Error, Result);
+            return $"CsvMappingResult (Error = {Error}, Result = {Result})";
         }
     }
 }

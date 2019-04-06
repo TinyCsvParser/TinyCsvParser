@@ -31,7 +31,7 @@ namespace TinyCsvParser.Tokenizer
 
         public override string ToString()
         {
-            return string.Format("StringSplitTokenizer (FieldsSeparator = {0}, TrimValues = {1})", FieldsSeparator, TrimValues);
+            return $"StringSplitTokenizer (FieldsSeparator = {FieldsSeparator}, TrimValues = {TrimValues})";
         }
     }
 }

@@ -29,7 +29,7 @@ namespace TinyCsvParser.Tokenizer
 
             public override string ToString()
             {
-                return string.Format("ColumnDefinition (Start = {0}, End = {1}", Start, End);
+                return $"ColumnDefinition (Start = {Start}, End = {End}";
             }
         }
 
@@ -41,7 +41,7 @@ namespace TinyCsvParser.Tokenizer
         {
             if (columns == null)
             {
-                throw new ArgumentNullException("columns");
+                throw new ArgumentNullException(nameof(columns));
             }
 
             Columns = columns;
@@ -52,7 +52,7 @@ namespace TinyCsvParser.Tokenizer
         {
             if (columns == null)
             {
-                throw new ArgumentNullException("columns");
+                throw new ArgumentNullException(nameof(columns));
             }
 
             Columns = columns.ToArray();
@@ -78,7 +78,7 @@ namespace TinyCsvParser.Tokenizer
         {
             var columnDefinitionsString = string.Join(", ", Columns.Select(x => x.ToString()));
 
-            return string.Format("FixedLengthTokenizer (Columns = [{0}], Trim = {1})", columnDefinitionsString, Trim);
+            return $"FixedLengthTokenizer (Columns = [{columnDefinitionsString}], Trim = {Trim})";
         }
     }
 }

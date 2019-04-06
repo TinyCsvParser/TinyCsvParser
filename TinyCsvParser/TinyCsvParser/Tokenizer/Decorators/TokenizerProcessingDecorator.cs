@@ -70,7 +70,7 @@ namespace TinyCsvParser.Tokenizer.Decorators
 
         public override string ToString()
         {
-            return string.Format("TokenizerProcessingDecorator (Preprocessor = {0}, Postprocessor = {1})", preprocessor, postprocessor);
+            return $"TokenizerProcessingDecorator (Preprocessor = {preprocessor}, Postprocessor = {postprocessor})";
         }
     }
 }

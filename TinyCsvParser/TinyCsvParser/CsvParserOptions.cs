@@ -49,8 +49,7 @@ namespace TinyCsvParser
 
         public override string ToString()
         {
-            return string.Format("CsvParserOptions (Tokenizer = {0}, SkipHeader = {1}, DegreeOfParallelism = {2}, KeepOrder = {3}, CommentCharacter = {4})",
-                Tokenizer, SkipHeader, DegreeOfParallelism, KeepOrder, CommentCharacter);
+            return $"CsvParserOptions (Tokenizer = {Tokenizer}, SkipHeader = {SkipHeader}, DegreeOfParallelism = {DegreeOfParallelism}, KeepOrder = {KeepOrder}, CommentCharacter = {CommentCharacter})";
         }
     }
 }

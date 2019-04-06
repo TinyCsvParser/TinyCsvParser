@@ -11,9 +11,9 @@ namespace TinyCsvParser.Mapping
     public class CsvPropertyMapping<TEntity, TProperty> : ICsvPropertyMapping<TEntity>
         where TEntity : class, new()
     {
-        private string propertyName;
-        private ITypeConverter<TProperty> propertyConverter;
-        private Action<TEntity, TProperty> propertySetter;
+        private readonly string propertyName;
+        private readonly ITypeConverter<TProperty> propertyConverter;
+        private readonly Action<TEntity, TProperty> propertySetter;
 
         public CsvPropertyMapping(Expression<Func<TEntity, TProperty>> property, ITypeConverter<TProperty> typeConverter) 
         {
@@ -24,9 +24,7 @@ namespace TinyCsvParser.Mapping
 
         public bool TryMapValue(TEntity entity, string value) 
         {
-            TProperty convertedValue;
-
-            if (!propertyConverter.TryConvert(value, out convertedValue))
+            if (!propertyConverter.TryConvert(value, out var convertedValue))
             {
                 return false;
             }
@@ -38,7 +36,7 @@ namespace TinyCsvParser.Mapping
         
         public override string ToString()
         {
-            return string.Format("CsvPropertyMapping (PropertyName = {0}, Converter = {1})", propertyName, propertyConverter);
+            return $"CsvPropertyMapping (PropertyName = {propertyName}, Converter = {propertyConverter})";
         }
     }
 }

@@ -14,7 +14,7 @@ namespace TinyCsvParser
 
         public override string ToString()
         {
-            return string.Format("CsvReaderOptions (NewLineSeparator = ({0})", string.Join(", ", NewLine));
+            return $"CsvReaderOptions (NewLineSeparator = ({string.Join(", ", NewLine)})";
         }
     }
 }

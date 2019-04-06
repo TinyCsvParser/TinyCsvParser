@@ -19,7 +19,7 @@ namespace TinyCsvParser.Tokenizer
 
         public override string ToString()
         {
-            return string.Format("QuotedStringTokenizer({0})", base.ToString());
+            return $"QuotedStringTokenizer({base.ToString()})";
         }
     }
 }

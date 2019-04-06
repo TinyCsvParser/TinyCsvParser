@@ -55,7 +55,7 @@ namespace TinyCsvParser
 
         public override string ToString()
         {
-            return string.Format("CsvParser (Options = {0}, Mapping = {1})", options, mapping);
+            return $"CsvParser (Options = {options}, Mapping = {mapping})";
         }
     }
 }

@@ -20,7 +20,7 @@ namespace TinyCsvParser.Tokenizer.RegularExpressions
 
         public override string ToString()
         {
-            return string.Format("Regexp = {0}", Regexp);
+            return $"Regexp = {Regexp}";
         }
     }
 }

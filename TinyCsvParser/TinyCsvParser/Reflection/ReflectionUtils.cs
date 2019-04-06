@@ -13,9 +13,12 @@ namespace TinyCsvParser.Reflection
         {
             var member = GetMemberExpression(expression).Member;
             var property = member as PropertyInfo;
+
             if (property == null)
             {
-                throw new InvalidOperationException(string.Format("Member with Name '{0}' is not a property.", member.Name));
+                string message = $"Member with Name '{member.Name}' is not a property.";
+
+                throw new InvalidOperationException(message);
             }
             return property;
         }
@@ -35,7 +38,7 @@ namespace TinyCsvParser.Reflection
 
             if (memberExpression == null)
             {
-                throw new ArgumentException("Not a member access", "expression");
+                throw new ArgumentException("Not a member access", nameof(expression));
             }
 
             return memberExpression;
