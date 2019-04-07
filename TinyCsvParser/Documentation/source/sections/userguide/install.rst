@@ -12,6 +12,11 @@ command in the `Package Manager Console <http://docs.nuget.org/consume/package-m
 ::
     
     PM> Install-Package TinyCsvParser
+
+::
+
+    SHELL> dotnet add package TinyCsvParser
+    
     
 Sources
 ~~~~~~~
