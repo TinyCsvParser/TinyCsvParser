@@ -1,16 +1,18 @@
 ﻿// Copyright (c) Philipp Wagner. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using TinyCsvParser.Mapping;
 using TinyCsvParser.Tokenizer;
 
 namespace TinyCsvParser.Test.Issues
 {
-    [TestFixture, Description("https://github.com/bytefish/TinyCsvParser/issues/4")]
+    // https://github.com/bytefish/TinyCsvParser/issues/4
+    [TestClass]
     public class Issue4_QuotedStringProcessingTest
     {
         public class SampleEntity
@@ -35,8 +37,8 @@ namespace TinyCsvParser.Test.Issues
             }
         }
 
-        [Test]
-        public void QuotedStringParsingTest()
+        [TestMethod]
+        public async Task QuotedStringParsingTest()
         {
             CsvParserOptions csvParserOptions = new CsvParserOptions(true, string.Empty, new QuotedStringTokenizer(','));
             CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
@@ -47,9 +49,9 @@ namespace TinyCsvParser.Test.Issues
                 .AppendLine("Column1,Colum2,Column3,Column4")
                 .AppendLine("1,\"2,3,4\",\"5,6,7\",8");
 
-            var result = csvParser
-                .ReadFromString(csvReaderOptions, stringBuilder.ToString())
-                .ToList();
+            var result = await csvParser
+                .ReadFromStringAsync(csvReaderOptions, stringBuilder.ToString())
+                .ToListAsync();
 
             Assert.AreEqual(1, result.Count);
 

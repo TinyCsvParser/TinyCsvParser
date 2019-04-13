@@ -1,13 +1,13 @@
 ﻿// Copyright (c) Philipp Wagner. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using TinyCsvParser.TypeConverter;
 
 namespace TinyCsvParser.Test.TypeConverter
 {
-    [TestFixture]
+    [TestClass]
     public class BoolConverterTest : BaseConverterTest<bool>
     {
         protected override ITypeConverter<bool> Converter
@@ -34,7 +34,7 @@ namespace TinyCsvParser.Test.TypeConverter
         }
     }
 
-    [TestFixture]
+    [TestClass]
     public class BoolConverterNonDefaultTest : BaseConverterTest<bool>
     {
         protected override ITypeConverter<bool> Converter

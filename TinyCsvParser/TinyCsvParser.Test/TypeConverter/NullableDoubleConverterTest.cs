@@ -1,14 +1,14 @@
 ﻿// Copyright (c) Philipp Wagner. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Globalization;
 using TinyCsvParser.TypeConverter;
 
 namespace TinyCsvParser.Test.TypeConverter
 {
-    [TestFixture]
+    [TestClass]
     public class NullableDoubleConverterTest : BaseConverterTest<Double?>
     {
         protected override ITypeConverter<Double?> Converter
@@ -36,13 +36,13 @@ namespace TinyCsvParser.Test.TypeConverter
 
         public override void AssertAreEqual(Double? expected, Double? actual)
         {
-            if (expected == default(Double?))
+            if (expected == default(double?))
             {
                 Assert.AreEqual(expected, actual);
             }
             else
             {
-                Assert.AreEqual(expected.Value, actual, Double.Epsilon);
+                Assert.AreEqual(expected.Value, actual.Value, double.Epsilon);
             }
         }
 
@@ -52,7 +52,7 @@ namespace TinyCsvParser.Test.TypeConverter
         }
     }
 
-    [TestFixture]
+    [TestClass]
     public class NullableDoubleConverterWithFormatProviderTest : NullableDoubleConverterTest
     {
         protected override ITypeConverter<Double?> Converter
@@ -61,7 +61,7 @@ namespace TinyCsvParser.Test.TypeConverter
         }
     }
 
-    [TestFixture]
+    [TestClass]
     public class NullableDoubleConverterWithFormatProviderAndNumberStyleTest : NullableDoubleConverterTest
     {
         protected override ITypeConverter<Double?> Converter

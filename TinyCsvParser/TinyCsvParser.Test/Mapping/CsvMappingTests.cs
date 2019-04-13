@@ -2,14 +2,14 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TinyCsvParser.Mapping;
 using TinyCsvParser.Model;
 
 namespace TinyCsvParser.Test.Mapping
 {
 
-    [TestFixture]
+    [TestClass]
     public class CsvMappingTests
     {
         private class SampleEntity
@@ -26,10 +26,10 @@ namespace TinyCsvParser.Test.Mapping
             }
         }
         
-        [Test]
+        [TestMethod]
         public void DuplicateMappingTest()
         {
-            Assert.Throws<InvalidOperationException>(() => new DuplicateMapping());
+            Assert.ThrowsException<InvalidOperationException>(() => new DuplicateMapping());
         }
 
         private class WrongColumnMapping : CsvMapping<SampleEntity>
@@ -40,7 +40,7 @@ namespace TinyCsvParser.Test.Mapping
             }
         }
 
-        [Test]
+        [TestMethod]
         public void MapEntity_Invalid_Column_Test()
         {
             var mapping = new WrongColumnMapping();
@@ -61,7 +61,7 @@ namespace TinyCsvParser.Test.Mapping
         }
         
 
-        [Test]
+        [TestMethod]
         public void MapEntity_ConversionError_Test()
         {
             var mapping = new CorrectColumnMapping();
@@ -74,10 +74,17 @@ namespace TinyCsvParser.Test.Mapping
             Assert.AreEqual(0, result.Error.ColumnIndex);
             Assert.AreEqual(string.Empty, result.Error.UnmappedRow);
 
-            Assert.DoesNotThrow(() => result.ToString());
+            try
+            {
+                result.ToString();
+            }
+            catch
+            {
+                Assert.IsTrue(false);
+            }
         }
 
-        [Test]
+        [TestMethod]
         public void MapEntity_ConversionSuccess_Test()
         {
             var mapping = new CorrectColumnMapping();
@@ -87,7 +94,14 @@ namespace TinyCsvParser.Test.Mapping
             Assert.IsTrue(result.IsValid);
             Assert.AreEqual(1, result.Result.PropertyInt);
 
-            Assert.DoesNotThrow(() => result.ToString());
+            try
+            {
+                result.ToString();
+            }
+            catch
+            {
+                Assert.IsTrue(false);
+            }
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Philipp Wagner. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Text;
 using TinyCsvParser.Tokenizer;
@@ -16,10 +16,10 @@ using Postprocessor = TinyCsvParser.Tokenizer.Decorators.TokenizerProcessingDeco
 
 namespace TinyCsvParser.Test.Tokenizer
 {
-    [TestFixture]
+    [TestClass]
     public class TokenizerProcessingDecoratorTests
     {
-        [Test]
+        [TestMethod]
         public void Tokenize_With_Preprocess_ToUppercase_Postprocess_Trim_Test()
         {
             // Defines the Columns of a File:

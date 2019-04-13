@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Philipp Wagner. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using TinyCsvParser.TypeConverter;
 
@@ -12,7 +12,7 @@ namespace TinyCsvParser.Test.TypeConverter
         A = 1
     }
 
-    [TestFixture]
+    [TestClass]
     public class EnumConverterCaseSensitiveTest : BaseConverterTest<TestEnum>
     {
 
@@ -62,17 +62,17 @@ namespace TinyCsvParser.Test.TypeConverter
         }
     }
 
-    [TestFixture]
+    [TestClass]
     public class EnumConverterGeneralTest
     {
         private struct NoEnum 
         {
         }
 
-        [Test]
+        [TestMethod]
         public void CouldNotInstantiateNonEnumTest()
         {
-            Assert.Throws<ArgumentException>(() => new EnumConverter<NoEnum>());
+            Assert.ThrowsException<ArgumentException>(() => new EnumConverter<NoEnum>());
         }
     }
 }

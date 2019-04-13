@@ -20,8 +20,8 @@ namespace TinyCsvParser
             this.options = options;
             this.mapping = mapping;
         }
-
-        public ParallelQuery<CsvMappingResult<TEntity>> Parse(IEnumerable<Row> csvData)
+        
+        public IAsyncEnumerable<CsvMappingResult<TEntity>> ParseAsync(IAsyncEnumerable<Row> csvData)
         {
             if (csvData == null)
             {
@@ -30,16 +30,6 @@ namespace TinyCsvParser
 
             var query = csvData
                 .Skip(options.SkipHeader ? 1 : 0)
-                .AsParallel();
-
-            // If you want to get the same order as in the CSV file, this option needs to be set:
-            if (options.KeepOrder)
-            {
-                query = query.AsOrdered();
-            }
-
-            query = query
-                .WithDegreeOfParallelism(options.DegreeOfParallelism)
                 .Where(row => !string.IsNullOrWhiteSpace(row.Data));
 
             // Ignore Lines, that start with a comment character:

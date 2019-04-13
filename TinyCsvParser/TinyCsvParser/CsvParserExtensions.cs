@@ -13,7 +13,7 @@ namespace TinyCsvParser
 {
     public static class CsvParserExtensions
     {
-        public static ParallelQuery<CsvMappingResult<TEntity>> ReadFromFile<TEntity>(this CsvParser<TEntity> csvParser, string fileName, Encoding encoding)
+        public static IAsyncEnumerable<CsvMappingResult<TEntity>> ReadFromFileAsync<TEntity>(this CsvParser<TEntity> csvParser, string fileName, Encoding encoding)
             where TEntity : class, new()
         {
             if (fileName == null)
@@ -23,21 +23,28 @@ namespace TinyCsvParser
 
             var lines = File
                 .ReadLines(fileName, encoding)
-                .Select((line, index) => new Row(index, line));
+                .Select((line, index) => new Row(index, line))
+                .ToAsyncEnumerable();
 
-            return csvParser.Parse(lines);
+            return csvParser.ParseAsync(lines);
         }
 
-        public static ParallelQuery<CsvMappingResult<TEntity>> ReadFromString<TEntity>(this CsvParser<TEntity> csvParser, CsvReaderOptions csvReaderOptions, string csvData)
+        public static IAsyncEnumerable<CsvMappingResult<TEntity>> ReadFromStringAsync<TEntity>(this CsvParser<TEntity> csvParser, CsvReaderOptions csvReaderOptions, string csvData)
             where TEntity : class, new()
         {
             var lines = csvData
                 .Split(csvReaderOptions.NewLine, StringSplitOptions.None)
-                .Select((line, index) => new Row(index, line));
+                .Select((line, index) => new Row(index, line))
+                .ToAsyncEnumerable();
 
-            return csvParser.Parse(lines);
+            return csvParser.ParseAsync(lines);
         }
 
+        private static IAsyncEnumerable<string> ReadLinesFromStreamAsync(Stream stream, Encoding encoding, bool detectEncodingFromByteOrderMarks = false, int bufferSize = 1024, bool leaveOpen = false)
+        {
+            return ReadLinesFromStream(stream, encoding, detectEncodingFromByteOrderMarks, bufferSize, leaveOpen).ToAsyncEnumerable();
+        }
+        
         private static IEnumerable<string> ReadLinesFromStream(Stream stream, Encoding encoding, bool detectEncodingFromByteOrderMarks = false, int bufferSize = 1024, bool leaveOpen = false)
         {
             using (var reader = new StreamReader(stream, encoding, detectEncodingFromByteOrderMarks, bufferSize, leaveOpen))
@@ -49,7 +56,7 @@ namespace TinyCsvParser
             }
         }
 
-        public static ParallelQuery<CsvMappingResult<TEntity>> ReadFromStream<TEntity>(this CsvParser<TEntity> csvParser, Stream stream, Encoding encoding, bool detectEncodingFromByteOrderMarks = false, int bufferSize = 1024, bool leaveOpen = false)
+        public static IAsyncEnumerable<CsvMappingResult<TEntity>> ReadFromStreamAsync<TEntity>(this CsvParser<TEntity> csvParser, Stream stream, Encoding encoding, bool detectEncodingFromByteOrderMarks = false, int bufferSize = 1024, bool leaveOpen = false)
             where TEntity : class, new()
         {
             if (stream == null)
@@ -57,10 +64,10 @@ namespace TinyCsvParser
                 throw new ArgumentNullException(nameof(stream));
             }
 
-            var lines = ReadLinesFromStream(stream, encoding, detectEncodingFromByteOrderMarks, bufferSize, leaveOpen)
+            var lines = ReadLinesFromStreamAsync(stream, encoding, detectEncodingFromByteOrderMarks, bufferSize, leaveOpen)
                 .Select((line, index) => new Row(index, line));
 
-            return csvParser.Parse(lines);
+            return csvParser.ParseAsync(lines);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Philipp Wagner. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
 using System.Text;
@@ -10,7 +10,7 @@ using TinyCsvParser.Tokenizer.RFC4180;
 
 namespace TinyCsvParser.Test.Tokenizer
 {
-    [TestFixture]
+    [TestClass]
     public class Rfc4180TokenizerTest
     {
         private class SampleEntity
@@ -32,8 +32,8 @@ namespace TinyCsvParser.Test.Tokenizer
             }
         }
 
-        [Test]
-        public void RFC4180_CsvParser_Integration_Test()
+        [TestMethod]
+        public async void RFC4180_CsvParser_Integration_Test()
         {
             // Use a " as Quote Character, a \\ as Escape Character and a , as Delimiter.
             var options = new Options('"', '\\', ',');
@@ -55,9 +55,9 @@ namespace TinyCsvParser.Test.Tokenizer
             // Define the NewLine Character to split at:
             CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
 
-            var result = csvParser
-                .ReadFromString(csvReaderOptions, stringBuilder.ToString())
-                .ToList();
+            var result = await csvParser
+                .ReadFromStringAsync(csvReaderOptions, stringBuilder.ToString())
+                .ToListAsync();
 
             Assert.AreEqual(2, result.Count);
 
@@ -72,7 +72,7 @@ namespace TinyCsvParser.Test.Tokenizer
             Assert.AreEqual("All-around nice guy who always says hi", result[1].Result.Description);
         }
 
-        [Test]
+        [TestMethod]
         public void Rfc4180_QuotedString_Double_Quoted_Data_Test()
         {
             // Use a " as Quote Character, a \\ as Escape Character and a , as Delimiter.
@@ -97,7 +97,7 @@ namespace TinyCsvParser.Test.Tokenizer
             Assert.AreEqual("Also goes by \"Mike\", among friends that is", tokens[2]);
         }
 
-        [Test]
+        [TestMethod]
         public void Rfc4180_Issue3_Empty_Column_Test()
         {
             // Use a " as Quote Character, a \\ as Escape Character and a , as Delimiter.
@@ -121,7 +121,7 @@ namespace TinyCsvParser.Test.Tokenizer
             Assert.AreEqual("All-around nice guy who always says hi", tokens[2]);
         }
 
-        [Test]
+        [TestMethod]
         public void Rfc4180_Issue3_Empty_First_Column_Test()
         {
             // Use a " as Quote Character, a \\ as Escape Character and a , as Delimiter.
@@ -145,7 +145,7 @@ namespace TinyCsvParser.Test.Tokenizer
             Assert.AreEqual("Great Guy", tokens[2]);
         }
 
-        [Test]
+        [TestMethod]
         public void Rfc4180_Issue3_Empty_Last_Columns_Test()
         {
             // Use a " as Quote Character, a \\ as Escape Character and a , as Delimiter.
@@ -169,7 +169,7 @@ namespace TinyCsvParser.Test.Tokenizer
             Assert.AreEqual("", tokens[2]);
         }
 
-        [Test]
+        [TestMethod]
         public void All_Empty_Last_Columns_Test()
         {
             // Use a " as Quote Character, a \\ as Escape Character and a , as Delimiter.
@@ -193,7 +193,7 @@ namespace TinyCsvParser.Test.Tokenizer
             Assert.AreEqual("", tokens[2]);
         }
 
-        [Test]
+        [TestMethod]
         public void All_Empty_Last_Column_Not_Empty_Test()
         {
             // Use a " as Quote Character, a \\ as Escape Character and a , as Delimiter.

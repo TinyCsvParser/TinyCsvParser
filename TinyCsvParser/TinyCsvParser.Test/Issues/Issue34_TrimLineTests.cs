@@ -1,19 +1,18 @@
 ﻿// Copyright (c) Philipp Wagner. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
+using System.Threading.Tasks;
 using TinyCsvParser.Mapping;
 using TinyCsvParser.Tokenizer;
 
 namespace TinyCsvParser.Test.Issues
 {
 
-    [TestFixture]
-    [Description("https://github.com/bytefish/TinyCsvParser/issues/34")]
+    // https://github.com/bytefish/TinyCsvParser/issues/34
+    [TestClass]
     public class Issue34_TrimLineTests
     {
 
@@ -36,8 +35,8 @@ namespace TinyCsvParser.Test.Issues
             }
         }
 
-        [Test]
-        public void LastLineParseTest()
+        [TestMethod]
+        public async Task LastLineParseTest()
         {
             // We have a Line, where the last Column is "Empty":
             string csvLine = "1\t2\t";
@@ -54,9 +53,9 @@ namespace TinyCsvParser.Test.Issues
 
             foreach (var csvParser in csvParsers)
             {
-                var result = csvParser
-                    .ReadFromString(csvReaderOptions, csvLine)
-                    .ToList();
+                var result = await csvParser
+                    .ReadFromStringAsync(csvReaderOptions, csvLine)
+                    .ToListAsync();
 
                 Assert.AreEqual(1, result.Count);
 

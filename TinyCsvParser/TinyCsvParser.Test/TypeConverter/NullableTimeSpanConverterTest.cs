@@ -1,14 +1,14 @@
 ﻿// Copyright (c) Philipp Wagner. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Globalization;
 using TinyCsvParser.TypeConverter;
 
 namespace TinyCsvParser.Test.TypeConverter
 {
-    [TestFixture]
+    [TestClass]
     public class NullableTimeSpanConverterTest : BaseConverterTest<TimeSpan?>
     {
         protected override ITypeConverter<TimeSpan?> Converter
@@ -37,7 +37,7 @@ namespace TinyCsvParser.Test.TypeConverter
         }
     }
 
-    [TestFixture]
+    [TestClass]
     public class NullableTimeSpanConverterWithFormatProviderTest : NullableTimeSpanConverterTest
     {
         protected override ITypeConverter<TimeSpan?> Converter
@@ -46,7 +46,7 @@ namespace TinyCsvParser.Test.TypeConverter
         }
     }
 
-    [TestFixture]
+    [TestClass]
     public class NullableTimeSpanConverterWithFormatAndFormatProviderTest : NullableTimeSpanConverterTest
     {
         protected override ITypeConverter<TimeSpan?> Converter
@@ -55,7 +55,7 @@ namespace TinyCsvParser.Test.TypeConverter
         }
     }
 
-    [TestFixture]
+    [TestClass]
     public class NullableTimeSpanConverterWithFormatAndFormatProviderAndTimeSpanStyleTest : NullableTimeSpanConverterTest
     {
         protected override ITypeConverter<TimeSpan?> Converter

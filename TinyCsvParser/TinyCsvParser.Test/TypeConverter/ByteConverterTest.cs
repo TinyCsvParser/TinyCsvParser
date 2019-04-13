@@ -1,13 +1,13 @@
 ﻿// Copyright (c) Philipp Wagner. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using TinyCsvParser.TypeConverter;
 
 namespace TinyCsvParser.Test.TypeConverter
 {
-    [TestFixture]
+    [TestClass]
     public class ByteConverterTest : BaseConverterTest<Byte>
     {
         protected override ITypeConverter<Byte> Converter

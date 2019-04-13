@@ -1,19 +1,19 @@
 ﻿// Copyright (c) Philipp Wagner. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using TinyCsvParser.Exceptions;
 using TinyCsvParser.TypeConverter;
 
 namespace TinyCsvParser.Test.TypeConverter
 {
-    [TestFixture]
+    [TestClass]
     public class TypeConverterProviderTests
     {
         TypeConverterProvider provider;
 
-        [SetUp]
+        [TestInitialize]
         public void SetUp()
         {
             provider = new TypeConverterProvider();
@@ -24,7 +24,7 @@ namespace TinyCsvParser.Test.TypeConverter
             A = 1
         }
 
-        [Test]
+        [TestMethod]
         public void AddTypeRegistrationTest()
         {
             var typeConverter = provider
@@ -34,13 +34,13 @@ namespace TinyCsvParser.Test.TypeConverter
             Assert.AreEqual(typeof(EnumConverter<SomeEnum>), typeConverter.GetType());
         }
 
-        [Test]
+        [TestMethod]
         public void PreventDuplicateTypeRegistrationTest()
         {
-            Assert.Throws<CsvTypeConverterAlreadyRegisteredException>(() => provider.Add(new Int32Converter()));
+            Assert.ThrowsException<CsvTypeConverterAlreadyRegisteredException>(() => provider.Add(new Int32Converter()));
         }
 
-        [Test]
+        [TestMethod]
         public void ResolveTypeConverter_Registered_Test()
         {
             var typeRegistration = provider.Resolve<Int16>();
@@ -48,10 +48,10 @@ namespace TinyCsvParser.Test.TypeConverter
             Assert.AreEqual(typeof(Int16Converter), typeRegistration.GetType());
         }
 
-        [Test]
+        [TestMethod]
         public void ResolveTypeConverter_NotRegistered_Test()
         {
-            Assert.Throws<CsvTypeConverterNotRegisteredException>(() => provider.Resolve<SomeEnum>());
+            Assert.ThrowsException<CsvTypeConverterNotRegisteredException>(() => provider.Resolve<SomeEnum>());
         }
 
     }

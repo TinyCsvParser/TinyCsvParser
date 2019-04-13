@@ -1,16 +1,17 @@
 ﻿// Copyright (c) Philipp Wagner. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using TinyCsvParser.Mapping;
 
 namespace TinyCsvParser.Test.CsvParser
 {
-    [TestFixture]
+    [TestClass]
     public class CsvParserExtensionsTest
     {
         private class Person
@@ -31,20 +32,20 @@ namespace TinyCsvParser.Test.CsvParser
         }
 
 
-        [Test]
+        [TestMethod]
         public void ReadFromFile_null_Test()
         {
-            CsvParserOptions csvParserOptions = new CsvParserOptions(true, ';', 1, true);
+            CsvParserOptions csvParserOptions = new CsvParserOptions(true, ';');
             CsvPersonMapping csvMapper = new CsvPersonMapping();
             CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
 
-            Assert.Throws<ArgumentNullException>(() => csvParser.ReadFromFile(null, Encoding.UTF8));
+            Assert.ThrowsExceptionAsync<ArgumentNullException>(() => csvParser.ReadFromFileAsync(null, Encoding.UTF8).ToListAsync().AsTask());
         }
 
-        [Test]
-        public void ReadFromFileTest()
+        [TestMethod]
+        public async Task ReadFromFileTest()
         {
-            CsvParserOptions csvParserOptions = new CsvParserOptions(true, ';', 1, true);
+            CsvParserOptions csvParserOptions = new CsvParserOptions(true, ';');
             CsvPersonMapping csvMapper = new CsvPersonMapping();
             CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
 
@@ -52,18 +53,15 @@ namespace TinyCsvParser.Test.CsvParser
                 .AppendLine("FirstName;LastName;BirthDate")
                 .AppendLine("     Philipp;Wagner;1986/05/12       ")
                 .AppendLine("Max;Mustermann;2014/01/01");
-#if NETCOREAPP1_1
-            var basePath = AppContext.BaseDirectory;
-#else 
+
             var basePath = AppDomain.CurrentDomain.BaseDirectory;
-#endif
             var filePath = Path.Combine(basePath, "test_file.txt");
 
             File.WriteAllText(filePath, stringBuilder.ToString(), Encoding.UTF8);
 
-            var result = csvParser
-                .ReadFromFile(filePath.ToString(), Encoding.UTF8)
-                .ToList();
+            var result = await csvParser
+                .ReadFromFileAsync(filePath.ToString(), Encoding.UTF8)
+                .ToListAsync();
 
             Assert.AreEqual(2, result.Count);
 
@@ -83,20 +81,20 @@ namespace TinyCsvParser.Test.CsvParser
             Assert.AreEqual(1, result[1].Result.BirthDate.Day);
         }
 
-        [Test]
+        [TestMethod]
         public void ReadFromStream_null_Test()
         {
-            CsvParserOptions csvParserOptions = new CsvParserOptions(true, ';', 1, true);
+            CsvParserOptions csvParserOptions = new CsvParserOptions(true, ';');
             CsvPersonMapping csvMapper = new CsvPersonMapping();
             CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
 
-            Assert.Throws<ArgumentNullException>(() => csvParser.ReadFromStream(null, Encoding.UTF8));
+            Assert.ThrowsExceptionAsync<ArgumentNullException>(() => csvParser.ReadFromStreamAsync(null, Encoding.UTF8).ToListAsync().AsTask());
         }
 
-        [Test]
-        public void ReadFromStreamTest()
+        [TestMethod]
+        public async Task ReadFromStreamTest()
         {
-            CsvParserOptions csvParserOptions = new CsvParserOptions(true, ';', 1, true);
+            CsvParserOptions csvParserOptions = new CsvParserOptions(true, ';');
             CsvPersonMapping csvMapper = new CsvPersonMapping();
             CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
 
@@ -104,20 +102,17 @@ namespace TinyCsvParser.Test.CsvParser
                 .AppendLine("FirstName;LastName;BirthDate")
                 .AppendLine("     Philipp;Wagner;1986/05/12       ")
                 .AppendLine("Max;Mustermann;2014/01/01");
-#if NETCOREAPP1_1
-            var basePath = AppContext.BaseDirectory;
-#else 
+
             var basePath = AppDomain.CurrentDomain.BaseDirectory;
-#endif
             var filePath = Path.Combine(basePath, "test_file.txt");
 
             File.WriteAllText(filePath, stringBuilder.ToString(), Encoding.UTF8);
 
             using (var stream = File.OpenRead(filePath))
             {
-                var result = csvParser
-                    .ReadFromStream(stream, Encoding.UTF8)
-                    .ToList();
+                var result = await csvParser
+                    .ReadFromStreamAsync(stream, Encoding.UTF8)
+                    .ToListAsync();
 
                 Assert.AreEqual(2, result.Count);
 

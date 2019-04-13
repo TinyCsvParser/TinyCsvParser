@@ -1,16 +1,17 @@
 ﻿// Copyright (c) Philipp Wagner. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using TinyCsvParser.Mapping;
 using TinyCsvParser.Tokenizer;
 
 namespace TinyCsvParser.Test.CsvParser
 {
-    [TestFixture]
+    [TestClass]
     public class CsvParserTest
     {
         private class Person
@@ -30,7 +31,7 @@ namespace TinyCsvParser.Test.CsvParser
             }
         }
 
-        [Test]
+        [TestMethod]
         public void NullInputTest()
         {
             CsvParserOptions csvParserOptions = new CsvParserOptions(true, ';' );
@@ -38,13 +39,15 @@ namespace TinyCsvParser.Test.CsvParser
             CsvPersonMapping csvMapper = new CsvPersonMapping();
             CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
 
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                var result = csvParser.Parse(null);
+            Assert.ThrowsExceptionAsync<ArgumentNullException>(() => {
+                return csvParser
+                    .ParseAsync(null)
+                    .ToListAsync()
+                    .AsTask();
             });
         }
 
-        [Test]
+        [TestMethod]
         public void ToStringTest()
         {
             CsvParserOptions csvParserOptions = new CsvParserOptions(true,  ';');
@@ -53,13 +56,19 @@ namespace TinyCsvParser.Test.CsvParser
             CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
 
             // Make sure the ToString() doesn't throw... 
-            Assert.DoesNotThrow(() => csvParser.ToString());
+            try
+            {
+                csvParser.ToString();
+            } catch
+            {
+                Assert.IsTrue(false);
+            }
 
             // TODO Check ToString Output
         }
 
-        [Test]
-        public void SkipHeaderTest()
+        [TestMethod]
+        public async Task SkipHeaderTest()
         {
             CsvParserOptions csvParserOptions = new CsvParserOptions(true, ';');
             CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
@@ -71,9 +80,9 @@ namespace TinyCsvParser.Test.CsvParser
                 .AppendLine("Philipp;Wagner;1986/05/12")
                 .AppendLine("Max;Mustermann;2014/01/01");
 
-            var result = csvParser
-                .ReadFromString(csvReaderOptions, stringBuilder.ToString())
-                .ToList();
+            var result = await csvParser
+                .ReadFromStringAsync(csvReaderOptions, stringBuilder.ToString())
+                .ToListAsync();
 
             Assert.AreEqual(2, result.Count);
 
@@ -96,8 +105,8 @@ namespace TinyCsvParser.Test.CsvParser
             Assert.AreEqual(1, result[1].Result.BirthDate.Day);
         }
 
-        [Test]
-        public void DoNotSkipHeaderTest()
+        [TestMethod]
+        public async Task DoNotSkipHeaderTest()
         {
             CsvParserOptions csvParserOptions = new CsvParserOptions(false, ';');
             CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
@@ -108,9 +117,9 @@ namespace TinyCsvParser.Test.CsvParser
                 .AppendLine("Philipp;Wagner;1986/05/12")
                 .AppendLine("Max;Mustermann;2014/01/01");
 
-            var result = csvParser
-                .ReadFromString(csvReaderOptions, stringBuilder.ToString())
-                .ToList();
+            var result = await csvParser
+                .ReadFromStringAsync(csvReaderOptions, stringBuilder.ToString())
+                .ToListAsync();
 
             Assert.AreEqual(2, result.Count);
 
@@ -134,8 +143,8 @@ namespace TinyCsvParser.Test.CsvParser
         }
 
 
-        [Test]
-        public void EmptyDataTest()
+        [TestMethod]
+        public async Task EmptyDataTest()
         {
             CsvParserOptions csvParserOptions = new CsvParserOptions(true, ';');
             CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
@@ -146,17 +155,17 @@ namespace TinyCsvParser.Test.CsvParser
             var stringBuilder = new StringBuilder()
                 .AppendLine("FirstName;LastName;BirthDate");
 
-            var result = csvParser
-                .ReadFromString(csvReaderOptions, stringBuilder.ToString())
-                .ToList();
+            var result = await csvParser
+                .ReadFromStringAsync(csvReaderOptions, stringBuilder.ToString())
+                .ToListAsync();
 
             Assert.AreEqual(0, result.Count);
         }
 
-        [Test]
-        public void TrimLineTest()
+        [TestMethod]
+        public async Task TrimLineTest()
         {
-            CsvParserOptions csvParserOptions = new CsvParserOptions(true, ';', 1, true);
+            CsvParserOptions csvParserOptions = new CsvParserOptions(true, ';');
             CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
             CsvPersonMapping csvMapper = new CsvPersonMapping();
             CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
@@ -166,9 +175,9 @@ namespace TinyCsvParser.Test.CsvParser
                 .AppendLine("     Philipp;Wagner;1986/05/12       ")
                 .AppendLine("Max;Mustermann;2014/01/01");
 
-            var result = csvParser
-                .ReadFromString(csvReaderOptions, stringBuilder.ToString())
-                .ToList();
+            var result = await csvParser
+                .ReadFromStringAsync(csvReaderOptions, stringBuilder.ToString())
+                .ToListAsync();
 
             Assert.AreEqual(2, result.Count);
 
@@ -189,10 +198,10 @@ namespace TinyCsvParser.Test.CsvParser
         }
 
 
-        [Test]
-        public void ParallelLinqTest()
+        [TestMethod]
+        public async Task ParallelLinqTest()
         {
-            CsvParserOptions csvParserOptions = new CsvParserOptions(true, ';', 3, true);
+            CsvParserOptions csvParserOptions = new CsvParserOptions(true, ';');
             CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
             CsvPersonMapping csvMapper = new CsvPersonMapping();
             CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
@@ -202,11 +211,11 @@ namespace TinyCsvParser.Test.CsvParser
                 .AppendLine("Philipp;Wagner;1986/05/12")
                 .AppendLine("Max;Mustermann;2014/01/01");
 
-            var result = csvParser
-                .ReadFromString(csvReaderOptions, stringBuilder.ToString())
+            var result = await csvParser
+                .ReadFromStringAsync(csvReaderOptions, stringBuilder.ToString())
                 .Where(x => x.IsValid)
                 .Where(x => x.Result.FirstName == "Philipp")
-                .ToList();
+                .ToListAsync();
 
             Assert.AreEqual(1, result.Count);
 
@@ -218,8 +227,8 @@ namespace TinyCsvParser.Test.CsvParser
             Assert.AreEqual(12, result[0].Result.BirthDate.Day);
         }
 
-        [Test]
-        public void CommentLineTest()
+        [TestMethod]
+        public async Task CommentLineTest()
         {
             CsvParserOptions csvParserOptions = new CsvParserOptions(true, "#", new StringSplitTokenizer(new [] {';'}, false));
             CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
@@ -231,10 +240,10 @@ namespace TinyCsvParser.Test.CsvParser
                 .AppendLine("#Philipp;Wagner;1986/05/12")
                 .AppendLine("Max;Mustermann;2014/01/01");
 
-            var result = csvParser
-                .ReadFromString(csvReaderOptions, stringBuilder.ToString())
+            var result = await csvParser
+                .ReadFromStringAsync(csvReaderOptions, stringBuilder.ToString())
                 .Where(x => x.IsValid)
-                .ToList();
+                .ToListAsync();
 
             Assert.AreEqual(1, result.Count);
 

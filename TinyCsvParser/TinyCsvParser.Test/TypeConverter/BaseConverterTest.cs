@@ -1,13 +1,13 @@
 ﻿// Copyright (c) Philipp Wagner. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using TinyCsvParser.TypeConverter;
 
 namespace TinyCsvParser.Test.TypeConverter
 {
-    [TestFixture]
+    [TestClass]
     public abstract class BaseConverterTest<TTargetType>
     {
         protected abstract ITypeConverter<TTargetType> Converter { get; }
@@ -16,7 +16,7 @@ namespace TinyCsvParser.Test.TypeConverter
 
         protected abstract string[] FailTestData { get; }
 
-        [Test]
+        [TestMethod]
         public void Success()
         {
             foreach (var item in SuccessTestData)
@@ -36,7 +36,7 @@ namespace TinyCsvParser.Test.TypeConverter
             Assert.AreEqual(expected, actual);
         }
 
-        [Test]
+        [TestMethod]
         public void Fail()
         {
             foreach (var item in FailTestData)
@@ -45,7 +45,7 @@ namespace TinyCsvParser.Test.TypeConverter
 
                 var canParse = Converter.TryConvert(item, out result);
 
-                Assert.False(canParse);
+                Assert.IsFalse(canParse);
             }
         }
 

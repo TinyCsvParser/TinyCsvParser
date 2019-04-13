@@ -1,16 +1,17 @@
 ﻿// Copyright (c) Philipp Wagner. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using TinyCsvParser.Mapping;
 using TinyCsvParser.TypeConverter;
 
 namespace TinyCsvParser.Test.CsvParser
 {
-    [TestFixture]
+    [TestClass]
     public class EnumConverterTest
     {
         private enum VehicleTypeEnum
@@ -35,8 +36,8 @@ namespace TinyCsvParser.Test.CsvParser
             }
         }
 
-        [Test]
-        public void CustomEnumConverterTest()
+        [TestMethod]
+        public async Task CustomEnumConverterTest()
         {
             CsvParserOptions csvParserOptions = new CsvParserOptions(true, ';');
             CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
@@ -48,9 +49,9 @@ namespace TinyCsvParser.Test.CsvParser
                 .AppendLine("Car;Suzuki Swift")
                 .AppendLine("Bike;A Bike");
 
-            var result = csvParser
-                .ReadFromString(csvReaderOptions, stringBuilder.ToString())
-                .ToList();
+            var result = await csvParser
+                .ReadFromStringAsync(csvReaderOptions, stringBuilder.ToString())
+                .ToListAsync();
 
             Assert.AreEqual(VehicleTypeEnum.Car, result[0].Result.VehicleType);
             Assert.AreEqual("Suzuki Swift", result[0].Result.Name);
