@@ -1,15 +1,15 @@
 ﻿// Copyright (c) Philipp Wagner. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using TinyCsvParser.Tokenizer;
 
 namespace TinyCsvParser.Test.Tokenizer
 {
-    [TestClass]
+    [TestFixture]
     public class SplitStringTokenizerTests
     {
-        [TestMethod]
+        [Test]
         public void SplitLine_WithTrim_Test()
         {
             var tokenizer = new StringSplitTokenizer(new char[] { ',' }, true);
@@ -23,7 +23,7 @@ namespace TinyCsvParser.Test.Tokenizer
             Assert.AreEqual("3", result[2]);
         }
 
-        [TestMethod]
+        [Test]
         public void SplitLine_WithOutTrim_Test()
         {
             var tokenizer = new StringSplitTokenizer(new char[] { ',' }, false);

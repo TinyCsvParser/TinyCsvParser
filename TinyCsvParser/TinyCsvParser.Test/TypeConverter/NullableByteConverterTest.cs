@@ -1,14 +1,14 @@
 ﻿// Copyright (c) Philipp Wagner. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using System;
 using System.Globalization;
 using TinyCsvParser.TypeConverter;
 
 namespace TinyCsvParser.Test.TypeConverter
 {
-    [TestClass]
+    [TestFixture]
     public class NullableByteConverterTest : BaseConverterTest<Byte?>
     {
         protected override ITypeConverter<Byte?> Converter
@@ -38,7 +38,7 @@ namespace TinyCsvParser.Test.TypeConverter
         }
     }
 
-    [TestClass]
+    [TestFixture]
     public class NullableByteConverterWithFormatProviderTest : NullableByteConverterTest
     {
         protected override ITypeConverter<Byte?> Converter
@@ -47,7 +47,7 @@ namespace TinyCsvParser.Test.TypeConverter
         }
     }
 
-    [TestClass]
+    [TestFixture]
     public class NullableByteConverterWithFormatProviderAndNumberStylesTest : NullableByteConverterTest
     {
         protected override ITypeConverter<Byte?> Converter

@@ -1,16 +1,15 @@
 ﻿// Copyright (c) Philipp Wagner. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using System;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using TinyCsvParser.Mapping;
 
 namespace TinyCsvParser.Test.Integration
 {
-    [TestClass]
+    [TestFixture]
     public class BasicExampleTest
     {
         private class Person
@@ -30,8 +29,8 @@ namespace TinyCsvParser.Test.Integration
             }
         }
 
-        [TestMethod]
-        public async Task PersonMappingTest()
+        [Test]
+        public void PersonMappingTest()
         {
             CsvParserOptions csvParserOptions = new CsvParserOptions(true, ';');
             CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
@@ -43,9 +42,9 @@ namespace TinyCsvParser.Test.Integration
                 .AppendLine("Philipp;Wagner;1986/05/12")
                 .AppendLine("Max;Mustermann;2014/01/01");
 
-            var result = await csvParser
-                .ReadFromStringAsync(csvReaderOptions, stringBuilder.ToString())
-                .ToListAsync();
+            var result = csvParser
+                .ReadFromString(csvReaderOptions, stringBuilder.ToString())
+                .ToList();
 
             Assert.AreEqual(2, result.Count);
 

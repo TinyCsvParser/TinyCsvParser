@@ -1,15 +1,15 @@
 ﻿// Copyright (c) Philipp Wagner. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using TinyCsvParser.Tokenizer;
 
 namespace TinyCsvParser.Test.Tokenizer
 {
-    [TestClass]
+    [TestFixture]
     public class QuotedStringTokenizerTests
     {
-        [TestMethod]
+        [Test]
         public void QuotedString_CommaDelimiter_Test()
         {
             var tokenizer = new QuotedStringTokenizer(',');
@@ -25,7 +25,7 @@ namespace TinyCsvParser.Test.Tokenizer
             Assert.AreEqual("4", result[2]);
         }
 
-        [TestMethod]
+        [Test]
         public void QuotedString_SemicolonDelimiter_Test()
         {
             var tokenizer = new QuotedStringTokenizer(';');
@@ -40,7 +40,7 @@ namespace TinyCsvParser.Test.Tokenizer
             Assert.AreEqual("4", result[2]);
         }
 
-        [TestMethod]
+        [Test]
         public void QuotedString_PipeSymbol_Test()
         {
             var tokenizer = new QuotedStringTokenizer('|');
@@ -57,18 +57,12 @@ namespace TinyCsvParser.Test.Tokenizer
             Assert.AreEqual("4", result[2]);
         }
 
-        [TestMethod]
+        [Test]
         public void QuotedString_ToString_Test()
         {
             var tokenizer = new QuotedStringTokenizer(';');
 
-            try
-            {
-                tokenizer.ToString();
-            } catch
-            {
-                Assert.IsTrue(false);
-            }
+            Assert.DoesNotThrow(() => tokenizer.ToString());
         }
      }
 }

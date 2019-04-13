@@ -1,16 +1,16 @@
 ﻿// Copyright (c) Philipp Wagner. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using System.Text;
 using TinyCsvParser.Tokenizer;
 
 namespace TinyCsvParser.Test.Tokenizer
 {
-    [TestClass]
+    [TestFixture]
     public class FixedLengthTokenizerTests
     {
-        [TestMethod]
+        [Test]
         public void Tokenize_Line_Test()
         {
             var columns = new[] {

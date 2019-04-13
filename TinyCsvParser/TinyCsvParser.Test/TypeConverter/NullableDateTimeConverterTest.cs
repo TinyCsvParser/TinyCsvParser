@@ -1,14 +1,14 @@
 ﻿// Copyright (c) Philipp Wagner. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using System;
 using System.Globalization;
 using TinyCsvParser.TypeConverter;
 
 namespace TinyCsvParser.Test.TypeConverter
 {
-    [TestClass]
+    [TestFixture]
     public class NullableDateTimeConverterTest : BaseConverterTest<DateTime?>
     {
         protected override ITypeConverter<DateTime?> Converter
@@ -36,7 +36,7 @@ namespace TinyCsvParser.Test.TypeConverter
         }
     }
 
-    [TestClass]
+    [TestFixture]
     public class NullableDateTimeConverterWithFormatTest : NullableDateTimeConverterTest
     {
         protected override ITypeConverter<DateTime?> Converter
@@ -45,7 +45,7 @@ namespace TinyCsvParser.Test.TypeConverter
         }
     }
 
-    [TestClass]
+    [TestFixture]
     public class NullableDateTimeConverterWithFormatAndCultureInfoTest : NullableDateTimeConverterTest
     {
         protected override ITypeConverter<DateTime?> Converter
@@ -54,7 +54,7 @@ namespace TinyCsvParser.Test.TypeConverter
         }
     }
 
-    [TestClass]
+    [TestFixture]
     public class NullableDateTimeConverterWithFormatAndCultureInfoAndDateTimeStylesTest : NullableDateTimeConverterTest
     {
         protected override ITypeConverter<DateTime?> Converter

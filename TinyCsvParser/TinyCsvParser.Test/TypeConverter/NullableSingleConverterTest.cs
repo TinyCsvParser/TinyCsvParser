@@ -1,14 +1,14 @@
 ﻿// Copyright (c) Philipp Wagner. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using System;
 using System.Globalization;
 using TinyCsvParser.TypeConverter;
 
 namespace TinyCsvParser.Test.TypeConverter
 {
-    [TestClass]
+    [TestFixture]
     public class NullableSingleConverterTest : BaseConverterTest<Single?>
     {
         protected override ITypeConverter<Single?> Converter
@@ -21,15 +21,15 @@ namespace TinyCsvParser.Test.TypeConverter
             get
             {
                 return new[] {
-                    MakeTuple(float.MinValue.ToString("R"), float.MinValue),
-                    MakeTuple(float.MaxValue.ToString("R"), float.MaxValue),
+                    MakeTuple(Single.MinValue.ToString("R"), Single.MinValue),
+                    MakeTuple(Single.MaxValue.ToString("R"), Single.MaxValue),
                     MakeTuple("0", 0),
                     MakeTuple("-1000", -1000),
                     MakeTuple("1000", 1000),
                     MakeTuple("5e2", 500),
-                    MakeTuple(" ", default(float?)),
-                    MakeTuple(null, default(float?)),
-                    MakeTuple(string.Empty, default(float?))
+                    MakeTuple(" ", default(Single?)),
+                    MakeTuple(null, default(Single?)),
+                    MakeTuple(string.Empty, default(Single?))
                 };
             }
         }
@@ -42,17 +42,17 @@ namespace TinyCsvParser.Test.TypeConverter
             }
             else
             {
-                Assert.AreEqual(expected.Value, actual.Value, float.Epsilon);
+                Assert.AreEqual(expected.Value, actual, float.Epsilon);
             }
         }
 
         protected override string[] FailTestData
         {
-            get { return new[] { "a" }; }
+            get { return new[] { "a", Double.MinValue.ToString(), Double.MaxValue.ToString() }; }
         }
     }
 
-    [TestClass]
+    [TestFixture]
     public class NullableSingleConverterWithFormatProviderTest : NullableSingleConverterTest
     {
         protected override ITypeConverter<Single?> Converter
@@ -61,7 +61,7 @@ namespace TinyCsvParser.Test.TypeConverter
         }
     }
 
-    [TestClass]
+    [TestFixture]
     public class NullableSingleConverterWithFormatProviderAndNumberStyleTest : NullableSingleConverterTest
     {
         protected override ITypeConverter<Single?> Converter
