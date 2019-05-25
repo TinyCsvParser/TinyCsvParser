@@ -10,12 +10,11 @@ using TinyCsvParser.Model;
 namespace TinyCsvParser
 {
     public class CsvParser<TEntity> : ICsvParser<TEntity>
-        where TEntity : class, new()
     {
         private readonly CsvParserOptions options;
-        private readonly CsvMapping<TEntity> mapping;
+        private readonly ICsvMapping<TEntity> mapping;
 
-        public CsvParser(CsvParserOptions options, CsvMapping<TEntity> mapping)
+        public CsvParser(CsvParserOptions options, ICsvMapping<TEntity> mapping)
         {
             this.options = options;
             this.mapping = mapping;
@@ -25,7 +24,7 @@ namespace TinyCsvParser
         {
             if (csvData == null)
             {
-                throw new ArgumentNullException("csvData");
+                throw new ArgumentNullException(nameof(csvData));
             }
 
             var query = csvData

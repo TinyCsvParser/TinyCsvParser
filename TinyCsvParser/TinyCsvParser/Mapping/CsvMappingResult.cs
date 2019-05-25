@@ -4,7 +4,6 @@
 namespace TinyCsvParser.Mapping
 {
     public class CsvMappingResult<TEntity>
-        where TEntity : class, new()
     {
         public int RowIndex { get; set; }
 

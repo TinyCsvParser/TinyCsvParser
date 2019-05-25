@@ -10,7 +10,7 @@ using TinyCsvParser.Model;
 
 namespace TinyCsvParser.Mapping
 {
-    public abstract class CsvMapping<TEntity>
+    public abstract class CsvMapping<TEntity> : ICsvMapping<TEntity>
         where TEntity : class, new()
     {
         private class IndexToPropertyMapping
@@ -21,7 +21,7 @@ namespace TinyCsvParser.Mapping
 
             public override string ToString()
             {
-                return string.Format("IndexToPropertyMapping (ColumnIndex = {0}, PropertyMapping = {1}", ColumnIndex, PropertyMapping);
+                return $"IndexToPropertyMapping (ColumnIndex = {ColumnIndex}, PropertyMapping = {PropertyMapping}";
             }
         }
 
@@ -48,7 +48,7 @@ namespace TinyCsvParser.Mapping
         {
             if (csvPropertyMappings.Any(x => x.ColumnIndex == columnIndex))
             {
-                throw new InvalidOperationException(string.Format("Duplicate mapping for column index {0}", columnIndex));
+                throw new InvalidOperationException($"Duplicate mapping for column index {columnIndex}");
             }
 
             var propertyMapping = new CsvPropertyMapping<TEntity, TProperty>(property, typeConverter);

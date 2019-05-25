@@ -9,7 +9,6 @@ using TinyCsvParser.Model;
 namespace TinyCsvParser
 {
     public interface ICsvParser<TEntity>
-        where TEntity : class, new()
     {
         ParallelQuery<CsvMappingResult<TEntity>> Parse(IEnumerable<Row> csvData);
     }
