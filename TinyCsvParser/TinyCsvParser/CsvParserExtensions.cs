@@ -14,7 +14,6 @@ namespace TinyCsvParser
     public static class CsvParserExtensions
     {
         public static ParallelQuery<CsvMappingResult<TEntity>> ReadFromFile<TEntity>(this CsvParser<TEntity> csvParser, string fileName, Encoding encoding)
-            where TEntity : class, new()
         {
             if (fileName == null)
             {
@@ -29,7 +28,6 @@ namespace TinyCsvParser
         }
 
         public static ParallelQuery<CsvMappingResult<TEntity>> ReadFromString<TEntity>(this CsvParser<TEntity> csvParser, CsvReaderOptions csvReaderOptions, string csvData)
-            where TEntity : class, new()
         {
             var lines = csvData
                 .Split(csvReaderOptions.NewLine, StringSplitOptions.None)
@@ -50,7 +48,6 @@ namespace TinyCsvParser
         }
 
         public static ParallelQuery<CsvMappingResult<TEntity>> ReadFromStream<TEntity>(this CsvParser<TEntity> csvParser, Stream stream, Encoding encoding, bool detectEncodingFromByteOrderMarks = false, int bufferSize = 1024, bool leaveOpen = false)
-            where TEntity : class, new()
         {
             if (stream == null)
             {
