@@ -37,8 +37,7 @@ namespace TinyCsvParser.Mapping
                 return $"IndexToPropertyMapping (Range = {Range}, PropertyMapping = {PropertyMapping}";
             }
         }
-
-
+        
         private readonly ITypeConverterProvider typeConverterProvider;
         private readonly List<IndexToPropertyMapping> csvIndexPropertyMappings;
         private readonly List<RangeToPropertyMapping> csvRangePropertyMappings;
@@ -156,13 +155,26 @@ namespace TinyCsvParser.Mapping
             // Iterate over Range Mappings:
             for (int pos = 0; pos < csvRangePropertyMappings.Count; pos++)
             {
-                var mapping = csvRangePropertyMappings[pos];
+                var rangeToPropertyMapping = csvRangePropertyMappings[pos];
 
-                var range = mapping.Range;
-                var converter = mapping.PropertyMapping;
+                var range = rangeToPropertyMapping.Range;
+
+                // Copy the Sub Array. This needs optimization, like ReadOnlyMemory!
                 var slice = values.Tokens.Skip(range.Start).Take(range.Length).ToArray();
 
-                converter.TryMapValue(entity, slice);
+                if (!rangeToPropertyMapping.PropertyMapping.TryMapValue(entity, slice))
+                {
+                    return new CsvMappingResult<TEntity>
+                    {
+                        RowIndex = values.Index,
+                        Error = new CsvMappingError
+                        {
+                            ColumnIndex = range.Start,
+                            Value = $"Range with Start Index {range.Start} and End Index {range.End} cannot be converted!",
+                            UnmappedRow = string.Join("|", values.Tokens)
+                        }
+                    };
+                }
             }
 
             return new CsvMappingResult<TEntity>
