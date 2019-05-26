@@ -16,4 +16,11 @@ namespace TinyCsvParser.TypeConverter
 
         Type TargetType { get; }
     }
+
+    public interface IArrayTypeConverter<TTargetType> : ITypeConverter
+    {
+        bool TryConvert(string[] value, out TTargetType result);
+
+        Type TargetType { get; }
+    }
 }
