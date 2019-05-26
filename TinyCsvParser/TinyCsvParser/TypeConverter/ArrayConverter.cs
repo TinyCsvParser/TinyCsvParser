@@ -16,16 +16,11 @@ namespace TinyCsvParser.TypeConverter
 
         public bool TryConvert(string[] values, out TTargetType[] result)
         {
-            result = null;
-
             result = new TTargetType[values.Length];
-
 
             for(int pos = 0; pos < values.Length; pos++)
             {
-                TTargetType element = default(TTargetType);
-
-                if (!internalConverter.TryConvert(values[pos], out element))
+                if (!internalConverter.TryConvert(values[pos], out TTargetType element))
                 {
                     return false;
                 }
@@ -36,6 +31,6 @@ namespace TinyCsvParser.TypeConverter
             return true;
         }
 
-        public Type TargetType => typeof(TTargetType);
+        public Type TargetType => typeof(TTargetType[]);
     }
 }

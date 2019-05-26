@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using TinyCsvParser.Exceptions;
+using TinyCsvParser.Reflection;
 
 namespace TinyCsvParser.TypeConverter
 {
@@ -80,38 +81,6 @@ namespace TinyCsvParser.TypeConverter
             Add(new ArrayConverter<UInt16>(new UInt16Converter()));
             Add(new ArrayConverter<UInt32>(new UInt32Converter()));
             Add(new ArrayConverter<UInt64>(new UInt64Converter()));
-
-            Add(new CollectionsConverter<bool>(new BoolConverter()));
-            Add(new CollectionsConverter<byte>(new ByteConverter()));
-            Add(new CollectionsConverter<DateTime>(new DateTimeConverter()));
-            Add(new CollectionsConverter<decimal>(new DecimalConverter()));
-            Add(new CollectionsConverter<double>(new DoubleConverter()));
-            Add(new CollectionsConverter<Guid>(new GuidConverter()));
-            Add(new CollectionsConverter<Int16>(new Int16Converter()));
-            Add(new CollectionsConverter<Int32>(new Int32Converter()));
-            Add(new CollectionsConverter<Int64>(new Int64Converter()));
-            Add(new CollectionsConverter<bool?>(new NullableBoolConverter()));
-            Add(new CollectionsConverter<Byte?>(new NullableByteConverter()));
-            Add(new CollectionsConverter<DateTime?>(new NullableDateTimeConverter()));
-            Add(new CollectionsConverter<Decimal?>(new NullableDecimalConverter()));
-            Add(new CollectionsConverter<double?>(new NullableDoubleConverter()));
-            Add(new CollectionsConverter<Guid?>(new NullableGuidConverter()));
-            Add(new CollectionsConverter<Int16?>(new NullableInt16Converter()));
-            Add(new CollectionsConverter<Int32?>(new NullableInt32Converter()));
-            Add(new CollectionsConverter<Int64?>(new NullableInt64Converter()));
-            Add(new CollectionsConverter<SByte?>(new NullableSByteConverter()));
-            Add(new CollectionsConverter<float?>(new NullableSingleConverter()));
-            Add(new CollectionsConverter<TimeSpan?>(new NullableTimeSpanConverter()));
-            Add(new CollectionsConverter<UInt16?>(new NullableUInt16Converter()));
-            Add(new CollectionsConverter<UInt32?>(new NullableUInt32Converter()));
-            Add(new CollectionsConverter<UInt64?>(new NullableUInt64Converter()));
-            Add(new CollectionsConverter<SByte>(new SByteConverter()));
-            Add(new CollectionsConverter<Single>(new SingleConverter()));
-            Add(new CollectionsConverter<String>(new StringConverter()));
-            Add(new CollectionsConverter<TimeSpan>(new TimeSpanConverter()));
-            Add(new CollectionsConverter<UInt16>(new UInt16Converter()));
-            Add(new CollectionsConverter<UInt32>(new UInt32Converter()));
-            Add(new CollectionsConverter<UInt64>(new UInt64Converter()));
         }
 
         public TypeConverterProvider Add<TTargetType>(ITypeConverter<TTargetType> typeConverter)
@@ -153,7 +122,7 @@ namespace TinyCsvParser.TypeConverter
         public IArrayTypeConverter<TTargetType> ResolveCollection<TTargetType>()
         {
             Type targetType = typeof(TTargetType);
-
+            
             if (!typeConverters.TryGetValue(targetType, out var typeConverter))
             {
                 throw new CsvTypeConverterNotRegisteredException($"No TypeConverter registered for Type {targetType}");
