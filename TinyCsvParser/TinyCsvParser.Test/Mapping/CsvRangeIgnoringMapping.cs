@@ -144,7 +144,6 @@ namespace TinyCsvParser.Test.Mapping
             }
         }
 
-
         [Test]
         public void ExecuteWithMissingValuesTest()
         {
