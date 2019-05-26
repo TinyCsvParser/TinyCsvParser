@@ -5,6 +5,8 @@ namespace TinyCsvParser.TypeConverter
 {
     public interface ITypeConverterProvider
     {
-        ITypeConverter<TTypeConverter> Resolve<TTypeConverter>();
+        ITypeConverter<TTargetType> Resolve<TTargetType>();
+
+        IArrayTypeConverter<TTargetType> ResolveCollection<TTargetType>();
     }
 }

@@ -16,6 +16,7 @@ namespace TinyCsvParser.TypeConverter
 
                 return false;
             }
+
             return InternalConvert(value, out result);
             
         }
