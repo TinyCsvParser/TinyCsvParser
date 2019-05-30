@@ -13,8 +13,4 @@
     <ProjectReference Include="..\TinyCsvParser\TinyCsvParser.csproj" />
   </ItemGroup>
 
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.0' ">
-    <DefineConstants>SYSTEM_RANGE</DefineConstants>
-  </PropertyGroup>
-
 </Project>
