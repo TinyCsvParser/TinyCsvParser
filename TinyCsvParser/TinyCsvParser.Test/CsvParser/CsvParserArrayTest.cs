@@ -6,7 +6,7 @@ using System;
 using System.Linq;
 using System.Text;
 using TinyCsvParser.Mapping;
-using TinyCsvParser.System;
+using TinyCsvParser.Ranges;
 
 namespace TinyCsvParser.Test.CsvParser
 {
@@ -25,7 +25,7 @@ namespace TinyCsvParser.Test.CsvParser
             public CsvMeasurementMapping()
             {
                 MapProperty(0, x => x.Id);
-                MapProperty(new Range(1, 2), x => x.Values);
+                MapProperty(new RangeDefinition(1, 2), x => x.Values);
             }
         }
 

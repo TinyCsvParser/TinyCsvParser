@@ -48,7 +48,7 @@ namespace TinyCsvParser.Test.TypeConverter
 
         protected override string[] FailTestData
         {
-            get { return new[] { "a", Double.MinValue.ToString(), Double.MaxValue.ToString() }; }
+            get { return new[] { "a" }; }
         }
     }
 
