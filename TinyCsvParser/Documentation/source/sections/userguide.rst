@@ -11,7 +11,6 @@ User Guide
     userguide/concepts
     userguide/typeconverter
     userguide/tokenizer
-    userguide/postprocessing
     userguide/parallel
     userguide/info
 

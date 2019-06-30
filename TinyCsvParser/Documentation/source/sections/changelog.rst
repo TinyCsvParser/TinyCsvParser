@@ -11,20 +11,20 @@ Changelog
 2.5.0
 ~~~~~
 
-* Added Range-based mappings to map values into Arrays.
+* Added a range-based :code:`MapProperty` overload, that allows mapping to arrays.
 
 2.4.0
 ~~~~~
 
-* Added an ``ICsvMapping`` interface to allow replacing the ``CsvMapping`` implementation.
-* Removed ``new()`` constraints for mappings.
-* Added a ``CsvStringArrayMapping`` to map data into a String array.
-* Uses ``PackageLicenseExpression`` for NuGet Licensing.
+* Added an :code:`ICsvMapping` interface to allow replacing the :code:`CsvMapping` implementation.
+* Removed :code:`new()` constraints for mappings.
+* Added a :code:`CsvStringArrayMapping` to map data into a String array.
+* Uses :code:`PackageLicenseExpression` for NuGet Licensing.
 
 2.3.0
 ~~~~~
 
-* Extension method ``ReadLinesFromStream`` has been added to read data from Streams directly.
+* Extension method :code:`ReadLinesFromStream` has been added to read data from Streams directly.
 
 2.2.1
 ~~~~~
@@ -34,18 +34,18 @@ Changelog
 2.2.0
 ~~~~~
 
-* Added an Option "UnmappedRow" to the Parser, so Errors have access to the original data.
+* Added an Option :code:`UnmappedRow` to the Parser, so Errors have access to the original data.
 
 2.1.1
 ~~~~~
 
-* Add a Option to trim values to the ``FixedLengthTokenizer``
+* Add a Option to trim values to the :code:`FixedLengthTokenizer`
 
 2.1.0
 ~~~~~
 
-* Fix ``RFC4180Tokenizer`` when using Tabs as Delimiter
-* Added an Option to trim values to the ``StringSplitTokenizer``
+* Fix :code:`RFC4180Tokenizer` when using Tabs as Delimiter
+* Added an Option to trim values to the :code:`StringSplitTokenizer`
 
 2.0.0
 ~~~~~
@@ -53,7 +53,7 @@ Changelog
 Breaking Changes
 ----------------
 
-* Removed the :code:`WithCustomConverter` method from the ``CsvPropertyMapping``
+* Removed the :code:`WithCustomConverter` method from the :code:`CsvPropertyMapping`
 * Changed the constructors of :code:`CsvParserOptions`
   
   *  The parameter :code:`fieldsSeparator` (column separator) is now a :code:`char` (was :code:`char[]`)
