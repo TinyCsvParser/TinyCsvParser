@@ -15,6 +15,7 @@ namespace TinyCsvParser.Test.Mapping
         private class SampleEntity
         {
             public int PropertyInt { get; set; }
+			public int GetOnlyPropertyInt { get; }
         }
 
         private class DuplicateMapping : CsvMapping<SampleEntity>
@@ -89,5 +90,19 @@ namespace TinyCsvParser.Test.Mapping
 
             Assert.DoesNotThrow(() => result.ToString());
         }
-    }
+
+		private class GetOnlyIntColumnMapping : CsvMapping<SampleEntity>
+		{
+			public GetOnlyIntColumnMapping()
+			{
+				MapProperty(0, x => x.GetOnlyPropertyInt);
+			}
+		}
+
+		[Test]
+		public void MapEntity_GetOnlyError_Test()
+		{
+			Assert.Throws<InvalidOperationException>(() => new GetOnlyIntColumnMapping());
+		}
+	}
 }
