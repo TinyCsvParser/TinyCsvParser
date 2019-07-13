@@ -63,14 +63,17 @@ namespace TinyCsvParser.Reflection
             ParameterExpression parameter = Expression.Parameter(typeof(TProperty), "param");
 
 #if NETSTANDARD1_3
-            return Expression.Lambda<Action<TEntity, TProperty>>(
-                Expression.Call(instance, propertyInfo.SetMethod, parameter),
-                new ParameterExpression[] { instance, parameter }).Compile();
+			var setMethod = propertyInfo.SetMethod;
 #else
-            return Expression.Lambda<Action<TEntity, TProperty>>(
-                Expression.Call(instance, propertyInfo.GetSetMethod(), parameter),
-                new ParameterExpression[] { instance, parameter }).Compile();
+			var setMethod = propertyInfo.GetSetMethod();
 #endif
+			if (setMethod == null)
+			{
+				throw new InvalidOperationException($"Unable to map to property '{property.Body}' because it does not contain a setter.");
+			}
+			return Expression.Lambda<Action<TEntity, TProperty>>(
+                Expression.Call(instance, setMethod, parameter),
+                new ParameterExpression[] { instance, parameter }).Compile();
         }
 
         public static string GetPropertyNameFromExpression<TEntity, TProperty>(Expression<Func<TEntity, TProperty>> expression)
