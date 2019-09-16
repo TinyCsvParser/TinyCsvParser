@@ -38,9 +38,11 @@ namespace TinyCsvParser.Mapping
             }
         }
         
+
         private readonly ITypeConverterProvider typeConverterProvider;
         private readonly List<IndexToPropertyMapping> csvIndexPropertyMappings;
         private readonly List<RangeToPropertyMapping> csvRangePropertyMappings;
+        private readonly List<CsvRowMapping<TEntity>> csvRowMappings;
 
         protected CsvMapping()
             : this(new TypeConverterProvider())
@@ -52,6 +54,16 @@ namespace TinyCsvParser.Mapping
             this.typeConverterProvider = typeConverterProvider;
             this.csvIndexPropertyMappings = new List<IndexToPropertyMapping>();
             this.csvRangePropertyMappings = new List<RangeToPropertyMapping>();
+            this.csvRowMappings = new List<CsvRowMapping<TEntity>>();
+        }
+
+        protected CsvRowMapping<TEntity> MapUsing(Action<TEntity, TokenizedRow> action)
+        {
+            var rowMapping = new CsvRowMapping<TEntity>(action);
+
+            csvRowMappings.Add(rowMapping);
+
+            return rowMapping;
         }
 
         protected CsvPropertyMapping<TEntity, TProperty> MapProperty<TProperty>(int columnIndex, Expression<Func<TEntity, TProperty>> property)
@@ -173,6 +185,26 @@ namespace TinyCsvParser.Mapping
                         {
                             ColumnIndex = columnIndex,
                             Value = $"Range with Start Index {range.Start} and End Index {range.End} cannot be converted!",
+                            UnmappedRow = string.Join("|", values.Tokens)
+                        }
+                    };
+                }
+            }
+
+            // Iterate over Row Mappings. At this point previous values for the entity 
+            // should be set:
+            for(int pos = 0; pos < csvRowMappings.Count; pos++)
+            {
+                var csvRowMapping = csvRowMappings[pos];
+
+                if(!csvRowMapping.TryMapValue(entity, values))
+                {
+                    return new CsvMappingResult<TEntity>
+                    {
+                        RowIndex = values.Index,
+                        Error = new CsvMappingError
+                        {
+                            Value = $"Row could not be mapped!",
                             UnmappedRow = string.Join("|", values.Tokens)
                         }
                     };
