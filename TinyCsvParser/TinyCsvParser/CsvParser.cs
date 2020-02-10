@@ -27,9 +27,7 @@ namespace TinyCsvParser
                 throw new ArgumentNullException(nameof(csvData));
             }
 
-            var query = csvData
-                .Skip(options.SkipHeader ? 1 : 0)
-                .AsParallel();
+            var query = csvData.AsParallel();
 
             // If you want to get the same order as in the CSV file, this option needs to be set:
             if (options.KeepOrder)
@@ -38,18 +36,19 @@ namespace TinyCsvParser
             }
 
             query = query
-                .WithDegreeOfParallelism(options.DegreeOfParallelism)
-                .Where(row => !string.IsNullOrWhiteSpace(row.Data));
+                    .WithDegreeOfParallelism(options.DegreeOfParallelism)
+                    .Where(row => !string.IsNullOrWhiteSpace(row.Data));
 
             // Ignore Lines, that start with a comment character:
-            if(!string.IsNullOrWhiteSpace(options.CommentCharacter)) 
+            if (!string.IsNullOrWhiteSpace(options.CommentCharacter))
             {
                 query = query.Where(line => !line.Data.StartsWith(options.CommentCharacter));
             }
-                
+
             return query
-                .Select(line => new TokenizedRow(line.Index, options.Tokenizer.Tokenize(line.Data)))
-                .Select(fields => mapping.Map(fields));
+                   .Skip(options.SkipHeader ? 1 : 0)
+                   .Select(line => new TokenizedRow(line.Index, options.Tokenizer.Tokenize(line.Data)))
+                   .Select(fields => mapping.Map(fields));
         }
 
         public override string ToString()
