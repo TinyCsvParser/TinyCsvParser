@@ -9,14 +9,21 @@ namespace TinyCsvParser
     public class CsvParserOptions
     {
         public readonly ITokenizer Tokenizer;
-        
+
         public readonly bool SkipHeader;
+        public readonly int SkipLast;
 
         public readonly string CommentCharacter;
 
         public readonly int DegreeOfParallelism;
 
         public readonly bool KeepOrder;
+
+        public CsvParserOptions(bool skipHeader, int skipLast, char fieldsSeparator)
+            : this(skipHeader, new QuotedStringTokenizer(fieldsSeparator))
+        {
+            this.SkipLast = skipLast;
+        }
 
         public CsvParserOptions(bool skipHeader, char fieldsSeparator)
             : this(skipHeader, new QuotedStringTokenizer(fieldsSeparator))

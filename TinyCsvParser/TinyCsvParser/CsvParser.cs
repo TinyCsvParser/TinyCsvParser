@@ -29,6 +29,7 @@ namespace TinyCsvParser
 
             var query = csvData
                 .Skip(options.SkipHeader ? 1 : 0)
+                .SkipLast(options.SkipLast)
                 .AsParallel();
 
             // If you want to get the same order as in the CSV file, this option needs to be set:
