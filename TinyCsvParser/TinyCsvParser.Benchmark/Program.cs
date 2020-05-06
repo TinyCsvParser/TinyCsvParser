@@ -2,6 +2,7 @@
 using BenchmarkDotNet.Running;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,34 @@ namespace TinyCsvParser.Benchmark
     [MemoryDiagnoser]
     public class TinyCsvParserBenchmarks
     {
+        
+
+        [GlobalSetup]
+        public void SetupBenchmarkData()
+        {
+
+            const string csvHeader = "WBAN,Date,Time,StationType,SkyCondition,SkyConditionFlag,Visibility,VisibilityFlag,WeatherType,WeatherTypeFlag,DryBulbFarenheit,DryBulbFarenheitFlag,DryBulbCelsius,DryBulbCelsiusFlag,WetBulbFarenheit,WetBulbFarenheitFlag,WetBulbCelsius,WetBulbCelsiusFlag,DewPointFarenheit,DewPointFarenheitFlag,DewPointCelsius,DewPointCelsiusFlag,RelativeHumidity,RelativeHumidityFlag,WindSpeed,WindSpeedFlag,WindDirection,WindDirectionFlag,ValueForWindCharacter,ValueForWindCharacterFlag,StationPressure,StationPressureFlag,PressureTendency,PressureTendencyFlag,PressureChange,PressureChangeFlag,SeaLevelPressure,SeaLevelPressureFlag,RecordType,RecordTypeFlag,HourlyPrecip,HourlyPrecipFlag,Altimeter,AltimeterFlag";
+            const string csvLine = "00102,20150302,1201,0,BKN100, ,10.00, , , ,14, ,-10.0, ,12, ,-11.3, ,3, ,-16.1, , 61, ,11, ,100, ,21, ,29.95, , , , , ,30.26, ,AA, , , ,30.13,";
+
+            const int numLinesToGenerate = 4496263;
+
+            var testFilePath = GetTestFilePath();
+
+            using (var fileStream = File.Create(testFilePath)) 
+            {
+                using (var streamWriter = new StreamWriter(fileStream, Encoding.ASCII))
+                {
+                    streamWriter.WriteLine(csvHeader);
+
+                    for(int i = 0; i < numLinesToGenerate; i++)
+                    {
+                        streamWriter.WriteLine(csvLine);
+                    }
+                }
+            }
+
+        }
+
         [Benchmark]
         public void LocalWeatherRead()
         {
@@ -20,12 +49,30 @@ namespace TinyCsvParser.Benchmark
             var csvMapper = new LocalWeatherDataMapper();
             var csvParser = new CsvParser<LocalWeatherData>(csvParserOptions, csvMapper);
 
-            float result = csvParser.ReadFromFile(@"G:\Datasets\QCLCD\201503hourly.txt", Encoding.ASCII)
+            float result = csvParser.ReadFromFile(GetTestFilePath(), Encoding.ASCII)
                 .Where(x => x.IsValid)
                 .Select(x => x.Result)
                 .Average(x => x.DryBulbCelsius);
 
             Console.WriteLine($"Average Temperature {result}");
+        }
+
+        [GlobalCleanup]
+        public void CleanupBenchmarkData()
+        {
+            var testFilePath = GetTestFilePath();
+
+            File.Delete(testFilePath);
+        }
+
+        private string GetTestFilePath()
+        {
+#if NETCOREAPP1_1
+            var basePath = AppContext.BaseDirectory;
+#else
+            var basePath = AppDomain.CurrentDomain.BaseDirectory;
+#endif
+            return Path.Combine(basePath, "test_file.txt");
         }
     }
 
