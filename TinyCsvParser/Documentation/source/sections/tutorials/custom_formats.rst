@@ -34,7 +34,7 @@ converter for the property mapping.
 		}
 	}
 
-Reading a Boolean wit a custom Format
+Reading a Boolean with a custom Format
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Imagine you want to map between the CSV value and a boolean. The library makes the assumption, that the 
