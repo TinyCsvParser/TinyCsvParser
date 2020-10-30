@@ -36,12 +36,20 @@ namespace TinyCsvParser.Test.CsvParser
                 MapProperty(0, x => x.Property1);
                 MapUsing((entity, values) =>
                 {
+                    // Example of invalidating the row based on its contents
+                    if (values.Tokens.Any(t => t == "Z"))
+                    {
+                        return false;
+                    }
+
                     var subClass = new SubClass();
 
                     subClass.Property2 = values.Tokens[1];
                     subClass.Property3 = values.Tokens[2];
 
                     entity.SubClass = subClass;
+
+                    return true;
                 });
             }
         }
@@ -54,24 +62,27 @@ namespace TinyCsvParser.Test.CsvParser
             CsvMainClassMapping csvMapper = new CsvMainClassMapping();
             CsvParser<MainClass> csvParser = new CsvParser<MainClass>(csvParserOptions, csvMapper);
 
-
             var stringBuilder = new StringBuilder()
+                .AppendLine("X;Y;Z")
                 .AppendLine("A;B;C");
 
             var result = csvParser
                 .ReadFromString(csvReaderOptions, stringBuilder.ToString())
                 .ToList();
 
-            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(2, result.Count);
 
-            Assert.IsTrue(result.All(x => x.IsValid));
-
-            Assert.AreEqual("A", result[0].Result.Property1);
+            Assert.IsFalse(result[0].IsValid);
+            Assert.IsTrue(result[1].IsValid);
             
-            Assert.IsNotNull(result[0].Result.SubClass);
+            Assert.AreEqual("A", result[1].Result.Property1);
+            
+            Assert.IsNotNull(result[1].Result.SubClass);
 
-            Assert.AreEqual("B", result[0].Result.SubClass.Property2);
-            Assert.AreEqual("C", result[0].Result.SubClass.Property3);
+            Assert.AreEqual("B", result[1].Result.SubClass.Property2);
+            Assert.AreEqual("C", result[1].Result.SubClass.Property3);
         }
+
+
     }
 }
