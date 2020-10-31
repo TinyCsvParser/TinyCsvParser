@@ -16,7 +16,7 @@ This is a list of Frequently Asked Questions (FAQ) about TinyCsvParser.
       
 * How can I parse CSV data coming in a custom format?
     * All built-in converters support format strings and other advanced formatting options. Please see the detailed guide on :ref:`Type Converter <userguide_type_converter>` 
-      and have a look at the tutorial on :ref:`Parsing Custom Formats <tutorials_custom_formats>`.
+      and have a look at the tutorial on :ref:`Parsing Custom Formats <tutorials_custom_formats>`. If your needs are highly specific, check out :ref:`Custom Mapping <tutorials_custom_mapping>`.
       
 * Can I contribute to the project?
     * **Yes!** You can help out with code, documentation, bug reports, bug fixes, ... Please see the section on :ref:`Contributing`.

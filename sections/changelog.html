@@ -1,15 +1,18 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Changelog &mdash; TinyCsvParser 2.0 documentation</title>
+  <title>Changelog &mdash; TinyCsvParser 2.6.0 documentation</title>
   
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
 
   
   
@@ -17,45 +20,37 @@
   
 
   
-
-  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-
-  
-  
-    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="../genindex.html"/>
-        <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="TinyCsvParser 2.0 documentation" href="../index.html"/>
-        <link rel="prev" title="Contributing" href="contributing.html"/> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Contributing" href="contributing.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
-            <a href="../index.html" class="icon icon-home"> TinyCsvParser
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> TinyCsvParser
           
 
           
@@ -65,7 +60,7 @@
             
             
               <div class="version">
-                2.0
+                2.6.0
               </div>
             
           
@@ -82,6 +77,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -117,13 +113,14 @@
             
           
         </div>
+        
       </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">TinyCsvParser</a>
@@ -131,9 +128,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -154,7 +152,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../index.html">Docs</a> &raquo;</li>
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>Changelog</li>
     
@@ -180,53 +178,53 @@
 <div class="section" id="id2">
 <h2>2.5.1<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Introduced Bugfixes to Ranges to allow compilation for .NET Core 3.0.</li>
+<li><p>Introduced Bugfixes to Ranges to allow compilation for .NET Core 3.0.</p></li>
 </ul>
 </div>
 <div class="section" id="id3">
 <h2>2.5.0<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Added a range-based <code class="code docutils literal"><span class="pre">MapProperty</span></code> overload, that allows mapping to arrays.</li>
+<li><p>Added a range-based <code class="code docutils literal notranslate"><span class="pre">MapProperty</span></code> overload, that allows mapping to arrays.</p></li>
 </ul>
 </div>
 <div class="section" id="id4">
 <h2>2.4.0<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Added an <code class="code docutils literal"><span class="pre">ICsvMapping</span></code> interface to allow replacing the <code class="code docutils literal"><span class="pre">CsvMapping</span></code> implementation.</li>
-<li>Removed <code class="code docutils literal"><span class="pre">new()</span></code> constraints for mappings.</li>
-<li>Added a <code class="code docutils literal"><span class="pre">CsvStringArrayMapping</span></code> to map data into a String array.</li>
-<li>Uses <code class="code docutils literal"><span class="pre">PackageLicenseExpression</span></code> for NuGet Licensing.</li>
+<li><p>Added an <code class="code docutils literal notranslate"><span class="pre">ICsvMapping</span></code> interface to allow replacing the <code class="code docutils literal notranslate"><span class="pre">CsvMapping</span></code> implementation.</p></li>
+<li><p>Removed <code class="code docutils literal notranslate"><span class="pre">new()</span></code> constraints for mappings.</p></li>
+<li><p>Added a <code class="code docutils literal notranslate"><span class="pre">CsvStringArrayMapping</span></code> to map data into a String array.</p></li>
+<li><p>Uses <code class="code docutils literal notranslate"><span class="pre">PackageLicenseExpression</span></code> for NuGet Licensing.</p></li>
 </ul>
 </div>
 <div class="section" id="id5">
 <h2>2.3.0<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Extension method <code class="code docutils literal"><span class="pre">ReadLinesFromStream</span></code> has been added to read data from Streams directly.</li>
+<li><p>Extension method <code class="code docutils literal notranslate"><span class="pre">ReadLinesFromStream</span></code> has been added to read data from Streams directly.</p></li>
 </ul>
 </div>
 <div class="section" id="id6">
 <h2>2.2.1<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Introduced .netstandard 2.0 support.</li>
+<li><p>Introduced .netstandard 2.0 support.</p></li>
 </ul>
 </div>
 <div class="section" id="id7">
 <h2>2.2.0<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Added an Option <code class="code docutils literal"><span class="pre">UnmappedRow</span></code> to the Parser, so Errors have access to the original data.</li>
+<li><p>Added an Option <code class="code docutils literal notranslate"><span class="pre">UnmappedRow</span></code> to the Parser, so Errors have access to the original data.</p></li>
 </ul>
 </div>
 <div class="section" id="id8">
 <h2>2.1.1<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Add a Option to trim values to the <code class="code docutils literal"><span class="pre">FixedLengthTokenizer</span></code></li>
+<li><p>Add a Option to trim values to the <code class="code docutils literal notranslate"><span class="pre">FixedLengthTokenizer</span></code></p></li>
 </ul>
 </div>
 <div class="section" id="id9">
 <h2>2.1.0<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Fix <code class="code docutils literal"><span class="pre">RFC4180Tokenizer</span></code> when using Tabs as Delimiter</li>
-<li>Added an Option to trim values to the <code class="code docutils literal"><span class="pre">StringSplitTokenizer</span></code></li>
+<li><p>Fix <code class="code docutils literal notranslate"><span class="pre">RFC4180Tokenizer</span></code> when using Tabs as Delimiter</p></li>
+<li><p>Added an Option to trim values to the <code class="code docutils literal notranslate"><span class="pre">StringSplitTokenizer</span></code></p></li>
 </ul>
 </div>
 <div class="section" id="id10">
@@ -234,9 +232,10 @@
 <div class="section" id="breaking-changes">
 <h3>Breaking Changes<a class="headerlink" href="#breaking-changes" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Removed the <code class="code docutils literal"><span class="pre">WithCustomConverter</span></code> method from the <code class="code docutils literal"><span class="pre">CsvPropertyMapping</span></code></li>
-<li>Changed the constructors of <code class="code docutils literal"><span class="pre">CsvParserOptions</span></code><ul>
-<li>The parameter <code class="code docutils literal"><span class="pre">fieldsSeparator</span></code> (column separator) is now a <code class="code docutils literal"><span class="pre">char</span></code> (was <code class="code docutils literal"><span class="pre">char[]</span></code>)</li>
+<li><p>Removed the <code class="code docutils literal notranslate"><span class="pre">WithCustomConverter</span></code> method from the <code class="code docutils literal notranslate"><span class="pre">CsvPropertyMapping</span></code></p></li>
+<li><p>Changed the constructors of <code class="code docutils literal notranslate"><span class="pre">CsvParserOptions</span></code></p>
+<ul>
+<li><p>The parameter <code class="code docutils literal notranslate"><span class="pre">fieldsSeparator</span></code> (column separator) is now a <code class="code docutils literal notranslate"><span class="pre">char</span></code> (was <code class="code docutils literal notranslate"><span class="pre">char[]</span></code>)</p></li>
 </ul>
 </li>
 </ul>
@@ -244,11 +243,12 @@
 <div class="section" id="features">
 <h3>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Added Row Numbers<ul>
-<li>Accessible through <code class="code docutils literal"><span class="pre">CsvMappingResult.RowIndex</span></code></li>
+<li><p>Added Row Numbers</p>
+<ul>
+<li><p>Accessible through <code class="code docutils literal notranslate"><span class="pre">CsvMappingResult.RowIndex</span></code></p></li>
 </ul>
 </li>
-<li><code class="code docutils literal"><span class="pre">RFC4180Tokenizer</span></code> now set as default Tokenizer</li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">RFC4180Tokenizer</span></code> now set as default Tokenizer</p></li>
 </ul>
 </div>
 </div>
@@ -256,16 +256,14 @@
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
       
-        <a href="contributing.html" class="btn btn-neutral" title="Contributing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="contributing.html" class="btn btn-neutral float-left" title="Contributing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -274,11 +272,19 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2016, Philipp Wagner.
+        
+        &copy; Copyright 2020, Philipp Wagner and Contributors
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -290,37 +296,15 @@
   </div>
   
 
-
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'2.0',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>
