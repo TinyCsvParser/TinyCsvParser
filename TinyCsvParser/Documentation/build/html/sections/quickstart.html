@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,51 +11,47 @@
   
 
   
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-
-  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-
-  
-  
-    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="../genindex.html"/>
-        <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="TinyCsvParser 2.0 documentation" href="../index.html"/>
-        <link rel="next" title="Conceptual Overview" href="overview.html"/>
-        <link rel="prev" title="TinyCsvParser" href="../index.html"/> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Conceptual Overview" href="overview.html" />
+    <link rel="prev" title="TinyCsvParser" href="../index.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
-            <a href="../index.html" class="icon icon-home"> TinyCsvParser
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> TinyCsvParser
           
 
           
@@ -83,6 +78,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -110,13 +106,14 @@
             
           
         </div>
+        
       </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">TinyCsvParser</a>
@@ -124,9 +121,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -147,7 +145,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../index.html">Docs</a> &raquo;</li>
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>Quickstart</li>
     
@@ -177,21 +175,21 @@ information, please consult the full <a class="reference internal" href="usergui
 <h2>Quick Installation<a class="headerlink" href="#quick-installation" title="Permalink to this headline">¶</a></h2>
 <p>You can use the <a class="reference external" href="https://www.nuget.org">NuGet</a> package to install <a class="reference external" href="https://github.com/bytefish/TinyCsvParser">TinyCsvParser</a>. Run the following
 command in the <a class="reference external" href="http://docs.nuget.org/consume/package-manager-console">Package Manager Console</a>.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">PM</span><span class="o">&gt;</span> <span class="n">Install</span><span class="o">-</span><span class="n">Package</span> <span class="n">TinyCsvParser</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">PM</span><span class="o">&gt;</span> <span class="n">Install</span><span class="o">-</span><span class="n">Package</span> <span class="n">TinyCsvParser</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="getting-started">
 <h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
-<p>Imagine we have list of persons in a CSV file <code class="code docutils literal"><span class="pre">persons.csv</span></code> with their first name, last name
-and birthdate. The columns are separated by <code class="code docutils literal"><span class="pre">;</span></code> as column delimiter, which each line will be
+<p>Imagine we have list of persons in a CSV file <code class="code docutils literal notranslate"><span class="pre">persons.csv</span></code> with their first name, last name
+and birthdate. The columns are separated by <code class="code docutils literal notranslate"><span class="pre">;</span></code> as column delimiter, which each line will be
 split at.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Philipp</span><span class="p">;</span><span class="n">Wagner</span><span class="p">;</span><span class="mi">1986</span><span class="o">/</span><span class="mi">05</span><span class="o">/</span><span class="mi">12</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Philipp</span><span class="p">;</span><span class="n">Wagner</span><span class="p">;</span><span class="mi">1986</span><span class="o">/</span><span class="mi">05</span><span class="o">/</span><span class="mi">12</span>
 <span class="n">Max</span><span class="p">;</span><span class="n">Musterman</span><span class="p">;</span><span class="mi">2014</span><span class="o">/</span><span class="mi">01</span><span class="o">/</span><span class="mi">02</span>
 </pre></div>
 </div>
 <p>The corresponding domain model in our C# code might look like this.</p>
-<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">class</span> <span class="nc">Person</span>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">class</span> <span class="nc">Person</span>
 <span class="p">{</span>
     <span class="k">public</span> <span class="kt">string</span> <span class="n">FirstName</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
     <span class="k">public</span> <span class="kt">string</span> <span class="n">LastName</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
@@ -200,9 +198,9 @@ split at.</p>
 </pre></div>
 </div>
 <p>When using <a class="reference external" href="https://github.com/bytefish/TinyCsvParser">TinyCsvParser</a> you have to define the mapping between the columns in the CSV data and
-the property in you domain model, which is done by implementing the class <code class="code docutils literal"><span class="pre">CsvMapping&lt;TEntity&gt;</span></code>,
-where <code class="code docutils literal"><span class="pre">TEntity</span></code> is the class <code class="code docutils literal"><span class="pre">Person</span></code>.</p>
-<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">class</span> <span class="nc">CsvPersonMapping</span> <span class="p">:</span> <span class="n">CsvMapping</span><span class="p">&lt;</span><span class="n">Person</span><span class="p">&gt;</span>
+the property in you domain model, which is done by implementing the class <code class="code docutils literal notranslate"><span class="pre">CsvMapping&lt;TEntity&gt;</span></code>,
+where <code class="code docutils literal notranslate"><span class="pre">TEntity</span></code> is the class <code class="code docutils literal notranslate"><span class="pre">Person</span></code>.</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">class</span> <span class="nc">CsvPersonMapping</span> <span class="p">:</span> <span class="n">CsvMapping</span><span class="p">&lt;</span><span class="n">Person</span><span class="p">&gt;</span>
 <span class="p">{</span>
     <span class="k">public</span> <span class="nf">CsvPersonMapping</span><span class="p">()</span>
         <span class="p">:</span> <span class="k">base</span><span class="p">()</span>
@@ -214,12 +212,12 @@ where <code class="code docutils literal"><span class="pre">TEntity</span></code
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>The method <code class="code docutils literal"><span class="pre">MapProperty</span></code> is used to map between the column number in the CSV file and the property in the
+<p>The method <code class="code docutils literal notranslate"><span class="pre">MapProperty</span></code> is used to map between the column number in the CSV file and the property in the
 domain model.</p>
-<p>Then we can use the mapping to parse the CSV data with a <code class="docutils literal"><span class="pre">CsvParser</span></code>. In the <cite>CsvParserOptions</cite> we are
-defining to not skip the header and use a <code class="code docutils literal"><span class="pre">;</span></code> as column delimiter. I have assumed, that the file is encoded
-as <code class="code docutils literal"><span class="pre">ASCII</span></code>.</p>
-<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="k">namespace</span> <span class="nn">TinyCsvParser.Test</span>
+<p>Then we can use the mapping to parse the CSV data with a <code class="docutils literal notranslate"><span class="pre">CsvParser</span></code>. In the <cite>CsvParserOptions</cite> we are
+defining to not skip the header and use a <code class="code docutils literal notranslate"><span class="pre">;</span></code> as column delimiter. I have assumed, that the file is encoded
+as <code class="code docutils literal notranslate"><span class="pre">ASCII</span></code>.</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">namespace</span> <span class="nn">TinyCsvParser.Test</span>
 <span class="p">{</span>
 <span class="na">    [TestFixture]</span>
     <span class="k">public</span> <span class="k">class</span> <span class="nc">TinyCsvParserTest</span>
@@ -259,8 +257,8 @@ as <code class="code docutils literal"><span class="pre">ASCII</span></code>.</p
 </div>
 <div class="section" id="reading-from-a-string">
 <h3>Reading From a String<a class="headerlink" href="#reading-from-a-string" title="Permalink to this headline">¶</a></h3>
-<p>Reading from a string is possible with the <code class="code docutils literal"><span class="pre">CsvParser.ReadFromString</span></code> method.</p>
-<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="k">namespace</span> <span class="nn">TinyCsvParser.Test</span>
+<p>Reading from a string is possible with the <code class="code docutils literal notranslate"><span class="pre">CsvParser.ReadFromString</span></code> method.</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">namespace</span> <span class="nn">TinyCsvParser.Test</span>
 <span class="p">{</span>
 <span class="na">    [TestFixture]</span>
     <span class="k">public</span> <span class="k">class</span> <span class="nc">TinyCsvParserTest</span>
@@ -298,9 +296,7 @@ as <code class="code docutils literal"><span class="pre">ASCII</span></code>.</p
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -309,7 +305,7 @@ as <code class="code docutils literal"><span class="pre">ASCII</span></code>.</p
         <a href="overview.html" class="btn btn-neutral float-right" title="Conceptual Overview" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../index.html" class="btn btn-neutral" title="TinyCsvParser" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../index.html" class="btn btn-neutral float-left" title="TinyCsvParser" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -318,11 +314,19 @@ as <code class="code docutils literal"><span class="pre">ASCII</span></code>.</p
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2016, Philipp Wagner.
+        
+        &copy; Copyright 2016, Philipp Wagner
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -334,37 +338,15 @@ as <code class="code docutils literal"><span class="pre">ASCII</span></code>.</p
   </div>
   
 
-
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'2.0',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>

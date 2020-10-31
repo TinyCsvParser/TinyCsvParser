@@ -16,10 +16,10 @@ Reading a Date with a custom Format
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Imagine a client sends data with a weird format for dates and writes dates like this :code:`2004###01###25`. 
-These values cannot be parsed with the default date format, but in `TinyCsvParser`_ a :csharp:`DateTimeConverter` 
+These values cannot be parsed with the default date format, but in `TinyCsvParser`_ a :code:`DateTimeConverter` 
 with the custom date time format can be used for the mapping.
 
-To use the custom converter, you are simply pass the Converter to the :csharp:`MapProperty` method to define a custom 
+To use the custom converter, you are simply pass the Converter to the :code:`MapProperty` method to define a custom 
 converter for the property mapping.
 
 .. code-block:: csharp
@@ -35,14 +35,14 @@ converter for the property mapping.
 	}
 
 Reading a Boolean with a custom Format
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Imagine you want to map between the CSV value and a boolean. The library makes the assumption, that the 
 string value for true is :code:`"true"` and for false is :code:`"false"`. But now imagine your CSV data 
 uses the text :code:`"ThisIsTrue"` for the boolean value :code:`true`, and :code:`"ThisIsFalse"` for 
 the boolean value :code:`false`. 
 
-Then you have to instantiate and use the :csharp:`BoolConverter` like this:
+Then you have to instantiate and use the :code:`BoolConverter` like this:
 
 .. code-block:: csharp
 

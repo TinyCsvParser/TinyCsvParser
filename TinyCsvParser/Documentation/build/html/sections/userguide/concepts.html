@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,52 +11,47 @@
   
 
   
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-
-  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
-  
-
-  
-  
-    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="../../genindex.html"/>
-        <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="TinyCsvParser 2.0 documentation" href="../../index.html"/>
-        <link rel="up" title="User Guide" href="../userguide.html"/>
-        <link rel="next" title="Type Converter" href="typeconverter.html"/>
-        <link rel="prev" title="Parser" href="parser.html"/> 
-
-  
-  <script src="../../_static/js/modernizr.min.js"></script>
-
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Type Converter" href="typeconverter.html" />
+    <link rel="prev" title="Parser" href="parser.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
-            <a href="../../index.html" class="icon icon-home"> TinyCsvParser
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> TinyCsvParser
           
 
           
@@ -84,6 +78,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -119,13 +114,14 @@
             
           
         </div>
+        
       </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">TinyCsvParser</a>
@@ -133,9 +129,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -156,7 +153,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../userguide.html">User Guide</a> &raquo;</li>
         
@@ -183,10 +180,10 @@
 <span id="userguide-concepts"></span><h1>Concepts<a class="headerlink" href="#concepts" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="csvmapping">
 <h2>CsvMapping<a class="headerlink" href="#csvmapping" title="Permalink to this headline">¶</a></h2>
-<p>The <code class="code docutils literal"><span class="pre">CsvMapping</span></code> defines the mapping between the CSV column index and the properties of a .NET object. It is an abstract base class,
-that needs to be implemented and it exposes the <code class="code docutils literal"><span class="pre">MapProperty</span></code> method to define the mapping.</p>
-<p>You have seen an example for a <code class="code docutils literal"><span class="pre">CsvMapping</span></code> in the <a class="reference internal" href="../quickstart.html#quickstart"><span class="std std-ref">Quickstart</span></a> document.</p>
-<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="k">private</span> <span class="k">class</span> <span class="nc">CsvPersonMapping</span> <span class="p">:</span> <span class="n">CsvMapping</span><span class="p">&lt;</span><span class="n">Person</span><span class="p">&gt;</span>
+<p>The <code class="code docutils literal notranslate"><span class="pre">CsvMapping</span></code> defines the mapping between the CSV column index and the properties of a .NET object. It is an abstract base class,
+that needs to be implemented and it exposes the <code class="code docutils literal notranslate"><span class="pre">MapProperty</span></code> method to define the mapping.</p>
+<p>You have seen an example for a <code class="code docutils literal notranslate"><span class="pre">CsvMapping</span></code> in the <a class="reference internal" href="../quickstart.html#quickstart"><span class="std std-ref">Quickstart</span></a> document.</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">private</span> <span class="k">class</span> <span class="nc">CsvPersonMapping</span> <span class="p">:</span> <span class="n">CsvMapping</span><span class="p">&lt;</span><span class="n">Person</span><span class="p">&gt;</span>
 <span class="p">{</span>
     <span class="k">public</span> <span class="nf">CsvPersonMapping</span><span class="p">()</span>
         <span class="p">:</span> <span class="k">base</span><span class="p">()</span>
@@ -202,45 +199,41 @@ that needs to be implemented and it exposes the <code class="code docutils liter
 <div class="section" id="csvparseroptions">
 <h2>CsvParserOptions<a class="headerlink" href="#csvparseroptions" title="Permalink to this headline">¶</a></h2>
 <p>In order to parse a CSV file, you need to define the column delimiter to use and define to skip the header
-or not. These options are passed into a <code class="code docutils literal"><span class="pre">CsvParser</span></code> by using the <code class="code docutils literal"><span class="pre">CsvParserOptions</span></code>. The most
-basic constructor for a <code class="code docutils literal"><span class="pre">CsvParserOption</span></code> is:</p>
-<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="n">CsvParserOptions</span><span class="p">(</span><span class="kt">bool</span> <span class="n">skipHeader</span><span class="p">,</span> <span class="kt">char</span> <span class="n">fieldsSeparator</span><span class="p">)</span>
+or not. These options are passed into a <code class="code docutils literal notranslate"><span class="pre">CsvParser</span></code> by using the <code class="code docutils literal notranslate"><span class="pre">CsvParserOptions</span></code>. The most
+basic constructor for a <code class="code docutils literal notranslate"><span class="pre">CsvParserOption</span></code> is:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">CsvParserOptions</span><span class="p">(</span><span class="kt">bool</span> <span class="n">skipHeader</span><span class="p">,</span> <span class="kt">char</span> <span class="n">fieldsSeparator</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>There are more advanced options, which can be passed with:</p>
-<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="n">CsvParserOptions</span><span class="p">(</span><span class="kt">bool</span> <span class="n">skipHeader</span><span class="p">,</span> <span class="kt">string</span> <span class="n">commentCharacter</span><span class="p">,</span> <span class="n">ITokenizer</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="kt">int</span> <span class="n">degreeOfParallelism</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">keepOrder</span><span class="p">)</span>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">CsvParserOptions</span><span class="p">(</span><span class="kt">bool</span> <span class="n">skipHeader</span><span class="p">,</span> <span class="kt">string</span> <span class="n">commentCharacter</span><span class="p">,</span> <span class="n">ITokenizer</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="kt">int</span> <span class="n">degreeOfParallelism</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">keepOrder</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The Parameters are:</p>
 <ul class="simple">
-<li><dl class="first docutils">
-<dt>skipHeader</dt>
-<dd><ul class="first last">
-<li>Signals to skip the header row (true) or not (false).</li>
+<li><dl class="simple">
+<dt>skipHeader</dt><dd><ul>
+<li><p>Signals to skip the header row (true) or not (false).</p></li>
 </ul>
 </dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt>tokenizer</dt>
-<dd><ul class="first last">
-<li>The Tokenizer to use for splitting a line in the CSV data into the column values. The default is a <code class="code docutils literal"><span class="pre">StringSplitTokenizer</span></code> (see <a class="reference internal" href="tokenizer.html#userguide-tokenizer"><span class="std std-ref">User Guide on Tokenizer</span></a> for additional information).</li>
+<li><dl class="simple">
+<dt>tokenizer</dt><dd><ul>
+<li><p>The Tokenizer to use for splitting a line in the CSV data into the column values. The default is a <code class="code docutils literal notranslate"><span class="pre">StringSplitTokenizer</span></code> (see <a class="reference internal" href="tokenizer.html#userguide-tokenizer"><span class="std std-ref">User Guide on Tokenizer</span></a> for additional information).</p></li>
 </ul>
 </dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt>degreeOfParallelism</dt>
-<dd><ul class="first last">
-<li>The number of threads used to do the mapping and further processing. The default is <code class="code docutils literal"><span class="pre">Environment.ProcessorCount</span></code> (<a class="reference external" href="https://msdn.microsoft.com/en-us/library/system.environment.processorcount(v=vs.110).aspx">See MSDN for additional information</a>).</li>
+<li><dl class="simple">
+<dt>degreeOfParallelism</dt><dd><ul>
+<li><p>The number of threads used to do the mapping and further processing. The default is <code class="code docutils literal notranslate"><span class="pre">Environment.ProcessorCount</span></code> (<a class="reference external" href="https://msdn.microsoft.com/en-us/library/system.environment.processorcount(v=vs.110).aspx">See MSDN for additional information</a>).</p></li>
 </ul>
 </dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt>keepOrder</dt>
-<dd><ul class="first last">
-<li>When the input is processed in parallel, the results can be unordered. The <code class="code docutils literal"><span class="pre">keepOrder</span></code> flag signals wether to keep the original order (<code class="code docutils literal"><span class="pre">true</span></code>) or return the unordered results (<code class="code docutils literal"><span class="pre">false</span></code>). The default is <code class="code docutils literal"><span class="pre">true</span></code>.</li>
+<li><dl class="simple">
+<dt>keepOrder</dt><dd><ul>
+<li><p>When the input is processed in parallel, the results can be unordered. The <code class="code docutils literal notranslate"><span class="pre">keepOrder</span></code> flag signals wether to keep the original order (<code class="code docutils literal notranslate"><span class="pre">true</span></code>) or return the unordered results (<code class="code docutils literal notranslate"><span class="pre">false</span></code>). The default is <code class="code docutils literal notranslate"><span class="pre">true</span></code>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -249,19 +242,18 @@ basic constructor for a <code class="code docutils literal"><span class="pre">Cs
 </div>
 <div class="section" id="csvreaderoptions">
 <h2>CsvReaderOptions<a class="headerlink" href="#csvreaderoptions" title="Permalink to this headline">¶</a></h2>
-<p>When reading CSV data from a string with <code class="code docutils literal"><span class="pre">CsvParser.ReadFromString</span></code>, you have to define the
+<p>When reading CSV data from a string with <code class="code docutils literal notranslate"><span class="pre">CsvParser.ReadFromString</span></code>, you have to define the
 NewLine character used for splitting the input into lines. This class is not neccessary when reading
-from a file with <code class="code docutils literal"><span class="pre">CsvParser.ReadFromFile</span></code>.</p>
-<p>The <code class="code docutils literal"><span class="pre">CsvReaderOptions</span></code> constructor signature is:</p>
-<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="nf">CsvReaderOptions</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">newLine</span><span class="p">)</span>
+from a file with <code class="code docutils literal notranslate"><span class="pre">CsvParser.ReadFromFile</span></code>.</p>
+<p>The <code class="code docutils literal notranslate"><span class="pre">CsvReaderOptions</span></code> constructor signature is:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="nf">CsvReaderOptions</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">newLine</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The parameter is:</p>
 <ul class="simple">
-<li><dl class="first docutils">
-<dt>newLine</dt>
-<dd><ul class="first last">
-<li>Defines the character used for splitting the input data into lines.</li>
+<li><dl class="simple">
+<dt>newLine</dt><dd><ul>
+<li><p>Defines the character used for splitting the input data into lines.</p></li>
 </ul>
 </dd>
 </dl>
@@ -270,23 +262,21 @@ from a file with <code class="code docutils literal"><span class="pre">CsvParser
 </div>
 <div class="section" id="csvmappingresult">
 <h2>CsvMappingResult<a class="headerlink" href="#csvmappingresult" title="Permalink to this headline">¶</a></h2>
-<p>The <code class="code docutils literal"><span class="pre">CsvMappingResult</span></code> is the result of the parsing. The class contains either the populated object or
-an error. Why doesn’t a <code class="code docutils literal"><span class="pre">CsvParser</span></code> return just the mapped entities? Because the input data is processed
-in parallel and the <code class="code docutils literal"><span class="pre">CsvParser</span></code> can’t stop parsing, because a single line has an error.</p>
-<p>That’s why the parsed entity is wrapped in a <code class="code docutils literal"><span class="pre">CsvMappingResult</span></code>, which holds either the entity or an error,
+<p>The <code class="code docutils literal notranslate"><span class="pre">CsvMappingResult</span></code> is the result of the parsing. The class contains either the populated object or
+an error. Why doesn’t a <code class="code docutils literal notranslate"><span class="pre">CsvParser</span></code> return just the mapped entities? Because the input data is processed
+in parallel and the <code class="code docutils literal notranslate"><span class="pre">CsvParser</span></code> can’t stop parsing, because a single line has an error.</p>
+<p>That’s why the parsed entity is wrapped in a <code class="code docutils literal notranslate"><span class="pre">CsvMappingResult</span></code>, which holds either the entity or an error,
 that may have occured during parsing a CSV line.</p>
-<p>You can check, if a <code class="code docutils literal"><span class="pre">CsvMappingResult</span></code> is valid by checking the property <code class="code docutils literal"><span class="pre">CsvMappingResult&lt;TEntity&gt;.IsValid</span></code>.
-If the <code class="code docutils literal"><span class="pre">CsvMappingResult</span></code> is valid, then it contains the populated entity in the property. If the parsing was
-not possible due to an error, then the property <code class="code docutils literal"><span class="pre">CsvMappingResult&lt;TEntity&gt;.Error</span></code> is filled.</p>
+<p>You can check, if a <code class="code docutils literal notranslate"><span class="pre">CsvMappingResult</span></code> is valid by checking the property <code class="code docutils literal notranslate"><span class="pre">CsvMappingResult&lt;TEntity&gt;.IsValid</span></code>.
+If the <code class="code docutils literal notranslate"><span class="pre">CsvMappingResult</span></code> is valid, then it contains the populated entity in the property. If the parsing was
+not possible due to an error, then the property <code class="code docutils literal notranslate"><span class="pre">CsvMappingResult&lt;TEntity&gt;.Error</span></code> is filled.</p>
 <p>You have seen this in the <a class="reference internal" href="../quickstart.html#quickstart"><span class="std std-ref">Quickstart</span></a> example already.</p>
 </div>
 </div>
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -295,7 +285,7 @@ not possible due to an error, then the property <code class="code docutils liter
         <a href="typeconverter.html" class="btn btn-neutral float-right" title="Type Converter" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="parser.html" class="btn btn-neutral" title="Parser" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="parser.html" class="btn btn-neutral float-left" title="Parser" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -304,11 +294,19 @@ not possible due to an error, then the property <code class="code docutils liter
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2016, Philipp Wagner.
+        
+        &copy; Copyright 2016, Philipp Wagner
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -320,37 +318,15 @@ not possible due to an error, then the property <code class="code docutils liter
   </div>
   
 
-
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../',
-            VERSION:'2.0',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../../_static/jquery.js"></script>
-      <script type="text/javascript" src="../../_static/underscore.js"></script>
-      <script type="text/javascript" src="../../_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="../../_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>
