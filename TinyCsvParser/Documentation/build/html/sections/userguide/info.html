@@ -1,15 +1,18 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Learning More &mdash; TinyCsvParser 2.0 documentation</title>
+  <title>Learning More &mdash; TinyCsvParser 2.6.0 documentation</title>
   
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
 
   
   
@@ -17,47 +20,38 @@
   
 
   
-
-  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
-  
-
-  
-  
-    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="../../genindex.html"/>
-        <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="TinyCsvParser 2.0 documentation" href="../../index.html"/>
-        <link rel="up" title="User Guide" href="../userguide.html"/>
-        <link rel="next" title="FAQ" href="../faq.html"/>
-        <link rel="prev" title="☕ Parallel Processing" href="parallel.html"/> 
-
-  
-  <script src="../../_static/js/modernizr.min.js"></script>
-
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="FAQ" href="../faq.html" />
+    <link rel="prev" title="☕ Parallel Processing" href="parallel.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
-            <a href="../../index.html" class="icon icon-home"> TinyCsvParser
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> TinyCsvParser
           
 
           
@@ -67,7 +61,7 @@
             
             
               <div class="version">
-                2.0
+                2.6.0
               </div>
             
           
@@ -84,6 +78,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -113,13 +108,14 @@
             
           
         </div>
+        
       </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">TinyCsvParser</a>
@@ -127,9 +123,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -150,7 +147,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../userguide.html">User Guide</a> &raquo;</li>
         
@@ -178,42 +175,37 @@
 <p>Several articles have been written about using TinyCsvParser, that deal with common use-cases of TinyCsvParser
 and also give you ideas for processing your data with more advanced concepts.</p>
 <ul class="simple">
-<li><dl class="first docutils">
-<dt><a class="reference external" href="http://bytefish.de/blog/tinycsvparser/">TinyCsvParser: Parsing CSV Data with C#</a></dt>
-<dd><ul class="first last">
-<li>The initial post on TinyCsvParser, which shows its basic usage and also advanced usage.</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="http://bytefish.de/blog/tinycsvparser/">TinyCsvParser: Parsing CSV Data with C#</a></dt><dd><ul>
+<li><p>The initial post on TinyCsvParser, which shows its basic usage and also advanced usage.</p></li>
 </ul>
 </dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt><a class="reference external" href="http://bytefish.de/blog/tinycsvparser_benchmark/">Benchmarking TinyCsvParser</a></dt>
-<dd><ul class="first last">
-<li>A benchmark on a large dataset to evaluate the performance of TinyCsvParser.</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="http://bytefish.de/blog/tinycsvparser_benchmark/">Benchmarking TinyCsvParser</a></dt><dd><ul>
+<li><p>A benchmark on a large dataset to evaluate the performance of TinyCsvParser.</p></li>
 </ul>
 </dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt><a class="reference external" href="http://bytefish.de/blog/tinycsvparser_postgresql/">PostgreSQL and TinyCsvParser</a></dt>
-<dd><ul class="first last">
-<li>Explains how to parse a CSV file and bulk insert it into a PostgreSQL database.</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="http://bytefish.de/blog/tinycsvparser_postgresql/">PostgreSQL and TinyCsvParser</a></dt><dd><ul>
+<li><p>Explains how to parse a CSV file and bulk insert it into a PostgreSQL database.</p></li>
 </ul>
 </dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt><a class="reference external" href="http://bytefish.de/blog/tinycsvparser_tokenizer/">Using a Tokenizer in TinyCsvParser</a></dt>
-<dd><ul class="first last">
-<li>Explains how to write a custom Tokenizer for more complex file processing.</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="http://bytefish.de/blog/tinycsvparser_tokenizer/">Using a Tokenizer in TinyCsvParser</a></dt><dd><ul>
+<li><p>Explains how to write a custom Tokenizer for more complex file processing.</p></li>
 </ul>
 </dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt><a class="reference external" href="http://bytefish.de/blog/fluent_validation/">Using TinyCsvParser and FluentValidation</a></dt>
-<dd><ul class="first last">
-<li>This article deals with parsing a file and validating the data. It shows how to further post-process the data in parallel using the built-in streaming API.</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="http://bytefish.de/blog/fluent_validation/">Using TinyCsvParser and FluentValidation</a></dt><dd><ul>
+<li><p>This article deals with parsing a file and validating the data. It shows how to further post-process the data in parallel using the built-in streaming API.</p></li>
 </ul>
 </dd>
 </dl>
@@ -223,9 +215,7 @@ and also give you ideas for processing your data with more advanced concepts.</p
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -234,7 +224,7 @@ and also give you ideas for processing your data with more advanced concepts.</p
         <a href="../faq.html" class="btn btn-neutral float-right" title="FAQ" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="parallel.html" class="btn btn-neutral" title="☕ Parallel Processing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="parallel.html" class="btn btn-neutral float-left" title="☕ Parallel Processing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -243,11 +233,19 @@ and also give you ideas for processing your data with more advanced concepts.</p
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2016, Philipp Wagner.
+        
+        &copy; Copyright 2020, Philipp Wagner and Contributors
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -259,37 +257,15 @@ and also give you ideas for processing your data with more advanced concepts.</p
   </div>
   
 
-
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../',
-            VERSION:'2.0',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../../_static/jquery.js"></script>
-      <script type="text/javascript" src="../../_static/underscore.js"></script>
-      <script type="text/javascript" src="../../_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="../../_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>

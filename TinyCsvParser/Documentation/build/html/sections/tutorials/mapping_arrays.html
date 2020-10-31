@@ -1,15 +1,18 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Mapping Arrays &mdash; TinyCsvParser 2.0 documentation</title>
+  <title>Mapping Arrays &mdash; TinyCsvParser 2.6.0 documentation</title>
   
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
 
   
   
@@ -17,47 +20,38 @@
   
 
   
-
-  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
-  
-
-  
-  
-    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="../../genindex.html"/>
-        <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="TinyCsvParser 2.0 documentation" href="../../index.html"/>
-        <link rel="up" title="Tutorials" href="../tutorials.html"/>
-        <link rel="next" title="Contributing" href="../contributing.html"/>
-        <link rel="prev" title="Parsing Enums" href="parsing_enums.html"/> 
-
-  
-  <script src="../../_static/js/modernizr.min.js"></script>
-
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Custom Mapping" href="custom_mapping.html" />
+    <link rel="prev" title="Parsing Enums" href="parsing_enums.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
-            <a href="../../index.html" class="icon icon-home"> TinyCsvParser
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> TinyCsvParser
           
 
           
@@ -67,7 +61,7 @@
             
             
               <div class="version">
-                2.0
+                2.6.0
               </div>
             
           
@@ -84,6 +78,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -103,6 +98,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#example">Example</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="custom_mapping.html">Custom Mapping</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
@@ -112,13 +108,14 @@
             
           
         </div>
+        
       </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">TinyCsvParser</a>
@@ -126,9 +123,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -149,7 +147,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../tutorials.html">Tutorials</a> &raquo;</li>
         
@@ -174,10 +172,10 @@
             
   <div class="section" id="mapping-arrays">
 <span id="tutorials-mapping-arrays"></span><h1>Mapping Arrays<a class="headerlink" href="#mapping-arrays" title="Permalink to this headline">¶</a></h1>
-<p>To parse a range of values into an array you can use an overload of the <code class="code docutils literal"><span class="pre">MapProperty</span></code> method, that takes a <code class="code docutils literal"><span class="pre">RangeDefinition</span></code> object. The <code class="code docutils literal"><span class="pre">RangeDefinition(int</span> <span class="pre">startIndex,</span> <span class="pre">int</span> <span class="pre">endIndex)</span></code> takes the start index and end index of the array (zero-based inclusive indices).</p>
+<p>To parse a range of values into an array you can use an overload of the <code class="code docutils literal notranslate"><span class="pre">MapProperty</span></code> method, that takes a <code class="code docutils literal notranslate"><span class="pre">RangeDefinition</span></code> object. The <code class="code docutils literal notranslate"><span class="pre">RangeDefinition(int</span> <span class="pre">startIndex,</span> <span class="pre">int</span> <span class="pre">endIndex)</span></code> takes the start index and end index of the array (zero-based inclusive indices).</p>
 <div class="section" id="example">
 <h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="c1">// Copyright (c) Philipp Wagner. All rights reserved.</span>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Copyright (c) Philipp Wagner. All rights reserved.</span>
 <span class="c1">// Licensed under the MIT license. See LICENSE file in the project root for full license information.</span>
 
 <span class="k">using</span> <span class="nn">NUnit.Framework</span><span class="p">;</span>
@@ -251,18 +249,16 @@
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../contributing.html" class="btn btn-neutral float-right" title="Contributing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="custom_mapping.html" class="btn btn-neutral float-right" title="Custom Mapping" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="parsing_enums.html" class="btn btn-neutral" title="Parsing Enums" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="parsing_enums.html" class="btn btn-neutral float-left" title="Parsing Enums" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -271,11 +267,19 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2016, Philipp Wagner.
+        
+        &copy; Copyright 2020, Philipp Wagner and Contributors
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -287,37 +291,15 @@
   </div>
   
 
-
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../',
-            VERSION:'2.0',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../../_static/jquery.js"></script>
-      <script type="text/javascript" src="../../_static/underscore.js"></script>
-      <script type="text/javascript" src="../../_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="../../_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>

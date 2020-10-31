@@ -1,30 +1,22 @@
-﻿using System;
+﻿// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
+using System;
 using TinyCsvParser.Model;
 
 namespace TinyCsvParser.Mapping
 {
     public class CsvRowMapping<TEntity> : ICsvPropertyMapping<TEntity, TokenizedRow>
     {
-        private readonly Action<TEntity, TokenizedRow> action;
+        private readonly Func<TEntity, TokenizedRow, bool> action;
 
-        public CsvRowMapping(Action<TEntity, TokenizedRow> action)
+        public CsvRowMapping(Func<TEntity, TokenizedRow, bool> action)
         {
             this.action = action;
         }
 
         public bool TryMapValue(TEntity entity, TokenizedRow value)
         {
-            // TODO Better Error Handling is a must!
-            try
-            {
-                action(entity, value);
-
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            return action(entity, value);
         }
     }
 }

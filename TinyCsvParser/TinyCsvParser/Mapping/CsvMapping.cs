@@ -1,5 +1,4 @@
-﻿// Copyright (c) Philipp Wagner. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+﻿// Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
 using System.Linq;
@@ -57,7 +56,7 @@ namespace TinyCsvParser.Mapping
             this.csvRowMappings = new List<CsvRowMapping<TEntity>>();
         }
 
-        protected CsvRowMapping<TEntity> MapUsing(Action<TEntity, TokenizedRow> action)
+        protected CsvRowMapping<TEntity> MapUsing(Func<TEntity, TokenizedRow, bool> action)
         {
             var rowMapping = new CsvRowMapping<TEntity>(action);
 
