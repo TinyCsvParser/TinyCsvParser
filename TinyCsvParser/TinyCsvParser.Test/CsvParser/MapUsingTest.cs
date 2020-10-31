@@ -1,13 +1,10 @@
-﻿// Copyright (c) Philipp Wagner. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+﻿// Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using NUnit.Framework;
 using System;
 using System.Linq;
 using System.Text;
 using TinyCsvParser.Mapping;
-using TinyCsvParser.Model;
-using TinyCsvParser.Ranges;
 
 namespace TinyCsvParser.Test.CsvParser
 {
@@ -82,7 +79,5 @@ namespace TinyCsvParser.Test.CsvParser
             Assert.AreEqual("B", result[1].Result.SubClass.Property2);
             Assert.AreEqual("C", result[1].Result.SubClass.Property3);
         }
-
-
     }
 }

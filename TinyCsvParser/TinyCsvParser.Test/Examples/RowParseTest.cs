@@ -1,10 +1,9 @@
-﻿using NUnit.Framework;
+﻿// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 using TinyCsvParser.Mapping;
 using TinyCsvParser.Model;
 

@@ -1,4 +1,6 @@
-﻿using BenchmarkDotNet.Attributes;
+﻿// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
+using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
 using System;
 using System.Collections.Generic;
