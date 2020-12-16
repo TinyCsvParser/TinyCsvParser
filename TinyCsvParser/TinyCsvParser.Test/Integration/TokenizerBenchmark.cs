@@ -12,33 +12,6 @@ using TinyCsvParser.Tokenizer;
 
 namespace TinyCsvParser.Test.Integration
 {
-    public static class MeasurementUtils
-    {
-        public static void MeasureElapsedTime(string description, Action action)
-        {
-            // Get the elapsed time as a TimeSpan value.
-            TimeSpan ts = MeasureElapsedTime(action);
-
-            // Format and display the TimeSpan value.
-            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
-                ts.Hours, ts.Minutes, ts.Seconds,
-                ts.Milliseconds / 10);
-
-            TestContext.WriteLine("[{0}] Elapsed Time = {1}", description, elapsedTime);
-        }
-
-        private static TimeSpan MeasureElapsedTime(Action action)
-        {
-            Stopwatch stopWatch = new Stopwatch();
-            stopWatch.Start();
-            action();
-            stopWatch.Stop();
-
-            return stopWatch.Elapsed;
-        }
-
-    }
-
     [TestFixture]
     [Ignore("Example for https://github.com/Golapadeog/blog/issues/1")]
     public class TokenizerBenchmark
@@ -101,7 +74,7 @@ namespace TinyCsvParser.Test.Integration
         [Test]
         public void RunTest()
         {
-            var options = new CsvParserOptions(false, new CustomTokenizer());
+            var options = new CsvParserOptions(false, new StringSplitTokenizer(new[] { ',' }, false));
             var mapping = new TestModelMapping();
             var parser = new CsvParser<TestModel>(options, mapping);
 
