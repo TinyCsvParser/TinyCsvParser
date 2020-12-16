@@ -108,9 +108,6 @@ namespace TinyCsvParser.Test.Integration
 
         private class TestModelMapping : CsvMapping<TestModel>
         {
-            /// <summary>
-            /// {CsvMappingError (ColumnIndex = 25, Value = Column 25 is Out Of Range, UnmappedRow = 75fcf875-017d-4579-bfd9-791d3e6767f0|2020-11-28T01:50:41.2449947+00:00|Akinzekeel.BlazorGrid|0.9.1-preview|2020-11-27T22:42:54.3100000+00:00|AvailableAssets|RuntimeAssemblies|||net5.0||||||lib/net5.0/BlazorGrid.dll|BlazorGrid.dll|.dll|lib|net5.0|.NETCoreApp|5.0.0.0|||0.0.0.0)}
-            /// </summary>
             public TestModelMapping()
             {
                 MapProperty(0, x => x.Id);
