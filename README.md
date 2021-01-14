@@ -1,11 +1,11 @@
 # TinyCsvParser #
 
-[TinyCsvParser]: https://github.com/bytefish/TinyCsvParser
+[TinyCsvParser]: https://github.com/TinyCsvParser/TinyCsvParser
 [MIT License]: https://opensource.org/licenses/MIT
 
 [TinyCsvParser] is a .NET library to parse CSV data in an easy and *fun way*, while offering very high performance and a very clean API. It is highly configurable to provide maximum flexibility.
 
-To get started quickly, follow the [Quickstart](http://bytefish.github.io/TinyCsvParser/sections/quickstart.html).
+To get started quickly, follow the [Quickstart](https://tinycsvparser.github.io/TinyCsvParser/sections/quickstart.html).
 
 [TinyCsvParser] supports .NET Core.
 
@@ -22,12 +22,12 @@ PM> Install-Package TinyCsvParser
 
 [TinyCsvParser] comes with an official documentation and changelog:
 
-* [http://bytefish.github.io/TinyCsvParser/](http://bytefish.github.io/TinyCsvParser/)
+* [https://tinycsvparser.github.io/TinyCsvParser/](https://tinycsvparser.github.io/TinyCsvParser/)
 
 ## Basic Usage ##
 
 This is only an example for the most common use of TinyCsvParser. For more detailed information on custom formats and more advanced use-cases, 
-please consult the full [User Guide](http://bytefish.github.io/TinyCsvParser/sections/userguide.html) of the official documentation.
+please consult the full [User Guide](https://tinycsvparser.github.io/TinyCsvParser/sections/userguide.html) of the official documentation.
 
 Imagine we have list of Persons in a CSV file ``persons.csv`` with their first name, last name and birthdate.
 
@@ -110,4 +110,4 @@ namespace TinyCsvParser.Test
 
 The library is released under terms of the [MIT License]:
 
-* [https://github.com/bytefish/TinyCsvParser](https://github.com/bytefish/TinyCsvParser)
+* [https://github.com/TinyCsvParser/TinyCsvParser](https://github.com/TinyCsvParser/TinyCsvParser)
