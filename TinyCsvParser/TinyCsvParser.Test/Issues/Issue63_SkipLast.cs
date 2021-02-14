@@ -25,8 +25,7 @@ namespace TinyCsvParser.Test.Issues
 
             var lines = File
                 .ReadLines(fileName, encoding)
-                .SkipLast(skipLast)
-                .Select((line, index) => new Row(index, line));
+                .SkipLast(skipLast);
 
             return csvParser.Parse(lines);
         }

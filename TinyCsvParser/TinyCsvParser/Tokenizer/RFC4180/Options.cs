@@ -7,12 +7,14 @@ namespace TinyCsvParser.Tokenizer.RFC4180
         public readonly char QuoteCharacter;
         public readonly char EscapeCharacter;
         public readonly char DelimiterCharacter;
+        public readonly bool SkipInitialWhitespaces;
 
-        public Options(char quoteCharacter, char escapeCharacter, char delimiterCharacter)
+        public Options(char quoteCharacter, char escapeCharacter, char delimiterCharacter, bool skipInitialWhitespaces)
         {
             QuoteCharacter = quoteCharacter;
             EscapeCharacter = escapeCharacter;
             DelimiterCharacter = delimiterCharacter;
+            SkipInitialWhitespaces = skipInitialWhitespaces;
         }
 
         public override string ToString()

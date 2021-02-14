@@ -1,5 +1,6 @@
 ﻿// Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using System.Collections.Generic;
 using System.Linq;
 
 namespace TinyCsvParser.Tokenizer
@@ -15,7 +16,12 @@ namespace TinyCsvParser.Tokenizer
             TrimValues = trimValues;
         }
 
-        public string[] Tokenize(string input)
+        public IEnumerable<string[]> Tokenize(IEnumerable<string> input)
+        {
+            return input.Select(x => TokenizeLine(x));
+        }
+
+        public string[] TokenizeLine(string input)
         {
             if(TrimValues) 
             {

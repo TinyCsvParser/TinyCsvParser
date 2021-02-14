@@ -20,8 +20,7 @@ namespace TinyCsvParser
             }
 
             var lines = File
-                .ReadLines(fileName, encoding)
-                .Select((line, index) => new Row(index, line));
+                .ReadLines(fileName, encoding);
 
             return csvParser.Parse(lines);
         }
@@ -29,8 +28,7 @@ namespace TinyCsvParser
         public static ParallelQuery<CsvMappingResult<TEntity>> ReadFromString<TEntity>(this CsvParser<TEntity> csvParser, CsvReaderOptions csvReaderOptions, string csvData)
         {
             var lines = csvData
-                .Split(csvReaderOptions.NewLine, StringSplitOptions.None)
-                .Select((line, index) => new Row(index, line));
+                .Split(csvReaderOptions.NewLine, StringSplitOptions.None);
 
             return csvParser.Parse(lines);
         }
@@ -53,8 +51,7 @@ namespace TinyCsvParser
                 throw new ArgumentNullException(nameof(stream));
             }
 
-            var lines = ReadLinesFromStream(stream, encoding, detectEncodingFromByteOrderMarks, bufferSize, leaveOpen)
-                .Select((line, index) => new Row(index, line));
+            var lines = ReadLinesFromStream(stream, encoding, detectEncodingFromByteOrderMarks, bufferSize, leaveOpen);
 
             return csvParser.Parse(lines);
         }

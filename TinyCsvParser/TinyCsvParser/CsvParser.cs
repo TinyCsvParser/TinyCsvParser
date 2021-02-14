@@ -19,16 +19,19 @@ namespace TinyCsvParser
             this.mapping = mapping;
         }
 
-        public ParallelQuery<CsvMappingResult<TEntity>> Parse(IEnumerable<Row> csvData)
+        public ParallelQuery<CsvMappingResult<TEntity>> Parse(IEnumerable<string> csvData)
         {
             if (csvData == null)
             {
                 throw new ArgumentNullException(nameof(csvData));
             }
 
-            var query = csvData
-                .Skip(options.SkipHeader ? 1 : 0)
-                .AsParallel();
+            var input = csvData
+                .Skip(options.SkipHeader ? 1 : 0);
+
+            var rows = options.Tokenizer.Tokenize(input);
+
+            var query = rows.AsParallel();
 
             // If you want to get the same order as in the CSV file, this option needs to be set:
             if (options.KeepOrder)
@@ -36,19 +39,8 @@ namespace TinyCsvParser
                 query = query.AsOrdered();
             }
 
-            query = query
-                .WithDegreeOfParallelism(options.DegreeOfParallelism)
-                .Where(row => !string.IsNullOrWhiteSpace(row.Data));
-
-            // Ignore Lines, that start with a comment character:
-            if(!string.IsNullOrWhiteSpace(options.CommentCharacter)) 
-            {
-                query = query.Where(line => !line.Data.StartsWith(options.CommentCharacter));
-            }
-                
             return query
-                .Select(line => new TokenizedRow(line.Index, options.Tokenizer.Tokenize(line.Data)))
-                .Select(fields => mapping.Map(fields));
+                .Select(fields => mapping.Map(new TokenizedRow(0, fields)));
         }
 
         public override string ToString()

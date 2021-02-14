@@ -58,7 +58,12 @@ namespace TinyCsvParser.Tokenizer
             Trim = trim;
         }
 
-        public string[] Tokenize(string input)
+        public IEnumerable<string[]> Tokenize(IEnumerable<string> input)
+        {
+            return input.Select(x => TokenizeLine(x));
+        }
+
+        private string[] TokenizeLine(string input)
         {
             string[] tokenizedLine = new string[Columns.Length];
 

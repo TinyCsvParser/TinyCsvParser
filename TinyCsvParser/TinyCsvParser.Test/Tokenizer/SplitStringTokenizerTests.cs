@@ -1,6 +1,7 @@
 ﻿// Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using NUnit.Framework;
+using System.Linq;
 using TinyCsvParser.Tokenizer;
 
 namespace TinyCsvParser.Test.Tokenizer
@@ -14,7 +15,7 @@ namespace TinyCsvParser.Test.Tokenizer
             var tokenizer = new StringSplitTokenizer(new char[] { ',' }, true);
             
             var input = " 1,2,3 ";
-            var result = tokenizer.Tokenize(input);
+            var result = tokenizer.Tokenize(new[] { input }).ToArray();
 
 
             Assert.AreEqual("1", result[0]);
@@ -28,7 +29,7 @@ namespace TinyCsvParser.Test.Tokenizer
             var tokenizer = new StringSplitTokenizer(new char[] { ',' }, false);
             
             var input = " 1,2,3 ";
-            var result = tokenizer.Tokenize(input);
+            var result = tokenizer.Tokenize(new[] { input }).ToArray();
 
 
             Assert.AreEqual(" 1", result[0]);

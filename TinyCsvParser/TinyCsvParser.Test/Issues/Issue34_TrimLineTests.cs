@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using TinyCsvParser.Mapping;
 using TinyCsvParser.Tokenizer;
+using TinyCsvParser.Tokenizer.RFC4180;
 
 namespace TinyCsvParser.Test.Issues
 {
@@ -70,7 +71,7 @@ namespace TinyCsvParser.Test.Issues
         private CsvParser<TestEntity> GetRfc4180Parser()
         {
             // Construct the Parser:
-            CsvParserOptions csvParserOptions = new CsvParserOptions(false, new QuotedStringTokenizer('\t'));
+            CsvParserOptions csvParserOptions = new CsvParserOptions(false, new RFC4180Tokenizer(new Options('"', '\\', '\t', false)));
             TestEntityMapping csvMapper = new TestEntityMapping();
 
             return new CsvParser<TestEntity>(csvParserOptions, csvMapper);

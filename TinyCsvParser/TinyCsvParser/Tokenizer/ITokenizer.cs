@@ -1,9 +1,11 @@
 ﻿// Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using System.Collections.Generic;
+
 namespace TinyCsvParser.Tokenizer
 {
     public interface ITokenizer
     {
-        string[] Tokenize(string input);
+        IEnumerable<string[]> Tokenize(IEnumerable<string> input);
     }
 }

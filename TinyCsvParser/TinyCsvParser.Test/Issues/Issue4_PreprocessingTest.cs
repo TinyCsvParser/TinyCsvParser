@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using TinyCsvParser.Mapping;
 using TinyCsvParser.Tokenizer;
+using TinyCsvParser.Tokenizer.RFC4180;
 
 namespace TinyCsvParser.Test.Issues
 {
@@ -37,7 +38,7 @@ namespace TinyCsvParser.Test.Issues
         [Test]
         public void QuotedStringParsingTest()
         {
-            CsvParserOptions csvParserOptions = new CsvParserOptions(true, string.Empty, new QuotedStringTokenizer(','));
+            CsvParserOptions csvParserOptions = new CsvParserOptions(true, string.Empty, new RFC4180Tokenizer(new Options('"', '\\', ',', false)));
             CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
             SampleEntityMapping csvMapper = new SampleEntityMapping();
             CsvParser<SampleEntity> csvParser = new CsvParser<SampleEntity>(csvParserOptions, csvMapper);

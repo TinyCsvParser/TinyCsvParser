@@ -1,6 +1,7 @@
 ﻿// Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using NUnit.Framework;
+using System.Linq;
 using System.Text;
 using TinyCsvParser.Tokenizer;
 
@@ -18,15 +19,13 @@ namespace TinyCsvParser.Test.Tokenizer
             };
 
             var tokenizer = new FixedLengthTokenizer(columns);
-            
-            var input = new StringBuilder()
-                .AppendLine("Philipp   Wagner    ")
-                .ToString();
 
-            var result = tokenizer.Tokenize(input);
+            var input = new[] { "Philipp   Wagner    " };
 
-            Assert.AreEqual("Philipp   ", result[0]);
-            Assert.AreEqual("Wagner    ", result[1]);
+            var result = tokenizer.Tokenize(input).ToList();
+
+            Assert.AreEqual("Philipp   ", result[0][0]);
+            Assert.AreEqual("Wagner    ", result[0][1]);
         }
      }
 }
