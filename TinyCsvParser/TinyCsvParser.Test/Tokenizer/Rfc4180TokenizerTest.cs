@@ -97,6 +97,46 @@ namespace TinyCsvParser.Test.Tokenizer
         }
 
         [Test]
+        public void RFC4180_CsvParser_StrictDelimitation_Test()
+        {
+            // Use a " as Quote Character, a \\ as Escape Character and a , as Delimiter.
+            var options = new Options('"', '\\', ';', true);
+
+            // Initialize the Rfc4180 Tokenizer:
+            var tokenizer = new RFC4180Tokenizer(options);
+
+            // Now Build the Parser:
+            CsvParserOptions csvParserOptions = new CsvParserOptions(true, tokenizer);
+            SampleEntityMapping csvMapper = new SampleEntityMapping();
+            CsvParser<SampleEntity> csvParser = new CsvParser<SampleEntity>(csvParserOptions, csvMapper);
+
+
+            var stringBuilder = new StringBuilder()
+                .AppendLine("Name; Age; Description")
+                .AppendLine("\"Michael, Chester\";24;\"Also goes by \"Mike\", among friends that is\"")
+                .AppendLine("\"Robert, Willliamson\"; ;\"All-around nice guy who always says hi\"");
+
+            // Define the NewLine Character to split at:
+            CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
+
+            var result = csvParser
+                .ReadFromString(csvReaderOptions, stringBuilder.ToString())
+                .ToList();
+
+            Assert.AreEqual(2, result.Count);
+
+            Assert.AreEqual(true, result.All(x => x.IsValid));
+
+            Assert.AreEqual("Michael, Chester", result[0].Result.Name);
+            Assert.AreEqual(24, result[0].Result.Age);
+            Assert.AreEqual("Also goes by \"Mike\", among friends that is", result[0].Result.Description);
+
+            Assert.AreEqual("Robert, Willliamson", result[1].Result.Name);
+            Assert.AreEqual(false, result[1].Result.Age.HasValue);
+            Assert.AreEqual("All-around nice guy who always says hi", result[1].Result.Description);
+        }
+
+        [Test]
         public void Rfc4180_Issue3_Empty_Column_Test()
         {
             // Use a " as Quote Character, a \\ as Escape Character and a , as Delimiter.

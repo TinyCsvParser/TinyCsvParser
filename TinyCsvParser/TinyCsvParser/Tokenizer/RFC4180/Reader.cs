@@ -72,25 +72,28 @@ namespace TinyCsvParser.Tokenizer.RFC4180
             }
             else
             {
-                if (IsQuoteCharacter(c))
+                if (!options.StrictDelimitation)
                 {
-                    result = ReadQuoted(reader);
-
-                    Skip(reader);
-
-                    if (IsEndOfStream(reader.Peek()))
+                    if (IsQuoteCharacter(c))
                     {
-                        return new Token(TokenType.EndOfRecord, result);
-                    }
+                        result = ReadQuoted(reader);
 
-                    if (IsDelimiter(reader.Peek()))
-                    {
-                        reader.Read();
-                    }
+                        Skip(reader);
 
-                    return new Token(TokenType.Token, result);
+                        if (IsEndOfStream(reader.Peek()))
+                        {
+                            return new Token(TokenType.EndOfRecord, result);
+                        }
+
+                        if (IsDelimiter(reader.Peek()))
+                        {
+                            reader.Read();
+                        }
+
+                        return new Token(TokenType.Token, result);
+                    }
                 }
-                                
+
                 if (IsEndOfStream(c)) 
                 {
                     return new Token(TokenType.EndOfRecord);
@@ -98,6 +101,11 @@ namespace TinyCsvParser.Tokenizer.RFC4180
                 else
                 {
                     result = reader.ReadTo(options.DelimiterCharacter).Trim();
+
+                    if (options.StrictDelimitation)
+                    {
+                        result = result.TrimStart(options.QuoteCharacter).TrimEnd(options.QuoteCharacter);
+                    }
 
                     Skip(reader);
 
