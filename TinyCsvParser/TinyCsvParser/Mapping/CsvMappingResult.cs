@@ -1,10 +1,12 @@
 ﻿// Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using TinyCsvParser.Model;
+
 namespace TinyCsvParser.Mapping
 {
     public class CsvMappingResult<TEntity>
     {
-        public int RowIndex { get; set; }
+        public TokenizedRow Row { get; set; }
 
         public CsvMappingError Error { get; set; }
 

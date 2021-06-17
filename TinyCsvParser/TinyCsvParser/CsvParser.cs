@@ -26,12 +26,11 @@ namespace TinyCsvParser
                 throw new ArgumentNullException(nameof(csvData));
             }
 
-            var input = csvData
-                .Skip(options.SkipHeader ? 1 : 0);
+            var source = csvData.Skip(options.SkipHeader ? 1 : 0);
 
-            var rows = options.Tokenizer.Tokenize(input);
-
-            var query = rows.AsParallel();
+            var query = options.Tokenizer
+                .Tokenize(source)
+                .AsParallel();
 
             // If you want to get the same order as in the CSV file, this option needs to be set:
             if (options.KeepOrder)
@@ -40,7 +39,7 @@ namespace TinyCsvParser
             }
 
             return query
-                .Select(fields => mapping.Map(new TokenizedRow(0, fields)));
+                .Select(row => mapping.Map(row));
         }
 
         public override string ToString()

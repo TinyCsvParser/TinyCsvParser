@@ -29,11 +29,12 @@ namespace TinyCsvParser.Tokenizer.RFC4180
             EAT_CRNL
         }
 
-        public IEnumerable<string[]> Tokenize(IEnumerable<string> data)
+        public IEnumerable<TokenizedRow> Tokenize(IEnumerable<string> data)
         {
             var state = State.START_RECORD;
 
             var fields = new List<string>();
+            var lines = new List<RowData>();
             var builder = new StringBuilder();
 
             int line_no = 0;
@@ -42,11 +43,26 @@ namespace TinyCsvParser.Tokenizer.RFC4180
             {
                 line_no = line_no + 1;
 
+                if(state != State.START_FIELD)
+                {
+                    lines.Add(new RowData { LineNo = line_no, Data = line });
+                }
+
+                lines.Add(new RowData { LineNo = line_no, Data = line });
+
                 foreach (var c in line)
                 {
                     if (c == '\0')
                     {
-                        throw new Exception("Line contains NULL byte");
+                        yield return new TokenizedRow()
+                        {
+                            Rows = lines.ToArray(),
+                            Error = new TokenizeError
+                            {
+                                LineNo = line_no,
+                                Reason = "Line contains NULL byte"
+                            }
+                        };
                     }
 
                     if (state == State.START_RECORD)
@@ -62,11 +78,13 @@ namespace TinyCsvParser.Tokenizer.RFC4180
 
                         builder.Clear();
                         fields.Clear();
+                        lines.Clear();
+
+                        lines.Add(new RowData { LineNo = line_no, Data = line });
                     }
 
                     if (state == State.START_FIELD)
                     {
-
                         if (c == '\n' || c == '\r')
                         {
                             AddField(fields, builder);
@@ -128,7 +146,7 @@ namespace TinyCsvParser.Tokenizer.RFC4180
                         }
                         else if (c == options.QuoteCharacter)
                         {
-                            state = State.IN_FIELD;
+                            state = State.QUOTE_IN_QUOTED_FIELD;
                         }
                         else
                         {
@@ -159,14 +177,30 @@ namespace TinyCsvParser.Tokenizer.RFC4180
                         }
                         else
                         {
-                            throw new Exception($"'{options.DelimiterCharacter}' expected after '{options.QuoteCharacter}'");
+                            yield return new TokenizedRow()
+                            {
+                                Rows = lines.ToArray(),
+                                Error = new TokenizeError
+                                {
+                                    LineNo = line_no,
+                                    Reason = $"'{options.DelimiterCharacter}' expected after '{options.QuoteCharacter}'"
+                                }
+                            };
                         }
                     }
                     else if (state == State.EAT_CRNL)
                     {
                         if (!(c == '\r' || c == '\n'))
                         {
-                            throw new Exception("Newline Character found in unquoted field.");
+                            yield return new TokenizedRow()
+                            {
+                                Rows = lines.ToArray(),
+                                Error = new TokenizeError
+                                {
+                                    LineNo = line_no,
+                                    Reason = "Newline Character found in unquoted field."
+                                }
+                            };
                         }
                     }
                 }
@@ -174,18 +208,24 @@ namespace TinyCsvParser.Tokenizer.RFC4180
                 if (state == State.IN_FIELD || state == State.QUOTE_IN_QUOTED_FIELD)
                 {
                     AddField(fields, builder);
+
                     state = State.START_RECORD;
 
-                    yield return fields.ToArray();
+                    yield return new TokenizedRow
+                    {
+                        Rows = lines.ToArray(),
+                        Tokens = fields.ToArray()
+                    };
                 }
                 else if (state == State.ESCAPED_CHAR)
                 {
                     AddChar(builder, '\n');
+
                     state = State.IN_FIELD;
                 }
                 else if (state == State.IN_QUOTED_FIELD)
                 {
-                    // Do nothing ...
+                    AddChar(builder, '\n');
                 }
                 else if (state == State.ESCAPE_IN_QUOTED_FIELD)
                 {
@@ -199,7 +239,11 @@ namespace TinyCsvParser.Tokenizer.RFC4180
                     AddField(fields, builder);
                     state = State.START_RECORD;
 
-                    yield return fields.ToArray();
+                    yield return new TokenizedRow
+                    {
+                        Rows = lines.ToArray(),
+                        Tokens = fields.ToArray()
+                    };
                 }
             }
 
@@ -207,7 +251,15 @@ namespace TinyCsvParser.Tokenizer.RFC4180
                 && state != State.EAT_CRNL
                 && (builder.Length > 0 || state == State.IN_QUOTED_FIELD))
             {
-                throw new Exception("Invalid CSV");
+                yield return new TokenizedRow()
+                {
+                    Rows = lines.ToArray(),
+                    Error = new TokenizeError
+                    {
+                        LineNo = line_no,
+                        Reason = "File ended in a Quoted Field or has data left in the buffer."
+                    }
+                };
             }
         }
 

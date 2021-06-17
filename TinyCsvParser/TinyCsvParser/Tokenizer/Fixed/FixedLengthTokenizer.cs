@@ -3,6 +3,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using System;
+using TinyCsvParser.Model;
 
 namespace TinyCsvParser.Tokenizer
 {
@@ -58,24 +59,90 @@ namespace TinyCsvParser.Tokenizer
             Trim = trim;
         }
 
-        public IEnumerable<string[]> Tokenize(IEnumerable<string> input)
+        public IEnumerable<TokenizedRow> Tokenize(IEnumerable<string> input)
         {
-            return input.Select(x => TokenizeLine(x));
-        }
-
-        private string[] TokenizeLine(string input)
-        {
-            string[] tokenizedLine = new string[Columns.Length];
-
-            for (int columnIndex = 0; columnIndex < Columns.Length; columnIndex++)
+            int line_no = 1;
+            
+            foreach(var line in input)
             {
-                var columnDefinition = Columns[columnIndex];
-                var columnData = input.Substring(columnDefinition.Start, columnDefinition.End - columnDefinition.Start);
+                bool isError = false;
 
-                tokenizedLine[columnIndex] = Trim ? columnData.Trim() : columnData;
+                string[] tokenizedLine = new string[Columns.Length];
+                
+                for (int columnIndex = 0; columnIndex < Columns.Length; columnIndex++)
+                {
+                    var columnDefinition = Columns[columnIndex];
+
+                    if(columnDefinition.Start > (line.Length - 1))
+                    {
+                        yield return new TokenizedRow
+                        {
+                            Rows = new TokenizedRow.RowData[]
+                            {
+                                new TokenizedRow.RowData
+                                {
+                                    LineNo = line_no,
+                                    Data = line
+                                }
+                            },
+                            Error = new TokenizedRow.TokenizeError
+                            {
+                                LineNo = line_no,
+                                Reason = $"Column Start Position '{columnDefinition.Start}' is Out of Bounds. Line Length is '{line.Length}'"
+                            }
+                        };
+
+                        isError = true;
+
+                        break;
+                    }
+
+                    if (columnDefinition.Start > (line.Length - 1))
+                    {
+                        yield return new TokenizedRow
+                        {
+                            Rows = new TokenizedRow.RowData[]
+                            {
+                                new TokenizedRow.RowData
+                                {
+                                    LineNo = line_no,
+                                    Data = line
+                                }
+                            },
+                            Error = new TokenizedRow.TokenizeError
+                            {
+                                LineNo = line_no,
+                                Reason = $"Column End Position '{columnDefinition.End}' is Out of Bounds. Line Length is '{line.Length}'"
+                            }
+                        };
+
+                        isError = true;
+
+                        break;
+                    }
+
+                    var columnData = line.Substring(columnDefinition.Start, columnDefinition.End - columnDefinition.Start);
+
+                    tokenizedLine[columnIndex] = Trim ? columnData.Trim() : columnData;
+                }
+
+                if(!isError)
+                {
+                    yield return new TokenizedRow
+                    {
+                        Rows = new []
+                        {
+                            new TokenizedRow.RowData
+                            {
+                                LineNo = line_no,
+                                Data = line
+                            }
+                        },
+                        Tokens = tokenizedLine
+                    };
+                }
+                
             }
-
-            return tokenizedLine;
         }
 
         public override string ToString()

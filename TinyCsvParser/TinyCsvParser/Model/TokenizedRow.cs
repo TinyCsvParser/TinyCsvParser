@@ -2,16 +2,53 @@
 
 namespace TinyCsvParser.Model
 {
-    public class TokenizedRow
+    public struct TokenizedRow
     {
-        public readonly int Index;
-
-        public readonly string[] Tokens;
-
-        public TokenizedRow(int index, string[] tokens)
+        /// <summary>
+        /// The original Row Data.
+        /// </summary>
+        public struct RowData
         {
-            Index = index;
-            Tokens = tokens;
+            public long LineNo { get; set; }
+
+            public string Data { get; set; }
+        }
+
+        /// <summary>
+        /// An error happened during parsing.
+        /// </summary>
+        public struct TokenizeError
+        {
+            public long LineNo { get; set; }
+
+            public string Reason { get; set; }
+        }
+
+        /// <summary>
+        /// Row Data the Tokens are generated from.
+        /// </summary>
+        public RowData[] Rows { get; set; }
+
+        /// <summary>
+        /// Tokens.
+        /// </summary>
+        public string[] Tokens { get; set; }
+
+        /// <summary>
+        /// An Optional Error.
+        /// </summary>
+        public TokenizeError? Error { get; set; }
+
+        /// <summary>
+        /// A Getter to signal if the Row is valid.
+        /// </summary>
+        public bool IsValid
+        {
+            get
+            {
+                return !Error.HasValue;
+            }
         }
     }
+
 }

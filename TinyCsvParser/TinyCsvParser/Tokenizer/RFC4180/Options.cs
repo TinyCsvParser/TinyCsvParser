@@ -4,6 +4,14 @@ namespace TinyCsvParser.Tokenizer.RFC4180
 {
     public class Options
     {
+        public enum QuoteOptions
+        {
+            QUOTE_MINIMAL = 0, 
+            QUOTE_ALL = 1,
+            QUOTE_NONNUMERIC = 2, 
+            QUOTE_NONE = 3
+        }
+
         public readonly char QuoteCharacter;
         public readonly char EscapeCharacter;
         public readonly char DelimiterCharacter;

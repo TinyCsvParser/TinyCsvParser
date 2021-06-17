@@ -215,5 +215,59 @@ namespace TinyCsvParser.Test.Tokenizer
             Assert.AreEqual("", tokens[0][1]);
             Assert.AreEqual("a", tokens[0][2]);
         }
+
+        [Test]
+        public void Rfc4180_Multiline_Test()
+        {
+            // Use a " as Quote Character, a \\ as Escape Character and a , as Delimiter.
+            var options = new Options('"', '\\', ',', false);
+
+            // Initialize the Rfc4180 Tokenizer:
+            var tokenizer = new RFC4180Tokenizer(options);
+
+            // Initialize a String with Double Quoted Data:
+            var line0 = "A,\"B\"\"C\"\"";
+            var line1 = "D\"";
+
+            // Split the Line into its Tokens:
+            var tokens = tokenizer.Tokenize(new[] { line0, line1 }).ToList();
+
+            // And make sure the Quotes are retained:
+            Assert.IsNotNull(tokens);
+
+            Assert.AreEqual(2, tokens[0].Length);
+
+            Assert.AreEqual("A", tokens[0][0]);
+            Assert.AreEqual("B\"C\"\nD", tokens[0][1]);
+        }
+
+        [Test]
+        public void Rfc4180_Multiline2_Test()
+        {
+            // Use a " as Quote Character, a \\ as Escape Character and a , as Delimiter.
+            var options = new Options('"', '\\', ',', false);
+
+            // Initialize the Rfc4180 Tokenizer:
+            var tokenizer = new RFC4180Tokenizer(options);
+
+            // Initialize a String with Double Quoted Data:
+            var line0 = "A,\"B";
+            var line1 = "C";
+            var line2 = "D\"";
+            var line3 = "E,F";
+
+            // Split the Line into its Tokens:
+            var tokens = tokenizer.Tokenize(new[] { line0, line1, line2, line3 }).ToList();
+
+            // And make sure the Quotes are retained:
+            Assert.IsNotNull(tokens);
+
+            Assert.AreEqual(2, tokens[0].Length);
+
+            Assert.AreEqual("A", tokens[0][0]);
+            Assert.AreEqual("B\nC\nD", tokens[0][1]);
+            Assert.AreEqual("E", tokens[1][0]);
+            Assert.AreEqual("F", tokens[1][1]);
+        }
     }
 }
