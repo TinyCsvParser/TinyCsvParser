@@ -6,7 +6,7 @@ using TinyCsvParser.TypeConverter;
 namespace TinyCsvParser.Mapping
 {
     public class CsvCollectionPropertyMapping<TEntity, TProperty> : ICsvPropertyMapping<TEntity, string[]>
-        where TEntity : class, new()
+        where TEntity : class
     {
         private readonly string propertyName;
         private readonly IArrayTypeConverter<TProperty> propertyConverter;
