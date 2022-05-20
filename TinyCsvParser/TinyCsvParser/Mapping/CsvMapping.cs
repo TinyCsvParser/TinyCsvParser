@@ -123,7 +123,10 @@ namespace TinyCsvParser.Mapping
 
         public CsvMappingResult<TEntity> Map(TokenizedRow values)
         {
-            TEntity entity = new TEntity();
+            List<object> args = new List<object>();
+            // TODO build constructor arguments
+            
+            TEntity entity = (TEntity)Activator.CreateInstance(typeof(TEntity), args.ToArray());
 
             // Iterate over Index Mappings:
             for (int pos = 0; pos < csvIndexPropertyMappings.Count; pos++)
