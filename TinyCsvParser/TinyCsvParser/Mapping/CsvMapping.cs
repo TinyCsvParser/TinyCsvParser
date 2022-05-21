@@ -92,6 +92,7 @@ namespace TinyCsvParser.Mapping
 		private readonly Type entityType = typeof(TEntity);
 
 		private readonly ITypeConverterProvider typeConverterProvider;
+		private readonly List<CsvRowConstructor<TEntity>> csvUsingConstructorMappings;
 		private readonly List<IndexToConstructorParameterMapping> csvIndexConstructorMappings;
 		private readonly List<RangeToConstructorParameterMapping> csvRangeConstructorMappings;
 		private readonly List<IndexToPropertyMapping> csvIndexPropertyMappings;
@@ -106,11 +107,21 @@ namespace TinyCsvParser.Mapping
 		protected CsvMapping(ITypeConverterProvider typeConverterProvider)
 		{
 			this.typeConverterProvider = typeConverterProvider;
+			this.csvUsingConstructorMappings = new List<CsvRowConstructor<TEntity>>();
 			this.csvIndexConstructorMappings = new List<IndexToConstructorParameterMapping>();
 			this.csvRangeConstructorMappings = new List<RangeToConstructorParameterMapping>();
 			this.csvIndexPropertyMappings = new List<IndexToPropertyMapping>();
 			this.csvRangePropertyMappings = new List<RangeToPropertyMapping>();
 			this.csvRowMappings = new List<CsvRowMapping<TEntity>>();
+		}
+
+		protected CsvRowConstructor<TEntity> MapUsing(Func<TokenizedRow, TEntity> action)
+		{
+			var rowConstructor = new CsvRowConstructor<TEntity>(action);
+
+			csvUsingConstructorMappings.Add(rowConstructor);
+			
+			return rowConstructor;
 		}
 
 		protected CsvRowMapping<TEntity> MapUsing(Func<TEntity, TokenizedRow, bool> action)
@@ -210,74 +221,25 @@ namespace TinyCsvParser.Mapping
 
 		public CsvMappingResult<TEntity> Map(TokenizedRow values)
 		{
-			int mappedConstructorParameterCount = csvIndexConstructorMappings.Count + csvRangeConstructorMappings.Count;
-			object[] args = null;
-			if (mappedConstructorParameterCount > 0)
+			TEntity entity = null;
+			foreach (var csvRowConstructor in csvUsingConstructorMappings)
 			{
-				args = new object[mappedConstructorParameterCount];
-				foreach (var indexToConstructorMapping in csvIndexConstructorMappings)
+				if(csvRowConstructor.TryMapValue(values, out entity))
 				{
-					var columnIndex = indexToConstructorMapping.ColumnIndex;
-
-					if (columnIndex >= values.Tokens.Length)
-					{
-						return new CsvMappingResult<TEntity>
-						{
-							RowIndex = values.Index,
-							Error = new CsvMappingError
-							{
-								ColumnIndex = columnIndex,
-								Value = $"Column {columnIndex} is Out Of Range",
-								UnmappedRow = string.Join("|", values.Tokens)
-							}
-						};
-					}
-
-					var value = values.Tokens[columnIndex];
-
-					if (!indexToConstructorMapping.TryMapValue(value, out object result))
-					{
-						return new CsvMappingResult<TEntity>
-						{
-							RowIndex = values.Index,
-							Error = new CsvMappingError
-							{
-								ColumnIndex = columnIndex,
-								Value = $"Column {columnIndex} with Value '{value}' cannot be converted",
-								UnmappedRow = string.Join("|", values.Tokens)
-							}
-						};
-					}
-
-					args[indexToConstructorMapping.ConstructorIndex] = result;
-				}
-
-				foreach (var rangeToConstructorMapping in csvRangeConstructorMappings)
-				{
-					var range = rangeToConstructorMapping.Range;
-
-					// Copy the Sub Array. This needs optimization, like ReadOnlyMemory!
-					var slice = values.Tokens.Skip(range.Start).Take(range.Length).ToArray();
-
-					if (!rangeToConstructorMapping.TryMapValue(slice, out object result))
-					{
-						return new CsvMappingResult<TEntity>
-						{
-							RowIndex = values.Index,
-							Error = new CsvMappingError
-							{
-								ColumnIndex = range.Start,
-								Value = $"Range with Start Index {range.Start} and End Index {range.End} cannot be converted!",
-								UnmappedRow = string.Join("|", values.Tokens)
-							}
-						};
-					}
-
-					args[rangeToConstructorMapping.ConstructorIndex] = result;
+					break;
 				}
 			}
 
-			TEntity entity = (TEntity)Activator.CreateInstance(entityType, args);
+			if (entity == null)
+			{
+				var activatorResult = MapFromConstructorMappings(values);
+				if (!activatorResult.IsValid)
+				{
+					return activatorResult;
+				}
+
+				entity = activatorResult.Result; 
+			}
 
 			// Iterate over Index Mappings:
 			for (int pos = 0; pos < csvIndexPropertyMappings.Count; pos++)
@@ -324,8 +286,7 @@ namespace TinyCsvParser.Mapping
 
 				var range = rangeToPropertyMapping.Range;
 
-				// Copy the Sub Array. This needs optimization, like ReadOnlyMemory!
-				var slice = values.Tokens.Skip(range.Start).Take(range.Length).ToArray();
+				var slice = range.GetSlice(values);
 
 				if (!rangeToPropertyMapping.PropertyMapping.TryMapValue(entity, slice))
 				{
@@ -364,6 +325,81 @@ namespace TinyCsvParser.Mapping
 				}
 			}
 
+			return new CsvMappingResult<TEntity>
+			{
+				RowIndex = values.Index,
+				Result = entity
+			};
+		}
+
+		private CsvMappingResult<TEntity> MapFromConstructorMappings(TokenizedRow values)
+		{
+			int mappedConstructorParameterCount = csvIndexConstructorMappings.Count + csvRangeConstructorMappings.Count;
+			object[] args = null;
+			if (mappedConstructorParameterCount > 0)
+			{
+				args = new object[mappedConstructorParameterCount];
+				foreach (var indexToConstructorMapping in csvIndexConstructorMappings)
+				{
+					var columnIndex = indexToConstructorMapping.ColumnIndex;
+
+					if (columnIndex >= values.Tokens.Length)
+					{
+						return new CsvMappingResult<TEntity>
+						{
+							RowIndex = values.Index,
+							Error = new CsvMappingError
+							{
+								ColumnIndex = columnIndex,
+								Value = $"Column {columnIndex} is Out Of Range",
+								UnmappedRow = string.Join("|", values.Tokens)
+							}
+						};
+					}
+
+					var value = values.Tokens[columnIndex];
+
+					if (!indexToConstructorMapping.TryMapValue(value, out object result))
+					{
+						return new CsvMappingResult<TEntity>
+						{
+							RowIndex = values.Index,
+							Error = new CsvMappingError
+							{
+								ColumnIndex = columnIndex,
+								Value = $"Column {columnIndex} with Value '{value}' cannot be converted",
+								UnmappedRow = string.Join("|", values.Tokens)
+							}
+						};
+					}
+
+					args[indexToConstructorMapping.ConstructorIndex] = result;
+				}
+
+				foreach (var rangeToConstructorMapping in csvRangeConstructorMappings)
+				{
+					var range = rangeToConstructorMapping.Range;
+					var slice = range.GetSlice(values);
+
+					if (!rangeToConstructorMapping.TryMapValue(slice, out object result))
+					{
+						return new CsvMappingResult<TEntity>
+						{
+							RowIndex = values.Index,
+							Error = new CsvMappingError
+							{
+								ColumnIndex = range.Start,
+								Value = $"Range with Start Index {range.Start} and End Index {range.End} cannot be converted!",
+								UnmappedRow = string.Join("|", values.Tokens)
+							}
+						};
+					}
+
+					args[rangeToConstructorMapping.ConstructorIndex] = result;
+				}
+			}
+
+			TEntity entity = (TEntity)Activator.CreateInstance(entityType, args);
 			return new CsvMappingResult<TEntity>
 			{
 				RowIndex = values.Index,

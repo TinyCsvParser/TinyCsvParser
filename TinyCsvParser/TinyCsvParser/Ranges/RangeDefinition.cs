@@ -1,6 +1,8 @@
 ﻿// Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
+using System.Linq;
+using TinyCsvParser.Model;
 
 namespace TinyCsvParser.Ranges
 {
@@ -27,6 +29,13 @@ namespace TinyCsvParser.Ranges
         public Tuple<int, int> GetOffsetAndLength(int length)
         {
             return Tuple.Create(Start, End - Start);
+        }
+
+        public string[] GetSlice(TokenizedRow row)
+		{
+            // Copy the Sub Array. This needs optimization, like ReadOnlyMemory!
+            var slice = row.Tokens.Skip(Start).Take(Length).ToArray();
+            return slice;
         }
     }
 }
