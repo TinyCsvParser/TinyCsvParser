@@ -399,12 +399,27 @@ namespace TinyCsvParser.Mapping
 				}
 			}
 
-			TEntity entity = (TEntity)Activator.CreateInstance(entityType, args);
-			return new CsvMappingResult<TEntity>
+			try
 			{
-				RowIndex = values.Index,
-				Result = entity
-			};
+				TEntity entity = (TEntity)Activator.CreateInstance(entityType, args);
+				return new CsvMappingResult<TEntity>
+				{
+					RowIndex = values.Index,
+					Result = entity
+				};
+			}
+			catch (Exception e)
+			{
+				return new CsvMappingResult<TEntity>
+				{
+					RowIndex = values.Index,
+					Error = new CsvMappingError
+					{
+						Value = e.Message,
+						UnmappedRow = string.Join("|", values.Tokens)
+					}
+				};
+			}
 		}
 
 		public override string ToString()
