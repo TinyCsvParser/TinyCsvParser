@@ -72,9 +72,9 @@ namespace TinyCsvParser.Test.CsvParser
                 .ToList();
 
             Assert.AreEqual(null, result[0].Result.Property);
-            Assert.AreEqual(1.0, result[1].Result.Property, 1e-5);
+            Assert.That(result[1].Result.Property, Is.EqualTo(1.0).Within(1e-5));
             Assert.AreEqual(null, result[2].Result.Property);
-            Assert.AreEqual(2.0, result[3].Result.Property, 1e-5);
+            Assert.That(result[3].Result.Property, Is.EqualTo(2.0).Within(1e-5));
         }
     }
 }

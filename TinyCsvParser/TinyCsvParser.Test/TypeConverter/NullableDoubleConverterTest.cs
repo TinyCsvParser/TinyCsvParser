@@ -41,7 +41,7 @@ namespace TinyCsvParser.Test.TypeConverter
             }
             else
             {
-                Assert.AreEqual(expected.Value, actual, Double.Epsilon);
+                Assert.AreEqual(actual, Is.EqualTo(expected.Value).Within(double.Epsilon));
             }
         }
 
