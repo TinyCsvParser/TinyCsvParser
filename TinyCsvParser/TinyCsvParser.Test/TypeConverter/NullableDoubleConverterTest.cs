@@ -20,8 +20,8 @@ namespace TinyCsvParser.Test.TypeConverter
             get
             {
                 return new[] {
-                    MakeTuple(Double.MinValue.ToString("R"), Double.MinValue),
-                    MakeTuple(Double.MaxValue.ToString("R"), Double.MaxValue),
+                    MakeTuple(double.MinValue.ToString("R"), double.NegativeInfinity),
+                    MakeTuple(double.MaxValue.ToString("R"), double.PositiveInfinity),
                     MakeTuple("0", 0),
                     MakeTuple("-1000", -1000),
                     MakeTuple("1000", 1000),
@@ -33,15 +33,15 @@ namespace TinyCsvParser.Test.TypeConverter
             }
         }
 
-        public override void AssertAreEqual(Double? expected, Double? actual)
+        public override void AssertAreEqual(double? expected, double? actual)
         {
-            if (expected == default(Double?))
+            if (expected == default(double?))
             {
                 Assert.AreEqual(expected, actual);
             }
             else
             {
-                Assert.AreEqual(actual, Is.EqualTo(expected.Value).Within(double.Epsilon));
+                Assert.That(actual.Value, Is.EqualTo(expected.Value).Within(double.Epsilon));
             }
         }
 

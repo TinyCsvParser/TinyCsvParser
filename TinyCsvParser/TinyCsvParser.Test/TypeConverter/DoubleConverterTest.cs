@@ -19,8 +19,8 @@ namespace TinyCsvParser.Test.TypeConverter
             get
             {
                 return new[] {
-                    MakeTuple(Double.MinValue.ToString("R"), Double.MinValue),
-                    MakeTuple(Double.MaxValue.ToString("R"), Double.MaxValue),
+                    MakeTuple(double.MinValue.ToString("R"), double.NegativeInfinity),
+                    MakeTuple(double.MaxValue.ToString("R"), double.PositiveInfinity),
                     MakeTuple("0", 0),
                     MakeTuple("-1000", -1000),
                     MakeTuple("1000", 1000),
@@ -31,7 +31,7 @@ namespace TinyCsvParser.Test.TypeConverter
 
         public override void AssertAreEqual(Double expected, Double actual)
         {
-            Assert.AreEqual(expected, actual, Double.Epsilon);
+            Assert.AreEqual(expected, actual, 1e-5);
         }
 
         protected override string[] FailTestData

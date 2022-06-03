@@ -20,8 +20,8 @@ namespace TinyCsvParser.Test.TypeConverter
             get
             {
                 return new[] {
-                    MakeTuple(Single.MinValue.ToString("R"), Single.MinValue),
-                    MakeTuple(Single.MaxValue.ToString("R"), Single.MaxValue),
+                    MakeTuple(float.MinValue.ToString("R"), float.NegativeInfinity),
+                    MakeTuple(float.MaxValue.ToString("R"), float.PositiveInfinity),
                     MakeTuple("0", 0),
                     MakeTuple("-1000", -1000),
                     MakeTuple("1000", 1000),
@@ -41,7 +41,7 @@ namespace TinyCsvParser.Test.TypeConverter
             }
             else
             {
-                Assert.AreEqual(actual, Is.EqualTo(expected.Value).Within(float.Epsilon));
+                Assert.That(actual, Is.EqualTo(expected.Value).Within(float.Epsilon));
             }
         }
 
