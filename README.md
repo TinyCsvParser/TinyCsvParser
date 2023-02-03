@@ -18,6 +18,17 @@ in the [Package Manager Console](http://docs.nuget.org/consume/package-manager-c
 PM> Install-Package TinyCsvParser
 ```
 
+## Community Packages ##
+
+[@Miista]: https://github.com/Miista
+
+[@Miista] provides several community packages to simplify working with TinyCsvParser:
+
+* [TinyCsvParser.Optional](https://github.com/Miista/TinyCsvParser.Optional)
+* [TinyCsvParser.Collections](https://github.com/Miista/TinyCsvParser.Collections)
+* [TinyCsvParser.ImmutableCollections](https://github.com/Miista/TinyCsvParser.ImmutableCollections)
+* [TinyCsvParser.Enums] (https://github.com/Miista/TinyCsvParser.Enums)
+
 ## Documentation and Changelog ##
 
 [TinyCsvParser] comes with an official documentation and changelog:
