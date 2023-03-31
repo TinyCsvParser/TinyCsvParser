@@ -11,10 +11,10 @@ To get started quickly, follow the [Quickstart](https://tinycsvparser.github.io/
 
 ## Installing TinyCsvParser ##
 
-You can use [NuGet](https://www.nuget.org) to install [TinyCsvParser]. Run the following command 
+You can use [NuGet](https://www.nuget.org) to install [TinyCsvParser]. Run the following command
 in the [Package Manager Console](http://docs.nuget.org/consume/package-manager-console).
 
-```
+```powershell
 PM> Install-Package TinyCsvParser
 ```
 
@@ -27,7 +27,7 @@ PM> Install-Package TinyCsvParser
 * [TinyCsvParser.Optional](https://github.com/Miista/TinyCsvParser.Optional)
 * [TinyCsvParser.Collections](https://github.com/Miista/TinyCsvParser.Collections)
 * [TinyCsvParser.ImmutableCollections](https://github.com/Miista/TinyCsvParser.ImmutableCollections)
-* [TinyCsvParser.Enums] (https://github.com/Miista/TinyCsvParser.Enums)
+* [TinyCsvParser.Enums](<https://github.com/Miista/TinyCsvParser.Enums>)
 
 ## Documentation and Changelog ##
 
@@ -37,12 +37,12 @@ PM> Install-Package TinyCsvParser
 
 ## Basic Usage ##
 
-This is only an example for the most common use of TinyCsvParser. For more detailed information on custom formats and more advanced use-cases, 
+This is only an example for the most common use of TinyCsvParser. For more detailed information on custom formats and more advanced use-cases,
 please consult the full [User Guide](https://tinycsvparser.github.io/TinyCsvParser/sections/userguide.html) of the official documentation.
 
 Imagine we have list of Persons in a CSV file ``persons.csv`` with their first name, last name and birthdate.
 
-```
+```csv
 FirstName;LastName;BirthDate
 Philipp;Wagner;1986/05/12
 Max;Musterman;2014/01/02
@@ -98,7 +98,7 @@ namespace TinyCsvParser.Test
             Assert.AreEqual(2, result.Count);
 
             Assert.IsTrue(result.All(x => x.IsValid));
-			
+   
             Assert.AreEqual("Philipp", result[0].Result.FirstName);
             Assert.AreEqual("Wagner", result[0].Result.LastName);
 
