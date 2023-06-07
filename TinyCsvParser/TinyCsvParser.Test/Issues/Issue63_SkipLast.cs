@@ -1,7 +1,5 @@
 ﻿// Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-#if NETCOREAPP3_0
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -106,4 +104,3 @@ namespace TinyCsvParser.Test.Issues
 
     }
 }
-#endif
