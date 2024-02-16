@@ -12,6 +12,7 @@ namespace TinyCsvParser
     {
         private readonly CsvParserOptions options;
         private readonly ICsvMapping<TEntity> mapping;
+        public CsvHeaderMappingResult csvMappingHeader;
 
         public CsvParser(CsvParserOptions options, ICsvMapping<TEntity> mapping)
         {
@@ -24,6 +25,16 @@ namespace TinyCsvParser
             if (csvData == null)
             {
                 throw new ArgumentNullException(nameof(csvData));
+            }
+
+            if (options.ReadHeader)
+            {
+                var headerRow = csvData.Take(1).SingleOrDefault();
+                if (headerRow == null)
+                    return new List<CsvMappingResult<TEntity>>().AsParallel();
+
+                var tokenizedRow = new TokenizedRow(0, options.Tokenizer.Tokenize(headerRow.Data));
+                csvMappingHeader = mapping.MapHeader(tokenizedRow);
             }
 
             var query = csvData
@@ -41,11 +52,11 @@ namespace TinyCsvParser
                 .Where(row => !string.IsNullOrWhiteSpace(row.Data));
 
             // Ignore Lines, that start with a comment character:
-            if(!string.IsNullOrWhiteSpace(options.CommentCharacter)) 
+            if (!string.IsNullOrWhiteSpace(options.CommentCharacter))
             {
                 query = query.Where(line => !line.Data.StartsWith(options.CommentCharacter));
             }
-                
+
             return query
                 .Select(line => new TokenizedRow(line.Index, options.Tokenizer.Tokenize(line.Data)))
                 .Select(fields => mapping.Map(fields));

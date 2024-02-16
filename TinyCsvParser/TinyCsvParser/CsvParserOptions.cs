@@ -8,7 +8,7 @@ namespace TinyCsvParser
     public class CsvParserOptions
     {
         public readonly ITokenizer Tokenizer;
-        
+
         public readonly bool SkipHeader;
 
         public readonly string CommentCharacter;
@@ -16,6 +16,13 @@ namespace TinyCsvParser
         public readonly int DegreeOfParallelism;
 
         public readonly bool KeepOrder;
+        public bool ReadHeader { get; private set; }
+
+        public CsvParserOptions WithReadHeader()
+        {
+            ReadHeader = true;
+            return this;
+        }
 
         public CsvParserOptions(bool skipHeader, char fieldsSeparator)
             : this(skipHeader, new QuotedStringTokenizer(fieldsSeparator))
@@ -23,6 +30,16 @@ namespace TinyCsvParser
         }
 
         public CsvParserOptions(bool skipHeader, char fieldsSeparator, int degreeOfParallelism, bool keepOrder)
+            : this(skipHeader, string.Empty, new QuotedStringTokenizer(fieldsSeparator), degreeOfParallelism, keepOrder)
+        {
+        }
+
+        public CsvParserOptions(bool skipHeader, char[] fieldsSeparator)
+            : this(skipHeader, new QuotedStringTokenizer(fieldsSeparator))
+        {
+        }
+
+        public CsvParserOptions(bool skipHeader, char[] fieldsSeparator, int degreeOfParallelism, bool keepOrder)
             : this(skipHeader, string.Empty, new QuotedStringTokenizer(fieldsSeparator), degreeOfParallelism, keepOrder)
         {
         }

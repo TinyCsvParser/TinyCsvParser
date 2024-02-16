@@ -8,10 +8,16 @@ namespace TinyCsvParser.Mapping
     {
         public CsvMappingResult<string[]> Map(TokenizedRow values)
         {
-            return new CsvMappingResult<string[]> {
-                RowIndex =  values.Index,
+            return new CsvMappingResult<string[]>
+            {
+                RowIndex = values.Index,
                 Result = values.Tokens
             };
+        }
+
+        public CsvHeaderMappingResult MapHeader(TokenizedRow values)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
