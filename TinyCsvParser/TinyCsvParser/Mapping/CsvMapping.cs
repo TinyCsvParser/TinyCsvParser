@@ -134,7 +134,7 @@ namespace TinyCsvParser.Mapping
                     {
                         Value = "Columns exceeds number of properties",
                         UnmappedRow = string.Join("|", values.Tokens),
-                        ErrorCode = CsvParserErrorCodes.ColumnsExceedProperties
+                        ErrorCode = CsvParserErrorCodes.ColumnsExceedNumberOfProperties
                     }
                 };
             }

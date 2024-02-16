@@ -16,13 +16,8 @@ namespace TinyCsvParser
         public readonly int DegreeOfParallelism;
 
         public readonly bool KeepOrder;
-        public bool ReadHeader { get; private set; }
 
-        public CsvParserOptions WithReadHeader()
-        {
-            ReadHeader = true;
-            return this;
-        }
+        public bool ReadHeader { get; private set; }
 
         public CsvParserOptions(bool skipHeader, char fieldsSeparator)
             : this(skipHeader, new QuotedStringTokenizer(fieldsSeparator))
@@ -61,6 +56,12 @@ namespace TinyCsvParser
             Tokenizer = tokenizer;
             DegreeOfParallelism = degreeOfParallelism;
             KeepOrder = keepOrder;
+        }
+
+        public CsvParserOptions WithReadHeader()
+        {
+            ReadHeader = true;
+            return this;
         }
 
         public override string ToString()

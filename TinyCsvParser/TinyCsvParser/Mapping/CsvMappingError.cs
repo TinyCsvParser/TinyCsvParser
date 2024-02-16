@@ -23,7 +23,7 @@ namespace TinyCsvParser.Mapping
 
     public enum CsvParserErrorCodes
     {
-        ColumnsExceedProperties,
+        ColumnsExceedNumberOfProperties,
         InvalidColumnData,
         OutOfRange
     }
