@@ -238,7 +238,8 @@ namespace TinyCsvParser.Mapping
                         Error = new CsvMappingError
                         {
                             Value = $"Row could not be mapped!",
-                            UnmappedRow = string.Join("|", values.Tokens)
+                            UnmappedRow = string.Join("|", values.Tokens),
+                            ErrorCode = CsvParserErrorCodes.OutOfRange
                         }
                     };
                 }
