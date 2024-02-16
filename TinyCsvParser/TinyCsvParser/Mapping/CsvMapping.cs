@@ -181,7 +181,7 @@ namespace TinyCsvParser.Mapping
                         };
                     }
 
-                    columnMappingResult.Error.ColumnValues[columnIndex] = value;
+                    columnMappingResult.Error.InvalidColumnValues[columnIndex] = value;
                 }
             }
 
@@ -216,7 +216,7 @@ namespace TinyCsvParser.Mapping
                             }
                         };
 
-                        columnMappingResult.Error.ColumnValues[columnIndex] = value;
+                        columnMappingResult.Error.InvalidColumnValues[columnIndex] = string.Join(",", slice);
                     }
                 }
             }

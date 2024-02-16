@@ -12,7 +12,7 @@ namespace TinyCsvParser.Mapping
 
         public string UnmappedRow { get; set; }
 
-        public Dictionary<int, string> ColumnValues { get; set; } = new Dictionary<int, string>();
+        public Dictionary<int, string> InvalidColumnValues { get; set; } = new Dictionary<int, string>();
         public CsvParserErrorCodes ErrorCode;
 
         public override string ToString()
