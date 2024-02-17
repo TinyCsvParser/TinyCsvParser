@@ -12,7 +12,6 @@ namespace TinyCsvParser
     {
         private readonly CsvParserOptions options;
         private readonly ICsvMapping<TEntity> mapping;
-        public CsvHeaderMappingResult csvMappingHeader;
 
         public CsvParser(CsvParserOptions options, ICsvMapping<TEntity> mapping)
         {
@@ -20,8 +19,9 @@ namespace TinyCsvParser
             this.mapping = mapping;
         }
 
-        public ParallelQuery<CsvMappingResult<TEntity>> Parse(IEnumerable<Row> csvData)
+        public (ParallelQuery<CsvMappingResult<TEntity>> result, CsvHeaderMappingResult header) Parse(IEnumerable<Row> csvData)
         {
+            CsvHeaderMappingResult csvMappingHeader = null;
             if (csvData == null)
             {
                 throw new ArgumentNullException(nameof(csvData));
@@ -30,11 +30,11 @@ namespace TinyCsvParser
             if (options.ReadHeader)
             {
                 var headerRow = csvData.Take(1).SingleOrDefault();
-                if (headerRow == null)
-                    return new List<CsvMappingResult<TEntity>>().AsParallel();
-
-                var tokenizedRow = new TokenizedRow(0, options.Tokenizer.Tokenize(headerRow.Data));
-                csvMappingHeader = mapping.MapHeader(tokenizedRow);
+                if (headerRow != null)
+                {
+                    var tokenizedRow = new TokenizedRow(0, options.Tokenizer.Tokenize(headerRow.Data));
+                    csvMappingHeader = mapping.MapHeader(tokenizedRow);
+                }
             }
 
             var query = csvData
@@ -57,9 +57,9 @@ namespace TinyCsvParser
                 query = query.Where(line => !line.Data.StartsWith(options.CommentCharacter));
             }
 
-            return query
+            return (query
                 .Select(line => new TokenizedRow(line.Index, options.Tokenizer.Tokenize(line.Data)))
-                .Select(fields => mapping.Map(fields));
+                .Select(fields => mapping.Map(fields)), csvMappingHeader);
         }
 
         public override string ToString()
