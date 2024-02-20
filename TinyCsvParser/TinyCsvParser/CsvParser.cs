@@ -19,6 +19,11 @@ namespace TinyCsvParser
             this.mapping = mapping;
         }
 
+        public Dictionary<int, string> GetPropertyMapping()
+        {
+            return mapping.GetPropertyMapping();
+        }
+
         public (ParallelQuery<CsvMappingResult<TEntity>> result, CsvHeaderMappingResult header) Parse(IEnumerable<Row> csvData)
         {
             CsvHeaderMappingResult csvMappingHeader = null;

@@ -1,5 +1,6 @@
 ﻿// Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using System.Collections.Generic;
 using TinyCsvParser.Model;
 
 namespace TinyCsvParser.Mapping
@@ -16,6 +17,11 @@ namespace TinyCsvParser.Mapping
         }
 
         public CsvHeaderMappingResult MapHeader(TokenizedRow values)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Dictionary<int, string> GetPropertyMapping()
         {
             throw new System.NotImplementedException();
         }

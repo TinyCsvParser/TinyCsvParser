@@ -13,11 +13,17 @@ namespace TinyCsvParser.Mapping
     public abstract class CsvMapping<TEntity> : ICsvMapping<TEntity>
         where TEntity : class, new()
     {
+        public Dictionary<int, string> GetPropertyMapping()
+        {
+            return csvIndexPropertyMappings.ToDictionary(x => x.ColumnIndex, x => x.PropertyName);
+        }
+
         private class IndexToPropertyMapping
         {
             public int ColumnIndex { get; set; }
 
             public ICsvPropertyMapping<TEntity, string> PropertyMapping { get; set; }
+            public string PropertyName { get; set; }
 
             public override string ToString()
             {
@@ -93,18 +99,18 @@ namespace TinyCsvParser.Mapping
 
             var propertyMapping = new CsvPropertyMapping<TEntity, TProperty>(property, typeConverter);
 
-            AddPropertyMapping(columnIndex, propertyMapping);
+            AddPropertyMapping(columnIndex, propertyMapping, property);
 
             return propertyMapping;
         }
 
-
-        private void AddPropertyMapping<TProperty>(int columnIndex, CsvPropertyMapping<TEntity, TProperty> propertyMapping)
+        private void AddPropertyMapping<TProperty>(int columnIndex, CsvPropertyMapping<TEntity, TProperty> propertyMapping, Expression<Func<TEntity, TProperty>> property)
         {
             var indexToPropertyMapping = new IndexToPropertyMapping
             {
                 ColumnIndex = columnIndex,
-                PropertyMapping = propertyMapping
+                PropertyMapping = propertyMapping,
+                PropertyName = ((MemberExpression)property.Body).Member.Name
             };
 
             csvIndexPropertyMappings.Add(indexToPropertyMapping);
