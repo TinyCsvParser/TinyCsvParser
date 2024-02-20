@@ -125,14 +125,14 @@ namespace TinyCsvParser.Mapping
         {
             TEntity entity = new TEntity();
 
-            if (values.Tokens.Length > csvIndexPropertyMappings.Count)
+            if (values.Tokens.Length != csvIndexPropertyMappings.Count)
             {
                 return new CsvMappingResult<TEntity>
                 {
                     RowIndex = values.Index,
                     Error = new CsvMappingError
                     {
-                        Value = "Columns exceeds number of properties",
+                        Value = $"Unexpected number Columns, requires {csvIndexPropertyMappings.Count}, found {values.Tokens.Length}",
                         UnmappedRow = string.Join("|", values.Tokens),
                         ErrorCode = CsvParserErrorCodes.ColumnsExceedNumberOfProperties
                     }
@@ -256,6 +256,19 @@ namespace TinyCsvParser.Mapping
         {
             var headerValues = new List<string>();
 
+            if (values.Tokens.Length != csvIndexPropertyMappings.Count)
+            {
+                return new CsvHeaderMappingResult
+                {
+                    RowIndex = values.Index,
+                    Error = new CsvMappingError
+                    {
+                        Value = $"Unexpected number Columns, requires {csvIndexPropertyMappings.Count} found {values.Tokens.Length}",
+                        UnmappedRow = string.Join("|", values.Tokens),
+                        ErrorCode = CsvParserErrorCodes.ColumnsExceedNumberOfProperties
+                    }
+                };
+            }
             // Iterate over Index Mappings:
             for (int pos = 0; pos < csvIndexPropertyMappings.Count; pos++)
             {
@@ -272,7 +285,8 @@ namespace TinyCsvParser.Mapping
                         {
                             ColumnIndex = columnIndex,
                             Value = $"Column {columnIndex} is Out Of Range",
-                            UnmappedRow = string.Join("|", values.Tokens)
+                            UnmappedRow = string.Join("|", values.Tokens),
+                            ErrorCode = CsvParserErrorCodes.OutOfRange
                         }
                     };
                 }
