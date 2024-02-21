@@ -140,7 +140,7 @@ namespace TinyCsvParser.Mapping
                     {
                         Value = $"Unexpected number Columns, requires {csvIndexPropertyMappings.Count}, found {values.Tokens.Length}",
                         UnmappedRow = string.Join("|", values.Tokens),
-                        ErrorCode = CsvParserErrorCodes.ColumnsExceedNumberOfProperties
+                        ErrorCode = CsvParserErrorCodes.NumberOfColumnsNotEqualToProperties
                     }
                 };
             }
@@ -271,7 +271,7 @@ namespace TinyCsvParser.Mapping
                     {
                         Value = $"Unexpected number Columns, requires {csvIndexPropertyMappings.Count} found {values.Tokens.Length}",
                         UnmappedRow = string.Join("|", values.Tokens),
-                        ErrorCode = CsvParserErrorCodes.ColumnsExceedNumberOfProperties
+                        ErrorCode = CsvParserErrorCodes.NumberOfColumnsNotEqualToProperties
                     }
                 };
             }
