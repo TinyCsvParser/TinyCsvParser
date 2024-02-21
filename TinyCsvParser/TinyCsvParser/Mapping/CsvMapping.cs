@@ -138,7 +138,7 @@ namespace TinyCsvParser.Mapping
                     RowIndex = values.Index,
                     Error = new CsvMappingError
                     {
-                        Value = $"Unexpected number Columns, requires {csvIndexPropertyMappings.Count}, found {values.Tokens.Length}",
+                        Value = $"Unexpected number of columns, requires {csvIndexPropertyMappings.Count}, found {values.Tokens.Length}",
                         UnmappedRow = string.Join("|", values.Tokens),
                         ErrorCode = CsvParserErrorCodes.NumberOfColumnsNotEqualToProperties
                     }
@@ -269,7 +269,7 @@ namespace TinyCsvParser.Mapping
                     RowIndex = values.Index,
                     Error = new CsvMappingError
                     {
-                        Value = $"Unexpected number Columns, requires {csvIndexPropertyMappings.Count} found {values.Tokens.Length}",
+                        Value = $"Unexpected number of columns, requires {csvIndexPropertyMappings.Count} found {values.Tokens.Length}",
                         UnmappedRow = string.Join("|", values.Tokens),
                         ErrorCode = CsvParserErrorCodes.NumberOfColumnsNotEqualToProperties
                     }
