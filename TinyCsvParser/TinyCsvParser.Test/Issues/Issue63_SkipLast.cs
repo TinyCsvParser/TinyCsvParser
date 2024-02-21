@@ -26,7 +26,7 @@ namespace TinyCsvParser.Test.Issues
                 .SkipLast(skipLast)
                 .Select((line, index) => new Row(index, line));
 
-            return csvParser.Parse(lines);
+            return csvParser.Parse(lines).result;
         }
     }
 

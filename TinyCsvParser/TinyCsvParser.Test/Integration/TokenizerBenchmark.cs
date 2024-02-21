@@ -84,6 +84,7 @@ namespace TinyCsvParser.Test.Integration
             {
                 var lines = parser
                     .ReadFromFile(testFilePath, Encoding.UTF8)
+                    .result
                     .Where(x => x.IsValid)
                     .Count();
 

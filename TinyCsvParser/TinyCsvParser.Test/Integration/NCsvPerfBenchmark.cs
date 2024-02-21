@@ -153,6 +153,7 @@ namespace TinyCsvParser.Test.Integration
                 {
                     var cnt = parser
                         .ReadFromFile(filename, Encoding.UTF8)
+                        .result
                         .Where(x => x.IsValid)
                         .Count();
     
@@ -176,6 +177,7 @@ namespace TinyCsvParser.Test.Integration
                 {
                     var cnt = parser
                         .ReadFromFile(filename, Encoding.UTF8)
+                        .result
                         .Where(x => x.IsValid)
                         .Count();
 
@@ -199,6 +201,7 @@ namespace TinyCsvParser.Test.Integration
                 {
                     var cnt = parser
                         .ReadFromFile(filename, Encoding.UTF8)
+                        .result
                         .Where(x => x.IsValid)
                         .Count();
 

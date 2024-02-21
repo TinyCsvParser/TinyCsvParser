@@ -39,6 +39,7 @@ namespace TinyCsvParser.Test.CsvParser
 
             var result = csvParser
                 .ReadFromString(csvReaderOptions, stringBuilder.ToString())
+                .result
                 .ToList();
 
             Assert.AreEqual(123.456, result[0].Result.Value);

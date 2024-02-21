@@ -52,6 +52,7 @@ namespace TinyCsvParser.Benchmark
             var csvParser = new CsvParser<LocalWeatherData>(csvParserOptions, csvMapper);
 
             float result = csvParser.ReadFromFile(GetTestFilePath(), Encoding.ASCII)
+                .result
                 .Where(x => x.IsValid)
                 .Select(x => x.Result)
                 .Average(x => x.DryBulbCelsius);

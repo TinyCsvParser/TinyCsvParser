@@ -7,7 +7,7 @@ namespace TinyCsvParser.Mapping
 {
     public class CsvStringArrayMapping : ICsvMapping<string[]>
     {
-        public CsvMappingResult<string[]> Map(TokenizedRow values)
+        public CsvMappingResult<string[]> Map(TokenizedRow values, int ignoreColumns = 0)
         {
             return new CsvMappingResult<string[]>
             {

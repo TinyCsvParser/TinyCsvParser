@@ -62,6 +62,7 @@ namespace TinyCsvParser.Test.CsvParser
 
             var result = csvParser
                 .ReadFromFile(filePath.ToString(), Encoding.UTF8)
+                .result
                 .ToList();
 
             Assert.AreEqual(2, result.Count);
@@ -116,6 +117,7 @@ namespace TinyCsvParser.Test.CsvParser
             {
                 var result = csvParser
                     .ReadFromStream(stream, Encoding.UTF8)
+                    .result
                     .ToList();
 
                 Assert.AreEqual(2, result.Count);

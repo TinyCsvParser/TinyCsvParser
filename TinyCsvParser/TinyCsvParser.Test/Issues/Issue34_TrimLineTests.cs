@@ -55,6 +55,7 @@ namespace TinyCsvParser.Test.Issues
             {
                 var result = csvParser
                     .ReadFromString(csvReaderOptions, csvLine)
+                    .result
                     .ToList();
 
                 Assert.AreEqual(1, result.Count);

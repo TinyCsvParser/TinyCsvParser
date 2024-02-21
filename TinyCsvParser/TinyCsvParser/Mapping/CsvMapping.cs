@@ -127,23 +127,39 @@ namespace TinyCsvParser.Mapping
             csvRangePropertyMappings.Add(rangeToPropertyMapping);
         }
 
-        public CsvMappingResult<TEntity> Map(TokenizedRow values)
+        private bool ValidateNumberOfTokens<T>(TokenizedRow values, out T csvMappingResult, int ignoreColumns = 0)
+            where T : CsvMappingResultBase, new()
+        {
+            csvMappingResult = default;
+
+            if (csvRowMappings.Any())
+                return true;
+
+            var count = csvRangePropertyMappings.Sum(x => x.Range.Length) + csvIndexPropertyMappings.Count;
+
+            if (values.Tokens.Length - ignoreColumns != count)
+            {
+                csvMappingResult = new T();
+                csvMappingResult.RowIndex = values.Index;
+                csvMappingResult.Error = new CsvMappingError
+                {
+                    Value = $"Unexpected number of columns, requires {csvIndexPropertyMappings.Count}, found {values.Tokens.Length}",
+                    UnmappedRow = string.Join("|", values.Tokens),
+                    ErrorCode = CsvParserErrorCodes.NumberOfColumnsNotEqualToProperties
+                };
+
+                return false;
+            }
+
+            return true;
+        }
+
+        public CsvMappingResult<TEntity> Map(TokenizedRow values, int ignoreColumns = 0)
         {
             TEntity entity = new TEntity();
 
-            if (values.Tokens.Length != csvIndexPropertyMappings.Count)
-            {
-                return new CsvMappingResult<TEntity>
-                {
-                    RowIndex = values.Index,
-                    Error = new CsvMappingError
-                    {
-                        Value = $"Unexpected number of columns, requires {csvIndexPropertyMappings.Count}, found {values.Tokens.Length}",
-                        UnmappedRow = string.Join("|", values.Tokens),
-                        ErrorCode = CsvParserErrorCodes.NumberOfColumnsNotEqualToProperties
-                    }
-                };
-            }
+            if (!ValidateNumberOfTokens<CsvMappingResult<TEntity>>(values, out var csvMapping, ignoreColumns))
+                return csvMapping;
 
             CsvMappingResult<TEntity> columnMappingResult = null;
             // Iterate over Index Mappings:
@@ -261,6 +277,9 @@ namespace TinyCsvParser.Mapping
         public CsvHeaderMappingResult MapHeader(TokenizedRow values)
         {
             var headerValues = new List<string>();
+
+            if (!ValidateNumberOfTokens<CsvHeaderMappingResult>(values, out var csvMapping))
+                return csvMapping;
 
             if (values.Tokens.Length != csvIndexPropertyMappings.Count)
             {

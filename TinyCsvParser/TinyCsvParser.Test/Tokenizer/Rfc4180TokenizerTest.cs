@@ -56,6 +56,7 @@ namespace TinyCsvParser.Test.Tokenizer
 
             var result = csvParser
                 .ReadFromString(csvReaderOptions, stringBuilder.ToString())
+                .result
                 .ToList();
 
             Assert.AreEqual(2, result.Count);
@@ -121,6 +122,7 @@ namespace TinyCsvParser.Test.Tokenizer
 
             var result = csvParser
                 .ReadFromString(csvReaderOptions, stringBuilder.ToString())
+                .result
                 .ToList();
 
             Assert.AreEqual(2, result.Count);

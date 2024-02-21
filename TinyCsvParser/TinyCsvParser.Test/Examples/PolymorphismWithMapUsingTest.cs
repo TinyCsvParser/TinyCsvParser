@@ -58,7 +58,7 @@ namespace TinyCsvParser.Test.Examples
                 // the process of building.
                 if (inProgressEntity.ShapeName == "square")
                 {
-                    var subMap = squareMap.Map(rowData);
+                    var subMap = squareMap.Map(rowData, 1);
                     if (subMap.IsValid)
                     {
                         inProgressEntity.Shape = subMap.Result;
@@ -69,7 +69,7 @@ namespace TinyCsvParser.Test.Examples
 
                 if (inProgressEntity.ShapeName == "triangle")
                 {
-                    var subMap = triangleMap.Map(rowData);
+                    var subMap = triangleMap.Map(rowData, 1);
                     if (subMap.IsValid)
                     {
                         inProgressEntity.Shape = subMap.Result;
@@ -132,6 +132,7 @@ namespace TinyCsvParser.Test.Examples
 
             var result = csvParser
                 .ReadFromString(csvReaderOptions, stringBuilder.ToString())
+                .result
                 .ToList();
 
             Assert.AreEqual(4, result.Count);

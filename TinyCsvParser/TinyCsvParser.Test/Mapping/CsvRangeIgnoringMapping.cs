@@ -71,7 +71,7 @@ namespace TinyCsvParser.Test.Mapping
             csvIndexPropertyMappings.Add(indexToPropertyMapping);
         }
 
-        public CsvMappingResult<TEntity> Map(TokenizedRow values)
+        public CsvMappingResult<TEntity> Map(TokenizedRow values, int ignoreColumns = 0)
         {
             TEntity entity = new TEntity();
 
@@ -117,6 +117,16 @@ namespace TinyCsvParser.Test.Mapping
 
             return $"CsvMissingValuesMapping (TypeConverterProvider = {typeConverterProvider}, Mappings = {csvPropertyMappingsString})";
         }
+
+        public CsvHeaderMappingResult MapHeader(TokenizedRow values)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Dictionary<int, string> GetPropertyMapping()
+        {
+            throw new NotImplementedException();
+        }
     }
 
     [TestFixture]
@@ -156,6 +166,7 @@ namespace TinyCsvParser.Test.Mapping
 
             var result = customCsvParser
                 .ReadFromString(csvReaderOptions, stringBuilder.ToString())
+                .result
                 .ToList();
 
             Assert.AreEqual(2, result.Count);

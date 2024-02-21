@@ -19,6 +19,11 @@ namespace TinyCsvParser.Tokenizer.RFC4180
             StrictDelimitation = strictDelimitation;
         }
 
+        public Options(char quoteCharacter, char escapeCharacter, char delimiterCharacter, bool strictDelimitation = false) 
+            : this(quoteCharacter, escapeCharacter, new char[] { delimiterCharacter }, strictDelimitation)
+        {
+        }
+
         public override string ToString()
         {
             return $"Options (QuoteCharacter = {QuoteCharacter}, EscapeCharacter = {EscapeCharacter}, DelimiterCharacter = {DelimiterCharacter}, StrictDelimitation = {StrictDelimitation})";
