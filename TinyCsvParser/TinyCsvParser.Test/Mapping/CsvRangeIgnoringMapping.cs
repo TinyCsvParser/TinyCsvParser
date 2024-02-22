@@ -1,11 +1,11 @@
 ﻿// Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
-using NUnit.Framework;
 using TinyCsvParser.Mapping;
 using TinyCsvParser.Model;
 using TinyCsvParser.TypeConverter;
@@ -162,18 +162,18 @@ namespace TinyCsvParser.Test.Mapping
                 .AppendLine("1;2;3")
                 .AppendLine("4");
 
-            var csvReaderOptions = new CsvReaderOptions(new [] { Environment.NewLine });
+            var csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
 
             var result = customCsvParser
                 .ReadFromString(csvReaderOptions, stringBuilder.ToString())
-                .result
+                .Items
                 .ToList();
 
             Assert.AreEqual(2, result.Count);
 
             Assert.IsTrue(result.All(x => x.IsValid));
 
-            Assert.AreEqual("1",result[0].Result.Value1);
+            Assert.AreEqual("1", result[0].Result.Value1);
             Assert.AreEqual("2", result[0].Result.Value2);
             Assert.AreEqual("3", result[0].Result.Value3);
 

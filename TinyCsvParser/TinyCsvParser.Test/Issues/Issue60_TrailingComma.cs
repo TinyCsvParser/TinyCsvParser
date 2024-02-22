@@ -5,7 +5,6 @@ using System;
 using System.Linq;
 using System.Text;
 using TinyCsvParser.Mapping;
-using TinyCsvParser.Tokenizer;
 
 namespace TinyCsvParser.Test.Issues
 {
@@ -56,7 +55,7 @@ namespace TinyCsvParser.Test.Issues
 
             var result = csvParser
                 .ReadFromString(csvReaderOptions, stringBuilder.ToString())
-                .result
+                .Items
                 .ToList();
 
             Assert.AreEqual(1, result.Count);
@@ -70,7 +69,7 @@ namespace TinyCsvParser.Test.Issues
             Assert.AreEqual(1.00f, result.First().Result.Col4, 1e-3);
             Assert.AreEqual("Teacher", result.First().Result.Col5);
             Assert.AreEqual("js@someemail.org", result.First().Result.Col6);
-            
+
         }
     }
 }

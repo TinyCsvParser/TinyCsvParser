@@ -5,14 +5,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using TinyCsvParser.Mapping;
 using TinyCsvParser.Model;
 
 namespace TinyCsvParser
 {
     public static class CsvParserExtensions
     {
-        public static (ParallelQuery<CsvMappingResult<TEntity>> result, CsvHeaderMappingResult header) ReadFromFile<TEntity>(this ICsvParser<TEntity> csvParser, string fileName, Encoding encoding)
+        public static CsvData<TEntity> ReadFromFile<TEntity>(this ICsvParser<TEntity> csvParser, string fileName, Encoding encoding)
         {
             if (fileName == null)
             {
@@ -26,7 +25,7 @@ namespace TinyCsvParser
             return csvParser.Parse(lines);
         }
 
-        public static (ParallelQuery<CsvMappingResult<TEntity>> result, CsvHeaderMappingResult header) ReadFromString<TEntity>(this ICsvParser<TEntity> csvParser, CsvReaderOptions csvReaderOptions, string csvData)
+        public static CsvData<TEntity> ReadFromString<TEntity>(this ICsvParser<TEntity> csvParser, CsvReaderOptions csvReaderOptions, string csvData)
         {
             var lines = csvData
                 .Split(csvReaderOptions.NewLine, StringSplitOptions.None)
@@ -46,7 +45,7 @@ namespace TinyCsvParser
             }
         }
 
-        public static (ParallelQuery<CsvMappingResult<TEntity>> result, CsvHeaderMappingResult header) ReadFromStream<TEntity>(this ICsvParser<TEntity> csvParser, Stream stream, Encoding encoding, bool detectEncodingFromByteOrderMarks = false, int bufferSize = 1024, bool leaveOpen = false)
+        public static CsvData<TEntity> ReadFromStream<TEntity>(this ICsvParser<TEntity> csvParser, Stream stream, Encoding encoding, bool detectEncodingFromByteOrderMarks = false, int bufferSize = 1024, bool leaveOpen = false)
         {
             if (stream == null)
             {

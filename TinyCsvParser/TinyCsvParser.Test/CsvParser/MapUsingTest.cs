@@ -54,7 +54,7 @@ namespace TinyCsvParser.Test.CsvParser
         [Test]
         public void MapUsingTest()
         {
-            CsvParserOptions csvParserOptions = new CsvParserOptions(false, ';' );
+            CsvParserOptions csvParserOptions = new CsvParserOptions(false, ';');
             CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
             CsvMainClassMapping csvMapper = new CsvMainClassMapping();
             CsvParser<MainClass> csvParser = new CsvParser<MainClass>(csvParserOptions, csvMapper);
@@ -65,16 +65,16 @@ namespace TinyCsvParser.Test.CsvParser
 
             var result = csvParser
                 .ReadFromString(csvReaderOptions, stringBuilder.ToString())
-                .result
+                .Items
                 .ToList();
 
             Assert.AreEqual(2, result.Count);
 
             Assert.IsFalse(result[0].IsValid);
             Assert.IsTrue(result[1].IsValid);
-            
+
             Assert.AreEqual("A", result[1].Result.Property1);
-            
+
             Assert.IsNotNull(result[1].Result.SubClass);
 
             Assert.AreEqual("B", result[1].Result.SubClass.Property2);

@@ -50,13 +50,13 @@ namespace TinyCsvParser.Test.Tokenizer
                 .AppendLine("Name, Age, Description")
                 .AppendLine("\"Michael, Chester\",24,\"Also goes by \"\"Mike\"\", among friends that is\"")
                 .AppendLine("\"Robert, Willliamson\", , \"All-around nice guy who always says hi\"");
-            
+
             // Define the NewLine Character to split at:
             CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
 
             var result = csvParser
                 .ReadFromString(csvReaderOptions, stringBuilder.ToString())
-                .result
+                .Items
                 .ToList();
 
             Assert.AreEqual(2, result.Count);
@@ -122,7 +122,7 @@ namespace TinyCsvParser.Test.Tokenizer
 
             var result = csvParser
                 .ReadFromString(csvReaderOptions, stringBuilder.ToString())
-                .result
+                .Items
                 .ToList();
 
             Assert.AreEqual(2, result.Count);

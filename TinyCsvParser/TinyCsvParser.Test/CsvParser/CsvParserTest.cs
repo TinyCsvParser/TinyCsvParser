@@ -32,7 +32,7 @@ namespace TinyCsvParser.Test.CsvParser
         [Test]
         public void NullInputTest()
         {
-            CsvParserOptions csvParserOptions = new CsvParserOptions(true, ';' );
+            CsvParserOptions csvParserOptions = new CsvParserOptions(true, ';');
             CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
             CsvPersonMapping csvMapper = new CsvPersonMapping();
             CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
@@ -46,7 +46,7 @@ namespace TinyCsvParser.Test.CsvParser
         [Test]
         public void ToStringTest()
         {
-            CsvParserOptions csvParserOptions = new CsvParserOptions(true,  ';');
+            CsvParserOptions csvParserOptions = new CsvParserOptions(true, ';');
             CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
             CsvPersonMapping csvMapper = new CsvPersonMapping();
             CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
@@ -72,7 +72,7 @@ namespace TinyCsvParser.Test.CsvParser
 
             var result = csvParser
                 .ReadFromString(csvReaderOptions, stringBuilder.ToString())
-                .result
+                .Items
                 .ToList();
 
             Assert.AreEqual(2, result.Count);
@@ -110,7 +110,7 @@ namespace TinyCsvParser.Test.CsvParser
 
             var result = csvParser
                 .ReadFromString(csvReaderOptions, stringBuilder.ToString())
-                .result
+                .Items
                 .ToList();
 
             Assert.AreEqual(2, result.Count);
@@ -149,7 +149,7 @@ namespace TinyCsvParser.Test.CsvParser
 
             var result = csvParser
                 .ReadFromString(csvReaderOptions, stringBuilder.ToString())
-                        .result
+                        .Items
                 .ToList();
 
             Assert.AreEqual(0, result.Count);
@@ -170,7 +170,7 @@ namespace TinyCsvParser.Test.CsvParser
 
             var result = csvParser
                 .ReadFromString(csvReaderOptions, stringBuilder.ToString())
-                .result
+                .Items
                 .ToList();
 
             Assert.AreEqual(2, result.Count);
@@ -207,7 +207,7 @@ namespace TinyCsvParser.Test.CsvParser
 
             var result = csvParser
                 .ReadFromString(csvReaderOptions, stringBuilder.ToString())
-                .result
+                .Items
                 .Where(x => x.IsValid)
                 .Where(x => x.Result.FirstName == "Philipp")
                 .ToList();
@@ -225,7 +225,7 @@ namespace TinyCsvParser.Test.CsvParser
         [Test]
         public void CommentLineTest()
         {
-            CsvParserOptions csvParserOptions = new CsvParserOptions(true, "#", new StringSplitTokenizer(new [] {';'}, false));
+            CsvParserOptions csvParserOptions = new CsvParserOptions(true, "#", new StringSplitTokenizer(new[] { ';' }, false));
             CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
             CsvPersonMapping csvMapper = new CsvPersonMapping();
             CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
@@ -237,7 +237,7 @@ namespace TinyCsvParser.Test.CsvParser
 
             var result = csvParser
                 .ReadFromString(csvReaderOptions, stringBuilder.ToString())
-                .result
+                .Items
                 .Where(x => x.IsValid)
                 .ToList();
 
@@ -265,7 +265,7 @@ namespace TinyCsvParser.Test.CsvParser
 
             var result = csvParser
                 .ReadFromString(csvReaderOptions, stringBuilder.ToString())
-                .result
+                .Items
                 .ToList();
 
             Assert.AreEqual(2, result.Count);

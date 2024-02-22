@@ -24,7 +24,7 @@ namespace TinyCsvParser
             return mapping.GetPropertyMapping();
         }
 
-        public (ParallelQuery<CsvMappingResult<TEntity>> result, CsvHeaderMappingResult header) Parse(IEnumerable<Row> csvData)
+        public CsvData<TEntity> Parse(IEnumerable<Row> csvData)
         {
             CsvHeaderMappingResult csvMappingHeader = null;
             if (csvData == null)
@@ -62,9 +62,13 @@ namespace TinyCsvParser
                 query = query.Where(line => !line.Data.StartsWith(options.CommentCharacter));
             }
 
-            return (query
-                .Select(line => new TokenizedRow(line.Index, options.Tokenizer.Tokenize(line.Data)))
-                .Select(fields => mapping.Map(fields)), csvMappingHeader);
+            return new CsvData<TEntity>
+            {
+                Header = csvMappingHeader,
+                Items = query
+                    .Select(line => new TokenizedRow(line.Index, options.Tokenizer.Tokenize(line.Data)))
+                    .Select(fields => mapping.Map(fields))
+            };
         }
 
         public override string ToString()

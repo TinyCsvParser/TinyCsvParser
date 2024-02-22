@@ -3,7 +3,6 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -42,11 +41,11 @@ namespace TinyCsvParser.Test.Integration
                 var result = new List<string>();
 
                 bool isInQuotes = false;
-                
+
                 var chars = input.ToCharArray();
-                
+
                 StringBuilder str = new StringBuilder(string.Empty);
-                
+
                 foreach (var t in chars)
                 {
                     if (t == '"')
@@ -84,7 +83,7 @@ namespace TinyCsvParser.Test.Integration
             {
                 var lines = parser
                     .ReadFromFile(testFilePath, Encoding.UTF8)
-                    .result
+                    .Items
                     .Where(x => x.IsValid)
                     .Count();
 
@@ -97,7 +96,7 @@ namespace TinyCsvParser.Test.Integration
         {
             StringBuilder stringBuilder = new StringBuilder();
 
-            for(int i = 0; i < 100000; i++)
+            for (int i = 0; i < 100000; i++)
             {
                 stringBuilder.AppendLine("1312452433443,93742834623543,234277237242");
             }

@@ -58,7 +58,7 @@ namespace TinyCsvParser.Test.CsvParser
         [Test]
         public void WeirdDateTimeTest_CustomConverterBased()
         {
-            CsvParserOptions csvParserOptions = new CsvParserOptions(true,  ';');
+            CsvParserOptions csvParserOptions = new CsvParserOptions(true, ';');
             CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
             CsvPersonMappingWithCustomConverter csvMapper = new CsvPersonMappingWithCustomConverter();
             CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
@@ -69,7 +69,7 @@ namespace TinyCsvParser.Test.CsvParser
 
             var result = csvParser
                 .ReadFromString(csvReaderOptions, stringBuilder.ToString())
-                .result
+                .Items
                 .ToList();
 
             Assert.AreEqual("Philipp", result[0].Result.FirstName);

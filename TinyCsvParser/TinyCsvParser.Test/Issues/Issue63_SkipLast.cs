@@ -1,12 +1,10 @@
 ﻿// Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using NUnit.Framework;
-using System.Threading.Tasks;
 using TinyCsvParser.Mapping;
 using TinyCsvParser.Model;
 
@@ -26,7 +24,7 @@ namespace TinyCsvParser.Test.Issues
                 .SkipLast(skipLast)
                 .Select((line, index) => new Row(index, line));
 
-            return csvParser.Parse(lines).result;
+            return csvParser.Parse(lines).Items;
         }
     }
 

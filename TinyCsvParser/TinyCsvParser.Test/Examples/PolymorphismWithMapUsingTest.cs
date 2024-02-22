@@ -1,9 +1,9 @@
 ﻿// Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using NUnit.Framework;
 using System;
 using System.Linq;
 using System.Text;
-using NUnit.Framework;
 using TinyCsvParser.Mapping;
 using TinyCsvParser.Model;
 
@@ -19,7 +19,7 @@ namespace TinyCsvParser.Test.Examples
             public Shape Shape { get; set; }
         }
 
-        private abstract class Shape  {}
+        private abstract class Shape { }
 
         private class Square : Shape
         {
@@ -77,7 +77,7 @@ namespace TinyCsvParser.Test.Examples
 
                     return subMap.IsValid;
                 }
-                
+
                 // NOTE: There are two possible strategies here. One, you can return true
                 // which will allow any *OTHER* Row Mappings to run and see if they can make
                 // sense of the data from this row. Maybe you have a whole separate mapper
@@ -89,7 +89,7 @@ namespace TinyCsvParser.Test.Examples
             }
         }
 
-        
+
         // NOTE: These "sub" maps aren't referenced directly by the CsvParser, but instead
         // by the top-level map, which conditionally uses them based on the contents of a
         // given row.
@@ -132,7 +132,7 @@ namespace TinyCsvParser.Test.Examples
 
             var result = csvParser
                 .ReadFromString(csvReaderOptions, stringBuilder.ToString())
-                .result
+                .Items
                 .ToList();
 
             Assert.AreEqual(4, result.Count);
@@ -144,13 +144,13 @@ namespace TinyCsvParser.Test.Examples
 
             Assert.AreEqual("square", result[0].Result.ShapeName);
             Assert.AreEqual(typeof(Square), result[0].Result.Shape.GetType());
-            Assert.AreEqual(10, ((Square) result[0].Result.Shape).Width);
+            Assert.AreEqual(10, ((Square)result[0].Result.Shape).Width);
 
             Assert.AreEqual("triangle", result[1].Result.ShapeName);
             Assert.AreEqual(typeof(Triangle), result[1].Result.Shape.GetType());
-            Assert.AreEqual(3, ((Triangle) result[1].Result.Shape).Side1);
-            Assert.AreEqual(4, ((Triangle) result[1].Result.Shape).Side2);
-            Assert.AreEqual(5, ((Triangle) result[1].Result.Shape).Side3);
+            Assert.AreEqual(3, ((Triangle)result[1].Result.Shape).Side1);
+            Assert.AreEqual(4, ((Triangle)result[1].Result.Shape).Side2);
+            Assert.AreEqual(5, ((Triangle)result[1].Result.Shape).Side3);
 
         }
 

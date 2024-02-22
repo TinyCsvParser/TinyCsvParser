@@ -1,9 +1,9 @@
 ﻿// Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using NUnit.Framework;
 using System;
 using System.Linq;
 using System.Text;
-using NUnit.Framework;
 using TinyCsvParser.Mapping;
 using TinyCsvParser.Tokenizer;
 
@@ -23,9 +23,9 @@ namespace TinyCsvParser.Test.Issues
 
         }
 
-        private class SomeDtoMapping : CsvMapping<SomeDto> 
+        private class SomeDtoMapping : CsvMapping<SomeDto>
         {
-            public SomeDtoMapping() 
+            public SomeDtoMapping()
             {
                 MapProperty(0, x => x.Column1);
                 MapProperty(1, x => x.Column2);
@@ -48,7 +48,7 @@ namespace TinyCsvParser.Test.Issues
 
             var result = csvParser
                 .ReadFromString(csvReaderOptions, csv)
-                .result
+                .Items
                 .ToList();
 
             Assert.AreEqual(1, result.Count);

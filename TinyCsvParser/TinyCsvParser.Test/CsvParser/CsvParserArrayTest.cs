@@ -31,7 +31,7 @@ namespace TinyCsvParser.Test.CsvParser
         [Test]
         public void FloatArraysTest()
         {
-            CsvParserOptions csvParserOptions = new CsvParserOptions(false, ';' );
+            CsvParserOptions csvParserOptions = new CsvParserOptions(false, ';');
             CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
             CsvMeasurementMapping csvMapper = new CsvMeasurementMapping();
             CsvParser<Measurement> csvParser = new CsvParser<Measurement>(csvParserOptions, csvMapper);
@@ -43,7 +43,7 @@ namespace TinyCsvParser.Test.CsvParser
 
             var result = csvParser
                 .ReadFromString(csvReaderOptions, stringBuilder.ToString())
-                .result
+                .Items
                 .ToList();
 
             Assert.AreEqual(2, result.Count);

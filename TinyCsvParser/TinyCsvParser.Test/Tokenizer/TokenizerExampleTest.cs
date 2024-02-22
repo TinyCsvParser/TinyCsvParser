@@ -42,7 +42,7 @@ namespace TinyCsvParser.Test.Tokenizer
 
             var result = csvParser
                 .ReadFromString(csvReaderOptions, stringBuilder.ToString())
-                .result
+                .Items
                 .ToList();
 
             // Make sure we got 2 results:

@@ -9,7 +9,13 @@ namespace TinyCsvParser
 {
     public interface ICsvParser<TEntity>
     {
-        (ParallelQuery<CsvMappingResult<TEntity>> result, CsvHeaderMappingResult header) Parse(IEnumerable<Row> csvData);
+        CsvData<TEntity> Parse(IEnumerable<Row> csvData);
         Dictionary<int, string> GetPropertyMapping();
+    }
+
+    public class CsvData<TEntity>
+    {
+        public CsvHeaderMappingResult Header { get; set; }
+        public ParallelQuery<CsvMappingResult<TEntity>> Items { get; set; }
     }
 }

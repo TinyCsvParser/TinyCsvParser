@@ -1,11 +1,9 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using TinyCsvParser.Mapping;
 using TinyCsvParser.Tokenizer;
 using TinyCsvParser.Tokenizer.RFC4180;
@@ -153,10 +151,10 @@ namespace TinyCsvParser.Test.Integration
                 {
                     var cnt = parser
                         .ReadFromFile(filename, Encoding.UTF8)
-                        .result
+                        .Items
                         .Where(x => x.IsValid)
                         .Count();
-    
+
                     TestContext.WriteLine($"Parsed {cnt} valid lines ...");
                 },
                 timespanFormatter: x => $"{x.TotalMilliseconds} Milliseconds");
@@ -177,7 +175,7 @@ namespace TinyCsvParser.Test.Integration
                 {
                     var cnt = parser
                         .ReadFromFile(filename, Encoding.UTF8)
-                        .result
+                        .Items
                         .Where(x => x.IsValid)
                         .Count();
 
@@ -201,7 +199,7 @@ namespace TinyCsvParser.Test.Integration
                 {
                     var cnt = parser
                         .ReadFromFile(filename, Encoding.UTF8)
-                        .result
+                        .Items
                         .Where(x => x.IsValid)
                         .Count();
 

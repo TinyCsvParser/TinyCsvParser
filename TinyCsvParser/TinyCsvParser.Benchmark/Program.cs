@@ -3,11 +3,9 @@
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using TinyCsvParser.Benchmark.Mapper;
 using TinyCsvParser.Benchmark.Model;
 
@@ -16,7 +14,7 @@ namespace TinyCsvParser.Benchmark
     [MemoryDiagnoser]
     public class TinyCsvParserBenchmarks
     {
-        
+
 
         [GlobalSetup]
         public void SetupBenchmarkData()
@@ -29,13 +27,13 @@ namespace TinyCsvParser.Benchmark
 
             var testFilePath = GetTestFilePath();
 
-            using (var fileStream = File.Create(testFilePath)) 
+            using (var fileStream = File.Create(testFilePath))
             {
                 using (var streamWriter = new StreamWriter(fileStream, Encoding.ASCII))
                 {
                     streamWriter.WriteLine(csvHeader);
 
-                    for(int i = 0; i < numLinesToGenerate; i++)
+                    for (int i = 0; i < numLinesToGenerate; i++)
                     {
                         streamWriter.WriteLine(csvLine);
                     }
@@ -52,7 +50,7 @@ namespace TinyCsvParser.Benchmark
             var csvParser = new CsvParser<LocalWeatherData>(csvParserOptions, csvMapper);
 
             float result = csvParser.ReadFromFile(GetTestFilePath(), Encoding.ASCII)
-                .result
+                .Items
                 .Where(x => x.IsValid)
                 .Select(x => x.Result)
                 .Average(x => x.DryBulbCelsius);
