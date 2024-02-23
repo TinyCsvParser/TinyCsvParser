@@ -19,11 +19,27 @@ namespace TinyCsvParser
             this.mapping = mapping;
         }
 
-        public ParallelQuery<CsvMappingResult<TEntity>> Parse(IEnumerable<Row> csvData)
+        public Dictionary<int, string> GetPropertyMapping()
         {
+            return mapping.GetPropertyMapping();
+        }
+
+        public CsvData<TEntity> Parse(IEnumerable<Row> csvData)
+        {
+            CsvHeaderMappingResult csvMappingHeader = null;
             if (csvData == null)
             {
                 throw new ArgumentNullException(nameof(csvData));
+            }
+
+            if (options.ReadHeader)
+            {
+                var headerRow = csvData.Take(1).SingleOrDefault();
+                if (headerRow != null)
+                {
+                    var tokenizedRow = new TokenizedRow(0, options.Tokenizer.Tokenize(headerRow.Data));
+                    csvMappingHeader = mapping.MapHeader(tokenizedRow);
+                }
             }
 
             var query = csvData
@@ -41,14 +57,18 @@ namespace TinyCsvParser
                 .Where(row => !string.IsNullOrWhiteSpace(row.Data));
 
             // Ignore Lines, that start with a comment character:
-            if(!string.IsNullOrWhiteSpace(options.CommentCharacter)) 
+            if (!string.IsNullOrWhiteSpace(options.CommentCharacter))
             {
                 query = query.Where(line => !line.Data.StartsWith(options.CommentCharacter));
             }
-                
-            return query
-                .Select(line => new TokenizedRow(line.Index, options.Tokenizer.Tokenize(line.Data)))
-                .Select(fields => mapping.Map(fields));
+
+            return new CsvData<TEntity>
+            {
+                Header = csvMappingHeader,
+                Items = query
+                    .Select(line => new TokenizedRow(line.Index, options.Tokenizer.Tokenize(line.Data)))
+                    .Select(fields => mapping.Map(fields))
+            };
         }
 
         public override string ToString()
