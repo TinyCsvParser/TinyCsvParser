@@ -1,9 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFrameworks>net8.0</TargetFrameworks>
 	  <ImplicitUsings>disable</ImplicitUsings>
 	  <Nullable>disable</Nullable>
   </PropertyGroup>
+    
   <ItemGroup>
     <PackageReference Include="NUnit" Version="4.2.2" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
