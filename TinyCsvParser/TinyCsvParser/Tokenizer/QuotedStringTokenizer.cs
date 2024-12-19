@@ -7,14 +7,19 @@ namespace TinyCsvParser.Tokenizer
     public class QuotedStringTokenizer : RFC4180Tokenizer
     {
         public QuotedStringTokenizer(char columnDelimiter)
+            : this('"', '\\', new char[] { columnDelimiter })
+        {
+        }
+
+        public QuotedStringTokenizer(char[] columnDelimiter)
             : this('"', '\\', columnDelimiter)
         {
         }
 
-        public QuotedStringTokenizer(char quoteCharacter, char escapeCharacter, char columnDelimiter)
+        public QuotedStringTokenizer(char quoteCharacter, char escapeCharacter, char[] columnDelimiter)
             : base(new Options(quoteCharacter, escapeCharacter, columnDelimiter))
         {
-        }        
+        }
 
         public override string ToString()
         {
