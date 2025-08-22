@@ -8,7 +8,7 @@ using TinyCsvParser.TypeConverter;
 namespace TinyCsvParser.Mapping
 {
     public class CsvPropertyMapping<TEntity, TProperty> : ICsvPropertyMapping<TEntity, string>
-        where TEntity : class, new()
+        where TEntity : class
     {
         private readonly string propertyName;
         private readonly ITypeConverter<TProperty> propertyConverter;
