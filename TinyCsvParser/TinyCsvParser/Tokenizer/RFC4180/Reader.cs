@@ -45,7 +45,7 @@ namespace TinyCsvParser.Tokenizer.RFC4180
             while (true)
             {
                 Token token = NextToken(reader);
-               
+
                 tokens.Add(token);
 
                 if (token.Type == TokenType.EndOfRecord)
@@ -63,65 +63,49 @@ namespace TinyCsvParser.Tokenizer.RFC4180
             string result = string.Empty;
 
             int c = reader.Peek();
-            
-            if (c == options.DelimiterCharacter)
+
+            if (options.DelimiterCharacter.Contains((char)(c)))
             {
                 reader.Read();
 
                 return new Token(TokenType.Token);
             }
-            else
+
+            if (!options.StrictDelimitation)
             {
-                if (!options.StrictDelimitation)
+                if (IsQuoteCharacter(c))
                 {
-                    if (IsQuoteCharacter(c))
-                    {
-                        result = ReadQuoted(reader);
-
-                        Skip(reader);
-
-                        if (IsEndOfStream(reader.Peek()))
-                        {
-                            return new Token(TokenType.EndOfRecord, result);
-                        }
-
-                        if (IsDelimiter(reader.Peek()))
-                        {
-                            reader.Read();
-                        }
-
-                        return new Token(TokenType.Token, result);
-                    }
-                }
-
-                if (IsEndOfStream(c)) 
-                {
-                    return new Token(TokenType.EndOfRecord);
-                } 
-                else
-                {
-                    result = reader.ReadTo(options.DelimiterCharacter).Trim();
-
-                    if (options.StrictDelimitation)
-                    {
-                        result = result.TrimStart(options.QuoteCharacter).TrimEnd(options.QuoteCharacter);
-                    }
+                    result = ReadQuoted(reader);
 
                     Skip(reader);
 
                     if (IsEndOfStream(reader.Peek()))
-                    {
                         return new Token(TokenType.EndOfRecord, result);
-                    }
 
-                    if(IsDelimiter(reader.Peek())) 
-                    {
+                    if (IsDelimiter(reader.Peek()))
                         reader.Read();
-                    }
 
                     return new Token(TokenType.Token, result);
                 }
             }
+
+            if (IsEndOfStream(c))
+                return new Token(TokenType.EndOfRecord);
+
+            result = reader.ReadTo(options.DelimiterCharacter).Trim();
+
+            if (options.StrictDelimitation)
+                result = result.TrimStart(options.QuoteCharacter).TrimEnd(options.QuoteCharacter);
+
+            Skip(reader);
+
+            if (IsEndOfStream(reader.Peek()))
+                return new Token(TokenType.EndOfRecord, result);
+
+            if (IsDelimiter(reader.Peek()))
+                reader.Read();
+
+            return new Token(TokenType.Token, result);
         }
 
         private string ReadQuoted(StringReader reader)
@@ -136,7 +120,7 @@ namespace TinyCsvParser.Tokenizer.RFC4180
             {
                 return result;
             }
-         
+
             StringBuilder buffer = new StringBuilder(result);
             do
             {
@@ -157,10 +141,11 @@ namespace TinyCsvParser.Tokenizer.RFC4180
             }
         }
 
-        private bool IsQuoteCharacter(int c) {
+        private bool IsQuoteCharacter(int c)
+        {
             return c == options.QuoteCharacter;
         }
-        
+
         private bool IsEndOfStream(int c)
         {
             return c == -1;
@@ -168,7 +153,7 @@ namespace TinyCsvParser.Tokenizer.RFC4180
 
         private bool IsDelimiter(int c)
         {
-            return c == options.DelimiterCharacter;
+            return options.DelimiterCharacter.Contains((char)c);
         }
 
         private bool IsWhiteSpace(int c)

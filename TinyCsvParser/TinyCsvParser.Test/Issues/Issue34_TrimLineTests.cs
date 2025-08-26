@@ -3,8 +3,6 @@
 using NUnit.Framework;
 using System;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
 using TinyCsvParser.Mapping;
 using TinyCsvParser.Tokenizer;
 
@@ -55,6 +53,7 @@ namespace TinyCsvParser.Test.Issues
             {
                 var result = csvParser
                     .ReadFromString(csvReaderOptions, csvLine)
+                    .Items
                     .ToList();
 
                 Assert.AreEqual(1, result.Count);

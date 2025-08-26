@@ -56,7 +56,7 @@ namespace TinyCsvParser.Test.CsvParser
         [Test]
         public void ParseWithNULLStringTest()
         {
-            CsvParserOptions csvParserOptions = new CsvParserOptions(false,  ';');
+            CsvParserOptions csvParserOptions = new CsvParserOptions(false, ';');
             CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
             CsvEntityMapping csvMapper = new CsvEntityMapping();
             CsvParser<Entity> csvParser = new CsvParser<Entity>(csvParserOptions, csvMapper);
@@ -69,6 +69,7 @@ namespace TinyCsvParser.Test.CsvParser
 
             var result = csvParser
                 .ReadFromString(csvReaderOptions, stringBuilder.ToString())
+                .Items
                 .ToList();
 
             Assert.AreEqual(null, result[0].Result.Property);
