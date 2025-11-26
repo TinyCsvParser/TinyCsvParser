@@ -19,8 +19,8 @@ namespace TinyCsvParser.Test.TypeConverter
             get
             {
                 return new[] {
-                    MakeTuple(double.MinValue.ToString("R"), double.NegativeInfinity),
-                    MakeTuple(double.MaxValue.ToString("R"), double.PositiveInfinity),
+                    MakeTuple(double.MinValue.ToString("R"), double.MinValue),
+                    MakeTuple(double.MaxValue.ToString("R"), double.MaxValue),
                     MakeTuple("0", 0),
                     MakeTuple("-1000", -1000),
                     MakeTuple("1000", 1000),
