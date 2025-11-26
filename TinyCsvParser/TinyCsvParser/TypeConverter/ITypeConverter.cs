@@ -6,20 +6,16 @@ namespace TinyCsvParser.TypeConverter
 {
     public interface ITypeConverter
     {
-
+        Type TargetType { get; }
     }
 
     public interface ITypeConverter<TTargetType> : ITypeConverter
     {
         bool TryConvert(string value, out TTargetType result);
-
-        Type TargetType { get; }
     }
 
     public interface IArrayTypeConverter<TTargetType> : ITypeConverter
     {
         bool TryConvert(string[] value, out TTargetType result);
-
-        Type TargetType { get; }
     }
 }
