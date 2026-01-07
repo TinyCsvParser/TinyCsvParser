@@ -7,36 +7,25 @@ using TinyCsvParser.TypeConverter;
 namespace TinyCsvParser.Test.TypeConverter
 {
     [TestFixture]
-    public class DoubleConverterTest : BaseConverterTest<Double>
+    public class DoubleConverterTest : BaseConverterTest<double>
     {
-        protected override ITypeConverter<Double> Converter
-        {
-            get { return new DoubleConverter(); }
-        }
+        protected override ITypeConverter<double> Converter => new DoubleConverter();
 
-        protected override Tuple<string, Double>[] SuccessTestData
-        {
-            get
-            {
-                return new[] {
-                    MakeTuple(double.MinValue.ToString("R"), double.NegativeInfinity),
-                    MakeTuple(double.MaxValue.ToString("R"), double.PositiveInfinity),
-                    MakeTuple("0", 0),
-                    MakeTuple("-1000", -1000),
-                    MakeTuple("1000", 1000),
-                    MakeTuple("5e2", 500),
-                };
-            }
-        }
+        protected override Tuple<string, double>[] SuccessTestData =>
+        [
+            MakeTuple(double.MinValue.ToString("R"), double.MinValue),
+            MakeTuple(double.MaxValue.ToString("R"), double.MaxValue),
+            MakeTuple("0", 0),
+            MakeTuple("-1000", -1000),
+            MakeTuple("1000", 1000),
+            MakeTuple("5e2", 500)
+        ];
 
-        public override void AssertAreEqual(Double expected, Double actual)
+        protected override void AssertAreEqual(double expected, double actual)
         {
             Assert.AreEqual(expected, actual, 1e-5);
         }
 
-        protected override string[] FailTestData
-        {
-            get { return new[] { "a", string.Empty, "  ", null }; }
-        }
+        protected override string[] FailTestData => ["a", string.Empty, "  ", null];
     }
 }

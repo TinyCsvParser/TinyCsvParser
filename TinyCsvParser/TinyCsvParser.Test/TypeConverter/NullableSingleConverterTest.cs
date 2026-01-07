@@ -8,65 +8,49 @@ using TinyCsvParser.TypeConverter;
 namespace TinyCsvParser.Test.TypeConverter
 {
     [TestFixture]
-    public class NullableSingleConverterTest : BaseConverterTest<Single?>
+    public class NullableSingleConverterTest : BaseConverterTest<float?>
     {
-        protected override ITypeConverter<Single?> Converter
-        {
-            get { return new NullableSingleConverter(); }
-        }
+        protected override ITypeConverter<float?> Converter => new NullableSingleConverter();
 
-        protected override Tuple<string, Single?>[] SuccessTestData
-        {
-            get
-            {
-                return new[] {
-                    MakeTuple(float.MinValue.ToString("R"), float.NegativeInfinity),
-                    MakeTuple(float.MaxValue.ToString("R"), float.PositiveInfinity),
-                    MakeTuple("0", 0),
-                    MakeTuple("-1000", -1000),
-                    MakeTuple("1000", 1000),
-                    MakeTuple("5e2", 500),
-                    MakeTuple(" ", default(Single?)),
-                    MakeTuple(null, default(Single?)),
-                    MakeTuple(string.Empty, default(Single?))
-                };
-            }
-        }
+        protected override Tuple<string, float?>[] SuccessTestData =>
+        [
+            MakeTuple(float.MinValue.ToString("R"), float.MinValue),
+            MakeTuple(float.MaxValue.ToString("R"), float.MaxValue),
+            MakeTuple("0", 0),
+            MakeTuple("-1000", -1000),
+            MakeTuple("1000", 1000),
+            MakeTuple("5e2", 500),
+            MakeTuple(" ", null),
+            MakeTuple(null, null),
+            MakeTuple(string.Empty, null)
+        ];
 
-        public override void AssertAreEqual(float? expected, float? actual)
+        protected override void AssertAreEqual(float? expected, float? actual)
         {
-            if (expected == default(float?))
+            if (expected is null)
             {
-                Assert.AreEqual(expected, actual);
+                Assert.AreEqual(null, actual);
             }
             else
             {
-                Assert.That(actual, Is.EqualTo(expected.Value).Within(float.Epsilon));
+                NUnit.Framework.Assert.That(actual, Is.EqualTo(expected.Value).Within(float.Epsilon));
             }
         }
 
-        protected override string[] FailTestData
-        {
-            get { return new[] { "a" }; }
-        }
+        protected override string[] FailTestData => ["a"];
     }
 
     [TestFixture]
     public class NullableSingleConverterWithFormatProviderTest : NullableSingleConverterTest
     {
-        protected override ITypeConverter<Single?> Converter
-        {
-            get { return new NullableSingleConverter(CultureInfo.InvariantCulture); }
-        }
+        protected override ITypeConverter<float?> Converter =>
+            new NullableSingleConverter(CultureInfo.InvariantCulture);
     }
 
     [TestFixture]
     public class NullableSingleConverterWithFormatProviderAndNumberStyleTest : NullableSingleConverterTest
     {
-        protected override ITypeConverter<Single?> Converter
-        {
-            get { return new NullableSingleConverter(CultureInfo.InvariantCulture, NumberStyles.Float | NumberStyles.AllowThousands); }
-        }
+        protected override ITypeConverter<float?> Converter => new NullableSingleConverter(CultureInfo.InvariantCulture,
+            NumberStyles.Float | NumberStyles.AllowThousands);
     }
-
 }

@@ -20,9 +20,7 @@ namespace TinyCsvParser.Test.TypeConverter
         {
             foreach (var item in SuccessTestData)
             {
-                TTargetType result;
-
-                var canParse = Converter.TryConvert(item.Item1, out result);
+                var canParse = Converter.TryConvert(item.Item1, out var result);
 
                 Assert.IsTrue(canParse);
 
@@ -30,7 +28,7 @@ namespace TinyCsvParser.Test.TypeConverter
             }
         }
 
-        public virtual void AssertAreEqual(TTargetType expected, TTargetType actual)
+        protected virtual void AssertAreEqual(TTargetType expected, TTargetType actual)
         {
             Assert.AreEqual(expected, actual);
         }
@@ -40,15 +38,13 @@ namespace TinyCsvParser.Test.TypeConverter
         {
             foreach (var item in FailTestData)
             {
-                TTargetType result;
-
-                var canParse = Converter.TryConvert(item, out result);
+                var canParse = Converter.TryConvert(item, out _);
 
                 Assert.False(canParse);
             }
         }
 
-        public Tuple<string, TTargetType> MakeTuple(string item1, TTargetType item2)
+        protected Tuple<string, TTargetType> MakeTuple(string item1, TTargetType item2)
         {
             return new Tuple<string, TTargetType>(item1, item2);
         }
