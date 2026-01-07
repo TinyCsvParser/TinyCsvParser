@@ -3,6 +3,8 @@ obj
 .vs
 *.suo
 packages
+*.Artifacts/
+.idea
 
 # Dot Net Core
 project.lock.json
