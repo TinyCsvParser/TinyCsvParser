@@ -24,6 +24,6 @@ jobs:
         run: |
           echo '{"sdk":{"version": "${{ steps.stepid.outputs.dotnet-version }}"}}' > ./TinyCsvParser/global.json
       - name: Build project
-        run: dotnet build TinyCsvParser --configuration Release
+        run: dotnet build TinyCsvParser
       - name: Run unit tests 
         run: dotnet test TinyCsvParser --no-build --no-restore --verbosity normal
