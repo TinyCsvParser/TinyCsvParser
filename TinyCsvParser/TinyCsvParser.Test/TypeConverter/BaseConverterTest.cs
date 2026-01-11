@@ -4,49 +4,48 @@ using NUnit.Framework;
 using System;
 using TinyCsvParser.TypeConverter;
 
-namespace TinyCsvParser.Test.TypeConverter
+namespace TinyCsvParser.Test.TypeConverter;
+
+[TestFixture]
+public abstract class BaseConverterTest<TTargetType>
 {
-    [TestFixture]
-    public abstract class BaseConverterTest<TTargetType>
+    protected abstract ITypeConverter<TTargetType> Converter { get; }
+
+    protected abstract Tuple<string, TTargetType>[] SuccessTestData { get; }
+
+    protected abstract string[] FailTestData { get; }
+
+    [Test]
+    public void Success()
     {
-        protected abstract ITypeConverter<TTargetType> Converter { get; }
-
-        protected abstract Tuple<string, TTargetType>[] SuccessTestData { get; }
-
-        protected abstract string[] FailTestData { get; }
-
-        [Test]
-        public void Success()
+        foreach (var item in SuccessTestData)
         {
-            foreach (var item in SuccessTestData)
-            {
-                var canParse = Converter.TryConvert(item.Item1, out var result);
+            var canParse = Converter.TryConvert(item.Item1, out var result);
 
-                Assert.IsTrue(canParse);
+            Assert.IsTrue(canParse);
 
-                AssertAreEqual(item.Item2, result);
-            }
+            AssertAreEqual(item.Item2, result);
         }
+    }
 
-        protected virtual void AssertAreEqual(TTargetType expected, TTargetType actual)
+    protected virtual void AssertAreEqual(TTargetType expected, TTargetType actual)
+    {
+        Assert.AreEqual(expected, actual);
+    }
+
+    [Test]
+    public void Fail()
+    {
+        foreach (var item in FailTestData)
         {
-            Assert.AreEqual(expected, actual);
-        }
+            var canParse = Converter.TryConvert(item, out _);
 
-        [Test]
-        public void Fail()
-        {
-            foreach (var item in FailTestData)
-            {
-                var canParse = Converter.TryConvert(item, out _);
-
-                Assert.False(canParse);
-            }
+            Assert.False(canParse);
         }
+    }
 
-        protected Tuple<string, TTargetType> MakeTuple(string item1, TTargetType item2)
-        {
-            return new Tuple<string, TTargetType>(item1, item2);
-        }
+    protected Tuple<string, TTargetType> MakeTuple(string item1, TTargetType item2)
+    {
+        return new Tuple<string, TTargetType>(item1, item2);
     }
 }

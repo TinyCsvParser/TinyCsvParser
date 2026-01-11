@@ -7,134 +7,122 @@ using System.Linq;
 using System.Text;
 using TinyCsvParser.Mapping;
 
-namespace TinyCsvParser.Test.CsvParser
+namespace TinyCsvParser.Test.CsvParser;
+
+[TestFixture]
+public class CsvParserExtensionsTest
 {
-    [TestFixture]
-    public class CsvParserExtensionsTest
+    private class Person
     {
-        private class Person
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public DateTime BirthDate { get; set; }
+    }
+
+    private class CsvPersonMapping : CsvMapping<Person>
+    {
+        public CsvPersonMapping()
         {
-            public string FirstName { get; set; }
-            public string LastName { get; set; }
-            public DateTime BirthDate { get; set; }
+            MapProperty(0, x => x.FirstName);
+            MapProperty(1, x => x.LastName);
+            MapProperty(2, x => x.BirthDate);
         }
+    }
 
-        private class CsvPersonMapping : CsvMapping<Person>
-        {
-            public CsvPersonMapping()
-            {
-                MapProperty(0, x => x.FirstName);
-                MapProperty(1, x => x.LastName);
-                MapProperty(2, x => x.BirthDate);
-            }
-        }
+    [Test]
+    public void ReadFromFile_null_Test()
+    {
+        var csvParserOptions = new CsvParserOptions(true, ';', 1, true);
+        var csvMapper = new CsvPersonMapping();
+        var csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
 
+        NUnit.Framework.Assert.Throws<ArgumentNullException>(() => csvParser.ReadFromFile(null, Encoding.UTF8));
+    }
 
-        [Test]
-        public void ReadFromFile_null_Test()
-        {
-            CsvParserOptions csvParserOptions = new CsvParserOptions(true, ';', 1, true);
-            CsvPersonMapping csvMapper = new CsvPersonMapping();
-            CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
+    [Test]
+    public void ReadFromFileTest()
+    {
+        var csvParserOptions = new CsvParserOptions(true, ';', 1, true);
+        var csvMapper = new CsvPersonMapping();
+        var csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
 
-            Assert.Throws<ArgumentNullException>(() => csvParser.ReadFromFile(null, Encoding.UTF8));
-        }
+        var stringBuilder = new StringBuilder()
+            .AppendLine("FirstName;LastName;BirthDate")
+            .AppendLine("     Philipp;Wagner;1986/05/12       ")
+            .AppendLine("Max;Mustermann;2014/01/01");
 
-        [Test]
-        public void ReadFromFileTest()
-        {
-            CsvParserOptions csvParserOptions = new CsvParserOptions(true, ';', 1, true);
-            CsvPersonMapping csvMapper = new CsvPersonMapping();
-            CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
+        var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "test_file.txt");
 
-            var stringBuilder = new StringBuilder()
-                .AppendLine("FirstName;LastName;BirthDate")
-                .AppendLine("     Philipp;Wagner;1986/05/12       ")
-                .AppendLine("Max;Mustermann;2014/01/01");
-#if NETCOREAPP1_1
-            var basePath = AppContext.BaseDirectory;
-#else 
-            var basePath = AppDomain.CurrentDomain.BaseDirectory;
-#endif
-            var filePath = Path.Combine(basePath, "test_file.txt");
+        File.WriteAllText(filePath, stringBuilder.ToString(), Encoding.UTF8);
 
-            File.WriteAllText(filePath, stringBuilder.ToString(), Encoding.UTF8);
+        var result = csvParser
+            .ReadFromFile(filePath, Encoding.UTF8)
+            .ToList();
 
-            var result = csvParser
-                .ReadFromFile(filePath.ToString(), Encoding.UTF8)
-                .ToList();
+        Assert.AreEqual(2, result.Count);
 
-            Assert.AreEqual(2, result.Count);
+        Assert.IsTrue(result.All(x => x.IsValid));
 
-            Assert.IsTrue(result.All(x => x.IsValid));
+        Assert.AreEqual("Philipp", result[0].Result.FirstName);
+        Assert.AreEqual("Wagner", result[0].Result.LastName);
 
-            Assert.AreEqual("Philipp", result[0].Result.FirstName);
-            Assert.AreEqual("Wagner", result[0].Result.LastName);
+        Assert.AreEqual(1986, result[0].Result.BirthDate.Year);
+        Assert.AreEqual(5, result[0].Result.BirthDate.Month);
+        Assert.AreEqual(12, result[0].Result.BirthDate.Day);
 
-            Assert.AreEqual(1986, result[0].Result.BirthDate.Year);
-            Assert.AreEqual(5, result[0].Result.BirthDate.Month);
-            Assert.AreEqual(12, result[0].Result.BirthDate.Day);
+        Assert.AreEqual("Max", result[1].Result.FirstName);
+        Assert.AreEqual("Mustermann", result[1].Result.LastName);
+        Assert.AreEqual(2014, result[1].Result.BirthDate.Year);
+        Assert.AreEqual(1, result[1].Result.BirthDate.Month);
+        Assert.AreEqual(1, result[1].Result.BirthDate.Day);
+    }
 
-            Assert.AreEqual("Max", result[1].Result.FirstName);
-            Assert.AreEqual("Mustermann", result[1].Result.LastName);
-            Assert.AreEqual(2014, result[1].Result.BirthDate.Year);
-            Assert.AreEqual(1, result[1].Result.BirthDate.Month);
-            Assert.AreEqual(1, result[1].Result.BirthDate.Day);
-        }
+    [Test]
+    public void ReadFromStream_null_Test()
+    {
+        var csvParserOptions = new CsvParserOptions(true, ';', 1, true);
+        var csvMapper = new CsvPersonMapping();
+        var csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
 
-        [Test]
-        public void ReadFromStream_null_Test()
-        {
-            CsvParserOptions csvParserOptions = new CsvParserOptions(true, ';', 1, true);
-            CsvPersonMapping csvMapper = new CsvPersonMapping();
-            CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
+        NUnit.Framework.Assert.Throws<ArgumentNullException>(() => csvParser.ReadFromStream(null, Encoding.UTF8));
+    }
 
-            Assert.Throws<ArgumentNullException>(() => csvParser.ReadFromStream(null, Encoding.UTF8));
-        }
+    [Test]
+    public void ReadFromStreamTest()
+    {
+        var csvParserOptions = new CsvParserOptions(true, ';', 1, true);
+        var csvMapper = new CsvPersonMapping();
+        var csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
 
-        [Test]
-        public void ReadFromStreamTest()
-        {
-            CsvParserOptions csvParserOptions = new CsvParserOptions(true, ';', 1, true);
-            CsvPersonMapping csvMapper = new CsvPersonMapping();
-            CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
+        var stringBuilder = new StringBuilder()
+            .AppendLine("FirstName;LastName;BirthDate")
+            .AppendLine("     Philipp;Wagner;1986/05/12       ")
+            .AppendLine("Max;Mustermann;2014/01/01");
 
-            var stringBuilder = new StringBuilder()
-                .AppendLine("FirstName;LastName;BirthDate")
-                .AppendLine("     Philipp;Wagner;1986/05/12       ")
-                .AppendLine("Max;Mustermann;2014/01/01");
-#if NETCOREAPP1_1
-            var basePath = AppContext.BaseDirectory;
-#else 
-            var basePath = AppDomain.CurrentDomain.BaseDirectory;
-#endif
-            var filePath = Path.Combine(basePath, "test_file.txt");
+        var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "test_file.txt");
 
-            File.WriteAllText(filePath, stringBuilder.ToString(), Encoding.UTF8);
+        File.WriteAllText(filePath, stringBuilder.ToString(), Encoding.UTF8);
 
-            using (var stream = File.OpenRead(filePath))
-            {
-                var result = csvParser
-                    .ReadFromStream(stream, Encoding.UTF8)
-                    .ToList();
+        using var stream = File.OpenRead(filePath);
+        var result = csvParser
+            .ReadFromStream(stream, Encoding.UTF8)
+            .ToList();
 
-                Assert.AreEqual(2, result.Count);
+        Assert.AreEqual(2, result.Count);
 
-                Assert.IsTrue(result.All(x => x.IsValid));
+        Assert.IsTrue(result.All(x => x.IsValid));
 
-                Assert.AreEqual("Philipp", result[0].Result.FirstName);
-                Assert.AreEqual("Wagner", result[0].Result.LastName);
+        Assert.AreEqual("Philipp", result[0].Result.FirstName);
+        Assert.AreEqual("Wagner", result[0].Result.LastName);
 
-                Assert.AreEqual(1986, result[0].Result.BirthDate.Year);
-                Assert.AreEqual(5, result[0].Result.BirthDate.Month);
-                Assert.AreEqual(12, result[0].Result.BirthDate.Day);
+        Assert.AreEqual(1986, result[0].Result.BirthDate.Year);
+        Assert.AreEqual(5, result[0].Result.BirthDate.Month);
+        Assert.AreEqual(12, result[0].Result.BirthDate.Day);
 
-                Assert.AreEqual("Max", result[1].Result.FirstName);
-                Assert.AreEqual("Mustermann", result[1].Result.LastName);
-                Assert.AreEqual(2014, result[1].Result.BirthDate.Year);
-                Assert.AreEqual(1, result[1].Result.BirthDate.Month);
-                Assert.AreEqual(1, result[1].Result.BirthDate.Day);
-            }
-        }
+        Assert.AreEqual("Max", result[1].Result.FirstName);
+        Assert.AreEqual("Mustermann", result[1].Result.LastName);
+        Assert.AreEqual(2014, result[1].Result.BirthDate.Year);
+        Assert.AreEqual(1, result[1].Result.BirthDate.Month);
+        Assert.AreEqual(1, result[1].Result.BirthDate.Day);
     }
 }

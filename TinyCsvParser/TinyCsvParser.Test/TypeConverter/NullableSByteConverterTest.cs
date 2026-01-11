@@ -5,54 +5,36 @@ using System;
 using System.Globalization;
 using TinyCsvParser.TypeConverter;
 
-namespace TinyCsvParser.Test.TypeConverter
+namespace TinyCsvParser.Test.TypeConverter;
+
+[TestFixture]
+public class NullableSByteConverterTest : BaseConverterTest<sbyte?>
 {
-    [TestFixture]
-    public class NullableSByteConverterTest : BaseConverterTest<SByte?>
-    {
-        protected override ITypeConverter<SByte?> Converter
-        {
-            get { return new NullableSByteConverter(); }
-        }
+    protected override ITypeConverter<sbyte?> Converter => new NullableSByteConverter();
 
-        protected override Tuple<string, SByte?>[] SuccessTestData
-        {
-            get
-            {
-                return new[] {
-                    MakeTuple(SByte.MinValue.ToString(), SByte.MinValue),
-                    MakeTuple(SByte.MaxValue.ToString(), SByte.MaxValue),
-                    MakeTuple("0", 0),
-                    MakeTuple("-128", -128),
-                    MakeTuple("127", 127),
-                    MakeTuple(" ", default(SByte?)),
-                    MakeTuple(null, default(SByte?)),
-                    MakeTuple(string.Empty, default(SByte?))
-                };
-            }
-        }
+    protected override Tuple<string, sbyte?>[] SuccessTestData =>
+    [
+        MakeTuple(sbyte.MinValue.ToString(), sbyte.MinValue),
+        MakeTuple(sbyte.MaxValue.ToString(), sbyte.MaxValue),
+        MakeTuple("0", 0),
+        MakeTuple("-128", -128),
+        MakeTuple("127", 127),
+        MakeTuple(" ", null),
+        MakeTuple(null, null),
+        MakeTuple(string.Empty, null)
+    ];
 
-        protected override string[] FailTestData
-        {
-            get { return new[] { "a", "-129", "128" }; }
-        }
-    }
+    protected override string[] FailTestData => ["a", "-129", "128"];
+}
 
-    [TestFixture]
-    public class NullableSByteConverterWithFormatProviderTest : NullableSByteConverterTest
-    {
-        protected override ITypeConverter<SByte?> Converter
-        {
-            get { return new NullableSByteConverter(CultureInfo.InvariantCulture); }
-        }
-    }
+[TestFixture]
+public class NullableSByteConverterWithFormatProviderTest : NullableSByteConverterTest
+{
+    protected override ITypeConverter<sbyte?> Converter => new NullableSByteConverter(CultureInfo.InvariantCulture);
+}
 
-    [TestFixture]
-    public class NullableSByteConverterWithFormatProviderAndNumberStylesTest : NullableSByteConverterTest
-    {
-        protected override ITypeConverter<SByte?> Converter
-        {
-            get { return new NullableSByteConverter(CultureInfo.InvariantCulture, NumberStyles.Integer); }
-        }
-    }
+[TestFixture]
+public class NullableSByteConverterWithFormatProviderAndNumberStylesTest : NullableSByteConverterTest
+{
+    protected override ITypeConverter<sbyte?> Converter => new NullableSByteConverter(CultureInfo.InvariantCulture, NumberStyles.Integer);
 }

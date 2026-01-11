@@ -7,55 +7,54 @@ using System.Text;
 using TinyCsvParser.Mapping;
 using TinyCsvParser.TypeConverter;
 
-namespace TinyCsvParser.Test.CsvParser
+namespace TinyCsvParser.Test.CsvParser;
+
+[TestFixture]
+public class EnumConverterTest
 {
-    [TestFixture]
-    public class EnumConverterTest
+    private enum VehicleTypeEnum
     {
-        private enum VehicleTypeEnum
+        Car,
+        Bike
+    }
+
+    private class Vehicle
+    {
+        public VehicleTypeEnum VehicleType { get; set; }
+
+        public string Name { get; set; }
+    }
+
+    private class CsvVehicleMapping : CsvMapping<Vehicle>
+    {
+        public CsvVehicleMapping()
         {
-            Car,
-            Bike
+            MapProperty(0, x => x.VehicleType, new EnumConverter<VehicleTypeEnum>(true));
+            MapProperty(1, x => x.Name);
         }
+    }
 
-        private class Vehicle
-        {
-            public VehicleTypeEnum VehicleType { get; set; }
+    [Test]
+    public void CustomEnumConverterTest()
+    {
+        var csvParserOptions = new CsvParserOptions(true, ';');
+        var csvReaderOptions = new CsvReaderOptions([Environment.NewLine]);
+        var csvMapper = new CsvVehicleMapping();
+        var csvParser = new CsvParser<Vehicle>(csvParserOptions, csvMapper);
 
-            public string Name { get; set; }
-        }
+        var stringBuilder = new StringBuilder()
+            .AppendLine("VehicleType;Name")
+            .AppendLine("Car;Suzuki Swift")
+            .AppendLine("Bike;A Bike");
 
-        private class CsvVehicleMapping : CsvMapping<Vehicle>
-        {
-            public CsvVehicleMapping()
-            {
-                MapProperty(0, x => x.VehicleType, new EnumConverter<VehicleTypeEnum>(true));
-                MapProperty(1, x => x.Name);
-            }
-        }
+        var result = csvParser
+            .ReadFromString(csvReaderOptions, stringBuilder.ToString())
+            .ToList();
 
-        [Test]
-        public void CustomEnumConverterTest()
-        {
-            CsvParserOptions csvParserOptions = new CsvParserOptions(true, ';');
-            CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
-            CsvVehicleMapping csvMapper = new CsvVehicleMapping();
-            CsvParser<Vehicle> csvParser = new CsvParser<Vehicle>(csvParserOptions, csvMapper);
+        Assert.AreEqual(VehicleTypeEnum.Car, result[0].Result.VehicleType);
+        Assert.AreEqual("Suzuki Swift", result[0].Result.Name);
 
-            var stringBuilder = new StringBuilder()
-                .AppendLine("VehicleType;Name")
-                .AppendLine("Car;Suzuki Swift")
-                .AppendLine("Bike;A Bike");
-
-            var result = csvParser
-                .ReadFromString(csvReaderOptions, stringBuilder.ToString())
-                .ToList();
-
-            Assert.AreEqual(VehicleTypeEnum.Car, result[0].Result.VehicleType);
-            Assert.AreEqual("Suzuki Swift", result[0].Result.Name);
-
-            Assert.AreEqual(VehicleTypeEnum.Bike, result[1].Result.VehicleType);
-            Assert.AreEqual("A Bike", result[1].Result.Name);
-        }
+        Assert.AreEqual(VehicleTypeEnum.Bike, result[1].Result.VehicleType);
+        Assert.AreEqual("A Bike", result[1].Result.Name);
     }
 }

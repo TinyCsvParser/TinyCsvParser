@@ -6,78 +6,78 @@ using System.Linq;
 using System.Text;
 using TinyCsvParser.Mapping;
 
-namespace TinyCsvParser.Test.CsvParser
+namespace TinyCsvParser.Test.CsvParser;
+
+[TestFixture]
+public class CsvRowMappingTest
 {
-    [TestFixture]
-    public class CsvRowMappingTest
+    private class MainClass
     {
-        private class MainClass
+        public string Property1 { get; set; }
+
+        public SubClass SubClass { get; set; }
+    }
+
+    private class SubClass
+    {
+        public string Property2 { get; set; }
+
+        public string Property3 { get; set; }
+    }
+
+
+    private class CsvMainClassMapping : CsvMapping<MainClass>
+    {
+        public CsvMainClassMapping()
         {
-            public string Property1 { get; set; }
-
-            public SubClass SubClass { get; set; }
-        }
-
-        private class SubClass
-        {
-            public string Property2 { get; set; }
-
-            public string Property3 { get; set; }
-        }
-
-
-        private class CsvMainClassMapping : CsvMapping<MainClass>
-        {
-            public CsvMainClassMapping()
+            MapProperty(0, x => x.Property1);
+            MapUsing((entity, values) =>
             {
-                MapProperty(0, x => x.Property1);
-                MapUsing((entity, values) =>
+                // Example of invalidating the row based on its contents
+                if (values.Tokens.Any(t => t == "Z"))
                 {
-                    // Example of invalidating the row based on its contents
-                    if (values.Tokens.Any(t => t == "Z"))
-                    {
-                        return false;
-                    }
+                    return false;
+                }
 
-                    var subClass = new SubClass();
+                var subClass = new SubClass
+                {
+                    Property2 = values.Tokens[1],
+                    Property3 = values.Tokens[2]
+                };
 
-                    subClass.Property2 = values.Tokens[1];
-                    subClass.Property3 = values.Tokens[2];
+                entity.SubClass = subClass;
 
-                    entity.SubClass = subClass;
-
-                    return true;
-                });
-            }
+                return true;
+            });
         }
+    }
 
-        [Test]
-        public void MapUsingTest()
-        {
-            CsvParserOptions csvParserOptions = new CsvParserOptions(false, ';' );
-            CsvReaderOptions csvReaderOptions = new CsvReaderOptions(new[] { Environment.NewLine });
-            CsvMainClassMapping csvMapper = new CsvMainClassMapping();
-            CsvParser<MainClass> csvParser = new CsvParser<MainClass>(csvParserOptions, csvMapper);
+    [Test]
+    public void MapUsingTest()
+    {
+        var csvParserOptions = new CsvParserOptions(false, ';');
+        var csvReaderOptions = new CsvReaderOptions([Environment.NewLine]);
+        var csvMapper = new CsvMainClassMapping();
+        var csvParser = new CsvParser<MainClass>(csvParserOptions, csvMapper);
 
-            var stringBuilder = new StringBuilder()
-                .AppendLine("X;Y;Z")
-                .AppendLine("A;B;C");
+        var stringBuilder = new StringBuilder()
+            .AppendLine("X;Y;Z")
+            .AppendLine("A;B;C");
 
-            var result = csvParser
-                .ReadFromString(csvReaderOptions, stringBuilder.ToString())
-                .ToList();
+        var result = csvParser
+            .ReadFromString(csvReaderOptions, stringBuilder.ToString())
+            .ToList();
 
-            Assert.AreEqual(2, result.Count);
+        Assert.AreEqual(2, result.Count);
 
-            Assert.IsFalse(result[0].IsValid);
-            Assert.IsTrue(result[1].IsValid);
-            
-            Assert.AreEqual("A", result[1].Result.Property1);
-            
-            Assert.IsNotNull(result[1].Result.SubClass);
+        Assert.IsFalse(result[0].IsValid);
+        Assert.IsTrue(result[1].IsValid);
 
-            Assert.AreEqual("B", result[1].Result.SubClass.Property2);
-            Assert.AreEqual("C", result[1].Result.SubClass.Property3);
-        }
+        Assert.AreEqual("A", result[1].Result.Property1);
+
+        Assert.IsNotNull(result[1].Result.SubClass);
+
+        Assert.AreEqual("B", result[1].Result.SubClass.Property2);
+        Assert.AreEqual("C", result[1].Result.SubClass.Property3);
     }
 }

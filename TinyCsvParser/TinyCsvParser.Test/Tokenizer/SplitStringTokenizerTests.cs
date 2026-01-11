@@ -3,37 +3,36 @@
 using NUnit.Framework;
 using TinyCsvParser.Tokenizer;
 
-namespace TinyCsvParser.Test.Tokenizer
+namespace TinyCsvParser.Test.Tokenizer;
+
+[TestFixture]
+public class SplitStringTokenizerTests
 {
-    [TestFixture]
-    public class SplitStringTokenizerTests
+    [Test]
+    public void SplitLine_WithTrim_Test()
     {
-        [Test]
-        public void SplitLine_WithTrim_Test()
-        {
-            var tokenizer = new StringSplitTokenizer(new char[] { ',' }, true);
+        var tokenizer = new StringSplitTokenizer([','], true);
             
-            var input = " 1,2,3 ";
-            var result = tokenizer.Tokenize(input);
+        const string input = " 1,2,3 ";
+        var result = tokenizer.Tokenize(input);
 
 
-            Assert.AreEqual("1", result[0]);
-            Assert.AreEqual("2", result[1]);
-            Assert.AreEqual("3", result[2]);
-        }
+        Assert.AreEqual("1", result[0]);
+        Assert.AreEqual("2", result[1]);
+        Assert.AreEqual("3", result[2]);
+    }
 
-        [Test]
-        public void SplitLine_WithOutTrim_Test()
-        {
-            var tokenizer = new StringSplitTokenizer(new char[] { ',' }, false);
+    [Test]
+    public void SplitLine_WithOutTrim_Test()
+    {
+        var tokenizer = new StringSplitTokenizer([','], false);
             
-            var input = " 1,2,3 ";
-            var result = tokenizer.Tokenize(input);
+        const string input = " 1,2,3 ";
+        var result = tokenizer.Tokenize(input);
 
 
-            Assert.AreEqual(" 1", result[0]);
-            Assert.AreEqual("2", result[1]);
-            Assert.AreEqual("3 ", result[2]);
-        }
-     }
+        Assert.AreEqual(" 1", result[0]);
+        Assert.AreEqual("2", result[1]);
+        Assert.AreEqual("3 ", result[2]);
+    }
 }
