@@ -33,28 +33,22 @@ public class CsvParserTest
     public void NullInputTest()
     {
         var csvParserOptions = new CsvParserOptions(true, ';');
-        var csvReaderOptions = new CsvReaderOptions([Environment.NewLine]);
         var csvMapper = new CsvPersonMapping();
         var csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
 
-        NUnit.Framework.Assert.Throws<ArgumentNullException>(() =>
-        {
-            var result = csvParser.Parse(null);
-        });
+        NUnit.Framework.Assert.Throws<ArgumentNullException>(() => { csvParser.Parse(null); });
     }
 
     [Test]
     public void ToStringTest()
     {
         var csvParserOptions = new CsvParserOptions(true, ';');
-        var csvReaderOptions = new CsvReaderOptions([Environment.NewLine]);
         var csvMapper = new CsvPersonMapping();
         var csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
 
-        // Make sure the ToString() doesn't throw... 
-        NUnit.Framework.Assert.DoesNotThrow(() => csvParser.ToString());
-
-        // TODO Check ToString Output
+        var result = string.Empty;
+        NUnit.Framework.Assert.DoesNotThrow(() => result = csvParser.ToString());
+        Assert.IsNotEmpty(result);
     }
 
     [Test]
