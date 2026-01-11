@@ -1,0 +1,29 @@
+name: CI 
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dotnet: [ '8.0.x', '10.0.x']
+    name: Dotnet ${{ matrix.dotnet }} 
+    steps:
+      - uses: actions/checkout@v6
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v5
+        id: stepid
+        with:
+          dotnet-version: ${{ matrix.dotnet }}
+      - name: Create temporary global.json
+        run: |
+          echo '{"sdk":{"version": "${{ steps.stepid.outputs.dotnet-version }}"}}' > ./global.json
+      - name: Build project
+        run: dotnet build --configuration Release
+      - name: Run unit tests 
+        run: dotnet test --no-build --no-restore --verbosity normal
