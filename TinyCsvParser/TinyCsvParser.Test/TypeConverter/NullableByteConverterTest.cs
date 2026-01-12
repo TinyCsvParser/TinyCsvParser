@@ -5,54 +5,35 @@ using System;
 using System.Globalization;
 using TinyCsvParser.TypeConverter;
 
-namespace TinyCsvParser.Test.TypeConverter
+namespace TinyCsvParser.Test.TypeConverter;
+
+[TestFixture]
+public class NullableByteConverterTest : BaseConverterTest<byte?>
 {
-    [TestFixture]
-    public class NullableByteConverterTest : BaseConverterTest<Byte?>
-    {
-        protected override ITypeConverter<Byte?> Converter
-        {
-            get { return new NullableByteConverter(); }
-        }
+    protected override ITypeConverter<byte?> Converter => new NullableByteConverter();
 
-        protected override Tuple<string, Byte?>[] SuccessTestData
-        {
-            get
-            {
-                return new[] {
-                    MakeTuple(Byte.MinValue.ToString(), Byte.MinValue),
-                    MakeTuple(Byte.MaxValue.ToString(), Byte.MaxValue),
-                    MakeTuple("0", 0),
-                    MakeTuple("255", 255),
-                    MakeTuple(" ", default(Byte?)),
-                    MakeTuple(null, default(Byte?)),
-                    MakeTuple(string.Empty, default(Byte?))
-                };
-            }
-        }
+    protected override Tuple<string, byte?>[] SuccessTestData =>
+    [
+        MakeTuple(byte.MinValue.ToString(), byte.MinValue),
+        MakeTuple(byte.MaxValue.ToString(), byte.MaxValue),
+        MakeTuple("0", 0),
+        MakeTuple("255", 255),
+        MakeTuple(" ", null),
+        MakeTuple(null, null),
+        MakeTuple(string.Empty, null)
+    ];
 
-        protected override string[] FailTestData
-        {
-            get { return new[] { "a", "-1", "256" }; }
-        }
-    }
+    protected override string[] FailTestData => ["a", "-1", "256"];
+}
 
-    [TestFixture]
-    public class NullableByteConverterWithFormatProviderTest : NullableByteConverterTest
-    {
-        protected override ITypeConverter<Byte?> Converter
-        {
-            get { return new NullableByteConverter(CultureInfo.InvariantCulture); }
-        }
-    }
+[TestFixture]
+public class NullableByteConverterWithFormatProviderTest : NullableByteConverterTest
+{
+    protected override ITypeConverter<byte?> Converter => new NullableByteConverter(CultureInfo.InvariantCulture);
+}
 
-    [TestFixture]
-    public class NullableByteConverterWithFormatProviderAndNumberStylesTest : NullableByteConverterTest
-    {
-        protected override ITypeConverter<Byte?> Converter
-        {
-            get { return new NullableByteConverter(CultureInfo.InvariantCulture, NumberStyles.Integer); }
-        }
-    }
-
+[TestFixture]
+public class NullableByteConverterWithFormatProviderAndNumberStylesTest : NullableByteConverterTest
+{
+    protected override ITypeConverter<byte?> Converter => new NullableByteConverter(CultureInfo.InvariantCulture, NumberStyles.Integer);
 }

@@ -4,42 +4,26 @@ using NUnit.Framework;
 using System;
 using TinyCsvParser.TypeConverter;
 
-namespace TinyCsvParser.Test.TypeConverter
+namespace TinyCsvParser.Test.TypeConverter;
+
+[TestFixture]
+public class NullableBoolConverterTest : BaseConverterTest<bool?>
 {
-    [TestFixture]
-    public class NullableBoolConverterTest : BaseConverterTest<bool?>
-    {
-        protected override ITypeConverter<bool?> Converter
-        {
-            get { return new NullableBoolConverter(); }
-        }
+    protected override ITypeConverter<bool?> Converter => new NullableBoolConverter();
 
-        protected override Tuple<string, bool?>[] SuccessTestData
-        {
-            get
-            {
-                return new[] {
-                    MakeTuple("true", true),
-                    MakeTuple("false", false),
-                    MakeTuple(null, default(bool?)),
-                    MakeTuple(string.Empty, default(bool?)),
-                };
-            }
-        }
+    protected override Tuple<string, bool?>[] SuccessTestData =>
+    [
+        MakeTuple("true", true),
+        MakeTuple("false", false),
+        MakeTuple(null, null),
+        MakeTuple(string.Empty, null)
+    ];
 
-        protected override string[] FailTestData
-        {
-            get { return new[] { "a" }; }
-        }
-    }
+    protected override string[] FailTestData => ["a"];
+}
 
-    [TestFixture]
-    public class NullableBoolConverterWithFormatConstructorTest : NullableBoolConverterTest
-    {
-        protected override ITypeConverter<bool?> Converter
-        {
-            get { return new NullableBoolConverter("true", "false", StringComparison.OrdinalIgnoreCase); }
-        }
-        
-    }
+[TestFixture]
+public class NullableBoolConverterWithFormatConstructorTest : NullableBoolConverterTest
+{
+    protected override ITypeConverter<bool?> Converter => new NullableBoolConverter("true", "false", StringComparison.OrdinalIgnoreCase);
 }

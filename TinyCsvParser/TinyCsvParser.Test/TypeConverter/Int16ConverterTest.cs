@@ -4,33 +4,21 @@ using NUnit.Framework;
 using System;
 using TinyCsvParser.TypeConverter;
 
-namespace TinyCsvParser.Test.TypeConverter
+namespace TinyCsvParser.Test.TypeConverter;
+
+[TestFixture]
+public class Int16ConverterTest : BaseConverterTest<short>
 {
-    [TestFixture]
-    public class Int16ConverterTest : BaseConverterTest<Int16>
-    {
-        protected override ITypeConverter<Int16> Converter
-        {
-            get { return new Int16Converter(); }
-        }
+    protected override ITypeConverter<short> Converter => new Int16Converter();
 
-        protected override Tuple<string, Int16>[] SuccessTestData
-        {
-            get
-            {
-                return new[] {
-                    MakeTuple(Int16.MinValue.ToString(), Int16.MinValue),
-                    MakeTuple(Int16.MaxValue.ToString(), Int16.MaxValue),
-                    MakeTuple("0", 0),
-                    MakeTuple("-1000", -1000),
-                    MakeTuple("1000", 1000)
-                };
-            }
-        }
+    protected override Tuple<string, short>[] SuccessTestData =>
+    [
+        MakeTuple(short.MinValue.ToString(), short.MinValue),
+        MakeTuple(short.MaxValue.ToString(), short.MaxValue),
+        MakeTuple("0", 0),
+        MakeTuple("-1000", -1000),
+        MakeTuple("1000", 1000)
+    ];
 
-        protected override string[] FailTestData
-        {
-            get { return new[] { "a", string.Empty, "  ", Int32.MinValue.ToString(), Int32.MaxValue.ToString(), null }; }
-        }
-    }
+    protected override string[] FailTestData => ["a", string.Empty, "  ", int.MinValue.ToString(), int.MaxValue.ToString(), null];
 }

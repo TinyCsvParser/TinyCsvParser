@@ -5,54 +5,36 @@ using System;
 using System.Globalization;
 using TinyCsvParser.TypeConverter;
 
-namespace TinyCsvParser.Test.TypeConverter
+namespace TinyCsvParser.Test.TypeConverter;
+
+[TestFixture]
+public class NullableInt64ConverterTest : BaseConverterTest<long?>
 {
-    [TestFixture]
-    public class NullableInt64ConverterTest : BaseConverterTest<Int64?>
-    {
-        protected override ITypeConverter<Int64?> Converter
-        {
-            get { return new NullableInt64Converter(); }
-        }
+    protected override ITypeConverter<long?> Converter => new NullableInt64Converter();
 
-        protected override Tuple<string, Int64?>[] SuccessTestData
-        {
-            get
-            {
-                return new[] {
-                    MakeTuple(Int64.MinValue.ToString(), Int64.MinValue),
-                    MakeTuple(Int64.MaxValue.ToString(), Int64.MaxValue),
-                    MakeTuple("0", 0),
-                    MakeTuple("-1000", -1000),
-                    MakeTuple("1000", 1000),
-                    MakeTuple(" ", default(Int64?)),
-                    MakeTuple(null, default(Int64?)),
-                    MakeTuple(string.Empty, default(Int64?))
-                };
-            }
-        }
+    protected override Tuple<string, long?>[] SuccessTestData =>
+    [
+        MakeTuple(long.MinValue.ToString(), long.MinValue),
+        MakeTuple(long.MaxValue.ToString(), long.MaxValue),
+        MakeTuple("0", 0),
+        MakeTuple("-1000", -1000),
+        MakeTuple("1000", 1000),
+        MakeTuple(" ", null),
+        MakeTuple(null, null),
+        MakeTuple(string.Empty, null)
+    ];
 
-        protected override string[] FailTestData
-        {
-            get { return new[] { "a" }; }
-        }
-    }
+    protected override string[] FailTestData => ["a"];
+}
 
-    [TestFixture]
-    public class NullableInt64ConverterWithFormatProviderTest : NullableInt64ConverterTest
-    {
-        protected override ITypeConverter<Int64?> Converter
-        {
-            get { return new NullableInt64Converter(CultureInfo.InvariantCulture); }
-        }
-    }
+[TestFixture]
+public class NullableInt64ConverterWithFormatProviderTest : NullableInt64ConverterTest
+{
+    protected override ITypeConverter<long?> Converter => new NullableInt64Converter(CultureInfo.InvariantCulture);
+}
 
-    [TestFixture]
-    public class NullableInt64ConverterWithFormatProviderAndNumberStylesTest : NullableInt64ConverterTest
-    {
-        protected override ITypeConverter<Int64?> Converter
-        {
-            get { return new NullableInt64Converter(CultureInfo.InvariantCulture, NumberStyles.Integer); }
-        }
-    }
+[TestFixture]
+public class NullableInt64ConverterWithFormatProviderAndNumberStylesTest : NullableInt64ConverterTest
+{
+    protected override ITypeConverter<long?> Converter => new NullableInt64Converter(CultureInfo.InvariantCulture, NumberStyles.Integer);
 }

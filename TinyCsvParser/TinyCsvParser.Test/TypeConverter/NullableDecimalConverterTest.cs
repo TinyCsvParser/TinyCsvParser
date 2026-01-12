@@ -5,54 +5,36 @@ using System;
 using System.Globalization;
 using TinyCsvParser.TypeConverter;
 
-namespace TinyCsvParser.Test.TypeConverter
+namespace TinyCsvParser.Test.TypeConverter;
+
+[TestFixture]
+public class NullableDecimalConverterTest : BaseConverterTest<decimal?>
 {
-    [TestFixture]
-    public class NullableDecimalConverterTest : BaseConverterTest<Decimal?>
-    {
-        protected override ITypeConverter<Decimal?> Converter
-        {
-            get { return new NullableDecimalConverter(); }
-        }
+    protected override ITypeConverter<decimal?> Converter => new NullableDecimalConverter();
 
-        protected override Tuple<string, Decimal?>[] SuccessTestData
-        {
-            get
-            {
-                return new[] {
-                    MakeTuple(Decimal.MinValue.ToString(), Decimal.MinValue),
-                    MakeTuple(Decimal.MaxValue.ToString(), Decimal.MaxValue),
-                    MakeTuple("0", 0),
-                    MakeTuple("-1000", -1000),
-                    MakeTuple("1000", 1000),
-                    MakeTuple(" ", default(Decimal?)),
-                    MakeTuple(null, default(Decimal?)),
-                    MakeTuple(string.Empty, default(Decimal?))
-                };
-            }
-        }
+    protected override Tuple<string, decimal?>[] SuccessTestData =>
+    [
+        MakeTuple(decimal.MinValue.ToString(CultureInfo.InvariantCulture), decimal.MinValue),
+        MakeTuple(decimal.MaxValue.ToString(CultureInfo.InvariantCulture), decimal.MaxValue),
+        MakeTuple("0", 0),
+        MakeTuple("-1000", -1000),
+        MakeTuple("1000", 1000),
+        MakeTuple(" ", null),
+        MakeTuple(null, null),
+        MakeTuple(string.Empty, null)
+    ];
 
-        protected override string[] FailTestData
-        {
-            get { return new[] { "a" }; }
-        }
-    }
+    protected override string[] FailTestData => ["a"];
+}
 
-    [TestFixture]
-    public class NullableDecimalConverterWithFormatProviderTest : NullableDecimalConverterTest
-    {
-        protected override ITypeConverter<Decimal?> Converter
-        {
-            get { return new NullableDecimalConverter(CultureInfo.InvariantCulture); }
-        }
-    }
+[TestFixture]
+public class NullableDecimalConverterWithFormatProviderTest : NullableDecimalConverterTest
+{
+    protected override ITypeConverter<decimal?> Converter => new NullableDecimalConverter(CultureInfo.InvariantCulture);
+}
 
-    [TestFixture]
-    public class NullableDecimalConverterWithFormatProviderAndNumberStylesTest : NullableDecimalConverterTest
-    {
-        protected override ITypeConverter<Decimal?> Converter
-        {
-            get { return new NullableDecimalConverter(CultureInfo.InvariantCulture, NumberStyles.Number); }
-        }
-    }
+[TestFixture]
+public class NullableDecimalConverterWithFormatProviderAndNumberStylesTest : NullableDecimalConverterTest
+{
+    protected override ITypeConverter<decimal?> Converter => new NullableDecimalConverter(CultureInfo.InvariantCulture, NumberStyles.Number);
 }
