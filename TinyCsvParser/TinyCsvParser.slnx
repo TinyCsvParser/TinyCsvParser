@@ -5,6 +5,7 @@
   </Configurations>
   <Folder Name="/Solution Items/">
     <File Path="../.github/workflows/ci.yml" />
+    <File Path="../.github/workflows/release.yml" />
     <File Path=".gitignore" />
     <File Path="Directory.Packages.props" />
     <File Path="../LICENSE" />
