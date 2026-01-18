@@ -32,15 +32,18 @@ jobs:
       name: 'Release'
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v6 
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
-          
+
+      - name: Build project
+        run: dotnet build TinyCsvParser --configuration Release
+        
       - name: Create NuGet package
-        run: dotnet pack ./TinyCsvParser/TinyCsvParser/TinyCsvParser.csproj -o ./nupkgs       
+        run: dotnet pack ./TinyCsvParser/TinyCsvParser/TinyCsvParser.csproj --no-build -o ./nupkgs       
 
       - name: NuGet Login
         uses: NuGet/login@v1
