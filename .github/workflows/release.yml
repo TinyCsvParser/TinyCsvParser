@@ -1,0 +1,55 @@
+name: Release
+
+env:
+  NUGET_SOURCE: 'https://api.nuget.org/v3/index.json'
+  DOTNET_VERSION: '10.x'
+
+on:
+  push:
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
+
+permissions:
+  contents: read
+
+jobs:
+  github-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          tag_name: ${{ github.ref_name }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+  
+  nuget-publish:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    environment:
+      name: 'Release'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+          
+      - name: Create NuGet package
+        run: dotnet pack ./TinyCsvParser/TinyCsvParser/TinyCsvParser.csproj -o ./nupkgs       
+
+      - name: NuGet Login
+        uses: NuGet/login@v1
+        id: login
+        with:
+          user: ${{ secrets.NUGET_USER }}
+      
+      - name: NuGet Push
+        run: dotnet nuget push "./nupkgs/*.nupkg" \
+          --api-key ${{steps.login.outputs.NUGET_API_KEY}} \
+          --skip-duplicate \
+          --source ${{ env.NUGET_SOURCE }}
