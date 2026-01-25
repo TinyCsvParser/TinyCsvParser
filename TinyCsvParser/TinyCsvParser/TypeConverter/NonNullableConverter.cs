@@ -1,8 +1,5 @@
 ﻿// Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using System;
-using TinyCsvParser.Exceptions;
-
 namespace TinyCsvParser.TypeConverter
 {
     public abstract class NonNullableConverter<TTargetType> : BaseConverter<TTargetType>
@@ -17,7 +14,6 @@ namespace TinyCsvParser.TypeConverter
             }
 
             return InternalConvert(value, out result);
-            
         }
 
         protected abstract bool InternalConvert(string value, out TTargetType result);

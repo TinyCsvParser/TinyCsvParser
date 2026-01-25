@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using TinyCsvParser.Exceptions;
-using TinyCsvParser.Reflection;
 
 namespace TinyCsvParser.TypeConverter
 {
@@ -86,7 +85,8 @@ namespace TinyCsvParser.TypeConverter
         {
             if (typeConverters.ContainsKey(typeConverter.TargetType))
             {
-                throw new CsvTypeConverterAlreadyRegisteredException($"Duplicate TypeConverter registration for Type {typeConverter.TargetType}");
+                throw new CsvTypeConverterAlreadyRegisteredException(
+                    $"Duplicate TypeConverter registration for Type {typeConverter.TargetType}");
             }
 
             typeConverters[typeConverter.TargetType] = typeConverter;
@@ -98,7 +98,8 @@ namespace TinyCsvParser.TypeConverter
         {
             if (typeConverters.ContainsKey(typeConverter.TargetType))
             {
-                throw new CsvTypeConverterAlreadyRegisteredException($"Duplicate TypeConverter registration for Type {typeConverter.TargetType}");
+                throw new CsvTypeConverterAlreadyRegisteredException(
+                    $"Duplicate TypeConverter registration for Type {typeConverter.TargetType}");
             }
 
             typeConverters[typeConverter.TargetType] = typeConverter;
@@ -108,7 +109,7 @@ namespace TinyCsvParser.TypeConverter
 
         public ITypeConverter<TTargetType> Resolve<TTargetType>()
         {
-            Type targetType = typeof(TTargetType);
+            var targetType = typeof(TTargetType);
 
             if (!typeConverters.TryGetValue(targetType, out var typeConverter))
             {
@@ -120,8 +121,8 @@ namespace TinyCsvParser.TypeConverter
 
         public IArrayTypeConverter<TTargetType> ResolveCollection<TTargetType>()
         {
-            Type targetType = typeof(TTargetType);
-            
+            var targetType = typeof(TTargetType);
+
             if (!typeConverters.TryGetValue(targetType, out var typeConverter))
             {
                 throw new CsvTypeConverterNotRegisteredException($"No TypeConverter registered for Type {targetType}");

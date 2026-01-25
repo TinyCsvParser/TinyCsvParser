@@ -41,7 +41,7 @@ public class Issue34_TrimLineTests
         var csvParsers = new[]
         {
             GetRfc4180Parser(),
-            Issue34_TrimLineTests.GetStringSplitParser()
+            GetStringSplitParser()
         };
 
         // Now iterate over the Parsers:

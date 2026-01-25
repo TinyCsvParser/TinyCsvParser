@@ -44,8 +44,8 @@ namespace TinyCsvParser.Tokenizer.RFC4180
             var tokens = new List<Token>();
             while (true)
             {
-                Token token = NextToken(reader);
-               
+                var token = NextToken(reader);
+
                 tokens.Add(token);
 
                 if (token.Type == TokenType.EndOfRecord)
@@ -53,6 +53,7 @@ namespace TinyCsvParser.Tokenizer.RFC4180
                     break;
                 }
             }
+
             return tokens;
         }
 
@@ -60,10 +61,10 @@ namespace TinyCsvParser.Tokenizer.RFC4180
         {
             Skip(reader);
 
-            string result = string.Empty;
+            var result = string.Empty;
 
-            int c = reader.Peek();
-            
+            var c = reader.Peek();
+
             if (c == options.DelimiterCharacter)
             {
                 reader.Read();
@@ -94,10 +95,10 @@ namespace TinyCsvParser.Tokenizer.RFC4180
                     }
                 }
 
-                if (IsEndOfStream(c)) 
+                if (IsEndOfStream(c))
                 {
                     return new Token(TokenType.EndOfRecord);
-                } 
+                }
                 else
                 {
                     result = reader.ReadTo(options.DelimiterCharacter).Trim();
@@ -114,7 +115,7 @@ namespace TinyCsvParser.Tokenizer.RFC4180
                         return new Token(TokenType.EndOfRecord, result);
                     }
 
-                    if(IsDelimiter(reader.Peek())) 
+                    if (IsDelimiter(reader.Peek()))
                     {
                         reader.Read();
                     }
@@ -128,7 +129,7 @@ namespace TinyCsvParser.Tokenizer.RFC4180
         {
             reader.Read();
 
-            string result = reader.ReadTo(options.QuoteCharacter);
+            var result = reader.ReadTo(options.QuoteCharacter);
 
             reader.Read();
 
@@ -136,8 +137,8 @@ namespace TinyCsvParser.Tokenizer.RFC4180
             {
                 return result;
             }
-         
-            StringBuilder buffer = new StringBuilder(result);
+
+            var buffer = new StringBuilder(result);
             do
             {
                 buffer.Append((char)reader.Read());
@@ -157,10 +158,11 @@ namespace TinyCsvParser.Tokenizer.RFC4180
             }
         }
 
-        private bool IsQuoteCharacter(int c) {
+        private bool IsQuoteCharacter(int c)
+        {
             return c == options.QuoteCharacter;
         }
-        
+
         private bool IsEndOfStream(int c)
         {
             return c == -1;

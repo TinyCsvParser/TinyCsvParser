@@ -60,9 +60,9 @@ namespace TinyCsvParser.Tokenizer
 
         public string[] Tokenize(string input)
         {
-            string[] tokenizedLine = new string[Columns.Length];
+            var tokenizedLine = new string[Columns.Length];
 
-            for (int columnIndex = 0; columnIndex < Columns.Length; columnIndex++)
+            for (var columnIndex = 0; columnIndex < Columns.Length; columnIndex++)
             {
                 var columnDefinition = Columns[columnIndex];
                 var columnData = input.Substring(columnDefinition.Start, columnDefinition.End - columnDefinition.Start);

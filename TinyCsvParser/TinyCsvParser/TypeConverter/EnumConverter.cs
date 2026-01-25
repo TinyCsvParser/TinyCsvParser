@@ -22,7 +22,8 @@ namespace TinyCsvParser.TypeConverter
             {
                 throw new ArgumentException(string.Format("Type {0} is not a valid Enum", enumType));
             }
-            this.enumType = typeof(TTargetType);
+
+            enumType = typeof(TTargetType);
             this.ignoreCase = ignoreCase;
         }
 

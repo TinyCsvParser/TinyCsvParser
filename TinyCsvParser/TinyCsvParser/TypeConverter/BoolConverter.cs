@@ -1,7 +1,6 @@
 ﻿// Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
-using TinyCsvParser.Reflection;
 
 namespace TinyCsvParser.TypeConverter
 {
@@ -12,7 +11,9 @@ namespace TinyCsvParser.TypeConverter
         private readonly StringComparison stringComparism;
 
         public BoolConverter()
-            : this("true", "false", StringComparison.OrdinalIgnoreCase) { }
+            : this("true", "false", StringComparison.OrdinalIgnoreCase)
+        {
+        }
 
         public BoolConverter(string trueValue, string falseValue, StringComparison stringComparism)
         {
@@ -25,7 +26,7 @@ namespace TinyCsvParser.TypeConverter
         {
             result = false;
 
-            if(string.Equals(trueValue, value, stringComparism)) 
+            if (string.Equals(trueValue, value, stringComparism))
             {
                 result = true;
 
