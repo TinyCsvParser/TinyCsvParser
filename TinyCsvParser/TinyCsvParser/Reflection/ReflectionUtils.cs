@@ -20,10 +20,12 @@ namespace TinyCsvParser.Reflection
 
                 throw new InvalidOperationException(message);
             }
+
             return property;
         }
 
-        private static MemberExpression GetMemberExpression<TEntity, TProperty>(Expression<Func<TEntity, TProperty>> expression)
+        private static MemberExpression GetMemberExpression<TEntity, TProperty>(
+            Expression<Func<TEntity, TProperty>> expression)
         {
             MemberExpression memberExpression = null;
             if (expression.Body.NodeType == ExpressionType.Convert)
@@ -46,36 +48,31 @@ namespace TinyCsvParser.Reflection
 
         public static bool IsEnum(Type type)
         {
-#if NETSTANDARD1_3
-            return typeof(Enum).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo());
-            
-#else 
             return typeof(Enum).IsAssignableFrom(type);
-#endif
         }
 
-        public static Action<TEntity, TProperty> CreateSetter<TEntity, TProperty>(Expression<Func<TEntity, TProperty>> property)
+        public static Action<TEntity, TProperty> CreateSetter<TEntity, TProperty>(
+            Expression<Func<TEntity, TProperty>> property)
         {
             PropertyInfo propertyInfo = ReflectionUtils.GetProperty(property);
 
             ParameterExpression instance = Expression.Parameter(typeof(TEntity), "instance");
             ParameterExpression parameter = Expression.Parameter(typeof(TProperty), "param");
 
-#if NETSTANDARD1_3
-			var setMethod = propertyInfo.SetMethod;
-#else
-			var setMethod = propertyInfo.GetSetMethod();
-#endif
-			if (setMethod == null)
-			{
-				throw new InvalidOperationException($"Unable to map to property '{property.Body}' because it does not contain a setter.");
-			}
-			return Expression.Lambda<Action<TEntity, TProperty>>(
+            var setMethod = propertyInfo.GetSetMethod();
+            if (setMethod == null)
+            {
+                throw new InvalidOperationException(
+                    $"Unable to map to property '{property.Body}' because it does not contain a setter.");
+            }
+
+            return Expression.Lambda<Action<TEntity, TProperty>>(
                 Expression.Call(instance, setMethod, parameter),
                 new ParameterExpression[] { instance, parameter }).Compile();
         }
 
-        public static string GetPropertyNameFromExpression<TEntity, TProperty>(Expression<Func<TEntity, TProperty>> expression)
+        public static string GetPropertyNameFromExpression<TEntity, TProperty>(
+            Expression<Func<TEntity, TProperty>> expression)
         {
             var member = GetMemberExpression(expression).Member;
 
