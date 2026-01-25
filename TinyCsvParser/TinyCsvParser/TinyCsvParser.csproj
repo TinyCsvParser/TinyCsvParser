@@ -1,26 +1,25 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netstandard2.1;net8.0;net10.0</TargetFrameworks>
-    <Authors>Philipp Wagner</Authors>
-    <Company />
-    <Product />
-    <Description>An easy to use and high-performance library for CSV parsing.</Description>
-    <PackageTags>csv, parser, csvparser</PackageTags>
-    <RepositoryUrl>git://github.com/bytefish/TinyCsvParser</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/bytefish/TinyCsvParser</PackageProjectUrl>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Copyright>Copyright © 2021 Philipp Wagner</Copyright>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <AssemblyVersion>2.7.2.0</AssemblyVersion>
-    <FileVersion>2.7.2.0</FileVersion>
-    <RepositoryType>git</RepositoryType>
-    <Version>2.7.2</Version>
-    <IncludeSource>True</IncludeSource>
-    <IncludeSymbols>True</IncludeSymbols>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>TinyCsvParser.snk</AssemblyOriginatorKeyFile>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  </PropertyGroup>
-
+	<PropertyGroup>
+		<TargetFrameworks>net8.0;net10.0</TargetFrameworks>
+		<Authors>Philipp Wagner</Authors>
+		<Nullable>enable</Nullable>
+		<Company />
+		<Product />
+		<Description>An easy to use and high-performance library for CSV parsing.</Description>
+		<PackageTags>csv, parser, csvparser</PackageTags>
+		<RepositoryUrl>git://github.com/bytefish/TinyCsvParser</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/bytefish/TinyCsvParser</PackageProjectUrl>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<Copyright>Copyright © 2021 Philipp Wagner</Copyright>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<AssemblyVersion>2.7.2.0</AssemblyVersion>
+		<FileVersion>2.7.2.0</FileVersion>
+		<RepositoryType>git</RepositoryType>
+		<Version>2.7.2</Version>
+		<IncludeSource>True</IncludeSource>
+		<IncludeSymbols>True</IncludeSymbols>
+		<SignAssembly>true</SignAssembly>
+		<AssemblyOriginatorKeyFile>TinyCsvParser.snk</AssemblyOriginatorKeyFile>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+	</PropertyGroup>
 </Project>

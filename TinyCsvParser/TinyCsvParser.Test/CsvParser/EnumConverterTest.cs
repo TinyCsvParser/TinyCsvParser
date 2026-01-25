@@ -4,8 +4,7 @@ using NUnit.Framework;
 using System;
 using System.Linq;
 using System.Text;
-using TinyCsvParser.Mapping;
-using TinyCsvParser.TypeConverter;
+using TinyCsvParser.Core;
 
 namespace TinyCsvParser.Test.CsvParser;
 
@@ -29,7 +28,7 @@ public class EnumConverterTest
     {
         public CsvVehicleMapping()
         {
-            MapProperty(0, x => x.VehicleType, new EnumConverter<VehicleTypeEnum>(true));
+            MapProperty(0, x => x.VehicleType, new EnumConverter<VehicleTypeEnum>());
             MapProperty(1, x => x.Name);
         }
     }
@@ -37,8 +36,7 @@ public class EnumConverterTest
     [Test]
     public void CustomEnumConverterTest()
     {
-        var csvParserOptions = new CsvParserOptions(true, ';');
-        var csvReaderOptions = new CsvReaderOptions([Environment.NewLine]);
+        var csvParserOptions = CsvOptions.Default with { SkipHeader = true };
         var csvMapper = new CsvVehicleMapping();
         var csvParser = new CsvParser<Vehicle>(csvParserOptions, csvMapper);
 
@@ -48,7 +46,7 @@ public class EnumConverterTest
             .AppendLine("Bike;A Bike");
 
         var result = csvParser
-            .ReadFromString(csvReaderOptions, stringBuilder.ToString())
+            .ReadFromString(stringBuilder.ToString())
             .ToList();
 
         Assert.AreEqual(VehicleTypeEnum.Car, result[0].Result.VehicleType);

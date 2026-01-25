@@ -2,7 +2,7 @@
 
 using NUnit.Framework;
 using System;
-using TinyCsvParser.TypeConverter;
+using TinyCsvParser.Core;
 
 namespace TinyCsvParser.Test.TypeConverter;
 
@@ -16,7 +16,6 @@ public class StringConverterTest : BaseConverterTest<string>
         MakeTuple(string.Empty, string.Empty),
         MakeTuple(" ", " "),
         MakeTuple("Abc", "Abc"),
-        MakeTuple(null, null)
     ];
 
     protected override string[] FailTestData => []; // Should never fail, because values are passed through.

@@ -2,7 +2,7 @@
 
 using NUnit.Framework;
 using System;
-using TinyCsvParser.TypeConverter;
+using TinyCsvParser.Core;
 
 namespace TinyCsvParser.Test.TypeConverter;
 
@@ -15,7 +15,7 @@ public enum TestNullableEnum
 public class NullableEnumConverterCaseSensitiveTest : BaseConverterTest<TestNullableEnum?>
 {
 
-    protected override ITypeConverter<TestNullableEnum?> Converter => new NullableEnumConverter<TestNullableEnum>(false);
+    protected override ITypeConverter<TestNullableEnum?> Converter => new NullableEnumConverter<TestNullableEnum>(StringComparison.CurrentCulture);
 
     protected override Tuple<string, TestNullableEnum?>[] SuccessTestData =>
     [
@@ -31,7 +31,7 @@ public class NullableEnumConverterCaseSensitiveTest : BaseConverterTest<TestNull
 public class NullableEnumConverterCaseInsensitiveTest : BaseConverterTest<TestNullableEnum?>
 {
 
-    protected override ITypeConverter<TestNullableEnum?> Converter => new NullableEnumConverter<TestNullableEnum>(true);
+    protected override ITypeConverter<TestNullableEnum?> Converter => new NullableEnumConverter<TestNullableEnum>();
 
     protected override Tuple<string, TestNullableEnum?>[] SuccessTestData =>
     [
@@ -43,16 +43,4 @@ public class NullableEnumConverterCaseInsensitiveTest : BaseConverterTest<TestNu
     ];
 
     protected override string[] FailTestData => ["B"];
-}
-
-[TestFixture]
-public class NullableEnumConverterGeneralTest
-{
-    private struct NoEnum;
-
-    [Test]
-    public void CouldNotInstantiateNonEnumTest()
-    {
-        NUnit.Framework.Assert.Throws<ArgumentException>(() => new EnumConverter<NoEnum>());
-    }
 }
