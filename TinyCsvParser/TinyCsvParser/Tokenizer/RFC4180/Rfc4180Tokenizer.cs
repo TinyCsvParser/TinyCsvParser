@@ -5,13 +5,13 @@ using System.IO;
 
 namespace TinyCsvParser.Tokenizer.RFC4180
 {
-    public class RFC4180Tokenizer : ITokenizer 
+    public class RFC4180Tokenizer : ITokenizer
     {
         private Reader reader;
 
         public RFC4180Tokenizer(Options options)
         {
-            this.reader = new Reader(options);
+            reader = new Reader(options);
         }
 
         public string[] Tokenize(string input)

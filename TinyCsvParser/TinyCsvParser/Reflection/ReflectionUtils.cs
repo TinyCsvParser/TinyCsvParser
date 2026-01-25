@@ -53,7 +53,7 @@ namespace TinyCsvParser.Reflection
         public static Action<TEntity, TProperty> CreateSetter<TEntity, TProperty>(
             Expression<Func<TEntity, TProperty>> property)
         {
-            var propertyInfo = ReflectionUtils.GetProperty(property);
+            var propertyInfo = GetProperty(property);
 
             var instance = Expression.Parameter(typeof(TEntity), "instance");
             var parameter = Expression.Parameter(typeof(TProperty), "param");

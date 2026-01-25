@@ -39,7 +39,8 @@ namespace TinyCsvParser.TypeConverter
             {
                 return DateTime.TryParse(value, out result);
             }
-            return DateTime.TryParseExact(value, this.dateTimeFormat, this.formatProvider, this.dateTimeStyles, out result);
+
+            return DateTime.TryParseExact(value, dateTimeFormat, formatProvider, dateTimeStyles, out result);
         }
     }
 }

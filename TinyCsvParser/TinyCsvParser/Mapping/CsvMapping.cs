@@ -51,9 +51,9 @@ namespace TinyCsvParser.Mapping
         protected CsvMapping(ITypeConverterProvider typeConverterProvider)
         {
             this.typeConverterProvider = typeConverterProvider;
-            this.csvIndexPropertyMappings = new List<IndexToPropertyMapping>();
-            this.csvRangePropertyMappings = new List<RangeToPropertyMapping>();
-            this.csvRowMappings = new List<CsvRowMapping<TEntity>>();
+            csvIndexPropertyMappings = new List<IndexToPropertyMapping>();
+            csvRangePropertyMappings = new List<RangeToPropertyMapping>();
+            csvRowMappings = new List<CsvRowMapping<TEntity>>();
         }
 
         protected CsvRowMapping<TEntity> MapUsing(Func<TEntity, TokenizedRow, bool> action)
