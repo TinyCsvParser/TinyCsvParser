@@ -1,10 +1,7 @@
 ﻿// Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TinyCsvParser.Tokenizer.Decorators
 {
@@ -17,7 +14,9 @@ namespace TinyCsvParser.Tokenizer.Decorators
             public readonly Func<string, string> Processor;
 
             public Preprocessor()
-                : this(x => x) { }
+                : this(x => x)
+            {
+            }
 
             public Preprocessor(Func<string, string> preprocessor)
             {
@@ -30,7 +29,9 @@ namespace TinyCsvParser.Tokenizer.Decorators
             public readonly Func<string, string> Processor;
 
             public Postprocessor()
-                : this(x => x) { }
+                : this(x => x)
+            {
+            }
 
             public Postprocessor(Func<string, string> preprocessor)
             {
@@ -51,7 +52,8 @@ namespace TinyCsvParser.Tokenizer.Decorators
         {
         }
 
-        public TokenizerProcessingDecorator(ITokenizer tokenizer, Preprocessor preprocessor, Postprocessor postprocessor)
+        public TokenizerProcessingDecorator(ITokenizer tokenizer, Preprocessor preprocessor,
+            Postprocessor postprocessor)
         {
             this.tokenizer = tokenizer;
 

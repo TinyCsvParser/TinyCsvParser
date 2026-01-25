@@ -3,11 +3,9 @@
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using TinyCsvParser.Benchmark.Mapper;
 using TinyCsvParser.Benchmark.Model;
 
