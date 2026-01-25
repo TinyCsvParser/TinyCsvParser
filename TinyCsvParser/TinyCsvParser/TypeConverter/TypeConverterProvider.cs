@@ -109,7 +109,7 @@ namespace TinyCsvParser.TypeConverter
 
         public ITypeConverter<TTargetType> Resolve<TTargetType>()
         {
-            Type targetType = typeof(TTargetType);
+            var targetType = typeof(TTargetType);
 
             if (!typeConverters.TryGetValue(targetType, out var typeConverter))
             {
@@ -121,7 +121,7 @@ namespace TinyCsvParser.TypeConverter
 
         public IArrayTypeConverter<TTargetType> ResolveCollection<TTargetType>()
         {
-            Type targetType = typeof(TTargetType);
+            var targetType = typeof(TTargetType);
 
             if (!typeConverters.TryGetValue(targetType, out var typeConverter))
             {

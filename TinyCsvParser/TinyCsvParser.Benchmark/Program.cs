@@ -32,7 +32,7 @@ namespace TinyCsvParser.Benchmark
                 {
                     streamWriter.WriteLine(csvHeader);
 
-                    for (int i = 0; i < numLinesToGenerate; i++)
+                    for (var i = 0; i < numLinesToGenerate; i++)
                     {
                         streamWriter.WriteLine(csvLine);
                     }
@@ -47,7 +47,7 @@ namespace TinyCsvParser.Benchmark
             var csvMapper = new LocalWeatherDataMapper();
             var csvParser = new CsvParser<LocalWeatherData>(csvParserOptions, csvMapper);
 
-            float result = csvParser.ReadFromFile(GetTestFilePath(), Encoding.ASCII)
+            var result = csvParser.ReadFromFile(GetTestFilePath(), Encoding.ASCII)
                 .Where(x => x.IsValid)
                 .Select(x => x.Result)
                 .Average(x => x.DryBulbCelsius);

@@ -15,7 +15,7 @@ namespace TinyCsvParser.Reflection
 
             if (property == null)
             {
-                string message = $"Member with Name '{member.Name}' is not a property.";
+                var message = $"Member with Name '{member.Name}' is not a property.";
 
                 throw new InvalidOperationException(message);
             }
@@ -53,10 +53,10 @@ namespace TinyCsvParser.Reflection
         public static Action<TEntity, TProperty> CreateSetter<TEntity, TProperty>(
             Expression<Func<TEntity, TProperty>> property)
         {
-            PropertyInfo propertyInfo = ReflectionUtils.GetProperty(property);
+            var propertyInfo = ReflectionUtils.GetProperty(property);
 
-            ParameterExpression instance = Expression.Parameter(typeof(TEntity), "instance");
-            ParameterExpression parameter = Expression.Parameter(typeof(TProperty), "param");
+            var instance = Expression.Parameter(typeof(TEntity), "instance");
+            var parameter = Expression.Parameter(typeof(TProperty), "param");
 
             var setMethod = propertyInfo.GetSetMethod();
             if (setMethod == null)
