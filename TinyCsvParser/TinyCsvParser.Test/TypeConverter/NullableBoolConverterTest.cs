@@ -2,7 +2,6 @@
 
 using NUnit.Framework;
 using System;
-using TinyCsvParser.Core;
 
 namespace TinyCsvParser.Test.TypeConverter;
 

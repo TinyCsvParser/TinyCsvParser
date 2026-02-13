@@ -5,7 +5,6 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Text;
-using TinyCsvParser.Core;
 
 namespace TinyCsvParser.Test.CsvParser;
 
