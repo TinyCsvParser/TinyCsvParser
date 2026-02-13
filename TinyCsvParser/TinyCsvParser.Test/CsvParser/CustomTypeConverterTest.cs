@@ -52,7 +52,6 @@ public class TinyCsvParserTest
         }
     }
 
-
     [Test]
     public void WeirdDateTimeTest_CustomConverterBased()
     {

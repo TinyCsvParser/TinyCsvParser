@@ -117,6 +117,55 @@ public class CsvParserTest
         Assert.AreEqual(1, result[1].Result.BirthDate.Day);
     }
 
+    private class CsvPersonHeaderMapping : CsvMapping<Person>
+    {
+        public CsvPersonHeaderMapping()
+        {
+            MapProperty("FirstName", x => x.FirstName);
+            MapProperty("LastName", x => x.LastName);
+            MapProperty("BirthDate", x => x.BirthDate);
+        }
+    }
+
+
+    [Test]
+    public void UseColumnNamesTest()
+    {
+        var csvOptions = CsvOptions.Default with
+        {
+            SkipHeader = false
+        };
+
+        var csvMapper = new CsvPersonHeaderMapping();
+        var csvParser = new CsvParser<Person>(csvOptions, csvMapper);
+
+        var stringBuilder = new StringBuilder()
+            .AppendLine("FirstName;LastName;BirthDate")
+            .AppendLine("Philipp;Wagner;1986/05/12")
+            .AppendLine("Max;Mustermann;2014/01/01");
+
+        var result = csvParser
+            .ReadFromString(stringBuilder.ToString())
+            .ToList();
+
+        Assert.AreEqual(2, result.Count);
+
+        Assert.IsTrue(result.All(x => x.IsSuccess));
+
+        Assert.AreEqual("Philipp", result[0].Result.FirstName);
+        Assert.AreEqual("Wagner", result[0].Result.LastName);
+
+        Assert.AreEqual(1986, result[0].Result.BirthDate.Year);
+        Assert.AreEqual(5, result[0].Result.BirthDate.Month);
+        Assert.AreEqual(12, result[0].Result.BirthDate.Day);
+
+        Assert.AreEqual("Max", result[1].Result.FirstName);
+        Assert.AreEqual("Mustermann", result[1].Result.LastName);
+
+        Assert.AreEqual(2014, result[1].Result.BirthDate.Year);
+        Assert.AreEqual(1, result[1].Result.BirthDate.Month);
+        Assert.AreEqual(1, result[1].Result.BirthDate.Day);
+    }
 
     [Test]
     public void EmptyDataTest()
