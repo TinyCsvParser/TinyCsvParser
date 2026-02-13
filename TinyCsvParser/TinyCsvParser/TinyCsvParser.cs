@@ -11,6 +11,21 @@ using System.Text;
 
 namespace TinyCsvParser
 {
+    #region Csv Parser
+
+    public readonly record struct CsvOptions(
+        char Delimiter,
+        char QuoteChar,
+        char EscapeChar,
+        Encoding? Encoding = null,
+        bool SkipHeader = false
+    )
+    {
+        public static CsvOptions Default => new(';', '"', '\\', System.Text.Encoding.UTF8, false);
+
+        public static CsvOptions Rfc4180 => new(';', '"', '"', System.Text.Encoding.UTF8, false);
+    }
+
     public class CsvParser<TEntity> where TEntity : class, new()
     {
         private readonly CsvOptions _options;
@@ -243,19 +258,6 @@ namespace TinyCsvParser
 
             return rangeCount;
         }
-    }
-
-    public readonly record struct CsvOptions(
-        char Delimiter,
-        char QuoteChar,
-        char EscapeChar,
-        Encoding? Encoding = null,
-        bool SkipHeader = false
-    )
-    {
-        public static CsvOptions Default => new(';', '"', '\\', System.Text.Encoding.UTF8, false);
-
-        public static CsvOptions Rfc4180 => new(';', '"', '"', System.Text.Encoding.UTF8, false);
     }
 
     public class SpanBasedCsvReader : IDisposable
@@ -737,6 +739,8 @@ namespace TinyCsvParser
             return Expression.Lambda<Action<TEntity, TProperty>>(assign, property.Parameters[0], valueParam).Compile();
         }
     }
+
+    #endregion
 
     #region Converters
 
