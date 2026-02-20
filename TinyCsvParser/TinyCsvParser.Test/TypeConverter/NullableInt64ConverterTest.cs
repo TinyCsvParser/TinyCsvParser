@@ -3,6 +3,7 @@
 using NUnit.Framework;
 using System;
 using System.Globalization;
+using TinyCsvParser.TypeConverters;
 
 namespace TinyCsvParser.Test.TypeConverter;
 

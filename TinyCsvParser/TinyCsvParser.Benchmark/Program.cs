@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using TinyCsvParser.Benchmark.Mapper;
 using TinyCsvParser.Benchmark.Model;
+using TinyCsvParser.Models;
 
 namespace TinyCsvParser.Benchmark
 {

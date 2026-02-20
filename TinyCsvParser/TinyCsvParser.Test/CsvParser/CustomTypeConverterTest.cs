@@ -4,6 +4,8 @@ using NUnit.Framework;
 using System;
 using System.Linq;
 using System.Text;
+using TinyCsvParser.Models;
+using TinyCsvParser.TypeConverters;
 
 namespace TinyCsvParser.Test.CsvParser;
 

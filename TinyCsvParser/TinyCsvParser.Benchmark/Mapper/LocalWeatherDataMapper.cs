@@ -1,6 +1,7 @@
 ﻿// Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using TinyCsvParser.Benchmark.Model;
+using TinyCsvParser.TypeConverters;
 
 namespace TinyCsvParser.Benchmark.Mapper
 {
