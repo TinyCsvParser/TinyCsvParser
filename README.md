@@ -23,23 +23,6 @@ in the [Package Manager Console](http://docs.nuget.org/consume/package-manager-c
 PM> Install-Package TinyCsvParser
 ```
 
-## Community Packages ##
-
-[@Miista]: https://github.com/Miista
-
-[@Miista] provides several community packages to simplify working with TinyCsvParser:
-
-* [TinyCsvParser.Optional](https://github.com/Miista/TinyCsvParser.Optional)
-* [TinyCsvParser.Collections](https://github.com/Miista/TinyCsvParser.Collections)
-* [TinyCsvParser.ImmutableCollections](https://github.com/Miista/TinyCsvParser.ImmutableCollections)
-* [TinyCsvParser.Enums](<https://github.com/Miista/TinyCsvParser.Enums>)
-
-## Documentation and Changelog ##
-
-[TinyCsvParser] comes with an official documentation and changelog:
-
-* [https://tinycsvparser.github.io/TinyCsvParser/](https://tinycsvparser.github.io/TinyCsvParser/)
-
 ## Basic Usage ##
 
 This is only an example for the most common use of TinyCsvParser. For more detailed information on custom formats and more advanced use-cases,
@@ -90,30 +73,39 @@ namespace TinyCsvParser.Test
     public class TinyCsvParserTest
     {
         [Test]
-        public void TinyCsvTest()
+        public void DoNotSkipHeaderTest()
         {
-            CsvParserOptions csvParserOptions = new CsvParserOptions(true, ';');
+            // Build the CsvOptions with SkipHeader = true, so that the first line is skipped and is not parsed as data.
+            CsvOptions csvOptions = CsvOptions.Rfc4180 with
+            {
+                SkipHeader = true
+            };
+    
+            // Instantiate the CsvPersonMapping, which maps the CSV columns to the Person properties.
             CsvPersonMapping csvMapper = new CsvPersonMapping();
-            CsvParser<Person> csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
-
-            var result = csvParser
-                .ReadFromFile(@"persons.csv", Encoding.ASCII)
+    
+            // Create the CsvParser with the specified options and mapping.
+            CsvParser<Person> csvParser = new CsvParser<Person>(csvOptions, csvMapper);
+    
+            // Reads the CSV data from the file "people.csv" and converts it to a list of CsvMappingResult<Person>.
+            List<CsvMappingResult<Person>> result = csvParser
+                .ReadFromFile("people.csv")
                 .ToList();
-
+    
             Assert.AreEqual(2, result.Count);
-
-            Assert.IsTrue(result.All(x => x.IsValid));
-   
+    
+            Assert.IsTrue(result.All(x => x.IsSuccess));
+    
             Assert.AreEqual("Philipp", result[0].Result.FirstName);
             Assert.AreEqual("Wagner", result[0].Result.LastName);
-
+    
             Assert.AreEqual(1986, result[0].Result.BirthDate.Year);
             Assert.AreEqual(5, result[0].Result.BirthDate.Month);
             Assert.AreEqual(12, result[0].Result.BirthDate.Day);
-
+    
             Assert.AreEqual("Max", result[1].Result.FirstName);
             Assert.AreEqual("Mustermann", result[1].Result.LastName);
-
+    
             Assert.AreEqual(2014, result[1].Result.BirthDate.Year);
             Assert.AreEqual(1, result[1].Result.BirthDate.Month);
             Assert.AreEqual(1, result[1].Result.BirthDate.Day);
@@ -121,6 +113,26 @@ namespace TinyCsvParser.Test
     }
 }
 ```
+
+## TinyCsvParser 2.x ##
+
+### Community Packages (TinyCsvParser 2.x) ###
+
+[@Miista]: https://github.com/Miista
+
+[@Miista] provides several community packages to simplify working with TinyCsvParser:
+
+* [TinyCsvParser.Optional](https://github.com/Miista/TinyCsvParser.Optional)
+* [TinyCsvParser.Collections](https://github.com/Miista/TinyCsvParser.Collections)
+* [TinyCsvParser.ImmutableCollections](https://github.com/Miista/TinyCsvParser.ImmutableCollections)
+* [TinyCsvParser.Enums](<https://github.com/Miista/TinyCsvParser.Enums>)
+
+### Documentation and Changelog (TinyCsvParser 2.x) ###
+
+[TinyCsvParser] comes with an official documentation and changelog:
+
+* [https://tinycsvparser.github.io/TinyCsvParser/](https://tinycsvparser.github.io/TinyCsvParser/)
+
 
 ## License ##
 
