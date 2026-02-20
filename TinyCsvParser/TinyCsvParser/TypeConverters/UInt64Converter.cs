@@ -23,5 +23,3 @@ public class UInt64Converter : NonNullableConverter<ulong>
         return ulong.TryParse(value, _numberStyles, _formatProvider, out result);
     }
 }
-
-

@@ -32,5 +32,3 @@ public class NullableEnumConverter<TEnum> : NullableConverter<TEnum?> where TEnu
         return false;
     }
 }
-
-

@@ -62,5 +62,3 @@ public class EnumConverter<TEnum> : NonNullableConverter<TEnum> where TEnum : st
         return false;
     }
 }
-
-

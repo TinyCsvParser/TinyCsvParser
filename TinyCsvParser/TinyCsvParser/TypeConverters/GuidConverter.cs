@@ -16,5 +16,3 @@ public class GuidConverter : NonNullableConverter<Guid>
         return Guid.TryParseExact(value, _format.AsSpan(), out result);
     }
 }
-
-

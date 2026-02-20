@@ -29,5 +29,3 @@ public class NullableSByteConverter : NullableConverter<sbyte?>
         return false;
     }
 }
-
-

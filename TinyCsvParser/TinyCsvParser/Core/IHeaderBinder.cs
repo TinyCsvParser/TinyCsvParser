@@ -13,5 +13,3 @@ public interface IHeaderBinder
 
     void BindHeaders(ref CsvRow headerRow);
 }
-
-

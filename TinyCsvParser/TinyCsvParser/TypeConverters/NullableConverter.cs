@@ -20,5 +20,3 @@ public abstract class NullableConverter<TTargetType> : ITypeConverter<TTargetTyp
 
     protected abstract bool InternalConvert(ReadOnlySpan<char> value, out TTargetType result);
 }
-
-

@@ -29,5 +29,3 @@ public class NullableDecimalConverter : NullableConverter<decimal?>
         return false;
     }
 }
-
-

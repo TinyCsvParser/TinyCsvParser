@@ -23,5 +23,3 @@ public class DoubleConverter : NonNullableConverter<double>
         return double.TryParse(value, _numberStyles, _formatProvider, out result);
     }
 }
-
-

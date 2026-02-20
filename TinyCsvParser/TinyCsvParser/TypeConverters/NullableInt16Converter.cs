@@ -29,5 +29,3 @@ public class NullableInt16Converter : NullableConverter<short?>
         return false;
     }
 }
-
-

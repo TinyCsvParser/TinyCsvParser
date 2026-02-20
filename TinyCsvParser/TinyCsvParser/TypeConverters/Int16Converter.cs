@@ -23,5 +23,3 @@ public class Int16Converter : NonNullableConverter<short>
         return short.TryParse(value, _numberStyles, _formatProvider, out result);
     }
 }
-
-

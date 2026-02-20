@@ -40,5 +40,3 @@ public class NullableBoolConverter : NullableConverter<bool?>
         return false;
     }
 }
-
-

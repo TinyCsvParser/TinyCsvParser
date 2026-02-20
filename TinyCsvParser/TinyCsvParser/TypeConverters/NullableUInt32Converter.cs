@@ -29,5 +29,3 @@ public class NullableUInt32Converter : NullableConverter<uint?>
         return false;
     }
 }
-
-

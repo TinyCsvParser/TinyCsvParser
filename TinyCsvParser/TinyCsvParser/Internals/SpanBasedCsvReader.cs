@@ -172,5 +172,3 @@ public class SpanBasedCsvReader : IDisposable
         _reader.Dispose();
     }
 }
-
-

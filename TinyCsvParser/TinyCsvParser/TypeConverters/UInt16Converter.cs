@@ -23,5 +23,3 @@ public class UInt16Converter : NonNullableConverter<ushort>
         return ushort.TryParse(value, _numberStyles, _formatProvider, out result);
     }
 }
-
-

@@ -25,5 +25,3 @@ public class DateTimeConverter : NonNullableConverter<DateTime>
         return DateTime.TryParseExact(value, _dateTimeFormat.AsSpan(), _formatProvider, _dateTimeStyles, out result);
     }
 }
-
-

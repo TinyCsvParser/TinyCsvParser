@@ -23,5 +23,3 @@ public class ByteConverter : NonNullableConverter<byte>
         return byte.TryParse(value, _numberStyles, _formatProvider, out result);
     }
 }
-
-

@@ -14,5 +14,3 @@ public class StringConverter : ITypeConverter<string>
         return true;
     }
 }
-
-

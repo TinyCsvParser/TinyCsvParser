@@ -155,5 +155,3 @@ public class CsvParser<TEntity> where TEntity : class, new()
         }
     }
 }
-
-

@@ -40,5 +40,3 @@ public class BoolConverter : NonNullableConverter<bool>
         return false;
     }
 }
-
-

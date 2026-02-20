@@ -25,5 +25,3 @@ public class TimeSpanConverter : NonNullableConverter<TimeSpan>
         return TimeSpan.TryParseExact(value, _format.AsSpan(), _formatProvider, _styles, out result);
     }
 }
-
-

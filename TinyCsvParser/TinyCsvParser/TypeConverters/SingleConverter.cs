@@ -23,5 +23,3 @@ public class SingleConverter : NonNullableConverter<float>
         return float.TryParse(value, _numberStyles, _formatProvider, out result);
     }
 }
-
-

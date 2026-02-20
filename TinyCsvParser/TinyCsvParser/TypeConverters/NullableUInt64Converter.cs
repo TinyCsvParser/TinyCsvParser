@@ -29,5 +29,3 @@ public class NullableUInt64Converter : NullableConverter<ulong?>
         return false;
     }
 }
-
-

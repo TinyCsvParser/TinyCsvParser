@@ -32,5 +32,3 @@ public class NullableDateTimeConverter : NullableConverter<DateTime?>
         result = null; return false;
     }
 }
-
-

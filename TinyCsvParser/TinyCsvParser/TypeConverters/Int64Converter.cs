@@ -23,5 +23,3 @@ public class Int64Converter : NonNullableConverter<long>
         return long.TryParse(value, _numberStyles, _formatProvider, out result);
     }
 }
-
-

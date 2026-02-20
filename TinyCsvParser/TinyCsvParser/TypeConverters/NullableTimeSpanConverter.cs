@@ -32,5 +32,3 @@ public class NullableTimeSpanConverter : NullableConverter<TimeSpan?>
         result = null; return false;
     }
 }
-
-

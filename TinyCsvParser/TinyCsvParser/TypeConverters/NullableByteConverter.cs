@@ -29,5 +29,3 @@ public class NullableByteConverter : NullableConverter<byte?>
         return false;
     }
 }
-
-

@@ -23,5 +23,3 @@ public class NullableGuidConverter : NullableConverter<Guid?>
         result = null; return false;
     }
 }
-
-

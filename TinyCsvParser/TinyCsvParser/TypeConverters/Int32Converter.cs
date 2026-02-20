@@ -23,5 +23,3 @@ public class Int32Converter : NonNullableConverter<int>
         return int.TryParse(value, _numberStyles, _formatProvider, out result);
     }
 }
-
-

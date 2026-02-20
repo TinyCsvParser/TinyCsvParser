@@ -29,5 +29,3 @@ public class NullableDoubleConverter : NullableConverter<double?>
         return false;
     }
 }
-
-

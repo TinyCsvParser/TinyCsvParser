@@ -23,5 +23,3 @@ public class SByteConverter : NonNullableConverter<sbyte>
         return sbyte.TryParse(value, _numberStyles, _formatProvider, out result);
     }
 }
-
-

@@ -11,5 +11,3 @@ public interface ICsvMapping<TEntity>
 {
     CsvMappingResult<TEntity> Map(ref CsvRow row);
 }
-
-

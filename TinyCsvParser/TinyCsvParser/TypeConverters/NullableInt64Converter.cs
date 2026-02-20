@@ -29,5 +29,3 @@ public class NullableInt64Converter : NullableConverter<long?>
         return false;
     }
 }
-
-

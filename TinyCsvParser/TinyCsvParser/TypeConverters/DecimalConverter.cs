@@ -23,5 +23,3 @@ public class DecimalConverter : NonNullableConverter<decimal>
         return decimal.TryParse(value, _numberStyles, _formatProvider, out result);
     }
 }
-
-
