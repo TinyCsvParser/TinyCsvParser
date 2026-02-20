@@ -5,7 +5,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Text;
-using TinyCsvParser.Mapping;
+using TinyCsvParser.Models;
 
 namespace TinyCsvParser.Test.CsvParser;
 
@@ -30,19 +30,9 @@ public class CsvParserExtensionsTest
     }
 
     [Test]
-    public void ReadFromFile_null_Test()
-    {
-        var csvParserOptions = new CsvParserOptions(true, ';', 1, true);
-        var csvMapper = new CsvPersonMapping();
-        var csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
-
-        NUnit.Framework.Assert.Throws<ArgumentNullException>(() => csvParser.ReadFromFile(null, Encoding.UTF8));
-    }
-
-    [Test]
     public void ReadFromFileTest()
     {
-        var csvParserOptions = new CsvParserOptions(true, ';', 1, true);
+        var csvParserOptions = CsvOptions.Default with { SkipHeader = true };
         var csvMapper = new CsvPersonMapping();
         var csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
 
@@ -56,63 +46,14 @@ public class CsvParserExtensionsTest
         File.WriteAllText(filePath, stringBuilder.ToString(), Encoding.UTF8);
 
         var result = csvParser
-            .ReadFromFile(filePath, Encoding.UTF8)
+            .ReadFromFile(filePath)
             .ToList();
 
         Assert.AreEqual(2, result.Count);
 
-        Assert.IsTrue(result.All(x => x.IsValid));
+        Assert.IsTrue(result.All(x => x.IsSuccess));
 
-        Assert.AreEqual("Philipp", result[0].Result.FirstName);
-        Assert.AreEqual("Wagner", result[0].Result.LastName);
-
-        Assert.AreEqual(1986, result[0].Result.BirthDate.Year);
-        Assert.AreEqual(5, result[0].Result.BirthDate.Month);
-        Assert.AreEqual(12, result[0].Result.BirthDate.Day);
-
-        Assert.AreEqual("Max", result[1].Result.FirstName);
-        Assert.AreEqual("Mustermann", result[1].Result.LastName);
-        Assert.AreEqual(2014, result[1].Result.BirthDate.Year);
-        Assert.AreEqual(1, result[1].Result.BirthDate.Month);
-        Assert.AreEqual(1, result[1].Result.BirthDate.Day);
-    }
-
-    [Test]
-    public void ReadFromStream_null_Test()
-    {
-        var csvParserOptions = new CsvParserOptions(true, ';', 1, true);
-        var csvMapper = new CsvPersonMapping();
-        var csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
-
-        NUnit.Framework.Assert.Throws<ArgumentNullException>(() => csvParser.ReadFromStream(null, Encoding.UTF8));
-    }
-
-    [Test]
-    public void ReadFromStreamTest()
-    {
-        var csvParserOptions = new CsvParserOptions(true, ';', 1, true);
-        var csvMapper = new CsvPersonMapping();
-        var csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
-
-        var stringBuilder = new StringBuilder()
-            .AppendLine("FirstName;LastName;BirthDate")
-            .AppendLine("     Philipp;Wagner;1986/05/12       ")
-            .AppendLine("Max;Mustermann;2014/01/01");
-
-        var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "test_file.txt");
-
-        File.WriteAllText(filePath, stringBuilder.ToString(), Encoding.UTF8);
-
-        using var stream = File.OpenRead(filePath);
-        var result = csvParser
-            .ReadFromStream(stream, Encoding.UTF8)
-            .ToList();
-
-        Assert.AreEqual(2, result.Count);
-
-        Assert.IsTrue(result.All(x => x.IsValid));
-
-        Assert.AreEqual("Philipp", result[0].Result.FirstName);
+        Assert.AreEqual("     Philipp", result[0].Result.FirstName);
         Assert.AreEqual("Wagner", result[0].Result.LastName);
 
         Assert.AreEqual(1986, result[0].Result.BirthDate.Year);

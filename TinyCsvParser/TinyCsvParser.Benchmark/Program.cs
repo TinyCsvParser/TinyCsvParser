@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using TinyCsvParser.Benchmark.Mapper;
 using TinyCsvParser.Benchmark.Model;
+using TinyCsvParser.Models;
 
 namespace TinyCsvParser.Benchmark
 {
@@ -43,12 +44,12 @@ namespace TinyCsvParser.Benchmark
         [Benchmark]
         public void LocalWeatherRead()
         {
-            var csvParserOptions = new CsvParserOptions(true, ',', 4, false);
+            var csvParserOptions = new CsvOptions(',', '"', '"');
             var csvMapper = new LocalWeatherDataMapper();
             var csvParser = new CsvParser<LocalWeatherData>(csvParserOptions, csvMapper);
 
-            var result = csvParser.ReadFromFile(GetTestFilePath(), Encoding.ASCII)
-                .Where(x => x.IsValid)
+            var result = csvParser.ReadFromFile(GetTestFilePath())
+                .Where(x => x.IsSuccess)
                 .Select(x => x.Result)
                 .Average(x => x.DryBulbCelsius);
 
