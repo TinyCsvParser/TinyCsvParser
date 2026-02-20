@@ -56,12 +56,28 @@ public class CsvPersonMapping : CsvMapping<Person>
 {
     public CsvPersonMapping()
     {
+        MapProperty("FirstName", x => x.FirstName);
+        MapProperty("LastName", x => x.LastName);
+        MapProperty("BirthDate", x => x.BirthDate);
+    }
+}
+```
+
+You can also map using the Column Index, if you don't have a header line in your data:
+
+```csharp
+public class CsvPersonMapping : CsvMapping<Person>
+{
+    public CsvPersonMapping()
+    {
         MapProperty(0, x => x.FirstName);
         MapProperty(1, x => x.LastName);
         MapProperty(2, x => x.BirthDate);
     }
 }
 ```
+
+
 
 And then we can use the mapping to parse the CSV data with a ``CsvParser``.
 
