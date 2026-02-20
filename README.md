@@ -39,7 +39,7 @@ Max;Musterman;2014/01/02
 The corresponding domain model in our system might look like this.
 
 ```csharp
-private class Person
+public class Person
 {
     public string FirstName { get; set; }
     
@@ -52,10 +52,23 @@ private class Person
 When using [TinyCsvParser] you have to define the mapping between the columns in the CSV data and the property in you domain model.
 
 ```csharp
-private class CsvPersonMapping : CsvMapping<Person>
+public class CsvPersonMapping : CsvMapping<Person>
 {
     public CsvPersonMapping()
-        : base()
+    {
+        MapProperty("FirstName", x => x.FirstName);
+        MapProperty("LastName", x => x.LastName);
+        MapProperty("BirthDate", x => x.BirthDate);
+    }
+}
+```
+
+You can also map using the Column Index, if you don't have a header line in your data:
+
+```csharp
+public class CsvPersonMapping : CsvMapping<Person>
+{
+    public CsvPersonMapping()
     {
         MapProperty(0, x => x.FirstName);
         MapProperty(1, x => x.LastName);
@@ -63,6 +76,8 @@ private class CsvPersonMapping : CsvMapping<Person>
     }
 }
 ```
+
+
 
 And then we can use the mapping to parse the CSV data with a ``CsvParser``.
 
