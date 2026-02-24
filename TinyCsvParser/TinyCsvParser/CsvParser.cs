@@ -100,7 +100,7 @@ public class CsvParser<TEntity> where TEntity : class, new()
             {
                 _reader = new SpanBasedCsvReader(_stream, _options);
 
-                if (_mapping is IHeaderBinder binder && binder.NeedsHeaderResolution)
+                if (_mapping is IHeaderBinder { NeedsHeaderResolution: true } binder)
                 {
                     if (_reader.TryGetNextRecord(out var headerLine))
                     {

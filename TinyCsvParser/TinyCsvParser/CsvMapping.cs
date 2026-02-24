@@ -38,7 +38,7 @@ public abstract class CsvMapping<TEntity> : ICsvMapping<TEntity>, IHeaderBinder
 
         foreach (var mapping in _propertyMappings)
         {
-            if (mapping.ColumnIndex == -1 && mapping.ColumnName != null)
+            if (mapping is { ColumnIndex: -1, ColumnName: not null })
             {
                 if (headerMap.TryGetValue(mapping.ColumnName, out var index))
                 {
