@@ -24,7 +24,7 @@ public class EnumConverter<TEnum> : NonNullableConverter<TEnum> where TEnum : st
 
         _enumMap = new (string, TEnum)[names.Length];
 
-        for (var i = 0; i < names.Length; i++)
+        for (int i = 0; i < names.Length; i++)
         {
             _enumMap[i] = (names[i], values[i]);
         }
@@ -34,7 +34,7 @@ public class EnumConverter<TEnum> : NonNullableConverter<TEnum> where TEnum : st
     {
         _comparison = comparison;
         _enumMap = new (string, TEnum)[customMap.Count];
-        var i = 0;
+        int i = 0;
         foreach (var kvp in customMap)
         {
             _enumMap[i++] = (kvp.Key, kvp.Value);
@@ -43,7 +43,7 @@ public class EnumConverter<TEnum> : NonNullableConverter<TEnum> where TEnum : st
 
     protected override bool InternalConvert(ReadOnlySpan<char> value, out TEnum result)
     {
-        for (var i = 0; i < _enumMap.Length; i++)
+        for (int i = 0; i < _enumMap.Length; i++)
         {
             if (value.Equals(_enumMap[i].Name.AsSpan(), _comparison))
             {
@@ -52,7 +52,7 @@ public class EnumConverter<TEnum> : NonNullableConverter<TEnum> where TEnum : st
             }
         }
 
-        if (int.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var numericValue))
+        if (int.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out int numericValue))
         {
             result = Unsafe.As<int, TEnum>(ref numericValue);
             return true;

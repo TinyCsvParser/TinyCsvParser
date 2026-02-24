@@ -20,7 +20,7 @@ public class NullableSingleConverter : NullableConverter<float?>
 
     protected override bool InternalConvert(ReadOnlySpan<char> value, out float? result)
     {
-        if (float.TryParse(value, _numberStyles, _formatProvider, out var tempResult))
+        if (float.TryParse(value, _numberStyles, _formatProvider, out float tempResult))
         {
             result = tempResult;
             return true;

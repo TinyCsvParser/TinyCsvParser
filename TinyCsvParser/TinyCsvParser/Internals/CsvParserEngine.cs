@@ -9,19 +9,19 @@ public static class CsvParserEngine
 {
     public static int SplitLine(ReadOnlySpan<char> line, CsvOptions options, Span<long> rangesBuffer)
     {
-        var rangeCount = 0;
-        var currentIdx = 0;
-        var length = line.Length;
+        int rangeCount = 0;
+        int currentIdx = 0;
+        int length = line.Length;
 
-        var delimiter = options.Delimiter;
-        var quote = options.QuoteChar;
-        var escape = options.EscapeChar;
+        char delimiter = options.Delimiter;
+        char quote = options.QuoteChar;
+        char escape = options.EscapeChar;
 
         while (currentIdx < length && rangeCount < rangesBuffer.Length)
         {
-            var fieldStart = currentIdx;
-            var isQuoted = false;
-            var needsUnescape = false;
+            int fieldStart = currentIdx;
+            bool isQuoted = false;
+            bool needsUnescape = false;
 
             if (line[currentIdx] == quote)
             {
@@ -30,7 +30,7 @@ public static class CsvParserEngine
 
                 while (currentIdx < length)
                 {
-                    var c = line[currentIdx];
+                    char c = line[currentIdx];
 
                     if (c == escape)
                     {
@@ -78,7 +78,7 @@ public static class CsvParserEngine
                 currentIdx++;
             }
 
-            var fieldLen = currentIdx - fieldStart;
+            int fieldLen = currentIdx - fieldStart;
 
             rangesBuffer[rangeCount++] = CsvRow.Pack(fieldStart, fieldLen, isQuoted, needsUnescape);
 

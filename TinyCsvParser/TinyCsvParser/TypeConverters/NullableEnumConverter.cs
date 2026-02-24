@@ -23,7 +23,7 @@ public class NullableEnumConverter<TEnum> : NullableConverter<TEnum?> where TEnu
 
     protected override bool InternalConvert(ReadOnlySpan<char> value, out TEnum? result)
     {
-        if (_baseConverter.TryConvert(value, out var tempResult))
+        if (_baseConverter.TryConvert(value, out TEnum tempResult))
         {
             result = tempResult;
             return true;

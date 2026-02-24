@@ -20,7 +20,7 @@ public class NullableDoubleConverter : NullableConverter<double?>
 
     protected override bool InternalConvert(ReadOnlySpan<char> value, out double? result)
     {
-        if (double.TryParse(value, _numberStyles, _formatProvider, out var tempResult))
+        if (double.TryParse(value, _numberStyles, _formatProvider, out double tempResult))
         {
             result = tempResult;
             return true;

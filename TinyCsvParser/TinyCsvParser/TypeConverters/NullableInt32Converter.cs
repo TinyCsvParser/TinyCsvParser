@@ -20,7 +20,7 @@ public class NullableInt32Converter : NullableConverter<int?>
 
     protected override bool InternalConvert(ReadOnlySpan<char> value, out int? result)
     {
-        if (int.TryParse(value, _numberStyles, _formatProvider, out var tempResult))
+        if (int.TryParse(value, _numberStyles, _formatProvider, out int tempResult))
         {
             result = tempResult;
             return true;

@@ -20,7 +20,7 @@ public class NullableDecimalConverter : NullableConverter<decimal?>
 
     protected override bool InternalConvert(ReadOnlySpan<char> value, out decimal? result)
     {
-        if (decimal.TryParse(value, _numberStyles, _formatProvider, out var tempResult))
+        if (decimal.TryParse(value, _numberStyles, _formatProvider, out decimal tempResult))
         {
             result = tempResult;
             return true;

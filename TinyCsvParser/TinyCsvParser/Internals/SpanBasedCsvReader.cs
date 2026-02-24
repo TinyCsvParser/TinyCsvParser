@@ -33,7 +33,7 @@ public class SpanBasedCsvReader : IDisposable
 
         while (true)
         {
-            if (TryFindEndOfRecord(out var lengthOfData, out var lengthOfDelimiter))
+            if (TryFindEndOfRecord(out int lengthOfData, out int lengthOfDelimiter))
             {
                 recordSpan = new ReadOnlySpan<char>(_buffer, _currentIdx, lengthOfData);
                 _currentIdx += lengthOfData + lengthOfDelimiter;
@@ -62,21 +62,21 @@ public class SpanBasedCsvReader : IDisposable
 
         if (_buffer == null) return false;
 
-        var inQuotes = false;
-        var quote = _options.QuoteChar;
-        var escape = _options.EscapeChar;
-        var sameEscapeQuote = quote == escape;
+        bool inQuotes = false;
+        char quote = _options.QuoteChar;
+        char escape = _options.EscapeChar;
+        bool sameEscapeQuote = quote == escape;
 
-        var count = _charsFilled - _currentIdx;
+        int count = _charsFilled - _currentIdx;
         var span = new ReadOnlySpan<char>(_buffer, _currentIdx, count);
 
-        for (var i = 0; i < span.Length; i++)
+        for (int i = 0; i < span.Length; i++)
         {
-            var c = span[i];
+            char c = span[i];
 
             if (c == quote)
             {
-                var isEscaped = false;
+                bool isEscaped = false;
 
                 if (!sameEscapeQuote && i > 0 && span[i - 1] == escape)
                 {
@@ -130,7 +130,7 @@ public class SpanBasedCsvReader : IDisposable
     {
         if (_buffer == null) return;
 
-        var remaining = _charsFilled - _currentIdx;
+        int remaining = _charsFilled - _currentIdx;
 
         if (remaining > 0)
         {
@@ -140,10 +140,10 @@ public class SpanBasedCsvReader : IDisposable
         _currentIdx = 0;
         _charsFilled = remaining;
 
-        var spaceLeft = _buffer.Length - _charsFilled;
+        int spaceLeft = _buffer.Length - _charsFilled;
         if (spaceLeft == 0)
         {
-            var newBuffer = ArrayPool<char>.Shared.Rent(_buffer.Length * 2);
+            char[] newBuffer = ArrayPool<char>.Shared.Rent(_buffer.Length * 2);
 
             Array.Copy(_buffer, 0, newBuffer, 0, _charsFilled);
             ArrayPool<char>.Shared.Return(_buffer);
@@ -152,7 +152,7 @@ public class SpanBasedCsvReader : IDisposable
             spaceLeft = _buffer.Length - _charsFilled;
         }
 
-        var read = _reader.Read(_buffer, _charsFilled, spaceLeft);
+        int read = _reader.Read(_buffer, _charsFilled, spaceLeft);
 
         _charsFilled += read;
 

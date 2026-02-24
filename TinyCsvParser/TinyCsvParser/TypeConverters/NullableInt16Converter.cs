@@ -20,7 +20,7 @@ public class NullableInt16Converter : NullableConverter<short?>
 
     protected override bool InternalConvert(ReadOnlySpan<char> value, out short? result)
     {
-        if (short.TryParse(value, _numberStyles, _formatProvider, out var tempResult))
+        if (short.TryParse(value, _numberStyles, _formatProvider, out short tempResult))
         {
             result = tempResult;
             return true;

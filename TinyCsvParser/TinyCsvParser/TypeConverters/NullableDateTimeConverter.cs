@@ -23,11 +23,11 @@ public class NullableDateTimeConverter : NullableConverter<DateTime?>
     {
         if (string.IsNullOrWhiteSpace(_dateTimeFormat))
         {
-            if (DateTime.TryParse(value, _formatProvider, _dateTimeStyles, out var tempResult)) { result = tempResult; return true; }
+            if (DateTime.TryParse(value, _formatProvider, _dateTimeStyles, out DateTime tempResult)) { result = tempResult; return true; }
         }
         else
         {
-            if (DateTime.TryParseExact(value, _dateTimeFormat.AsSpan(), _formatProvider, _dateTimeStyles, out var tempResult)) { result = tempResult; return true; }
+            if (DateTime.TryParseExact(value, _dateTimeFormat.AsSpan(), _formatProvider, _dateTimeStyles, out DateTime tempResult)) { result = tempResult; return true; }
         }
         result = null; return false;
     }

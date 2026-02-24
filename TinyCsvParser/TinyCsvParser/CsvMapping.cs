@@ -33,7 +33,7 @@ public abstract class CsvMapping<TEntity> : ICsvMapping<TEntity>, IHeaderBinder
     public void BindHeaders(ref CsvRow headerRow)
     {
         var headerMap = new Dictionary<string, int>(headerRow.Count, StringComparer.OrdinalIgnoreCase);
-        for (var i = 0; i < headerRow.Count; i++)
+        for (int i = 0; i < headerRow.Count; i++)
         {
             headerMap[headerRow.GetString(i)] = i;
         }
@@ -42,7 +42,7 @@ public abstract class CsvMapping<TEntity> : ICsvMapping<TEntity>, IHeaderBinder
         {
             if (mapping is { ColumnIndex: -1, ColumnName: not null })
             {
-                if (headerMap.TryGetValue(mapping.ColumnName, out var index))
+                if (headerMap.TryGetValue(mapping.ColumnName, out int index))
                 {
                     mapping.ColumnIndex = index;
                 }
@@ -140,7 +140,7 @@ public abstract class CsvMapping<TEntity> : ICsvMapping<TEntity>, IHeaderBinder
         public override bool TryMap(ref CsvRow row, TEntity entity)
         {
             var span = row.GetSpan(ColumnIndex);
-            if (_converter.TryConvert(span, out var value))
+            if (_converter.TryConvert(span, out TProperty? value))
             {
                 _setter(entity, value!);
                 return true;
@@ -152,8 +152,8 @@ public abstract class CsvMapping<TEntity> : ICsvMapping<TEntity>, IHeaderBinder
 
     private static Action<TEntity, TProperty> CreateSetter<TProperty>(Expression<Func<TEntity, TProperty>> property)
     {
-        var valueParam = Expression.Parameter(typeof(TProperty), "value");
-        var assign = Expression.Assign(property.Body, valueParam);
+        ParameterExpression valueParam = Expression.Parameter(typeof(TProperty), "value");
+        BinaryExpression assign = Expression.Assign(property.Body, valueParam);
         return Expression.Lambda<Action<TEntity, TProperty>>(assign, property.Parameters[0], valueParam).Compile();
     }
 }
