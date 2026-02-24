@@ -12,9 +12,9 @@ public readonly record struct CsvOptions(
     bool SkipHeader = false
 )
 {
-    public static CsvOptions Default => new(';', '"', '\\', System.Text.Encoding.UTF8, false);
+    public static CsvOptions Default => new(';', '"', '\\', Encoding.UTF8);
 
-    public static CsvOptions Rfc4180 => new(';', '"', '"', System.Text.Encoding.UTF8, false);
+    public static CsvOptions Rfc4180 => new(';', '"', '"', Encoding.UTF8);
 }
 
 
