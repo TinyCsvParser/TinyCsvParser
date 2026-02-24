@@ -101,7 +101,7 @@ public ref struct CsvRow
             srcIdx++;
         }
 
-        return new string(buffer.Slice(0, destIdx));
+        return new string(buffer[..destIdx]);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
