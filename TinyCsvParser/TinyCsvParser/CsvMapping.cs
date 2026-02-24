@@ -17,9 +17,11 @@ public abstract class CsvMapping<TEntity> : ICsvMapping<TEntity>, IHeaderBinder
     where TEntity : class, new()
 {
     private readonly ITypeConverterProvider _typeConverterProvider;
-    private readonly List<PropertyMapping> _propertyMappings = new();
+    private readonly List<PropertyMapping> _propertyMappings = [];
 
-    protected CsvMapping() : this(new TypeConverterProvider()) { }
+    protected CsvMapping() : this(new TypeConverterProvider())
+    {
+    }
 
     protected CsvMapping(ITypeConverterProvider typeConverterProvider)
     {
@@ -38,7 +40,7 @@ public abstract class CsvMapping<TEntity> : ICsvMapping<TEntity>, IHeaderBinder
 
         foreach (var mapping in _propertyMappings)
         {
-            if (mapping.ColumnIndex == -1 && mapping.ColumnName != null)
+            if (mapping is { ColumnIndex: -1, ColumnName: not null })
             {
                 if (headerMap.TryGetValue(mapping.ColumnName, out int index))
                 {
@@ -46,7 +48,8 @@ public abstract class CsvMapping<TEntity> : ICsvMapping<TEntity>, IHeaderBinder
                 }
                 else
                 {
-                    throw new InvalidOperationException($"The column '{mapping.ColumnName}' was not found in the CSV header.");
+                    throw new InvalidOperationException(
+                        $"The column '{mapping.ColumnName}' was not found in the CSV header.");
                 }
             }
         }
@@ -64,14 +67,16 @@ public abstract class CsvMapping<TEntity> : ICsvMapping<TEntity>, IHeaderBinder
         {
             if (mapping.ColumnIndex < 0 || mapping.ColumnIndex >= row.Count)
             {
-                return new CsvMappingError { ColumnIndex = mapping.ColumnIndex, Value = "Index Out Of Range" };
+                return new CsvMappingError(mapping.ColumnIndex, "Index Out Of Range");
             }
 
             if (!mapping.TryMap(ref row, entity))
             {
-                return new CsvMappingError { ColumnIndex = mapping.ColumnIndex, Value = $"Conversion failed: {row.GetString(mapping.ColumnIndex)}" };
+                return new CsvMappingError(mapping.ColumnIndex,
+                    $"Conversion failed: {row.GetString(mapping.ColumnIndex)}");
             }
         }
+
         return entity;
     }
 
@@ -86,7 +91,8 @@ public abstract class CsvMapping<TEntity> : ICsvMapping<TEntity>, IHeaderBinder
     /// <summary>
     /// Maps a property by its column index using a specific converter.
     /// </summary>
-    public void MapProperty<TProperty>(int columnIndex, Expression<Func<TEntity, TProperty>> property, ITypeConverter<TProperty> converter)
+    public void MapProperty<TProperty>(int columnIndex, Expression<Func<TEntity, TProperty>> property,
+        ITypeConverter<TProperty> converter)
     {
         var setter = CreateSetter(property);
         _propertyMappings.Add(new PropertyMapping<TProperty>(columnIndex, null, converter, setter));
@@ -103,7 +109,8 @@ public abstract class CsvMapping<TEntity> : ICsvMapping<TEntity>, IHeaderBinder
     /// <summary>
     /// Maps a property by its header column name using a specific converter.
     /// </summary>
-    public void MapProperty<TProperty>(string columnName, Expression<Func<TEntity, TProperty>> property, ITypeConverter<TProperty> converter)
+    public void MapProperty<TProperty>(string columnName, Expression<Func<TEntity, TProperty>> property,
+        ITypeConverter<TProperty> converter)
     {
         var setter = CreateSetter(property);
         _propertyMappings.Add(new PropertyMapping<TProperty>(-1, columnName, converter, setter));
@@ -121,7 +128,8 @@ public abstract class CsvMapping<TEntity> : ICsvMapping<TEntity>, IHeaderBinder
         private readonly ITypeConverter<TProperty> _converter;
         private readonly Action<TEntity, TProperty> _setter;
 
-        public PropertyMapping(int index, string? name, ITypeConverter<TProperty> converter, Action<TEntity, TProperty> setter)
+        public PropertyMapping(int index, string? name, ITypeConverter<TProperty> converter,
+            Action<TEntity, TProperty> setter)
         {
             ColumnIndex = index;
             ColumnName = name;
@@ -137,6 +145,7 @@ public abstract class CsvMapping<TEntity> : ICsvMapping<TEntity>, IHeaderBinder
                 _setter(entity, value!);
                 return true;
             }
+
             return false;
         }
     }

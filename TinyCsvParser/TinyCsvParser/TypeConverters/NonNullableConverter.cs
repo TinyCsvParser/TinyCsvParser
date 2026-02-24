@@ -1,6 +1,7 @@
 ﻿// Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
+using TinyCsvParser.Internals;
 
 namespace TinyCsvParser.TypeConverters;
 
@@ -10,7 +11,7 @@ public abstract class NonNullableConverter<TTargetType> : ITypeConverter<TTarget
 
     public bool TryConvert(ReadOnlySpan<char> value, out TTargetType result)
     {
-        if (value.IsEmpty || value.IsWhiteSpace())
+        if (value.IsEmpty || SpanExtensions.IsWhiteSpace(value))
         {
             result = default!;
             return false;
