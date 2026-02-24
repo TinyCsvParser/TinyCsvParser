@@ -23,11 +23,11 @@ public class NullableTimeSpanConverter : NullableConverter<TimeSpan?>
     {
         if (string.IsNullOrEmpty(_format))
         {
-            if (TimeSpan.TryParse(value, _formatProvider, out TimeSpan tempResult)) { result = tempResult; return true; }
+            if (TimeSpan.TryParse(value, _formatProvider, out var tempResult)) { result = tempResult; return true; }
         }
         else
         {
-            if (TimeSpan.TryParseExact(value, _format.AsSpan(), _formatProvider, _styles, out TimeSpan tempResult)) { result = tempResult; return true; }
+            if (TimeSpan.TryParseExact(value, _format.AsSpan(), _formatProvider, _styles, out var tempResult)) { result = tempResult; return true; }
         }
         result = null; return false;
     }

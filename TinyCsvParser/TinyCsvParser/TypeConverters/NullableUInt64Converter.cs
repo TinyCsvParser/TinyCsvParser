@@ -20,7 +20,7 @@ public class NullableUInt64Converter : NullableConverter<ulong?>
 
     protected override bool InternalConvert(ReadOnlySpan<char> value, out ulong? result)
     {
-        if (ulong.TryParse(value, _numberStyles, _formatProvider, out ulong tempResult))
+        if (ulong.TryParse(value, _numberStyles, _formatProvider, out var tempResult))
         {
             result = tempResult;
             return true;

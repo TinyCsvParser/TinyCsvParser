@@ -20,7 +20,7 @@ public class NullableInt64Converter : NullableConverter<long?>
 
     protected override bool InternalConvert(ReadOnlySpan<char> value, out long? result)
     {
-        if (long.TryParse(value, _numberStyles, _formatProvider, out long tempResult))
+        if (long.TryParse(value, _numberStyles, _formatProvider, out var tempResult))
         {
             result = tempResult;
             return true;

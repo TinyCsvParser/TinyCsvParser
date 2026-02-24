@@ -27,7 +27,7 @@ public ref struct CsvRow
     {
         if (index >= _packedInfo.Length) return string.Empty;
 
-        Unpack(_packedInfo[index], out int start, out int length, out bool isQuoted, out bool needsUnescape);
+        Unpack(_packedInfo[index], out var start, out var length, out var isQuoted, out var needsUnescape);
         var raw = _line.Slice(start, length);
 
         if (!isQuoted)
@@ -47,13 +47,14 @@ public ref struct CsvRow
     public ReadOnlySpan<char> GetSpan(int index)
     {
         if (index >= _packedInfo.Length) return ReadOnlySpan<char>.Empty;
-        Unpack(_packedInfo[index], out int start, out int length, out bool isQuoted, out _);
+        Unpack(_packedInfo[index], out var start, out var length, out var isQuoted, out _);
 
         var raw = _line.Slice(start, length);
         if (isQuoted && raw.Length >= 2)
         {
             return raw.Slice(1, raw.Length - 2);
         }
+
         return raw;
     }
 
@@ -61,18 +62,18 @@ public ref struct CsvRow
     {
         var content = rawQuoted.Slice(1, rawQuoted.Length - 2);
 
-        Span<char> buffer = content.Length <= 512
+        var buffer = content.Length <= 512
             ? stackalloc char[content.Length]
             : new char[content.Length];
 
-        int destIdx = 0;
-        int srcIdx = 0;
-        char escape = _options.EscapeChar;
-        char quote = _options.QuoteChar;
+        var destIdx = 0;
+        var srcIdx = 0;
+        var escape = _options.EscapeChar;
+        var quote = _options.QuoteChar;
 
         while (srcIdx < content.Length)
         {
-            char c = content[srcIdx];
+            var c = content[srcIdx];
 
             if (c == escape)
             {
@@ -114,11 +115,9 @@ public ref struct CsvRow
 
     public static long Pack(int start, int length, bool isQuoted, bool needsUnescape)
     {
-        long info = ((long)start) << 32 | (uint)length;
+        var info = ((long)start) << 32 | (uint)length;
         if (isQuoted) info |= IsQuotedMask;
         if (needsUnescape) info |= NeedsUnescapeMask;
         return info;
     }
 }
-
-

@@ -20,7 +20,7 @@ public class NullableSByteConverter : NullableConverter<sbyte?>
 
     protected override bool InternalConvert(ReadOnlySpan<char> value, out sbyte? result)
     {
-        if (sbyte.TryParse(value, _numberStyles, _formatProvider, out sbyte tempResult))
+        if (sbyte.TryParse(value, _numberStyles, _formatProvider, out var tempResult))
         {
             result = tempResult;
             return true;

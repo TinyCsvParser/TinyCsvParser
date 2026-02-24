@@ -14,11 +14,11 @@ public class NullableGuidConverter : NullableConverter<Guid?>
     {
         if (string.IsNullOrEmpty(_format))
         {
-            if (Guid.TryParse(value, out Guid tempResult)) { result = tempResult; return true; }
+            if (Guid.TryParse(value, out var tempResult)) { result = tempResult; return true; }
         }
         else
         {
-            if (Guid.TryParseExact(value, _format.AsSpan(), out Guid tempResult)) { result = tempResult; return true; }
+            if (Guid.TryParseExact(value, _format.AsSpan(), out var tempResult)) { result = tempResult; return true; }
         }
         result = null; return false;
     }

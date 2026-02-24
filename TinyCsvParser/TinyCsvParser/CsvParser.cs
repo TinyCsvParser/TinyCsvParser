@@ -104,9 +104,9 @@ public class CsvParser<TEntity> where TEntity : class, new()
                 {
                     if (_reader.TryGetNextRecord(out var headerLine))
                     {
-                        Span<long> ranges = _rangesBuffer.AsSpan();
+                        var ranges = _rangesBuffer.AsSpan();
 
-                        int count = CsvParserEngine.SplitLine(headerLine, _options, ranges);
+                        var count = CsvParserEngine.SplitLine(headerLine, _options, ranges);
 
                         var headerRow = new CsvRow(headerLine, ranges.Slice(0, count), _options);
 
@@ -124,11 +124,11 @@ public class CsvParser<TEntity> where TEntity : class, new()
                 }
             }
 
-            if (_reader.TryGetNextRecord(out ReadOnlySpan<char> line))
+            if (_reader.TryGetNextRecord(out var line))
             {
-                Span<long> rangesSpan = _rangesBuffer.AsSpan();
+                var rangesSpan = _rangesBuffer.AsSpan();
 
-                int columnsFound = CsvParserEngine.SplitLine(line, _options, rangesSpan);
+                var columnsFound = CsvParserEngine.SplitLine(line, _options, rangesSpan);
 
                 var row = new CsvRow(line, rangesSpan.Slice(0, columnsFound), _options);
 
