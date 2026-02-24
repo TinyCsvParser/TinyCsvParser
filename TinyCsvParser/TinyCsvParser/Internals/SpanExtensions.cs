@@ -2,7 +2,7 @@
 
 using System;
 
-namespace TinyCsvParser;
+namespace TinyCsvParser.Internals;
 
 internal static class SpanExtensions
 {
