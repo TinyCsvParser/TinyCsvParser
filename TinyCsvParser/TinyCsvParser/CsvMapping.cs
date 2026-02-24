@@ -17,7 +17,7 @@ public abstract class CsvMapping<TEntity> : ICsvMapping<TEntity>, IHeaderBinder
     where TEntity : class, new()
 {
     private readonly ITypeConverterProvider _typeConverterProvider;
-    private readonly List<PropertyMapping> _propertyMappings = new();
+    private readonly List<PropertyMapping> _propertyMappings = [];
 
     protected CsvMapping() : this(new TypeConverterProvider())
     {
