@@ -11,6 +11,13 @@ using TinyCsvParser.TypeConverters;
 namespace TinyCsvParser;
 
 /// <summary>
+/// Delegate for custom mapping logic. If set, this function will be called along with property mappings.
+/// </summary>
+/// <typeparam name="TEntity"></typeparam>
+/// <returns></returns>
+public delegate bool MapUsingFunc<in TEntity>(TEntity entity, ref CsvRow row);
+
+/// <summary>
 /// Base class for CSV mapping definitions.
 /// </summary>
 public abstract class CsvMapping<TEntity> : ICsvMapping<TEntity>, IHeaderBinder
@@ -18,6 +25,8 @@ public abstract class CsvMapping<TEntity> : ICsvMapping<TEntity>, IHeaderBinder
 {
     private readonly ITypeConverterProvider _typeConverterProvider;
     private readonly List<PropertyMapping> _propertyMappings = [];
+
+    private MapUsingFunc<TEntity>? _mapUsingFunc;
 
     protected CsvMapping() : this(new TypeConverterProvider())
     {
@@ -63,6 +72,7 @@ public abstract class CsvMapping<TEntity> : ICsvMapping<TEntity>, IHeaderBinder
         }
 
         var entity = new TEntity();
+
         foreach (var mapping in _propertyMappings)
         {
             if (mapping.ColumnIndex < 0 || mapping.ColumnIndex >= row.Count)
@@ -77,7 +87,21 @@ public abstract class CsvMapping<TEntity> : ICsvMapping<TEntity>, IHeaderBinder
             }
         }
 
+        if (_mapUsingFunc != null)
+        {
+            if (!_mapUsingFunc(entity, ref row))
+            {
+                return new CsvMappingError { ColumnIndex = -1, Value = "Custom MapUsing mapping failed." };
+            }
+        }
+
         return entity;
+    }
+
+
+    public void MapUsing(MapUsingFunc<TEntity> mapUsingFunc)
+    {
+        _mapUsingFunc = mapUsingFunc;
     }
 
     /// <summary>
