@@ -14,11 +14,16 @@ public ref struct CsvRow
     private const long IsQuotedMask = 1L << 62;
     private const long NeedsUnescapeMask = 1L << 63;
 
-    public CsvRow(ReadOnlySpan<char> line, ReadOnlySpan<long> packedInfo, CsvOptions options)
+    public int RecordIndex { get; }
+    public int LineNumber { get; }
+
+    public CsvRow(ReadOnlySpan<char> line, ReadOnlySpan<long> packedInfo, CsvOptions options, int recordIndex, int lineNumber)
     {
         _line = line;
         _packedInfo = packedInfo;
         _options = options;
+        RecordIndex = recordIndex;
+        LineNumber = lineNumber;
     }
 
     public int Count => _packedInfo.Length;

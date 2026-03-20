@@ -77,13 +77,28 @@ public abstract class CsvMapping<TEntity> : ICsvMapping<TEntity>, IHeaderBinder
         {
             if (mapping.ColumnIndex < 0 || mapping.ColumnIndex >= row.Count)
             {
-                return new CsvMappingError(mapping.ColumnIndex, "Index Out Of Range");
+                var error = new CsvMappingError
+                {
+                    ColumnIndex = mapping.ColumnIndex,
+                    Value = "Index Out Of Range",
+                    RecordIndex = row.RecordIndex,
+                    LineNumber = row.LineNumber
+                };
+
+                return new CsvMappingResult<TEntity>(error, row.RecordIndex, row.LineNumber);
             }
 
             if (!mapping.TryMap(ref row, entity))
             {
-                return new CsvMappingError(mapping.ColumnIndex,
-                    $"Conversion failed: {row.GetString(mapping.ColumnIndex)}");
+                var error = new CsvMappingError
+                {
+                    ColumnIndex = mapping.ColumnIndex,
+                    Value = $"Conversion failed: {row.GetString(mapping.ColumnIndex)}",
+                    RecordIndex = row.RecordIndex,
+                    LineNumber = row.LineNumber
+                };
+
+                return new CsvMappingResult<TEntity>(error, row.RecordIndex, row.LineNumber);
             }
         }
 
@@ -91,13 +106,20 @@ public abstract class CsvMapping<TEntity> : ICsvMapping<TEntity>, IHeaderBinder
         {
             if (!_mapUsingFunc(entity, ref row))
             {
-                return new CsvMappingError { ColumnIndex = -1, Value = "Custom MapUsing mapping failed." };
+                var error = new CsvMappingError
+                {
+                    ColumnIndex = -1,
+                    Value = "Custom MapUsing validation/mapping failed.",
+                    RecordIndex = row.RecordIndex,
+                    LineNumber = row.LineNumber
+                };
+
+                return new CsvMappingResult<TEntity>(error, row.RecordIndex, row.LineNumber);
             }
         }
 
-        return entity;
+        return new CsvMappingResult<TEntity>(entity, row.RecordIndex, row.LineNumber);
     }
-
 
     public void MapUsing(MapUsingFunc<TEntity> mapUsingFunc)
     {

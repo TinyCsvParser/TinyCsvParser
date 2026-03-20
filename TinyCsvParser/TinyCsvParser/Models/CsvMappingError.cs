@@ -5,7 +5,7 @@ namespace TinyCsvParser.Models;
 /// <summary>
 /// Represents an error that occurred during mapping.
 /// </summary>
-public readonly record struct CsvMappingError(int ColumnIndex, string Value)
+public readonly record struct CsvMappingError(int RecordIndex, int LineNumber, int ColumnIndex, string Value)
 {
     public override string ToString() => $"Error at Column {ColumnIndex}: {Value}";
 }

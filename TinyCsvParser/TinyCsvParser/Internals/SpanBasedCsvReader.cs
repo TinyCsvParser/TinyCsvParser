@@ -15,6 +15,8 @@ public class SpanBasedCsvReader : IDisposable
     private int _charsFilled;
     private int _currentIdx;
     private bool _isEndOfStream;
+    private int _currentRecordIndex = 0;
+    private int _physicalLineNumber = 1;
     private readonly CsvOptions _options;
 
     private const int BufferSize = 32 * 1024;
@@ -26,17 +28,31 @@ public class SpanBasedCsvReader : IDisposable
         _options = options;
     }
 
-    public bool TryGetNextRecord(out ReadOnlySpan<char> recordSpan)
+    public bool TryGetNextRecord(out ReadOnlySpan<char> recordSpan, out int recordIndex, out int lineNumber)
     {
         recordSpan = default;
-        if (_buffer == null) return false;
+        recordIndex = -1;
+        lineNumber = -1;
+
+        if (_buffer == null)
+        {
+            return false;
+        }
 
         while (true)
         {
-            if (TryFindEndOfRecord(out int lengthOfData, out int lengthOfDelimiter))
+            if (TryFindEndOfRecord(out int lengthOfData, out int lengthOfDelimiter, out int newlinesConsumed))
             {
                 recordSpan = new ReadOnlySpan<char>(_buffer, _currentIdx, lengthOfData);
+
+                // Metadata for the current row
+                recordIndex = _currentRecordIndex++;
+                lineNumber = _physicalLineNumber;
+
+                // Increase counters for next record
+                _physicalLineNumber += newlinesConsumed;
                 _currentIdx += lengthOfData + lengthOfDelimiter;
+
                 return true;
             }
 
@@ -45,9 +61,12 @@ public class SpanBasedCsvReader : IDisposable
                 if (_currentIdx < _charsFilled)
                 {
                     recordSpan = new ReadOnlySpan<char>(_buffer, _currentIdx, _charsFilled - _currentIdx);
+                    recordIndex = _currentRecordIndex++;
+                    lineNumber = _physicalLineNumber;
                     _currentIdx = _charsFilled;
                     return true;
                 }
+
                 return false;
             }
 
@@ -55,12 +74,16 @@ public class SpanBasedCsvReader : IDisposable
         }
     }
 
-    private bool TryFindEndOfRecord(out int dataLength, out int delimiterLength)
+    private bool TryFindEndOfRecord(out int dataLength, out int delimiterLength, out int newlinesConsumed)
     {
         dataLength = 0;
         delimiterLength = 0;
+        newlinesConsumed = 0;
 
-        if (_buffer == null) return false;
+        if (_buffer == null)
+        {
+            return false;
+        }
 
         bool inQuotes = false;
         char quote = _options.QuoteChar;
@@ -87,6 +110,11 @@ public class SpanBasedCsvReader : IDisposable
                 {
                     inQuotes = !inQuotes;
                 }
+            }
+
+            if (c == '\n')
+            {
+                newlinesConsumed++;
             }
 
             if (!inQuotes)
@@ -160,6 +188,11 @@ public class SpanBasedCsvReader : IDisposable
         {
             _isEndOfStream = true;
         }
+    }
+
+    public void ResetRecordIndex()
+    {
+        _currentRecordIndex = 0;
     }
 
     public void Dispose()
