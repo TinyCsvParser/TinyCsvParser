@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Xml.Linq;
 using TinyCsvParser.Core;
 using TinyCsvParser.Internals;
 using TinyCsvParser.Models;
@@ -80,6 +81,8 @@ public class CsvParser<TEntity> where TEntity : class, new()
         private CsvMappingResult<TEntity> _current;
         private readonly long[] _rangesBuffer;
 
+        private bool _isInitialized;
+
         public CsvReaderEnumerator(Stream stream, CsvOptions options, ICsvMapping<TEntity> mapping, bool shouldDisposeStream)
         {
             _stream = stream;
@@ -94,39 +97,54 @@ public class CsvParser<TEntity> where TEntity : class, new()
 
         object IEnumerator.Current => _current;
 
+
         public bool MoveNext()
         {
             if (_reader == null)
             {
                 _reader = new SpanBasedCsvReader(_stream, _options);
-
-                if (_mapping is IHeaderBinder { NeedsHeaderResolution: true } binder)
-                {
-                    if (_reader.TryGetNextRecord(out var headerLine, out int headerRecordIndex, out int headerLineNumber))
-                    {
-                        Span<long> ranges = _rangesBuffer.AsSpan();
-
-                        int count = CsvParserEngine.SplitLine(headerLine, _options, ranges);
-
-                        var headerRow = new CsvRow(headerLine, ranges[..count], _options, headerRecordIndex, headerLineNumber);
-
-                        binder.BindHeaders(ref headerRow);
-                    }
-                    else
-                    {
-                        throw new InvalidOperationException("Could not read CSV header for mapping initialization.");
-                    }
-                }
-                else if (_options.SkipHeader)
-                {
-                    // Regular header skip if no resolution is needed
-                    _reader.TryGetNextRecord(out _, out _, out _);
-                    _reader.ResetRecordIndex();
-                }
             }
 
-            if (_reader.TryGetNextRecord(out ReadOnlySpan<char> line, out int recordIndex, out int lineNumber))
+            while (_reader.TryGetNextRecord(out ReadOnlySpan<char> line, out int recordIndex, out int lineNumber, out bool isComment))
             {
+                // Early Exit for comments
+                if (isComment)
+                {
+                    _current = new CsvMappingResult<TEntity>(line.ToString(), recordIndex, lineNumber);
+
+                    return true;
+                }
+
+                // This is the first Non-Comment Line.
+                if (!_isInitialized)
+                {
+                    if (_mapping is IHeaderBinder { NeedsHeaderResolution: true } binder)
+                    {
+                        Span<long> ranges = _rangesBuffer.AsSpan();
+                        int count = CsvParserEngine.SplitLine(line, _options, ranges);
+                        var headerRow = new CsvRow(line, ranges[..count], _options, recordIndex, lineNumber);
+
+                        binder.BindHeaders(ref headerRow);
+
+                        _isInitialized = true;
+
+                        _reader.ResetRecordIndex();
+
+                        continue; 
+                    }
+                    else if (_options.SkipHeader)
+                    {
+                        _isInitialized = true;
+
+                        _reader.ResetRecordIndex();
+
+                        continue;
+                    }
+
+                    _isInitialized = true;
+                }
+
+                // Normal Mapping Logic
                 Span<long> rangesSpan = _rangesBuffer.AsSpan();
 
                 int columnsFound = CsvParserEngine.SplitLine(line, _options, rangesSpan);
@@ -134,13 +152,12 @@ public class CsvParser<TEntity> where TEntity : class, new()
                 var row = new CsvRow(line, rangesSpan[..columnsFound], _options, recordIndex, lineNumber);
 
                 _current = _mapping.Map(ref row);
-
+                
                 return true;
             }
 
             return false;
         }
-
         public void Reset() => throw new NotSupportedException("CSV Streams cannot be reset.");
 
         public void Dispose()
