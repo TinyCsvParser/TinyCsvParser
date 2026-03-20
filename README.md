@@ -2,7 +2,6 @@
 
 [![NuGet Package](https://img.shields.io/nuget/v/TinyCsvParser.svg)](https://www.nuget.org/packages/TinyCsvParser/)
 ![Build status](https://github.com/TinyCsvParser/TinyCsvParser/actions/workflows/ci.yml/badge.svg)
-![Build status](https://github.com/TinyCsvParser/TinyCsvParser/actions/workflows/release.yml/badge.svg)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
 [TinyCsvParser]: https://github.com/TinyCsvParser/TinyCsvParser
