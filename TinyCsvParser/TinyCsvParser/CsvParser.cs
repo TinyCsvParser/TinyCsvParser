@@ -102,13 +102,13 @@ public class CsvParser<TEntity> where TEntity : class, new()
 
                 if (_mapping is IHeaderBinder { NeedsHeaderResolution: true } binder)
                 {
-                    if (_reader.TryGetNextRecord(out var headerLine))
+                    if (_reader.TryGetNextRecord(out var headerLine, out int headerRecordIndex, out int headerLineNumber))
                     {
                         Span<long> ranges = _rangesBuffer.AsSpan();
 
                         int count = CsvParserEngine.SplitLine(headerLine, _options, ranges);
 
-                        var headerRow = new CsvRow(headerLine, ranges[..count], _options);
+                        var headerRow = new CsvRow(headerLine, ranges[..count], _options, headerRecordIndex, headerLineNumber);
 
                         binder.BindHeaders(ref headerRow);
                     }
@@ -120,17 +120,18 @@ public class CsvParser<TEntity> where TEntity : class, new()
                 else if (_options.SkipHeader)
                 {
                     // Regular header skip if no resolution is needed
-                    _reader.TryGetNextRecord(out _);
+                    _reader.TryGetNextRecord(out _, out _, out _);
+                    _reader.ResetRecordIndex();
                 }
             }
 
-            if (_reader.TryGetNextRecord(out ReadOnlySpan<char> line))
+            if (_reader.TryGetNextRecord(out ReadOnlySpan<char> line, out int recordIndex, out int lineNumber))
             {
                 Span<long> rangesSpan = _rangesBuffer.AsSpan();
 
                 int columnsFound = CsvParserEngine.SplitLine(line, _options, rangesSpan);
 
-                var row = new CsvRow(line, rangesSpan[..columnsFound], _options);
+                var row = new CsvRow(line, rangesSpan[..columnsFound], _options, recordIndex, lineNumber);
 
                 _current = _mapping.Map(ref row);
 

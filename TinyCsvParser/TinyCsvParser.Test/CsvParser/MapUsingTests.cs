@@ -108,7 +108,7 @@ public class MapUsingTests
             // Assert
             Assert.That(results, Has.Count.EqualTo(1));
             Assert.That(results[0].IsSuccess, Is.False);
-            Assert.That(results[0].Error.Value, Contains.Substring("Custom MapUsing mapping failed."));
+            Assert.That(results[0].Error.Value, Contains.Substring("Custom MapUsing validation/mapping failed."));
         }
 
         [Test]
