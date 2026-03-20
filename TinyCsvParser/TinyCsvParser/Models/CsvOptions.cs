@@ -9,12 +9,13 @@ public readonly record struct CsvOptions(
     char QuoteChar,
     char EscapeChar,
     Encoding? Encoding = null,
-    bool SkipHeader = false
+    bool SkipHeader = false,
+    char? CommentCharacter = null
 )
 {
-    public static CsvOptions Default => new(';', '"', '\\', Encoding.UTF8);
+    public static CsvOptions Default => new(';', '"', '\\', Encoding.UTF8, false, null);
 
-    public static CsvOptions Rfc4180 => new(';', '"', '"', Encoding.UTF8);
+    public static CsvOptions Rfc4180 => new(';', '"', '"', Encoding.UTF8, false, null);
 }
 
 

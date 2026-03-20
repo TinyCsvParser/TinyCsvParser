@@ -28,11 +28,12 @@ public class SpanBasedCsvReader : IDisposable
         _options = options;
     }
 
-    public bool TryGetNextRecord(out ReadOnlySpan<char> recordSpan, out int recordIndex, out int lineNumber)
+    public bool TryGetNextRecord(out ReadOnlySpan<char> recordSpan, out int recordIndex, out int lineNumber, out bool isComment)
     {
         recordSpan = default;
         recordIndex = -1;
         lineNumber = -1;
+        isComment = false;
 
         if (_buffer == null)
         {
@@ -45,8 +46,14 @@ public class SpanBasedCsvReader : IDisposable
             {
                 recordSpan = new ReadOnlySpan<char>(_buffer, _currentIdx, lengthOfData);
 
-                // Metadata for the current row
-                recordIndex = _currentRecordIndex++;
+                // Is this a comment line?
+                isComment = IsCommentLine(recordSpan);
+
+                // A comment line is not a record and should not increase the record index, but
+                // it should increase the line number.
+                recordIndex = isComment ? -1 : _currentRecordIndex++;
+
+                // Increase the actual Line Number nevertheless
                 lineNumber = _physicalLineNumber;
 
                 // Increase counters for next record
@@ -61,7 +68,8 @@ public class SpanBasedCsvReader : IDisposable
                 if (_currentIdx < _charsFilled)
                 {
                     recordSpan = new ReadOnlySpan<char>(_buffer, _currentIdx, _charsFilled - _currentIdx);
-                    recordIndex = _currentRecordIndex++;
+                    isComment = IsCommentLine(recordSpan);
+                    recordIndex = isComment ? -1 : _currentRecordIndex++;
                     lineNumber = _physicalLineNumber;
                     _currentIdx = _charsFilled;
                     return true;
@@ -73,6 +81,31 @@ public class SpanBasedCsvReader : IDisposable
             RefillBuffer();
         }
     }
+
+    private bool IsCommentLine(ReadOnlySpan<char> span)
+    {
+        if (!_options.CommentCharacter.HasValue)
+        {
+            return false;
+        }
+
+        for (int i = 0; i < span.Length; i++)
+        {
+            char c = span[i];
+            if (c == _options.CommentCharacter.Value)
+            {
+                return true;
+            }
+
+            if (!char.IsWhiteSpace(c))
+            {
+                return false;
+            }
+        }
+
+        return false;
+    }
+
 
     private bool TryFindEndOfRecord(out int dataLength, out int delimiterLength, out int newlinesConsumed)
     {
