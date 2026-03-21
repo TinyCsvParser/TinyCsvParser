@@ -59,7 +59,6 @@ public readonly struct CsvMappingResult<TEntity>
         ? (string)_value!
         : throw new InvalidOperationException("Cannot access 'Comment' on a non-comment mapping.");
 
-
     public TResult Match<TResult>(Func<TEntity, TResult> onSuccess, Func<CsvMappingError, TResult> onFailure, Func<string, TResult> onComment)
     {
         return _state switch
@@ -70,7 +69,6 @@ public readonly struct CsvMappingResult<TEntity>
             _ => throw new InvalidOperationException("Unknown state")
         };
     }
-
 
     public void Switch(Action<TEntity> onSuccess, Action<CsvMappingError> onFailure, Action<string> onComment)
     {
