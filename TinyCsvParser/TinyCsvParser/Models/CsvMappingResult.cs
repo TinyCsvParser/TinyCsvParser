@@ -71,6 +71,23 @@ public readonly struct CsvMappingResult<TEntity>
         };
     }
 
+
+    public void Switch(Action<TEntity> onSuccess, Action<CsvMappingError> onFailure, Action<string> onComment)
+    {
+        switch (_state)
+        {
+            case 0:
+                onSuccess((TEntity)_value!);
+                break;
+            case 1:
+                onFailure((CsvMappingError)_value!);
+                break;
+            case 2:
+                onComment((string)_value!);
+                break;
+        }
+    }
+
     public bool TryGetResult(out TEntity? result)
     {
         if (_state == 0)
