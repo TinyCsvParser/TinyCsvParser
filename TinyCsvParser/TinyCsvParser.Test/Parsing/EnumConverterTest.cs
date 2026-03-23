@@ -6,7 +6,7 @@ using System.Text;
 using TinyCsvParser.Models;
 using TinyCsvParser.TypeConverters;
 
-namespace TinyCsvParser.Test.CsvParser;
+namespace TinyCsvParser.Test.Parsing;
 
 [TestFixture]
 public class EnumConverterTest

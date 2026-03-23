@@ -16,24 +16,28 @@ configuration, and extensibility of the library through practical examples.
 
 * [1. Setup](#1-setup)
 * [2. Quick Start](#2-quick-start)
-  * [2.1 The Model](#21-the-model)
-  * [2.2 The Mapping](#22-the-mapping)
-  * [2.3 Handling Quotes](#23-handling-quotes)
+    * [2.1 The Model](#21-the-model)
+    * [2.2 The Mapping](#22-the-mapping)
+    * [2.3 Handling Quotes](#23-handling-quotes)
 * [3. Configuring and Running the Parser](#3-configuring-and-running-the-parser)
-  * [3.1 Setup the Parser](#31-setup-the-parser)
-  * [3.2 Execute the Parsing](#32-execute-the-parsing)
-* [4. Core Concepts: Row and Line Tracking](#4-core-concepts-row-and-line-tracking)
-  * [4.1 LineNumber vs. RecordIndex](#41-linenumber-vs-recordindex)
-  * [4.2 Reasoning for the Distinction](#42-reasoning-for-the-distinction)
+    * [3.1 Setup the Parser](#31-setup-the-parser)
+    * [3.2 Execute the Parsing](#32-execute-the-parsing)
+* [4. Core Concept: Record and Line Tracking](#4-core-concept-record-and-line-tracking)
+    * [4.1 LineNumber vs. RecordIndex](#41-linenumber-vs-recordindex)
+    * [4.2 Reasoning for the Distinction](#42-reasoning-for-the-distinction)
 * [5. Result Handling: Success, Error, and Comment](#5-result-handling-success-error-and-comment)
-* [6. Advanced Usage: Accessing CsvRow](#6-advanced-usage-accessing-csvrow)
-* [7. TypeConverters](#7-typeconverters)
-  * [7.1 Configuring Existing Converters](#71-configuring-existing-converters)
-  * [7.2 Writing a Custom Converter](#72-writing-a-custom-converter)
-* [8. Migration from 2.x to 3.x](#8-migration-from-2x-to-3x)
-  * [8.1 Data Access](#81-data-access)
-  * [8.2 Result Pattern](#82-result-pattern)
-  * [8.3 Error Metadata](#83-error-metadata)
+* [6. Dynamic Mapping (Dictionary & ExpandoObject)](#6-dynamic-mapping-dictionary--expandoobject)
+    * [6.1 Inline Configuration](#61-inline-configuration)
+    * [6.2 Explicit Converters & Custom Providers](#62-explicit-converters--custom-providers)
+    * [6.3 Fallback Behavior](#63-fallback-behavior)
+* [7. Advanced Usage: Accessing CsvRow](#7-advanced-usage-accessing-csvrow)
+* [8. TypeConverters](#8-typeconverters)
+    * [8.1 Configuring Existing Converters](#81-configuring-existing-converters)
+    * [8.2 Writing a Custom Converter](#82-writing-a-custom-converter)
+* [9. Migration from 2.x to 3.x](#9-migration-from-2x-to-3x)
+    * [9.1 Data Access](#91-data-access)
+    * [9.2 Result Pattern](#92-result-pattern)
+    * [9.3 Error Metadata](#93-error-metadata)
 
 ## 1. Setup ##
 
@@ -163,7 +167,7 @@ foreach (CsvMappingResult<Person> result in results)
 }
 ```
 
-## 4. Core Concept: Row and Line Tracking ##
+## 4. Core Concept: Record and Line Tracking ##
 
 TinyCsvParser distinguishes between two types of indices. This distinction is necessary because CSV 
 files often deviate from a simple "one line equals one record" structure.
@@ -202,7 +206,62 @@ foreach (CsvMappingResult<Person> item in parser.ReadFromStream(stream))
 }
 ```
 
-## 6. Advanced Usage: Accessing CsvRow ##
+## 6. Dynamic Mapping (Dictionary & ExpandoObject) ##
+
+When the CSV schema is only known at runtime, or you want to avoid creating dedicated classes for 
+simple scripts, you can parse rows directly into dynamic structures (`Dictionary<string, object?>` or 
+`ExpandoObject`).
+
+For performance it's maybe better to map to a `Dictionary`, as it avoids Dynamic Language Runtime overhead.
+
+### 6.1 Inline Configuration ###
+
+Use the static factory methods on the `CsvParser` class. The schema is configured inline using a delegate.
+
+```csharp
+using TinyCsvParser;
+
+CsvOptions options = new(Delimiter: ';', QuoteChar: '"', EscapeChar: '"', SkipHeader: false);
+
+// Create the parser and configure the schema in one go
+var parser = CsvParser.CreateDictionaryParser(options, schema => 
+{
+    schema.Add<int>("Id");       // Resolves Int32Converter automatically
+    schema.Add<double>("Price"); // Resolves DoubleConverter automatically
+});
+
+foreach (var result in parser.ReadFromFile("products.csv"))
+{
+    if (result.IsSuccess)
+    {
+        Dictionary<string, object?> row = result.Result;
+        Console.WriteLine($"Item {row["Id"]} costs {row["Price"]}");
+    }
+}
+```
+
+> Note: Use `CsvParser.CreateExpandoParser(...)` if you prefer to access fields via the dynamic keyword like `row.Id`.
+
+### 6.2 Explicit Converters & Custom Providers ###
+
+While `Add<T>` is the most convenient method, you can pass explicit converter instances if you need special configurations 
+(e.g., `date formats`).
+
+```csharp
+var parser = CsvParser.CreateDictionaryParser(options, schema => 
+{
+    schema.Add<int>("Id");
+    schema.Add("BirthDate", new DateTimeConverter("yyyy-MM-dd")); // Explicit Converter
+});
+```
+
+### 6.3 Fallback Behavior ###
+
+Any column present in the CSV header that is not mapped in your `CsvSchema` will automatically be 
+parsed as a raw `string`. This prevents data loss while maintaining strict typing for the columns 
+you care about.
+
+## 7. Advanced Usage: Accessing CsvRow ##
 
 For complex scenarios, `MapUsing` provides direct access to the `ref struct CsvRow`. This is useful for mapping multiple columns 
 into a single property or performing manual validation.
@@ -230,9 +289,9 @@ public class AdvancedMapping : CsvMapping<Person>
 }
 ```
 
-## 7. TypeConverters ##
+## 8. TypeConverters ##
 
-### 7.1 Configuring Existing Converters ###
+### 8.1 Configuring Existing Converters ###
 
 You can pass specific parameters (like date formats) to built-in converters during mapping.
 
@@ -242,7 +301,7 @@ DateTimeConverter dateConverter = new("yyyy-MM-dd");
 MapProperty("BirthDate", x => x.BirthDate, dateConverter);
 ```
 
-### 7.2 Writing a Custom Converter ###
+### 8.2 Writing a Custom Converter ###
 
 Inherit from `NonNullableConverter<T>` to implement custom parsing logic directly on the memory spans.
 
@@ -262,18 +321,18 @@ public class YesNoConverter : NonNullableConverter<bool>
 }
 ```
 
-## 8. Migration from 2.x to 3.x ##
+## 9. Migration from 2.x to 3.x ##
 
-### 8.1 Data Access ###
+### 9.1 Data Access ###
 
 In Version 2.x, custom logic used a `string[]`. In Version 3.0, it uses `ref CsvRow`. This allows the library to work 
 with `ReadOnlySpan<char>`, significantly reducing memory allocations.
 
-### 8.2 Result Pattern ###
+### 9.2 Result Pattern ###
 
 The addition of the Comment state means that Match and Switch now require a third functional argument. Use these overloads to handle metadata rows found in the CSV.
 
-### 8.3 Error Metadata ###
+### 9.3 Error Metadata ###
 
 Error objects in Version 3.0 now contain both `RecordIndex` and `LineNumber`. If you previously relied on indices for debugging, ensure 
 you switch to `LineNumber` for file-based troubleshooting. This is what the user sees in their CSV file.

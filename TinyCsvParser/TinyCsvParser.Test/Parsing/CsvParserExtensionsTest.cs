@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using TinyCsvParser.Models;
 
-namespace TinyCsvParser.Test.CsvParser;
+namespace TinyCsvParser.Test.Parsing;
 
 [TestFixture]
 public class CsvParserExtensionsTest
