@@ -5,7 +5,7 @@ using System.Globalization;
 using System.Linq;
 using TinyCsvParser.Models;
 
-namespace TinyCsvParser.Test.CsvParser;
+namespace TinyCsvParser.Test.Parsing;
 
 [TestFixture]
 public class MapUsingTests

@@ -37,9 +37,9 @@ public abstract class CsvMapping<TEntity> : ICsvMapping<TEntity>, IHeaderBinder
         _typeConverterProvider = typeConverterProvider;
     }
 
-    public bool NeedsHeaderResolution => _propertyMappings.Any(m => m.ColumnIndex == -1);
+    public virtual bool NeedsHeaderResolution => _propertyMappings.Any(m => m.ColumnIndex == -1);
 
-    public void BindHeaders(ref CsvRow headerRow)
+    public virtual void BindHeaders(ref CsvRow headerRow)
     {
         var headerMap = new Dictionary<string, int>(headerRow.Count, StringComparer.OrdinalIgnoreCase);
         for (int i = 0; i < headerRow.Count; i++)
