@@ -1,6 +1,7 @@
 ﻿// Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using NUnit.Framework;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TinyCsvParser.Models;
@@ -36,16 +37,16 @@ public class EnumConverterTest
     [Test]
     public void CustomEnumConverterTest()
     {
-        var csvParserOptions = CsvOptions.Default with { SkipHeader = true };
-        var csvMapper = new CsvVehicleMapping();
-        var csvParser = new CsvParser<Vehicle>(csvParserOptions, csvMapper);
+        CsvOptions csvParserOptions = CsvOptions.Default with { SkipHeader = true };
+        CsvVehicleMapping csvMapper = new();
+        CsvParser<Vehicle> csvParser = new(csvParserOptions, csvMapper);
 
-        var stringBuilder = new StringBuilder()
+        StringBuilder stringBuilder = new StringBuilder()
             .AppendLine("VehicleType;Name")
             .AppendLine("Car;Suzuki Swift")
             .AppendLine("Bike;A Bike");
 
-        var result = csvParser
+        List<CsvMappingResult<Vehicle>> result = csvParser
             .ReadFromString(stringBuilder.ToString())
             .ToList();
 

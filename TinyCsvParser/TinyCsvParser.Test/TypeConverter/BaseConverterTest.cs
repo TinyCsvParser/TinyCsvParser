@@ -18,9 +18,9 @@ public abstract class BaseConverterTest<TTargetType>
     [Test]
     public void Success()
     {
-        foreach (var item in SuccessTestData)
+        foreach (Tuple<string, TTargetType> item in SuccessTestData)
         {
-            var canParse = Converter.TryConvert(item.Item1, out var result);
+            var canParse = Converter.TryConvert(item.Item1, out TTargetType result);
 
             Assert.IsTrue(canParse);
 

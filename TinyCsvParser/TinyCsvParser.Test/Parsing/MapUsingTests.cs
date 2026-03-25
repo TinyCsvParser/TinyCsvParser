@@ -1,6 +1,7 @@
 ﻿// Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using NUnit.Framework;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using TinyCsvParser.Models;
@@ -35,21 +36,36 @@ public class MapUsingTests
         {
             MapUsing((DepthCell entity, ref CsvRow row) =>
             {
-                if (row.Count < 4) return false;
-
-                if (!double.TryParse(row.GetSpan(0), NumberStyles.Float, CultureInfo.InvariantCulture, out double lat) ||
-                    !double.TryParse(row.GetSpan(1), NumberStyles.Float, CultureInfo.InvariantCulture, out double lon) ||
-                    !double.TryParse(row.GetSpan(2), NumberStyles.Float, CultureInfo.InvariantCulture, out double z10) ||
-                    !double.TryParse(row.GetSpan(3), NumberStyles.Float, CultureInfo.InvariantCulture, out double z25))
+                if (row.Count < 4)
                 {
-                    return false;
+                    return MapUsingResult.Failure($"Not enough columns. Expected 4, but got {row.Count}.");
+                }
+
+                if (!double.TryParse(row.GetSpan(0), NumberStyles.Float, CultureInfo.InvariantCulture, out double lat))
+                {
+                    return MapUsingResult.Failure($"Failed to parse Latitude: '{row.GetString(0)}'");
+                }
+
+                if (!double.TryParse(row.GetSpan(1), NumberStyles.Float, CultureInfo.InvariantCulture, out double lon))
+                {
+                    return MapUsingResult.Failure($"Failed to parse Longitude: '{row.GetString(1)}'");
+                }
+
+                if (!double.TryParse(row.GetSpan(2), NumberStyles.Float, CultureInfo.InvariantCulture, out double z10))
+                {
+                    return MapUsingResult.Failure($"Failed to parse Z10: '{row.GetString(2)}'");
+                }
+
+                if (!double.TryParse(row.GetSpan(3), NumberStyles.Float, CultureInfo.InvariantCulture, out double z25))
+                {
+                    return MapUsingResult.Failure($"Failed to parse Z25: '{row.GetString(3)}'");
                 }
 
                 entity.Coordinate = new GeographicCoordinate(lat, lon);
                 entity.Z10 = z10;
                 entity.Z25 = z25;
 
-                return true;
+                return MapUsingResult.Success();
             });
         }
     }
@@ -62,14 +78,14 @@ public class MapUsingTests
         [SetUp]
         public void Setup()
         {
-            var options = new CsvOptions(
+            CsvOptions options = new(
                 Delimiter: ';',
                 QuoteChar: '"',
                 EscapeChar: '\\',
                 SkipHeader: false
             );
 
-            var mapper = new DepthCellMapper();
+            DepthCellMapper mapper = new();
             _parser = new CsvParser<DepthCell>(options, mapper);
         }
 
@@ -80,13 +96,13 @@ public class MapUsingTests
             string csvRow = "52.2734;7.6221;10.5;25.2";
 
             // Act
-            var results = _parser.ReadFromString(csvRow).ToList();
+            List<CsvMappingResult<DepthCell>> results = _parser.ReadFromString(csvRow).ToList();
 
             // Assert
             Assert.That(results, Has.Count.EqualTo(1));
             Assert.That(results[0].IsSuccess, Is.True);
 
-            var cell = results[0].Result;
+            DepthCell cell = results[0].Result;
             Assert.Multiple(() =>
             {
                 Assert.That(cell.Coordinate.Latitude, Is.EqualTo(52.2734).Within(0.0001));
@@ -103,12 +119,14 @@ public class MapUsingTests
             string csvRow = "not_a_number;7.6221;10.5;25.2";
 
             // Act
-            var results = _parser.ReadFromString(csvRow).ToList();
+            List<CsvMappingResult<DepthCell>> results = _parser.ReadFromString(csvRow).ToList();
 
             // Assert
             Assert.That(results, Has.Count.EqualTo(1));
             Assert.That(results[0].IsSuccess, Is.False);
-            Assert.That(results[0].Error.Value, Contains.Substring("Custom MapUsing validation/mapping failed."));
+
+            // Prüfung der spezifischen Fehlermeldung aus dem MapUsingResult
+            Assert.That(results[0].Error.Value, Contains.Substring("Failed to parse Latitude: 'not_a_number'"));
         }
 
         [Test]
@@ -118,10 +136,11 @@ public class MapUsingTests
             string csvRow = "52.2734;7.6221";
 
             // Act
-            var results = _parser.ReadFromString(csvRow).ToList();
+            List<CsvMappingResult<DepthCell>> results = _parser.ReadFromString(csvRow).ToList();
 
             // Assert
             Assert.That(results[0].IsSuccess, Is.False);
+            Assert.That(results[0].Error.Value, Contains.Substring("Not enough columns. Expected 4, but got 2."));
         }
 
         [Test]
@@ -131,7 +150,7 @@ public class MapUsingTests
             string csvContent = "52.0;7.0;10.0;20.0\n53.0;8.0;11.0;21.0";
 
             // Act
-            var results = _parser.ReadFromString(csvContent).ToList();
+            List<CsvMappingResult<DepthCell>> results = _parser.ReadFromString(csvContent).ToList();
 
             // Assert
             Assert.That(results, Has.Count.EqualTo(2));

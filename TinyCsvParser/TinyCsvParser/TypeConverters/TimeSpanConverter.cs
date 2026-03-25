@@ -21,7 +21,11 @@ public class TimeSpanConverter : NonNullableConverter<TimeSpan>
 
     protected override bool InternalConvert(ReadOnlySpan<char> value, out TimeSpan result)
     {
-        if (string.IsNullOrEmpty(_format)) return TimeSpan.TryParse(value, _formatProvider, out result);
+        if (string.IsNullOrEmpty(_format))
+        {
+            return TimeSpan.TryParse(value, _formatProvider, out result);
+        }
+
         return TimeSpan.TryParseExact(value, _format.AsSpan(), _formatProvider, _styles, out result);
     }
 }

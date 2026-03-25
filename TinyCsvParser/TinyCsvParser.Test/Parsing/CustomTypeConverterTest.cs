@@ -2,6 +2,7 @@
 
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TinyCsvParser.Models;
@@ -57,19 +58,19 @@ public class TinyCsvParserTest
     [Test]
     public void WeirdDateTimeTest_CustomConverterBased()
     {
-        var csvOptions = CsvOptions.Default with
+        CsvOptions csvOptions = CsvOptions.Default with
         {
             SkipHeader = true
         };
-        
-        var csvMapper = new CsvPersonMappingWithCustomConverter();
-        var csvParser = new CsvParser<Person>(csvOptions, csvMapper);
 
-        var stringBuilder = new StringBuilder()
+        CsvPersonMappingWithCustomConverter csvMapper = new();
+        CsvParser<Person> csvParser = new(csvOptions, csvMapper);
+
+        StringBuilder stringBuilder = new StringBuilder()
             .AppendLine("FirstName;LastName;BirthDate")
             .AppendLine("Philipp;Wagner;1986###05###12");
 
-        var result = csvParser
+        List<CsvMappingResult<Person>> result = csvParser
             .ReadFromString(stringBuilder.ToString())
             .ToList();
 

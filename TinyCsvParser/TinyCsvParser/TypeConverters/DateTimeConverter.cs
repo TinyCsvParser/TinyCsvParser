@@ -21,7 +21,11 @@ public class DateTimeConverter : NonNullableConverter<DateTime>
 
     protected override bool InternalConvert(ReadOnlySpan<char> value, out DateTime result)
     {
-        if (string.IsNullOrWhiteSpace(_dateTimeFormat)) return DateTime.TryParse(value, _formatProvider, _dateTimeStyles, out result);
+        if (string.IsNullOrWhiteSpace(_dateTimeFormat))
+        {
+            return DateTime.TryParse(value, _formatProvider, _dateTimeStyles, out result);
+        }
+
         return DateTime.TryParseExact(value, _dateTimeFormat.AsSpan(), _formatProvider, _dateTimeStyles, out result);
     }
 }

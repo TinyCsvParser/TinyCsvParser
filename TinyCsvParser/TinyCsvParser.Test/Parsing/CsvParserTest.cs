@@ -2,6 +2,7 @@
 
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TinyCsvParser.Models;
@@ -31,9 +32,9 @@ public class CsvParserTest
     [Test]
     public void ToStringTest()
     {
-        var csvParserOptions = CsvOptions.Default;
-        var csvMapper = new CsvPersonMapping();
-        var csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
+        CsvOptions csvParserOptions = CsvOptions.Default;
+        CsvPersonMapping csvMapper = new();
+        CsvParser<Person> csvParser = new(csvParserOptions, csvMapper);
 
         var result = string.Empty;
         NUnit.Framework.Assert.DoesNotThrow(() => result = csvParser.ToString());
@@ -43,20 +44,20 @@ public class CsvParserTest
     [Test]
     public void SkipHeaderTest()
     {
-        var csvOptions = CsvOptions.Default with
+        CsvOptions csvOptions = CsvOptions.Default with
         {
             SkipHeader = true
         };
 
-        var csvMapper = new CsvPersonMapping();
-        var csvParser = new CsvParser<Person>(csvOptions, csvMapper);
+        CsvPersonMapping csvMapper = new();
+        CsvParser<Person> csvParser = new(csvOptions, csvMapper);
 
-        var stringBuilder = new StringBuilder()
+        StringBuilder stringBuilder = new StringBuilder()
             .AppendLine("FirstName;LastName;BirthDate")
             .AppendLine("Philipp;Wagner;1986/05/12")
             .AppendLine("Max;Mustermann;2014/01/01");
 
-        var result = csvParser
+        List<CsvMappingResult<Person>> result = csvParser
             .ReadFromString(stringBuilder.ToString())
             .ToList();
 
@@ -82,19 +83,19 @@ public class CsvParserTest
     [Test]
     public void DoNotSkipHeaderTest()
     {
-        var csvOptions = CsvOptions.Default with
+        CsvOptions csvOptions = CsvOptions.Default with
         {
             SkipHeader = false
         };
 
-        var csvMapper = new CsvPersonMapping();
-        var csvParser = new CsvParser<Person>(csvOptions, csvMapper);
+        CsvPersonMapping csvMapper = new();
+        CsvParser<Person> csvParser = new(csvOptions, csvMapper);
 
-        var stringBuilder = new StringBuilder()
+        StringBuilder stringBuilder = new StringBuilder()
             .AppendLine("Philipp;Wagner;1986/05/12")
             .AppendLine("Max;Mustermann;2014/01/01");
 
-        var result = csvParser
+        List<CsvMappingResult<Person>> result = csvParser
             .ReadFromString(stringBuilder.ToString())
             .ToList();
 
@@ -131,20 +132,20 @@ public class CsvParserTest
     [Test]
     public void UseColumnNamesTest()
     {
-        var csvOptions = CsvOptions.Default with
+        CsvOptions csvOptions = CsvOptions.Default with
         {
             SkipHeader = false
         };
 
-        var csvMapper = new CsvPersonHeaderMapping();
-        var csvParser = new CsvParser<Person>(csvOptions, csvMapper);
+        CsvPersonHeaderMapping csvMapper = new();
+        CsvParser<Person> csvParser = new(csvOptions, csvMapper);
 
-        var stringBuilder = new StringBuilder()
+        StringBuilder stringBuilder = new StringBuilder()
             .AppendLine("FirstName;LastName;BirthDate")
             .AppendLine("Philipp;Wagner;1986/05/12")
             .AppendLine("Max;Mustermann;2014/01/01");
 
-        var result = csvParser
+        List<CsvMappingResult<Person>> result = csvParser
             .ReadFromString(stringBuilder.ToString())
             .ToList();
 
@@ -170,18 +171,18 @@ public class CsvParserTest
     [Test]
     public void EmptyDataTest()
     {
-        var csvOptions = CsvOptions.Default with
+        CsvOptions csvOptions = CsvOptions.Default with
         {
             SkipHeader = true
         };
 
-        var csvMapper = new CsvPersonMapping();
-        var csvParser = new CsvParser<Person>(csvOptions, csvMapper);
+        CsvPersonMapping csvMapper = new();
+        CsvParser<Person> csvParser = new(csvOptions, csvMapper);
 
-        var stringBuilder = new StringBuilder()
+        StringBuilder stringBuilder = new StringBuilder()
             .AppendLine("FirstName;LastName;BirthDate");
 
-        var result = csvParser
+        List<CsvMappingResult<Person>> result = csvParser
             .ReadFromString(stringBuilder.ToString())
             .ToList();
 

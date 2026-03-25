@@ -27,9 +27,9 @@ namespace TinyCsvParser.Benchmark
 
             var testFilePath = GetTestFilePath();
 
-            using (var fileStream = File.Create(testFilePath))
+            using (FileStream fileStream = File.Create(testFilePath))
             {
-                using (var streamWriter = new StreamWriter(fileStream, Encoding.ASCII))
+                using (StreamWriter streamWriter = new(fileStream, Encoding.ASCII))
                 {
                     streamWriter.WriteLine(csvHeader);
 
@@ -44,9 +44,9 @@ namespace TinyCsvParser.Benchmark
         [Benchmark]
         public void LocalWeatherRead()
         {
-            var csvParserOptions = new CsvOptions(',', '"', '"');
-            var csvMapper = new LocalWeatherDataMapper();
-            var csvParser = new CsvParser<LocalWeatherData>(csvParserOptions, csvMapper);
+            CsvOptions csvParserOptions = new(',', '"', '"');
+            LocalWeatherDataMapper csvMapper = new();
+            CsvParser<LocalWeatherData> csvParser = new(csvParserOptions, csvMapper);
 
             var result = csvParser.ReadFromFile(GetTestFilePath())
                 .Where(x => x.IsSuccess)

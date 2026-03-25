@@ -1,4 +1,6 @@
 ﻿using NUnit.Framework;
+using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using TinyCsvParser.Models;
 using TinyCsvParser.TypeConverters;
@@ -21,19 +23,19 @@ public class CsvParserFactoryTests
     public void CreateDictionary_WithSchemaInstance_ParsesCorrectly()
     {
         // Arrange
-        var schema = new CsvSchema();
+        CsvSchema schema = new();
         schema.Add<int>("Id");
         schema.Add<double>("Price");
 
         // Act
-        var parser = CsvParser.CreateDictionaryParser(_options, schema);
-        var results = parser.ReadFromString(CsvData).ToList();
+        CsvParser<Dictionary<string, object>> parser = CsvParser.CreateDictionaryParser(_options, schema);
+        List<CsvMappingResult<Dictionary<string, object>>> results = parser.ReadFromString(CsvData).ToList();
 
         // Assert
         Assert.That(results, Has.Count.EqualTo(2));
         Assert.That(results[0].IsSuccess, Is.True);
 
-        var firstRow = results[0].Result;
+        Dictionary<string, object> firstRow = results[0].Result;
         Assert.That(firstRow["Id"], Is.EqualTo(1));
         Assert.That(firstRow["Price"], Is.EqualTo(42.5d));
     }
@@ -42,19 +44,19 @@ public class CsvParserFactoryTests
     public void CreateDictionary_WithDelegate_ParsesCorrectly()
     {
         // Act
-        var parser = CsvParser.CreateDictionaryParser(_options, schema =>
+        CsvParser<Dictionary<string, object>> parser = CsvParser.CreateDictionaryParser(_options, schema =>
         {
             schema.Add<int>("Id");
             schema.Add<double>("Price");
         });
 
-        var results = parser.ReadFromString(CsvData).ToList();
+        List<CsvMappingResult<Dictionary<string, object>>> results = parser.ReadFromString(CsvData).ToList();
 
         // Assert
         Assert.That(results, Has.Count.EqualTo(2));
         Assert.That(results[1].IsSuccess, Is.True);
 
-        var secondRow = results[1].Result;
+        Dictionary<string, object> secondRow = results[1].Result;
         Assert.That(secondRow["Id"], Is.EqualTo(2));
         Assert.That(secondRow["Price"], Is.EqualTo(99.9d));
     }
@@ -63,19 +65,19 @@ public class CsvParserFactoryTests
     public void CreateDictionary_WithExplicitConverter_ParsesCorrectly()
     {
         // Arrange
-        var schema = new CsvSchema();
+        CsvSchema schema = new();
         schema.Add("Id", new Int32Converter());
         schema.Add("Price", new DoubleConverter());
 
         // Act
-        var parser = CsvParser.CreateDictionaryParser(_options, schema);
-        var results = parser.ReadFromString(CsvData).ToList();
+        CsvParser<Dictionary<string, object>> parser = CsvParser.CreateDictionaryParser(_options, schema);
+        List<CsvMappingResult<Dictionary<string, object>>> results = parser.ReadFromString(CsvData).ToList();
 
         // Assert
         Assert.That(results, Has.Count.EqualTo(2));
         Assert.That(results[0].IsSuccess, Is.True);
 
-        var firstRow = results[0].Result;
+        Dictionary<string, object> firstRow = results[0].Result;
         Assert.That(firstRow["Id"], Is.EqualTo(1));
         Assert.That(firstRow["Price"], Is.EqualTo(42.5d));
     }
@@ -84,13 +86,13 @@ public class CsvParserFactoryTests
     public void CreateExpando_WithSchemaInstance_ParsesCorrectly()
     {
         // Arrange
-        var schema = new CsvSchema();
+        CsvSchema schema = new();
         schema.Add<int>("Id");
         schema.Add<double>("Price");
 
         // Act
-        var parser = CsvParser.CreateExpandoParser(_options, schema);
-        var results = parser.ReadFromString(CsvData).ToList();
+        CsvParser<ExpandoObject> parser = CsvParser.CreateExpandoParser(_options, schema);
+        List<CsvMappingResult<ExpandoObject>> results = parser.ReadFromString(CsvData).ToList();
 
         // Assert
         Assert.That(results, Has.Count.EqualTo(2));
@@ -105,13 +107,13 @@ public class CsvParserFactoryTests
     public void CreateExpando_WithDelegate_ParsesCorrectly()
     {
         // Act
-        var parser = CsvParser.CreateExpandoParser(_options, schema =>
+        CsvParser<ExpandoObject> parser = CsvParser.CreateExpandoParser(_options, schema =>
         {
             schema.Add<int>("Id");
             schema.Add<double>("Price");
         });
 
-        var results = parser.ReadFromString(CsvData).ToList();
+        List<CsvMappingResult<ExpandoObject>> results = parser.ReadFromString(CsvData).ToList();
 
         // Assert
         Assert.That(results, Has.Count.EqualTo(2));
@@ -128,17 +130,17 @@ public class CsvParserFactoryTests
         // Arrange
         string csvWithExtraCol = "Id;Name\n1;John Doe";
 
-        var parser = CsvParser.CreateDictionaryParser(_options, schema =>
+        CsvParser<Dictionary<string, object>> parser = CsvParser.CreateDictionaryParser(_options, schema =>
         {
             schema.Add<int>("Id");
         });
 
         // Act
-        var results = parser.ReadFromString(csvWithExtraCol).ToList();
+        List<CsvMappingResult<Dictionary<string, object>>> results = parser.ReadFromString(csvWithExtraCol).ToList();
 
         // Assert
         Assert.That(results[0].IsSuccess, Is.True);
-        var row = results[0].Result;
+        Dictionary<string, object> row = results[0].Result;
 
         Assert.That(row["Id"], Is.TypeOf<int>());
         Assert.That(row["Id"], Is.EqualTo(1));
