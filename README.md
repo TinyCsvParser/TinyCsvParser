@@ -148,7 +148,13 @@ CsvParser<Person> parser = new(options, mapping);
 
 ### 3.2 Execute the Parsing ###
 
-The parser supports reading from strings, streams, or files. Crucially, the parsing process uses deferred execution (lazy loading). This means the file is not loaded into memory all at once; it is read line-by-line as you iterate through the results.
+You can read the CSV data synchronously or asynchronously. TinyCsvParser provides full support for `IAsyncEnumerable` for maximum 
+performance with asynchronous data streams. Crucially, the parsing process uses deferred execution (lazy loading). The file is 
+read and parsed one record at a time as you iterate.
+
+**Synchronous Reading**
+
+The parser supports reading from strings, streams, or files. 
 
 ```csharp
 // Calling ReadFromFile does NOT start the parsing yet.
@@ -163,6 +169,25 @@ foreach (CsvMappingResult<Person> result in results)
     {
         Person person = result.Result;
         Console.WriteLine($"Parsed: {person.Name}");
+    }
+}
+```
+
+**Asynchronous Reading**
+
+For modern applications, `ReadFromFileAsync` can be used to minimize buffer copying and memory pressure.
+
+```csharp
+// Returns an IAsyncEnumerable
+var resultsAsync = parser.ReadFromFileAsync("data.csv");
+
+// Iterate asynchronously using await foreach
+await foreach (var result in resultsAsync.ConfigureAwait(false))
+{
+    if (result.IsSuccess)
+    {
+        Person person = result.Result;
+        Console.WriteLine($"Async Parsed: {person.Name}");
     }
 }
 ```
@@ -263,8 +288,8 @@ you care about.
 
 ## 7. Advanced Usage: Accessing CsvRow ##
 
-For complex scenarios, `MapUsing` provides direct access to the `ref struct CsvRow`. This is useful for mapping multiple columns 
-into a single property or performing manual validation.
+For complex logic, `MapUsing` provides direct access to the `ref struct CsvRow`. To ensure errors are handled 
+properly, the delegate returns a `MapUsingResult`.
 
 ```csharp
 public class AdvancedMapping : CsvMapping<Person>
@@ -273,17 +298,16 @@ public class AdvancedMapping : CsvMapping<Person>
     {
         MapUsing((Person entity, ref CsvRow row) =>
         {
-            // row.Count checks the number of columns found
-            if (row.Count < 2) return false;
+            if (row.Count < 2) 
+                return MapUsingResult.Failure("Too few columns.");
 
-            // row.GetSpan() returns ReadOnlySpan<char> (Zero-Allocation)
-            if (!int.TryParse(row.GetSpan(0), out int id)) return false;
+            if (!int.TryParse(row.GetSpan(0), out int id)) 
+                return MapUsingResult.Failure($"Invalid ID: {row.GetString(0)}");
+
             entity.Id = id;
-            
-            // row.GetString() handles unescaping of quotes automatically
             entity.Name = row.GetString(1);
 
-            return true;
+            return MapUsingResult.Success();
         });
     }
 }
@@ -327,10 +351,6 @@ public class YesNoConverter : NonNullableConverter<bool>
 
 In Version 2.x, custom logic used a `string[]`. In Version 3.0, it uses `ref CsvRow`. This allows the library to work 
 with `ReadOnlySpan<char>`, significantly reducing memory allocations.
-
-### 9.2 Result Pattern ###
-
-The addition of the Comment state means that Match and Switch now require a third functional argument. Use these overloads to handle metadata rows found in the CSV.
 
 ### 9.3 Error Metadata ###
 
