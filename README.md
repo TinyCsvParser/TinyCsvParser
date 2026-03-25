@@ -148,7 +148,6 @@ CsvParser<Person> parser = new(options, mapping);
 
 ### 3.2 Execute the Parsing ###
 
-
 You can read the CSV data synchronously or asynchronously. TinyCsvParser provides full support for `IAsyncEnumerable` for maximum 
 performance with asynchronous data streams. Crucially, the parsing process uses deferred execution (lazy loading). The file is 
 read and parsed one record at a time as you iterate.
@@ -352,10 +351,6 @@ public class YesNoConverter : NonNullableConverter<bool>
 
 In Version 2.x, custom logic used a `string[]`. In Version 3.0, it uses `ref CsvRow`. This allows the library to work 
 with `ReadOnlySpan<char>`, significantly reducing memory allocations.
-
-### 9.2 Result Pattern ###
-
-The addition of the Comment state means that Match and Switch now require a third functional argument. Use these overloads to handle metadata rows found in the CSV.
 
 ### 9.3 Error Metadata ###
 
