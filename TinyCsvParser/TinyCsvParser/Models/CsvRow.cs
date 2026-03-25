@@ -1,49 +1,45 @@
-﻿// Licensed under the MIT license. See LICENSE file in the project root for full license information.
-
-using System;
-using System.Runtime.CompilerServices;
-
-namespace TinyCsvParser.Models;
+﻿using System;
+using TinyCsvParser.Models;
 
 public ref struct CsvRow
 {
     private readonly ReadOnlySpan<char> _line;
-    private readonly ReadOnlySpan<long> _packedInfo;
+    private readonly ReadOnlySpan<CsvFieldRange> _ranges;
     private readonly CsvOptions _options;
-
-    private const long IsQuotedMask = 1L << 62;
-    private const long NeedsUnescapeMask = 1L << 63;
 
     public int RecordIndex { get; }
     public int LineNumber { get; }
 
-    public CsvRow(ReadOnlySpan<char> line, ReadOnlySpan<long> packedInfo, CsvOptions options, int recordIndex, int lineNumber)
+    public CsvRow(ReadOnlySpan<char> line, ReadOnlySpan<CsvFieldRange> ranges, CsvOptions options, int recordIndex, int lineNumber)
     {
         _line = line;
-        _packedInfo = packedInfo;
+        _ranges = ranges;
         _options = options;
         RecordIndex = recordIndex;
         LineNumber = lineNumber;
     }
 
-    public int Count => _packedInfo.Length;
+    public int Count => _ranges.Length;
 
     public string GetString(int index)
     {
-        if (index >= _packedInfo.Length) return string.Empty;
+        if (index >= _ranges.Length)
+        {
+            return string.Empty;
+        }
 
-        Unpack(_packedInfo[index], out int start, out int length, out bool isQuoted, out bool needsUnescape);
-        var raw = _line.Slice(start, length);
+        CsvFieldRange range = _ranges[index];
+        ReadOnlySpan<char> raw = _line.Slice(range.Start, range.Length);
 
-        if (!isQuoted)
+        if (!range.IsQuoted)
         {
             return raw.ToString();
         }
 
-        if (!needsUnescape)
+        if (!range.NeedsUnescape)
         {
-            if (raw.Length < 2) return string.Empty;
-            return raw.Slice(1, raw.Length - 2).ToString();
+            // Entferne Quotes (Start und Ende)
+            return raw.Length < 2 ? string.Empty : raw[1..^1].ToString();
         }
 
         return UnescapeAndCreateString(raw);
@@ -51,21 +47,28 @@ public ref struct CsvRow
 
     public ReadOnlySpan<char> GetSpan(int index)
     {
-        if (index >= _packedInfo.Length) return ReadOnlySpan<char>.Empty;
-        Unpack(_packedInfo[index], out int start, out int length, out bool isQuoted, out _);
-
-        var raw = _line.Slice(start, length);
-        if (isQuoted && raw.Length >= 2)
+        if (index >= _ranges.Length)
         {
-            return raw.Slice(1, raw.Length - 2);
+            return ReadOnlySpan<char>.Empty;
+        }
+
+        CsvFieldRange range = _ranges[index];
+        ReadOnlySpan<char> raw = _line.Slice(range.Start, range.Length);
+
+
+        if (range.IsQuoted && raw.Length >= 2)
+        {
+            return raw[1..^1];
         }
         return raw;
     }
 
     private string UnescapeAndCreateString(ReadOnlySpan<char> rawQuoted)
     {
-        var content = rawQuoted.Slice(1, rawQuoted.Length - 2);
+        // Content within the quotes, excluding the surrounding quotes
+        ReadOnlySpan<char> content = rawQuoted[1..^1];
 
+        // Use Stackalloc to reduce GC Pressure
         Span<char> buffer = content.Length <= 512
             ? stackalloc char[content.Length]
             : new char[content.Length];
@@ -83,6 +86,7 @@ public ref struct CsvRow
             {
                 if (escape == quote)
                 {
+                    // Double-Quote Case ("")
                     if (srcIdx + 1 < content.Length && content[srcIdx + 1] == quote)
                     {
                         buffer[destIdx++] = quote;
@@ -92,6 +96,7 @@ public ref struct CsvRow
                 }
                 else
                 {
+                    // Standard Escape Case (\")
                     if (srcIdx + 1 < content.Length)
                     {
                         buffer[destIdx++] = content[srcIdx + 1];
@@ -107,23 +112,4 @@ public ref struct CsvRow
 
         return new string(buffer[..destIdx]);
     }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static void Unpack(long packed, out int start, out int length, out bool isQuoted, out bool needsUnescape)
-    {
-        isQuoted = (packed & IsQuotedMask) != 0;
-        needsUnescape = (packed & NeedsUnescapeMask) != 0;
-        start = (int)((packed >> 32) & 0x3FFFFFFF);
-        length = (int)(packed & 0xFFFFFFFF);
-    }
-
-    public static long Pack(int start, int length, bool isQuoted, bool needsUnescape)
-    {
-        long info = ((long)start) << 32 | (uint)length;
-        if (isQuoted) info |= IsQuotedMask;
-        if (needsUnescape) info |= NeedsUnescapeMask;
-        return info;
-    }
 }
-
-

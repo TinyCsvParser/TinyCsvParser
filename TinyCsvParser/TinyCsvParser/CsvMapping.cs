@@ -1,6 +1,4 @@
-﻿// Licensed under the MIT license. See LICENSE file in the project root for full license information.
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -10,22 +8,12 @@ using TinyCsvParser.TypeConverters;
 
 namespace TinyCsvParser;
 
-/// <summary>
-/// Delegate for custom mapping logic. If set, this function will be called along with property mappings.
-/// </summary>
-/// <typeparam name="TEntity"></typeparam>
-/// <returns></returns>
-public delegate bool MapUsingFunc<in TEntity>(TEntity entity, ref CsvRow row);
-
-/// <summary>
-/// Base class for CSV mapping definitions.
-/// </summary>
 public abstract class CsvMapping<TEntity> : ICsvMapping<TEntity>, IHeaderBinder
     where TEntity : class, new()
 {
     private readonly ITypeConverterProvider _typeConverterProvider;
     private readonly List<PropertyMapping> _propertyMappings = [];
-
+    
     private MapUsingFunc<TEntity>? _mapUsingFunc;
 
     protected CsvMapping() : this(new TypeConverterProvider())
@@ -39,134 +27,105 @@ public abstract class CsvMapping<TEntity> : ICsvMapping<TEntity>, IHeaderBinder
 
     public virtual bool NeedsHeaderResolution => _propertyMappings.Any(m => m.ColumnIndex == -1);
 
-    public virtual void BindHeaders(ref CsvRow headerRow)
+    public virtual CsvHeaderResolution BindHeaders(ref CsvRow headerRow)
     {
-        var headerMap = new Dictionary<string, int>(headerRow.Count, StringComparer.OrdinalIgnoreCase);
+        Dictionary<string, int> headerMap = new(headerRow.Count, StringComparer.OrdinalIgnoreCase);
+
         for (int i = 0; i < headerRow.Count; i++)
         {
             headerMap[headerRow.GetString(i)] = i;
         }
 
-        foreach (var mapping in _propertyMappings)
+        int[] resolvedIndices = new int[_propertyMappings.Count];
+
+        for (int i = 0; i < _propertyMappings.Count; i++)
         {
+            PropertyMapping mapping = _propertyMappings[i];
+
             if (mapping is { ColumnIndex: -1, ColumnName: not null })
             {
                 if (headerMap.TryGetValue(mapping.ColumnName, out int index))
                 {
-                    mapping.ColumnIndex = index;
+                    resolvedIndices[i] = index;
                 }
                 else
                 {
-                    throw new InvalidOperationException(
-                        $"The column '{mapping.ColumnName}' was not found in the CSV header.");
+                    throw new InvalidOperationException($"Column '{mapping.ColumnName}' not found in header.");
                 }
             }
+            else
+            {
+                resolvedIndices[i] = mapping.ColumnIndex;
+            }
         }
+
+        return new CsvHeaderResolution(resolvedIndices);
     }
 
-    public CsvMappingResult<TEntity> Map(ref CsvRow row)
+    public CsvMappingResult<TEntity> Map(ref CsvRow row, CsvHeaderResolution? headerResolution = null)
     {
-        if (NeedsHeaderResolution)
+        if (NeedsHeaderResolution && !headerResolution.HasValue)
         {
-            throw new InvalidOperationException("Mapping contains unresolved header names. Call BindHeaders() first.");
+            throw new InvalidOperationException("Unresolved headers. Call BindHeaders first.");
         }
 
-        var entity = new TEntity();
+        TEntity entity = new();
 
-        foreach (var mapping in _propertyMappings)
+        int[]? indices = headerResolution?.ResolvedIndices;
+
+        for (int i = 0; i < _propertyMappings.Count; i++)
         {
-            if (mapping.ColumnIndex < 0 || mapping.ColumnIndex >= row.Count)
-            {
-                var error = new CsvMappingError
-                {
-                    ColumnIndex = mapping.ColumnIndex,
-                    Value = "Index Out Of Range",
-                    RecordIndex = row.RecordIndex,
-                    LineNumber = row.LineNumber
-                };
+            PropertyMapping mapping = _propertyMappings[i];
 
-                return new CsvMappingResult<TEntity>(error, row.RecordIndex, row.LineNumber);
+            int actualIndex = indices != null ? indices[i] : mapping.ColumnIndex;
+
+            if (actualIndex < 0 || actualIndex >= row.Count)
+            {
+                return CreateError(row, actualIndex, "Index Out Of Range");
             }
 
-            if (!mapping.TryMap(ref row, entity))
+            if (!mapping.TryMap(ref row, entity, actualIndex))
             {
-                var error = new CsvMappingError
-                {
-                    ColumnIndex = mapping.ColumnIndex,
-                    Value = $"Conversion failed: {row.GetString(mapping.ColumnIndex)}",
-                    RecordIndex = row.RecordIndex,
-                    LineNumber = row.LineNumber
-                };
-
-                return new CsvMappingResult<TEntity>(error, row.RecordIndex, row.LineNumber);
+                return CreateError(row, actualIndex, $"Conversion failed: {row.GetString(actualIndex)}");
             }
         }
 
         if (_mapUsingFunc != null)
         {
-            if (!_mapUsingFunc(entity, ref row))
-            {
-                var error = new CsvMappingError
-                {
-                    ColumnIndex = -1,
-                    Value = "Custom MapUsing validation/mapping failed.",
-                    RecordIndex = row.RecordIndex,
-                    LineNumber = row.LineNumber
-                };
+            MapUsingResult mapResult = _mapUsingFunc(entity, ref row);
 
-                return new CsvMappingResult<TEntity>(error, row.RecordIndex, row.LineNumber);
-            }
+            int recordIndex = row.RecordIndex;
+            int lineNumber = row.LineNumber;
+
+            return mapResult.Match(
+                onSuccess: () => new CsvMappingResult<TEntity>(entity, recordIndex, lineNumber),
+                onFailure: (errorMsg) => new CsvMappingResult<TEntity>(
+                    new CsvMappingError(recordIndex, lineNumber, -1, errorMsg),
+                    recordIndex, lineNumber)
+            );
         }
 
         return new CsvMappingResult<TEntity>(entity, row.RecordIndex, row.LineNumber);
     }
 
-    public void MapUsing(MapUsingFunc<TEntity> mapUsingFunc)
-    {
-        _mapUsingFunc = mapUsingFunc;
-    }
+    private CsvMappingResult<TEntity> CreateError(CsvRow row, int col, string msg) =>
+        new(new CsvMappingError(row.RecordIndex, row.LineNumber, col, msg), row.RecordIndex, row.LineNumber);
 
-    /// <summary>
-    /// Maps a property by its column index using the default converter.
-    /// </summary>
-    public void MapProperty<TProperty>(int columnIndex, Expression<Func<TEntity, TProperty>> property)
-    {
-        MapProperty(columnIndex, property, _typeConverterProvider.Resolve<TProperty>());
-    }
+    public void MapUsing(MapUsingFunc<TEntity> mapUsingFunc) => _mapUsingFunc = mapUsingFunc;
 
-    /// <summary>
-    /// Maps a property by its column index using a specific converter.
-    /// </summary>
-    public void MapProperty<TProperty>(int columnIndex, Expression<Func<TEntity, TProperty>> property,
-        ITypeConverter<TProperty> converter)
-    {
-        var setter = CreateSetter(property);
-        _propertyMappings.Add(new PropertyMapping<TProperty>(columnIndex, null, converter, setter));
-    }
+    public void MapProperty<TProperty>(int columnIndex, Expression<Func<TEntity, TProperty>> property, ITypeConverter<TProperty>? converter = null) =>
+        _propertyMappings.Add(new PropertyMapping<TProperty>(columnIndex, null, converter ?? _typeConverterProvider.Resolve<TProperty>(), CreateSetter(property)));
 
-    /// <summary>
-    /// Maps a property by its header column name using the default converter.
-    /// </summary>
-    public void MapProperty<TProperty>(string columnName, Expression<Func<TEntity, TProperty>> property)
-    {
-        MapProperty(columnName, property, _typeConverterProvider.Resolve<TProperty>());
-    }
-
-    /// <summary>
-    /// Maps a property by its header column name using a specific converter.
-    /// </summary>
-    public void MapProperty<TProperty>(string columnName, Expression<Func<TEntity, TProperty>> property,
-        ITypeConverter<TProperty> converter)
-    {
-        var setter = CreateSetter(property);
-        _propertyMappings.Add(new PropertyMapping<TProperty>(-1, columnName, converter, setter));
-    }
+    public void MapProperty<TProperty>(string columnName, Expression<Func<TEntity, TProperty>> property, ITypeConverter<TProperty>? converter = null) =>
+        _propertyMappings.Add(new PropertyMapping<TProperty>(-1, columnName, converter ?? _typeConverterProvider.Resolve<TProperty>(), CreateSetter(property)));
 
     private abstract class PropertyMapping
     {
         public int ColumnIndex;
+
         public string? ColumnName;
-        public abstract bool TryMap(ref CsvRow row, TEntity entity);
+
+        public abstract bool TryMap(ref CsvRow row, TEntity entity, int actualIndex);
     }
 
     private class PropertyMapping<TProperty> : PropertyMapping
@@ -174,8 +133,7 @@ public abstract class CsvMapping<TEntity> : ICsvMapping<TEntity>, IHeaderBinder
         private readonly ITypeConverter<TProperty> _converter;
         private readonly Action<TEntity, TProperty> _setter;
 
-        public PropertyMapping(int index, string? name, ITypeConverter<TProperty> converter,
-            Action<TEntity, TProperty> setter)
+        public PropertyMapping(int index, string? name, ITypeConverter<TProperty> converter, Action<TEntity, TProperty> setter)
         {
             ColumnIndex = index;
             ColumnName = name;
@@ -183,15 +141,14 @@ public abstract class CsvMapping<TEntity> : ICsvMapping<TEntity>, IHeaderBinder
             _setter = setter;
         }
 
-        public override bool TryMap(ref CsvRow row, TEntity entity)
+        public override bool TryMap(ref CsvRow row, TEntity entity, int actualIndex)
         {
-            var span = row.GetSpan(ColumnIndex);
-            if (_converter.TryConvert(span, out TProperty? value))
+            if (_converter.TryConvert(row.GetSpan(actualIndex), out TProperty? value))
             {
                 _setter(entity, value!);
+
                 return true;
             }
-
             return false;
         }
     }
@@ -199,7 +156,7 @@ public abstract class CsvMapping<TEntity> : ICsvMapping<TEntity>, IHeaderBinder
     private static Action<TEntity, TProperty> CreateSetter<TProperty>(Expression<Func<TEntity, TProperty>> property)
     {
         ParameterExpression valueParam = Expression.Parameter(typeof(TProperty), "value");
-        BinaryExpression assign = Expression.Assign(property.Body, valueParam);
-        return Expression.Lambda<Action<TEntity, TProperty>>(assign, property.Parameters[0], valueParam).Compile();
+
+        return Expression.Lambda<Action<TEntity, TProperty>>(Expression.Assign(property.Body, valueParam), property.Parameters[0], valueParam).Compile();
     }
 }

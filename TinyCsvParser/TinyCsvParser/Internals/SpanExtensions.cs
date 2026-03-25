@@ -10,7 +10,10 @@ internal static class SpanExtensions
     {
         foreach (var c in span)
         {
-            if (!char.IsWhiteSpace(c)) return false;
+            if (!char.IsWhiteSpace(c))
+            {
+                return false;
+            }
         }
         return true;
     }

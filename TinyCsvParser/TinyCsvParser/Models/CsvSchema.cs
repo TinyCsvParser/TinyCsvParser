@@ -23,7 +23,7 @@ public class CsvSchema
 
     public void Add<T>(string columnName)
     {
-        var converter = _typeConverterProvider.Resolve<T>();
+        ITypeConverter<T> converter = _typeConverterProvider.Resolve<T>();
         Add(columnName, converter);
     }
 

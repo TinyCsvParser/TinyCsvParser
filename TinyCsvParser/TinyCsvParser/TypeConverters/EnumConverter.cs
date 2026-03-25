@@ -20,7 +20,7 @@ public class EnumConverter<TEnum> : NonNullableConverter<TEnum> where TEnum : st
         _comparison = comparison;
 
         var names = Enum.GetNames(typeof(TEnum));
-        var values = (TEnum[])Enum.GetValuesAsUnderlyingType(typeof(TEnum));
+        TEnum[] values = (TEnum[])Enum.GetValuesAsUnderlyingType(typeof(TEnum));
 
         _enumMap = new (string, TEnum)[names.Length];
 
@@ -35,7 +35,7 @@ public class EnumConverter<TEnum> : NonNullableConverter<TEnum> where TEnum : st
         _comparison = comparison;
         _enumMap = new (string, TEnum)[customMap.Count];
         int i = 0;
-        foreach (var kvp in customMap)
+        foreach (KeyValuePair<string, TEnum> kvp in customMap)
         {
             _enumMap[i++] = (kvp.Key, kvp.Value);
         }

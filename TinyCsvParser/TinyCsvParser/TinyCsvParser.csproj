@@ -23,4 +23,7 @@
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 		<IsAotCompatible>true</IsAotCompatible>
 	</PropertyGroup>
+	<ItemGroup>
+	  <PackageReference Include="System.IO.Pipelines" />
+	</ItemGroup>
 </Project>

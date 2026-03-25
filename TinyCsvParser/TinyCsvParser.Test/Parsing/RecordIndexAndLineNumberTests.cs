@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using System.Collections.Generic;
 using System.Linq;
 using TinyCsvParser.Models;
 
@@ -7,7 +8,6 @@ namespace TinyCsvParser.Test.Parsing;
 public class NoteEntity
 {
     public int Id { get; set; }
-
     public string Text { get; set; } = string.Empty;
 }
 
@@ -17,17 +17,20 @@ public sealed class NoteMapping : CsvMapping<NoteEntity>
     {
         MapUsing((NoteEntity entity, ref CsvRow row) =>
         {
-            if (row.Count < 2) return false;
+            if (row.Count < 2)
+            {
+                return MapUsingResult.Failure($"Not enough columns. Expected at least 2, but got {row.Count}.");
+            }
 
             if (!int.TryParse(row.GetSpan(0), out int id))
             {
-                return false;
+                return MapUsingResult.Failure($"Failed to parse ID '{row.GetString(0)}' to an integer.");
             }
 
             entity.Id = id;
             entity.Text = row.GetString(1);
 
-            return true;
+            return MapUsingResult.Success();
         });
     }
 }
@@ -37,7 +40,7 @@ public class LineAndRecordIndexTests
 {
     private CsvParser<NoteEntity> CreateParser(bool skipHeader)
     {
-        var options = new CsvOptions(
+        CsvOptions options = new(
             Delimiter: ';',
             QuoteChar: '"',
             EscapeChar: '"',
@@ -56,14 +59,14 @@ public class LineAndRecordIndexTests
             "2;Second Note\n" +
             "3;Third Note";
 
-        var parser = CreateParser(skipHeader: false);
+        CsvParser<NoteEntity> parser = CreateParser(skipHeader: false);
 
         // Act
-        var results = parser.ReadFromString(csvData).ToList();
+        List<CsvMappingResult<NoteEntity>> results = parser.ReadFromString(csvData).ToList();
 
         // Assert
         Assert.That(results, Has.Count.EqualTo(3));
-        
+
         Assert.Multiple(() =>
         {
             // Record Index is 0-based, line-number is 1-based
@@ -82,20 +85,18 @@ public class LineAndRecordIndexTests
     public void Parser_QuotedMultilineString_LineNumberJumpsCorrectly()
     {
         // Arrange
-        // Line 1: ID 1, Text in Line 1 and 2
-        // Line 3: ID 2, Normal text
         string csvData =
             "1;\"Multi\nLine\"\n" +
             "2;Single Line";
 
-        var parser = CreateParser(skipHeader: false);
+        CsvParser<NoteEntity> parser = CreateParser(skipHeader: false);
 
         // Act
-        var results = parser.ReadFromString(csvData).ToList();
+        List<CsvMappingResult<NoteEntity>> results = parser.ReadFromString(csvData).ToList();
 
         // Assert
         Assert.That(results, Has.Count.EqualTo(2));
-        
+
         Assert.Multiple(() =>
         {
             Assert.That(results[0].RecordIndex, Is.EqualTo(0));
@@ -116,10 +117,10 @@ public class LineAndRecordIndexTests
             "invalid_id;Error here\n" +
             "3;Valid again";
 
-        var parser = CreateParser(skipHeader: false);
+        CsvParser<NoteEntity> parser = CreateParser(skipHeader: false);
 
         // Act
-        var results = parser.ReadFromString(csvData).ToList();
+        List<CsvMappingResult<NoteEntity>> results = parser.ReadFromString(csvData).ToList();
 
         // Assert
         Assert.That(results, Has.Count.EqualTo(3));
@@ -127,20 +128,21 @@ public class LineAndRecordIndexTests
         Assert.That(results[0].IsSuccess, Is.True);
         Assert.That(results[2].IsSuccess, Is.True);
 
-        var errorResult = results[1];
+        CsvMappingResult<NoteEntity> errorResult = results[1];
 
         Assert.That(errorResult.IsSuccess, Is.False);
-        
+
         Assert.Multiple(() =>
         {
             Assert.That(errorResult.RecordIndex, Is.EqualTo(1));
             Assert.That(errorResult.LineNumber, Is.EqualTo(2));
 
-            var error = errorResult.Error;
+            CsvMappingError error = errorResult.Error;
 
             Assert.That(error.RecordIndex, Is.EqualTo(1));
             Assert.That(error.LineNumber, Is.EqualTo(2));
-            Assert.That(error.Value, Contains.Substring("Custom MapUsing validation/mapping failed."));
+            // Assert auf die spezifische Fehlermeldung aus dem MapUsingResult
+            Assert.That(error.Value, Contains.Substring("Failed to parse ID 'invalid_id'"));
         });
     }
 
@@ -153,10 +155,10 @@ public class LineAndRecordIndexTests
             "1;First Note\n" +
             "2;Second Note";
 
-        var parser = CreateParser(skipHeader: true);
+        CsvParser<NoteEntity> parser = CreateParser(skipHeader: true);
 
         // Act
-        var results = parser.ReadFromString(csvData).ToList();
+        List<CsvMappingResult<NoteEntity>> results = parser.ReadFromString(csvData).ToList();
 
         // Assert
         Assert.That(results, Has.Count.EqualTo(2));

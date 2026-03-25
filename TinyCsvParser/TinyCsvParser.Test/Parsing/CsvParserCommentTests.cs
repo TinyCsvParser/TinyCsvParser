@@ -2,6 +2,7 @@
 
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using TinyCsvParser.Models;
 
@@ -27,7 +28,7 @@ public class CsvParserCommentTests
 {
     private CsvParser<CommentTestEntity> CreateParser(bool skipHeader, char? commentChar)
     {
-        var options = new CsvOptions(
+        CsvOptions options = new(
             Delimiter: ';',
             QuoteChar: '"',
             EscapeChar: '"',
@@ -51,10 +52,10 @@ public class CsvParserCommentTests
             "2;Second\n" +                       // Line 5: Data
             "# End of file";                     // Line 6: Comment
 
-        var parser = CreateParser(skipHeader: true, commentChar: '#');
+        CsvParser<CommentTestEntity> parser = CreateParser(skipHeader: true, commentChar: '#');
 
         // Act
-        var results = parser.ReadFromString(csvData).ToList();
+        List<CsvMappingResult<CommentTestEntity>> results = parser.ReadFromString(csvData).ToList();
 
         // Assert
         Assert.That(results, Has.Count.EqualTo(5)); // 3 Comments + 2 Data Rows (Header skipped)
@@ -97,7 +98,7 @@ public class CsvParserCommentTests
     public void CsvMappingResult_ThreeParameterMatch_WorksCorrectlyForComments()
     {
         // Arrange
-        var result = new CsvMappingResult<CommentTestEntity>("# My Comment", -1, 10);
+        CsvMappingResult<CommentTestEntity> result = new("# My Comment", -1, 10);
 
         // Act
         string matchedType = result.Match(
@@ -114,7 +115,7 @@ public class CsvParserCommentTests
     public void CsvMappingResult_Properties_ThrowOnWrongState()
     {
         // Arrange
-        var result = new CsvMappingResult<CommentTestEntity>("# My Comment", -1, 10);
+        CsvMappingResult<CommentTestEntity> result = new("# My Comment", -1, 10);
 
         // Act & Assert
         Assert.Throws<InvalidOperationException>(() => _ = result.Result);

@@ -12,7 +12,11 @@ public class GuidConverter : NonNullableConverter<Guid>
 
     protected override bool InternalConvert(ReadOnlySpan<char> value, out Guid result)
     {
-        if (string.IsNullOrEmpty(_format)) return Guid.TryParse(value, out result);
+        if (string.IsNullOrEmpty(_format))
+        {
+            return Guid.TryParse(value, out result);
+        }
+
         return Guid.TryParseExact(value, _format.AsSpan(), out result);
     }
 }

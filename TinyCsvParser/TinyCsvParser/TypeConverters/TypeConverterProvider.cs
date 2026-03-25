@@ -7,7 +7,7 @@ namespace TinyCsvParser.TypeConverters;
 
 public class TypeConverterProvider : ITypeConverterProvider
 {
-    private readonly Dictionary<Type, ITypeConverter> _converters = new Dictionary<Type, ITypeConverter>();
+    private readonly Dictionary<Type, ITypeConverter> _converters = new();
 
     public TypeConverterProvider()
     {
@@ -58,9 +58,9 @@ public class TypeConverterProvider : ITypeConverterProvider
 
     public ITypeConverter<T> Resolve<T>()
     {
-        var type = typeof(T);
+        Type type = typeof(T);
 
-        if (_converters.TryGetValue(type, out var converter))
+        if (_converters.TryGetValue(type, out ITypeConverter? converter))
         {
             return (ITypeConverter<T>)converter;
         }

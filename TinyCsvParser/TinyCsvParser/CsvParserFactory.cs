@@ -16,14 +16,14 @@ public static class CsvParser
 
     public static CsvParser<ExpandoObject> CreateExpandoParser(CsvOptions options, Action<CsvSchema> configureSchema)
     {
-        var schema = new CsvSchema();
+        CsvSchema schema = new();
         configureSchema(schema);
         return new CsvParser<ExpandoObject>(options, new ExpandoMapping(schema));
     }
 
     public static CsvParser<ExpandoObject> CreateExpandoParser(CsvOptions options, ITypeConverterProvider provider, Action<CsvSchema> configureSchema)
     {
-        var schema = new CsvSchema(provider);
+        CsvSchema schema = new(provider);
         configureSchema(schema);
         return new CsvParser<ExpandoObject>(options, new ExpandoMapping(schema));
     }
@@ -35,14 +35,14 @@ public static class CsvParser
 
     public static CsvParser<Dictionary<string, object?>> CreateDictionaryParser(CsvOptions options, Action<CsvSchema> configureSchema)
     {
-        var schema = new CsvSchema();
+        CsvSchema schema = new();
         configureSchema(schema);
         return new CsvParser<Dictionary<string, object?>>(options, new DictionaryMapping(schema));
     }
 
     public static CsvParser<Dictionary<string, object?>> CreateDictionaryParser(CsvOptions options, ITypeConverterProvider provider, Action<CsvSchema> configureSchema)
     {
-        var schema = new CsvSchema(provider);
+        CsvSchema schema = new(provider);
         configureSchema(schema);
         return new CsvParser<Dictionary<string, object?>>(options, new DictionaryMapping(schema));
     }

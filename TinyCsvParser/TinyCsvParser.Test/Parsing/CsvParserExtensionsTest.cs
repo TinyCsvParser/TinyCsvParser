@@ -2,6 +2,7 @@
 
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -32,11 +33,11 @@ public class CsvParserExtensionsTest
     [Test]
     public void ReadFromFileTest()
     {
-        var csvParserOptions = CsvOptions.Default with { SkipHeader = true };
-        var csvMapper = new CsvPersonMapping();
-        var csvParser = new CsvParser<Person>(csvParserOptions, csvMapper);
+        CsvOptions csvParserOptions = CsvOptions.Default with { SkipHeader = true };
+        CsvPersonMapping csvMapper = new();
+        CsvParser<Person> csvParser = new(csvParserOptions, csvMapper);
 
-        var stringBuilder = new StringBuilder()
+        StringBuilder stringBuilder = new StringBuilder()
             .AppendLine("FirstName;LastName;BirthDate")
             .AppendLine("     Philipp;Wagner;1986/05/12       ")
             .AppendLine("Max;Mustermann;2014/01/01");
@@ -45,7 +46,7 @@ public class CsvParserExtensionsTest
 
         File.WriteAllText(filePath, stringBuilder.ToString(), Encoding.UTF8);
 
-        var result = csvParser
+        List<CsvMappingResult<Person>> result = csvParser
             .ReadFromFile(filePath)
             .ToList();
 
