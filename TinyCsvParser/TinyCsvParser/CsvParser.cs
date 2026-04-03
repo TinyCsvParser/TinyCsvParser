@@ -71,7 +71,7 @@ public class CsvParser<TEntity> where TEntity : class, new()
     {
         PipeReader reader = PipeReader.Create(stream);
 
-        CsvFieldRange[] rangeBuffer = new CsvFieldRange[256];
+        CsvFieldRange[] rangeBuffer = ArrayPool<CsvFieldRange>.Shared.Rent(256);
 
         char[] charBuffer = ArrayPool<char>.Shared.Rent(4096);
 
@@ -102,7 +102,7 @@ public class CsvParser<TEntity> where TEntity : class, new()
                         continue;
                     }
 
-                    if (InvokeProcessLine(charBuffer, charCount, rangeBuffer, ref recordIndex, ref lineNumber, linesInRecord, ref isInitialized, ref headerResolution, out CsvMappingResult<TEntity> mappingResult))
+                    if (InvokeProcessLine(charBuffer, charCount, ref rangeBuffer, ref recordIndex, ref lineNumber, linesInRecord, ref isInitialized, ref headerResolution, out CsvMappingResult<TEntity> mappingResult))
                     {
                         yield return mappingResult;
                     }
@@ -116,7 +116,7 @@ public class CsvParser<TEntity> where TEntity : class, new()
                     {
                         int charCount = DecodeToBuffer(buffer, ref charBuffer);
 
-                        if (InvokeProcessLine(charBuffer, charCount, rangeBuffer, ref recordIndex, ref lineNumber, 1, ref isInitialized, ref headerResolution, out CsvMappingResult<TEntity> lastResult))
+                        if (InvokeProcessLine(charBuffer, charCount, ref rangeBuffer, ref recordIndex, ref lineNumber, 1, ref isInitialized, ref headerResolution, out CsvMappingResult<TEntity> lastResult))
                         {
                             yield return lastResult;
                         }
@@ -130,6 +130,7 @@ public class CsvParser<TEntity> where TEntity : class, new()
             await reader.CompleteAsync().ConfigureAwait(false);
 
             ArrayPool<char>.Shared.Return(charBuffer);
+            ArrayPool<CsvFieldRange>.Shared.Return(rangeBuffer);
         }
     }
 
@@ -137,7 +138,7 @@ public class CsvParser<TEntity> where TEntity : class, new()
     {
         using StreamReader reader = new(stream, _encoding, true);
 
-        CsvFieldRange[] rangeBuffer = new CsvFieldRange[256];
+        CsvFieldRange[] rangeBuffer = ArrayPool<CsvFieldRange>.Shared.Rent(256);
 
         int recordIndex = 0, lineNumber = 1;
         bool isInitialized = false;
@@ -146,43 +147,50 @@ public class CsvParser<TEntity> where TEntity : class, new()
 
         StringBuilder sb = new();
 
-        while (true)
+        try
         {
-            (string? rawLine, int linesConsumed, bool isMalformed) = ReadLogicalRecordSync(reader, sb);
-            if (rawLine == null && linesConsumed == 0)
+            while (true)
             {
-                break;
-            }
+                (string? rawLine, int linesConsumed, bool isMalformed) = ReadLogicalRecordSync(reader, sb);
+                if (rawLine == null && linesConsumed == 0)
+                {
+                    break;
+                }
 
-            if (isMalformed)
-            {
-                yield return new CsvMappingResult<TEntity>(
-                    new CsvMappingError(recordIndex++, lineNumber, 0, "Unclosed quote at end of file"),
-                    recordIndex - 1, lineNumber);
-                lineNumber += linesConsumed;
-                continue;
-            }
+                if (isMalformed)
+                {
+                    yield return new CsvMappingResult<TEntity>(
+                        new CsvMappingError(recordIndex++, lineNumber, 0, "Unclosed quote at end of file"),
+                        recordIndex - 1, lineNumber);
+                    lineNumber += linesConsumed;
+                    continue;
+                }
 
-            if (InvokeProcessLine(rawLine!, rangeBuffer, ref recordIndex, ref lineNumber, linesConsumed, ref isInitialized, ref headerResolution, out CsvMappingResult<TEntity> res))
-            {
-                yield return res;
+                if (InvokeProcessLine(rawLine!, ref rangeBuffer, ref recordIndex, ref lineNumber, linesConsumed, ref isInitialized, ref headerResolution, out CsvMappingResult<TEntity> res))
+                {
+                    yield return res;
+                }
             }
+        }
+        finally
+        {
+            ArrayPool<CsvFieldRange>.Shared.Return(rangeBuffer);
         }
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private bool InvokeProcessLine(char[] buffer, int length, CsvFieldRange[] rangeBuffer, ref int recordIdx, ref int lineNo, int consumed, ref bool initialized, ref CsvHeaderResolution? headerResolution, out CsvMappingResult<TEntity> result)
+    private bool InvokeProcessLine(char[] buffer, int length, ref CsvFieldRange[] rangeBuffer, ref int recordIdx, ref int lineNo, int consumed, ref bool initialized, ref CsvHeaderResolution? headerResolution, out CsvMappingResult<TEntity> result)
     {
-        return ProcessLine(new ReadOnlySpan<char>(buffer, 0, length), rangeBuffer, ref recordIdx, ref lineNo, consumed, ref initialized, ref headerResolution, out result);
+        return ProcessLine(new ReadOnlySpan<char>(buffer, 0, length), ref rangeBuffer, ref recordIdx, ref lineNo, consumed, ref initialized, ref headerResolution, out result);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private bool InvokeProcessLine(string line, CsvFieldRange[] rangeBuffer, ref int recordIdx, ref int lineNo, int consumed, ref bool initialized, ref CsvHeaderResolution? headerResolution, out CsvMappingResult<TEntity> result)
+    private bool InvokeProcessLine(string line, ref CsvFieldRange[] rangeBuffer, ref int recordIdx, ref int lineNo, int consumed, ref bool initialized, ref CsvHeaderResolution? headerResolution, out CsvMappingResult<TEntity> result)
     {
-        return ProcessLine(line.AsSpan(), rangeBuffer, ref recordIdx, ref lineNo, consumed, ref initialized, ref headerResolution, out result);
+        return ProcessLine(line.AsSpan(), ref rangeBuffer, ref recordIdx, ref lineNo, consumed, ref initialized, ref headerResolution, out result);
     }
 
-    private bool ProcessLine(ReadOnlySpan<char> lineSpan, CsvFieldRange[] rangeBuffer, ref int recordIdx, ref int lineNo, int consumed, ref bool initialized, ref CsvHeaderResolution? headerResolution, out CsvMappingResult<TEntity> result)
+    private bool ProcessLine(ReadOnlySpan<char> lineSpan, ref CsvFieldRange[] rangeBuffer, ref int recordIdx, ref int lineNo, int consumed, ref bool initialized, ref CsvHeaderResolution? headerResolution, out CsvMappingResult<TEntity> result)
     {
         result = default;
 
@@ -199,8 +207,16 @@ public class CsvParser<TEntity> where TEntity : class, new()
 
             if (_mapping is IHeaderBinder binder && binder.NeedsHeaderResolution)
             {
-                int count = SplitLine(lineSpan, rangeBuffer, out _);
-            
+                int count = SplitLine(lineSpan, rangeBuffer, out bool headerOverflow);
+
+                while (headerOverflow)
+                {
+                    int newSize = rangeBuffer.Length * 2;
+                    ArrayPool<CsvFieldRange>.Shared.Return(rangeBuffer);
+                    rangeBuffer = ArrayPool<CsvFieldRange>.Shared.Rent(newSize);
+                    count = SplitLine(lineSpan, rangeBuffer, out headerOverflow);
+                }
+
                 CsvRow headerRow = new(lineSpan, rangeBuffer.AsSpan(0, count), _options, recordIdx, lineNo);
 
                 headerResolution = binder.BindHeaders(ref headerRow);
@@ -216,12 +232,13 @@ public class CsvParser<TEntity> where TEntity : class, new()
         }
 
         int countSplit = SplitLine(lineSpan, rangeBuffer, out bool overflow);
-        
-        if (overflow)
+
+        while (overflow)
         {
-            result = new CsvMappingResult<TEntity>(new CsvMappingError(recordIdx++, lineNo, -1, "Buffer overflow"), recordIdx - 1, lineNo);
-            lineNo += consumed;
-            return true;
+            int newSize = rangeBuffer.Length * 2;
+            ArrayPool<CsvFieldRange>.Shared.Return(rangeBuffer);
+            rangeBuffer = ArrayPool<CsvFieldRange>.Shared.Rent(newSize);
+            countSplit = SplitLine(lineSpan, rangeBuffer, out overflow);
         }
 
         CsvRow row = new(lineSpan, rangeBuffer.AsSpan(0, countSplit), _options, recordIdx++, lineNo);
@@ -388,6 +405,10 @@ public class CsvParser<TEntity> where TEntity : class, new()
         if (rangeCount < ranges.Length)
         {
             ranges[rangeCount++] = new CsvFieldRange(fieldStart, line.Length - fieldStart, state != ParseState.Normal, needsUnescape);
+        }
+        else
+        {
+            overflow = true;
         }
 
         return rangeCount;
