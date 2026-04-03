@@ -8,7 +8,7 @@ namespace TinyCsvParser.Test.Parsing;
 
 public class DummyEntity
 {
-    public string? DummyField { get; set; }
+    public string DummyField { get; set; }
 }
 
 public class DummyMapping : ICsvMapping<DummyEntity>
