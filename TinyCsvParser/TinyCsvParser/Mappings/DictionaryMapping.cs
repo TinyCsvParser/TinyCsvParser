@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using TinyCsvParser.Core;
 using TinyCsvParser.Models;
 
 namespace TinyCsvParser.Mappings;
