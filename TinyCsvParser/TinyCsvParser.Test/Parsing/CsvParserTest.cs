@@ -37,7 +37,7 @@ public class CsvParserTest
         CsvParser<Person> csvParser = new(csvParserOptions, csvMapper);
 
         var result = string.Empty;
-        NUnit.Framework.Assert.DoesNotThrow(() => result = csvParser.ToString());
+        Assert.DoesNotThrow(() => result = csvParser.ToString());
         Assert.IsNotEmpty(result);
     }
 

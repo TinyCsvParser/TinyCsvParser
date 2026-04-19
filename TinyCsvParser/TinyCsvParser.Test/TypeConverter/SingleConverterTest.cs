@@ -23,7 +23,7 @@ public class SingleConverterTest : BaseConverterTest<float>
 
     protected override void AssertAreEqual(float expected, float actual)
     {
-        NUnit.Framework.Assert.That(actual, Is.EqualTo(expected).Within(float.Epsilon));
+        Assert.That(actual, Is.EqualTo(expected).Within(float.Epsilon));
     }
 
     protected override string[] FailTestData => ["a", string.Empty, "  ", null];

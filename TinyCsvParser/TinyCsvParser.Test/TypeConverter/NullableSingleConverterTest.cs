@@ -33,7 +33,7 @@ public class NullableSingleConverterTest : BaseConverterTest<float?>
         }
         else
         {
-            NUnit.Framework.Assert.That(actual, Is.EqualTo(expected.Value).Within(float.Epsilon));
+            Assert.That(actual, Is.EqualTo(expected.Value).Within(float.Epsilon));
         }
     }
 
