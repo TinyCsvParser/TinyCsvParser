@@ -1,1 +1,1 @@
-global using Assert = NUnit.Framework.Legacy.ClassicAssert;
+global using Assert = NUnit.Framework.Assert;

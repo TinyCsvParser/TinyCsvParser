@@ -33,7 +33,7 @@ public class NullableDoubleConverterTest : BaseConverterTest<double?>
         }
         else
         {
-            NUnit.Framework.Assert.That(actual, Is.EqualTo(expected.Value).Within(double.Epsilon));
+            Assert.That(actual, Is.EqualTo(expected.Value).Within(double.Epsilon));
         }
     }
 
