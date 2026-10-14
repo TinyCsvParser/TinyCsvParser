@@ -33,8 +33,7 @@ configuration, and extensibility of the library through practical examples.
   * [8.2 Writing a Custom Converter](#82-writing-a-custom-converter)
 * [9. Migration from 2.x to 3.x](#9-migration-from-2x-to-3x)
   * [9.1 Data Access](#91-data-access)
-  * [9.2 Result Pattern](#92-result-pattern)
-  * [9.3 Error Metadata](#93-error-metadata)
+  * [9.2 Error Metadata](#92-error-metadata)
 
 ## 1. Setup ##
 
@@ -355,7 +354,7 @@ public class YesNoConverter : NonNullableConverter<bool>
 In Version 2.x, custom logic used a `string[]`. In Version 3.0, it uses `ref CsvRow`. This allows the library to work
 with `ReadOnlySpan<char>`, significantly reducing memory allocations.
 
-### 9.3 Error Metadata ###
+### 9.2 Error Metadata ###
 
 Error objects in Version 3.0 now contain both `RecordIndex` and `LineNumber`. If you previously relied on indices for
 debugging, ensure
