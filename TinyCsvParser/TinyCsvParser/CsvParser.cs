@@ -207,14 +207,14 @@ public class CsvParser<TEntity> where TEntity : class, new()
 
             if (_mapping is IHeaderBinder { NeedsHeaderResolution: true } binder)
             {
-                int count = SplitLine(lineSpan, rangeBuffer, out bool headerOverflow);
+                int count = SplitLine(lineSpan, rangeBuffer, lineNo, out bool headerOverflow);
 
                 while (headerOverflow)
                 {
                     int newSize = rangeBuffer.Length * 2;
                     ArrayPool<CsvFieldRange>.Shared.Return(rangeBuffer);
                     rangeBuffer = ArrayPool<CsvFieldRange>.Shared.Rent(newSize);
-                    count = SplitLine(lineSpan, rangeBuffer, out headerOverflow);
+                    count = SplitLine(lineSpan, rangeBuffer, lineNo, out headerOverflow);
                 }
 
                 CsvRow headerRow = new(lineSpan, rangeBuffer.AsSpan(0, count), _options, recordIdx, lineNo);
@@ -231,14 +231,14 @@ public class CsvParser<TEntity> where TEntity : class, new()
             }
         }
 
-        int countSplit = SplitLine(lineSpan, rangeBuffer, out bool overflow);
+        int countSplit = SplitLine(lineSpan, rangeBuffer, lineNo, out bool overflow);
 
         while (overflow)
         {
             int newSize = rangeBuffer.Length * 2;
             ArrayPool<CsvFieldRange>.Shared.Return(rangeBuffer);
             rangeBuffer = ArrayPool<CsvFieldRange>.Shared.Rent(newSize);
-            countSplit = SplitLine(lineSpan, rangeBuffer, out overflow);
+            countSplit = SplitLine(lineSpan, rangeBuffer, lineNo, out overflow);
         }
 
         CsvRow row = new(lineSpan, rangeBuffer.AsSpan(0, countSplit), _options, recordIdx++, lineNo);
@@ -357,7 +357,7 @@ public class CsvParser<TEntity> where TEntity : class, new()
         return actualChars;
     }
 
-    private int SplitLine(ReadOnlySpan<char> line, Span<CsvFieldRange> ranges, out bool overflow)
+    private int SplitLine(ReadOnlySpan<char> line, Span<CsvFieldRange> ranges, int lineNumber, out bool overflow)
     {
         int rangeCount = 0, fieldStart = 0;
         ParseState state = ParseState.Normal;
@@ -372,7 +372,15 @@ public class CsvParser<TEntity> where TEntity : class, new()
             switch (state)
             {
                 case ParseState.Normal:
-                    if (c == _options.QuoteChar) { state = ParseState.InQuotedField; fieldStart = i; }
+                    if (c == _options.QuoteChar)
+                    {
+                        if (i != fieldStart)
+                        {
+                            throw new FormatException($"Unexpected quote character at line {lineNumber}, column {i + 1}. Quotes must enclose the whole field.");
+                        }
+
+                        state = ParseState.InQuotedField;
+                    }
                     else if (c == _options.Delimiter)
                     {
                         ranges[rangeCount++] = new CsvFieldRange(fieldStart, i - fieldStart, false, false);
@@ -397,6 +405,10 @@ public class CsvParser<TEntity> where TEntity : class, new()
                         fieldStart = i + 1;
                         state = ParseState.Normal;
                         needsUnescape = false;
+                    }
+                    else
+                    {
+                        throw new FormatException($"Unexpected character '{c}' after closing quote at line {lineNumber}, column {i + 1}.");
                     }
                     break;
             }
