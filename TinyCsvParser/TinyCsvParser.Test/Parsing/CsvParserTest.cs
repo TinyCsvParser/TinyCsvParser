@@ -233,13 +233,27 @@ public class CsvParserTest
 
         StringBuilder stringBuilder = new StringBuilder()
             .AppendLine("FirstName;LastName;BirthDate")
-            .AppendLine("Philipp \"Phil\" Eric; Wagner;1986/05/12");
+            .AppendLine("Philipp \"Phil\" Eric; Wagner;1986/05/12")
+            .AppendLine("Max;Mustermann;2014/01/01");
 
-        FormatException exception = Assert.Throws<FormatException>(() => csvParser
+        List<CsvMappingResult<Person>> result = csvParser
             .ReadFromString(stringBuilder.ToString())
-            .ToList());
+            .ToList();
 
-        Assert.That(exception.Message, Does.Contain("line 2"));
+        Assert.AreEqual(2, result.Count);
+
+        Assert.IsTrue(result[0].IsError);
+
+        CsvMappingError error = result[0].Error;
+
+        Assert.AreEqual(0, error.RecordIndex);
+        Assert.AreEqual(2, error.LineNumber);
+        Assert.AreEqual(0, error.ColumnIndex);
+        Assert.That(error.Value, Does.Contain("Unexpected quote character"));
+
+        Assert.IsTrue(result[1].IsSuccess);
+        Assert.AreEqual(1, result[1].RecordIndex);
+        Assert.AreEqual("Max", result[1].Result.FirstName);
     }
 
     [Test]
@@ -257,10 +271,19 @@ public class CsvParserTest
             .AppendLine("FirstName;LastName;BirthDate")
             .AppendLine("\"Philipp\" Eric;Wagner;1986/05/12");
 
-        FormatException exception = Assert.Throws<FormatException>(() => csvParser
+        List<CsvMappingResult<Person>> result = csvParser
             .ReadFromString(stringBuilder.ToString())
-            .ToList());
+            .ToList();
 
-        Assert.That(exception.Message, Does.Contain("line 2"));
+        Assert.AreEqual(1, result.Count);
+
+        Assert.IsTrue(result[0].IsError);
+
+        CsvMappingError error = result[0].Error;
+
+        Assert.AreEqual(0, error.RecordIndex);
+        Assert.AreEqual(2, error.LineNumber);
+        Assert.AreEqual(0, error.ColumnIndex);
+        Assert.That(error.Value, Does.Contain("after closing quote"));
     }
 }

@@ -117,8 +117,9 @@ Quoted fields can contain the delimiter (e.g., "Doe, John") or even escaped quot
 the parser resolves before passing the value to the mapping.
 
 Quotes must enclose the whole field. A quote character inside an unquoted field (e.g., `Philipp "Phil" Eric`) or any
-character other than the delimiter after a closing quote (e.g., `"Philipp" Eric`) is malformed input, and the parser
-throws a `FormatException` naming the line and column.
+character other than the delimiter after a closing quote (e.g., `"Philipp" Eric`) is malformed input. The parser reports
+it as a `CsvMappingError` for that record, with the field index in `ColumnIndex` and the character position in the
+message, and continues with the next record.
 
 ## 3. Configuring and Running the Parser ##
 
