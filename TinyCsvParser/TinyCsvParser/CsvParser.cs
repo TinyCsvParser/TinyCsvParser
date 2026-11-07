@@ -207,14 +207,21 @@ public class CsvParser<TEntity> where TEntity : class, new()
 
             if (_mapping is IHeaderBinder { NeedsHeaderResolution: true } binder)
             {
-                int count = SplitLine(lineSpan, rangeBuffer, out bool headerOverflow);
+                int count = SplitLine(lineSpan, rangeBuffer, recordIdx, lineNo, out bool headerOverflow, out CsvMappingError? headerError);
 
                 while (headerOverflow)
                 {
                     int newSize = rangeBuffer.Length * 2;
                     ArrayPool<CsvFieldRange>.Shared.Return(rangeBuffer);
                     rangeBuffer = ArrayPool<CsvFieldRange>.Shared.Rent(newSize);
-                    count = SplitLine(lineSpan, rangeBuffer, out headerOverflow);
+                    count = SplitLine(lineSpan, rangeBuffer, recordIdx, lineNo, out headerOverflow, out headerError);
+                }
+
+                if (headerError is { } malformedHeader)
+                {
+                    result = new CsvMappingResult<TEntity>(malformedHeader, recordIdx++, lineNo);
+                    lineNo += consumed;
+                    return true;
                 }
 
                 CsvRow headerRow = new(lineSpan, rangeBuffer.AsSpan(0, count), _options, recordIdx, lineNo);
@@ -231,14 +238,21 @@ public class CsvParser<TEntity> where TEntity : class, new()
             }
         }
 
-        int countSplit = SplitLine(lineSpan, rangeBuffer, out bool overflow);
+        int countSplit = SplitLine(lineSpan, rangeBuffer, recordIdx, lineNo, out bool overflow, out CsvMappingError? splitError);
 
         while (overflow)
         {
             int newSize = rangeBuffer.Length * 2;
             ArrayPool<CsvFieldRange>.Shared.Return(rangeBuffer);
             rangeBuffer = ArrayPool<CsvFieldRange>.Shared.Rent(newSize);
-            countSplit = SplitLine(lineSpan, rangeBuffer, out overflow);
+            countSplit = SplitLine(lineSpan, rangeBuffer, recordIdx, lineNo, out overflow, out splitError);
+        }
+
+        if (splitError is { } malformedRow)
+        {
+            result = new CsvMappingResult<TEntity>(malformedRow, recordIdx++, lineNo);
+            lineNo += consumed;
+            return true;
         }
 
         CsvRow row = new(lineSpan, rangeBuffer.AsSpan(0, countSplit), _options, recordIdx++, lineNo);
@@ -357,12 +371,13 @@ public class CsvParser<TEntity> where TEntity : class, new()
         return actualChars;
     }
 
-    private int SplitLine(ReadOnlySpan<char> line, Span<CsvFieldRange> ranges, out bool overflow)
+    private int SplitLine(ReadOnlySpan<char> line, Span<CsvFieldRange> ranges, int recordIndex, int lineNumber, out bool overflow, out CsvMappingError? error)
     {
         int rangeCount = 0, fieldStart = 0;
         ParseState state = ParseState.Normal;
         bool needsUnescape = false;
         overflow = false;
+        error = null;
 
         for (int i = 0; i < line.Length; i++)
         {
@@ -372,7 +387,16 @@ public class CsvParser<TEntity> where TEntity : class, new()
             switch (state)
             {
                 case ParseState.Normal:
-                    if (c == _options.QuoteChar) { state = ParseState.InQuotedField; fieldStart = i; }
+                    if (c == _options.QuoteChar)
+                    {
+                        if (i != fieldStart)
+                        {
+                            error = new CsvMappingError(recordIndex, lineNumber, rangeCount, $"Unexpected quote character at position {i + 1}. Quotes must enclose the whole field.");
+                            return rangeCount;
+                        }
+
+                        state = ParseState.InQuotedField;
+                    }
                     else if (c == _options.Delimiter)
                     {
                         ranges[rangeCount++] = new CsvFieldRange(fieldStart, i - fieldStart, false, false);
@@ -397,6 +421,11 @@ public class CsvParser<TEntity> where TEntity : class, new()
                         fieldStart = i + 1;
                         state = ParseState.Normal;
                         needsUnescape = false;
+                    }
+                    else
+                    {
+                        error = new CsvMappingError(recordIndex, lineNumber, rangeCount, $"Unexpected character '{c}' after closing quote at position {i + 1}.");
+                        return rangeCount;
                     }
                     break;
             }

@@ -188,4 +188,102 @@ public class CsvParserTest
 
         Assert.AreEqual(0, result.Count);
     }
+
+    [Test]
+    public void UseValidQuotesTest()
+    {
+        CsvOptions csvOptions = CsvOptions.Default with
+        {
+            SkipHeader = false
+        };
+
+        CsvPersonHeaderMapping csvMapper = new();
+        CsvParser<Person> csvParser = new(csvOptions, csvMapper);
+
+        StringBuilder stringBuilder = new StringBuilder()
+            .AppendLine("FirstName;LastName;BirthDate")
+            .AppendLine("\"Max\";Mustermann;2014/01/01");
+
+        List<CsvMappingResult<Person>> result = csvParser
+            .ReadFromString(stringBuilder.ToString())
+            .ToList();
+
+        Assert.AreEqual(1, result.Count);
+
+        Assert.IsTrue(result.All(x => x.IsSuccess));
+
+        Assert.AreEqual("Max", result[0].Result.FirstName);
+        Assert.AreEqual("Mustermann", result[0].Result.LastName);
+
+        Assert.AreEqual(2014, result[0].Result.BirthDate.Year);
+        Assert.AreEqual(1, result[0].Result.BirthDate.Month);
+        Assert.AreEqual(1, result[0].Result.BirthDate.Day);
+    }
+
+    [Test]
+    public void UseInvalidQuotesTest()
+    {
+        CsvOptions csvOptions = CsvOptions.Default with
+        {
+            SkipHeader = false
+        };
+
+        CsvPersonHeaderMapping csvMapper = new();
+        CsvParser<Person> csvParser = new(csvOptions, csvMapper);
+
+        StringBuilder stringBuilder = new StringBuilder()
+            .AppendLine("FirstName;LastName;BirthDate")
+            .AppendLine("Philipp \"Phil\" Eric; Wagner;1986/05/12")
+            .AppendLine("Max;Mustermann;2014/01/01");
+
+        List<CsvMappingResult<Person>> result = csvParser
+            .ReadFromString(stringBuilder.ToString())
+            .ToList();
+
+        Assert.AreEqual(2, result.Count);
+
+        Assert.IsTrue(result[0].IsError);
+
+        CsvMappingError error = result[0].Error;
+
+        Assert.AreEqual(0, error.RecordIndex);
+        Assert.AreEqual(2, error.LineNumber);
+        Assert.AreEqual(0, error.ColumnIndex);
+        Assert.That(error.Value, Does.Contain("Unexpected quote character"));
+
+        Assert.IsTrue(result[1].IsSuccess);
+        Assert.AreEqual(1, result[1].RecordIndex);
+        Assert.AreEqual("Max", result[1].Result.FirstName);
+    }
+
+    [Test]
+    public void UseTextAfterClosingQuoteTest()
+    {
+        CsvOptions csvOptions = CsvOptions.Default with
+        {
+            SkipHeader = false
+        };
+
+        CsvPersonHeaderMapping csvMapper = new();
+        CsvParser<Person> csvParser = new(csvOptions, csvMapper);
+
+        StringBuilder stringBuilder = new StringBuilder()
+            .AppendLine("FirstName;LastName;BirthDate")
+            .AppendLine("\"Philipp\" Eric;Wagner;1986/05/12");
+
+        List<CsvMappingResult<Person>> result = csvParser
+            .ReadFromString(stringBuilder.ToString())
+            .ToList();
+
+        Assert.AreEqual(1, result.Count);
+
+        Assert.IsTrue(result[0].IsError);
+
+        CsvMappingError error = result[0].Error;
+
+        Assert.AreEqual(0, error.RecordIndex);
+        Assert.AreEqual(2, error.LineNumber);
+        Assert.AreEqual(0, error.ColumnIndex);
+        Assert.That(error.Value, Does.Contain("after closing quote"));
+    }
 }
