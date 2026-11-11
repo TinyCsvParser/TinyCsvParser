@@ -9,22 +9,15 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        dotnet: [ '8.0.x', '10.0.x' ]
-    name: Run unit tests for Dotnet ${{ matrix.dotnet }}
+    name: Run unit tests
     steps:
       - uses: actions/checkout@v7
       - name: Set up .NET
         uses: actions/setup-dotnet@v6
-        id: stepid
         with:
-          dotnet-version: ${{ matrix.dotnet }}
-      - name: Replace global.json
-        run: |
-          set -e
-          rm -f TinyCsvParser/global.json
-          printf '%s' '{"sdk":{"version":"${{ steps.stepid.outputs.dotnet-version }}"},"test":{"runner":"Microsoft.Testing.Platform"}}' > TinyCsvParser/global.json
+          dotnet-version: |
+            10.0.x
+            11.0.x
       - name: Build project
         run: dotnet build TinyCsvParser
       - name: Run unit tests
