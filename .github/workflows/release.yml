@@ -2,7 +2,7 @@ name: Release
 
 env:
   NUGET_SOURCE: 'https://api.nuget.org/v3/index.json'
-  DOTNET_VERSION: '10.x'
+  DOTNET_VERSION: '11.x'
 
 on:
   push:
