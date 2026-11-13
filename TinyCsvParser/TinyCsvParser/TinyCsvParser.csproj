@@ -11,10 +11,10 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<Copyright>Copyright © 2026</Copyright>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-		<AssemblyVersion>3.0.12.0</AssemblyVersion>
-		<FileVersion>3.0.12.0</FileVersion>
+		<AssemblyVersion>3.0.13.0</AssemblyVersion>
+		<FileVersion>3.0.13.0</FileVersion>
 		<RepositoryType>git</RepositoryType>
-		<Version>3.0.12</Version>
+		<Version>3.0.13</Version>
 		<IncludeSource>True</IncludeSource>
 		<IncludeSymbols>True</IncludeSymbols>
 		<SignAssembly>true</SignAssembly>
